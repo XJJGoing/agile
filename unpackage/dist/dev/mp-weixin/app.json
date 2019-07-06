@@ -1,0 +1,42 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/plain/plain",
+    "pages/people/people"
+  ],
+  "subPackages": [],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#21242E",
+    "navigationBarTitleText": "JOYEA",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#B0C4DE",
+    "selectedColor": "#F8F8FF",
+    "backgroundColor": "#2E3443",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "主页",
+        "iconPath": "/static/img/home.png",
+        "selectedIconPath": "/static/img/home_select.png"
+      },
+      {
+        "pagePath": "pages/plain/plain",
+        "text": "燃尽图",
+        "iconPath": "/static/img/picture.png",
+        "selectedIconPath": "/static/img/picture_select.png"
+      },
+      {
+        "pagePath": "pages/people/people",
+        "text": "个人中心",
+        "iconPath": "/static/img/people.png",
+        "selectedIconPath": "/static/img/people_select.png"
+      }
+    ]
+  },
+  "permission": {},
+  "usingComponents": {}
+}

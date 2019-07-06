@@ -1,0 +1,1 @@
+<view>{{'这是主页'+title+''}}<button type="primary">这是主页</button></view>

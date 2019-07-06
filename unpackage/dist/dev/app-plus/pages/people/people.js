@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"class{ border:aqua; }\n",],undefined,{path:"./pages/people/people.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/people/people.wxml') } }));

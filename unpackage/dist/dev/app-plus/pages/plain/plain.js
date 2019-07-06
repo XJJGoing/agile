@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"class{ border: aliceblue; }\n",],undefined,{path:"./pages/plain/plain.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/plain/plain.wxml') } }));

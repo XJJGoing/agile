@@ -1,16 +1,55 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [
 		{
 			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
+			"style": {}
 		}
-	],
+	    ,{
+            "path" : "pages/plain/plain",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/people/people",
+            "style" : {}
+        }
+    ],
+	
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#21242E",
+		"navigationBarTitleText": "JOYEA",
+		"navigationBarTextStyle": "white"
+	},
+   	"tabBar":{
+		"color": "#B0C4DE",
+		"selectedColor": "#F8F8FF",
+		"backgroundColor": "#2E3443",
+		"borderStyle": "white",
+		"list":[{
+			 "pagePath": "pages/index/index",
+			 "text": "主页",
+			 "iconPath": "/static/img/home.png",
+			 "selectedIconPath": "/static/img/home_select.png"
+		},{
+			"pagePath": "pages/plain/plain",
+			"text": "燃尽图",
+			"iconPath": "/static/img/picture.png",
+			"selectedIconPath": "/static/img/picture_select.png"
+		},{
+			 "pagePath": "pages/people/people",
+			 "text": "个人中心",
+			 "iconPath": "/static/img/people.png",
+			 "selectedIconPath": "/static/img/people_select.png"
+		 }]
+	},
+	"condition":{
+		"current":0,
+		"list":[
+			{
+				"name":"swiper1",
+				"path":"pages/people/people"
+			}
+		]
 	}
+	
 }
