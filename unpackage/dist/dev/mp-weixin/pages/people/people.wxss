@@ -1,5 +1,72 @@
 
-.class{
-	 border:aqua;
+.people{
+	height: auto;
+	width: 100%;
+	overflow: scroll;
+	background-color: #007AFF;
+}
+::-webkit-scrollbar{
+	width:2rpx;
+	height:6rpx;
+}
+.peopleInfo{
+	height: 1000rpx;
+	width: 100%;
+	background-color: #19BE6B;
+}
+.title{
+	width:100%;
+	height: 200rpx;
+	background-color: #F5A623;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	padding: 20rpx;
+	border: 1px solid #007AFF;
+	-webkit-border-radius:3% ;
+	        border-radius:3% ;
+}
+.title image{
+	border: 1rpx dotted #19BE6B;
+	width: 150rpx;
+	height: 150rpx;
+}
+.title text{
+	font-size: 30rpx;
+	margin-left: 20rpx;
+}
+#roleName{
+	font-size: 40rpx;
+	margin-left: 250rpx;
+}
+
+/*function部分*/
+.function{
+	width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.item{
+	width: 100%;
+	height: 30rpx;
+    margin-top:5rpx;
+	background-color: #19BE6B;
 }
 

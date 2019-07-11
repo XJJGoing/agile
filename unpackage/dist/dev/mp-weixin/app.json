@@ -1,8 +1,17 @@
 {
   "pages": [
+    "pages/apply/apply",
     "pages/index/index",
     "pages/plain/plain",
-    "pages/people/people"
+    "pages/people/people",
+    "pages/login/login",
+    "pages/comment/comment",
+    "pages/updateTask/updateTask",
+    "pages/reviewProject/reviewProject",
+    "pages/admin/admin",
+    "pages/message/message",
+    "pages/reviewTask/reviewTask",
+    "pages/addSprint/addSprint"
   ],
   "subPackages": [],
   "window": {

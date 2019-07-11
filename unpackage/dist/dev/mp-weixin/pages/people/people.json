@@ -1,3 +1,23 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "i-button": "/static/dist/button/index",
+    "i-input": "/static/dist/input/index",
+    "i-panel": "/static/dist/panel/index",
+    "i-tab-bar": "/static/dist/tab-bar/index",
+    "i-tab-bar-item": "/static/dist/tab-bar-item/index",
+    "i-radio": "/static/dist/radio/index",
+    "i-alert": "/static/dist/alert/index",
+    "i-toast": "/static/dist/toast/index",
+    "i-avatar": "/static/dist/avatar/index",
+    "i-cell-group": "/static/dist/cell-group/index",
+    "i-cell": "/static/dist/cell/index",
+    "i-badge": "/static/dist/badge/index",
+    "i-page": "/static/dist/page/index",
+    "i-modal": "/static/dist/modal/index",
+    "i-collapse": "/static/dist/collapse/index",
+    "i-collapse-item": "/static/dist/collapse-item/index",
+    "i-card": "/static/dist/card/index",
+    "uni-card": "/components/uni-card/uni-card",
+    "icard": "/static/dist/card/index"
+  }
 }

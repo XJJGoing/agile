@@ -24,6 +24,74 @@ createApp(app).$mount();
 
 /***/ }),
 
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FaddSprint%2FaddSprint\"}":
+/*!**********************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2FaddSprint%2FaddSprint"} ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _addSprint = _interopRequireDefault(__webpack_require__(/*! ./pages/addSprint/addSprint.vue */ "../../../../../个人信息/agile/pages/addSprint/addSprint.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_addSprint.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fadmin%2Fadmin\"}":
+/*!**************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fadmin%2Fadmin"} ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _admin = _interopRequireDefault(__webpack_require__(/*! ./pages/admin/admin.vue */ "../../../../../个人信息/agile/pages/admin/admin.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_admin.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fapply%2Fapply\"}":
+/*!**************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fapply%2Fapply"} ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _apply = _interopRequireDefault(__webpack_require__(/*! ./pages/apply/apply.vue */ "../../../../../个人信息/agile/pages/apply/apply.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_apply.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fcomment%2Fcomment\"}":
+/*!******************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fcomment%2Fcomment"} ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _comment = _interopRequireDefault(__webpack_require__(/*! ./pages/comment/comment.vue */ "../../../../../个人信息/agile/pages/comment/comment.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_comment.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
 /***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Findex%2Findex\"}":
 /*!**************************************************************!*\
   !*** F:/个人信息/agile/main.js?{"page":"pages%2Findex%2Findex"} ***!
@@ -37,6 +105,40 @@ createApp(app).$mount();
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
 var _index = _interopRequireDefault(__webpack_require__(/*! ./pages/index/index.vue */ "../../../../../个人信息/agile/pages/index/index.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_index.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Flogin%2Flogin\"}":
+/*!**************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2Flogin%2Flogin"} ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _login = _interopRequireDefault(__webpack_require__(/*! ./pages/login/login.vue */ "../../../../../个人信息/agile/pages/login/login.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_login.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fmessage%2Fmessage\"}":
+/*!******************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fmessage%2Fmessage"} ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _message = _interopRequireDefault(__webpack_require__(/*! ./pages/message/message.vue */ "../../../../../个人信息/agile/pages/message/message.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_message.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
@@ -75,6 +177,57 @@ createPage(_plain.default);
 
 /***/ }),
 
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FreviewProject%2FreviewProject\"}":
+/*!******************************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2FreviewProject%2FreviewProject"} ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _reviewProject = _interopRequireDefault(__webpack_require__(/*! ./pages/reviewProject/reviewProject.vue */ "../../../../../个人信息/agile/pages/reviewProject/reviewProject.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_reviewProject.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FreviewTask%2FreviewTask\"}":
+/*!************************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2FreviewTask%2FreviewTask"} ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _reviewTask = _interopRequireDefault(__webpack_require__(/*! ./pages/reviewTask/reviewTask.vue */ "../../../../../个人信息/agile/pages/reviewTask/reviewTask.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_reviewTask.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FupdateTask%2FupdateTask\"}":
+/*!************************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2FupdateTask%2FupdateTask"} ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _updateTask = _interopRequireDefault(__webpack_require__(/*! ./pages/updateTask/updateTask.vue */ "../../../../../个人信息/agile/pages/updateTask/updateTask.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_updateTask.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
 /***/ "../../../../../个人信息/agile/pages.json":
 /*!********************************!*\
   !*** F:/个人信息/agile/pages.json ***!
@@ -87,6 +240,111 @@ createPage(_plain.default);
 
 /***/ }),
 
+/***/ "../../../../../个人信息/agile/static/dist/card/index.js":
+/*!***********************************************!*\
+  !*** F:/个人信息/agile/static/dist/card/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Component({
+  externalClasses: ['i-class'],
+
+  options: {
+    multipleSlots: true },
+
+
+  properties: {
+    full: {
+      type: Boolean,
+      value: false },
+
+    thumb: {
+      type: String,
+      value: '' },
+
+    title: {
+      type: String,
+      value: '' },
+
+    extra: {
+      type: String,
+      value: '' } } });
+
+/***/ }),
+
+/***/ "../../../../../个人信息/agile/static/utils/api.js":
+/*!*****************************************!*\
+  !*** F:/个人信息/agile/static/utils/api.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+ //注册的api
+var register = "http://120.79.49.245:7377/user/registerByWeChat";
+
+//查找该用户
+var queryUser = "http://120.79.49.245:7377/user/query";
+
+//查找用户权限项目关系
+var userPojectRoleQuery = "http://120.79.49.245:7377/userProjectRole/query";
+
+//查找项目，库查找所有的项目，也可以单个查询
+var projectQuery = "http://120.79.49.245:7377/project/query";
+
+//添加申请
+var roleApplyAdd = "http://120.79.49.245:7377/roleApply/add";
+
+//添加评论
+var commentAdd = "http://120.79.49.245:7377/comment/add";
+
+//查找评论
+var commnetQuery = "http://120.79.49.245:7377/comment/add";
+
+//增加冲刺的信息
+var sprintAdd = "http://120.79.49.245:7377/sprint/add";
+
+
+module.exports = {
+  register: register,
+  queryUser: queryUser,
+  projectQuery: projectQuery,
+  commentAdd: commentAdd,
+  commnetQuery: commnetQuery,
+  userPojectRoleQuery: userPojectRoleQuery,
+  roleApplyAdd: roleApplyAdd,
+  sprintAdd: sprintAdd };
+
+/***/ }),
+
+/***/ "../../../../../个人信息/agile/static/utils/time.js":
+/*!******************************************!*\
+  !*** F:/个人信息/agile/static/utils/time.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var formatDate = function formatDate(date) {
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+  return [year, month, day].map(formatNumber).join('-') + " " + [hours, minutes, seconds].map(formatNumber).join(':');
+};
+var formatNumber = function formatNumber(n) {
+  n = n.toString();
+  return n[1] ? n : '0' + n; //表示字符串第一个数是否存在
+};
+module.exports = {
+  formatDate: formatDate };
+
+/***/ }),
+
 /***/ "../../../../../个人信息/agile/static/utils/utils.js":
 /*!*******************************************!*\
   !*** F:/个人信息/agile/static/utils/utils.js ***!
@@ -95,12 +353,130 @@ createPage(_plain.default);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var test = function test(tt) {
-  console.log(tt);
-  console.log("这个是测试文件");
-};
+/* WEBPACK VAR INJECTION */(function(uni) {
+var _api = __webpack_require__(/*! ./api */ "../../../../../个人信息/agile/static/utils/api.js");function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}
+
+//登录模块
+var Login = /*#__PURE__*/function () {
+  function Login(arg) {_classCallCheck(this, Login);
+
+  }
+  //得到code
+  _createClass(Login, [{ key: "getCode", value: function getCode() {
+      return new Promise(function (resolve, reject) {
+        uni.login({
+          success: function success(res) {
+            resolve(res.code);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //得到UserInfo
+  }, { key: "getUserInfo", value: function getUserInfo() {
+      return new Promise(function (resolve, reject) {
+        uni.getUserInfo({
+          success: function success(res) {
+            resolve(res);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //得到OpenId
+  }, { key: "getOpenId", value: function getOpenId(code) {
+      return new Promise(function (resolve, reject) {
+        var appId = "wxd763acfcb06de61a";
+        var appSecret = "e8e7ea381fff59c2081d115cb312b22e";
+        uni.request({
+          url: "https://api.weixin.qq.com/sns/jscode2session?appid=".concat(appId, "&secret=").concat(appSecret, "&js_code=").concat(code, "&grant_type=authorization_code"),
+          method: "GET",
+          data: {},
+          success: function success(res) {
+            resolve(res);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //发送整理好的用户的信息到服务器
+  }, { key: "insertUser", value: function insertUser(userInfo, api, method) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: api,
+          method: method,
+          data: userInfo,
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    } }]);return Login;}();
+
+
+
+
+//查询的模块
+var Query = /*#__PURE__*/function () {
+  function Query(arg) {_classCallCheck(this, Query);
+
+  }
+  //查询数据库中的用户
+  _createClass(Query, [{ key: "findUser", value: function findUser(id) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.queryUser,
+          method: "POST",
+          data: id,
+          dataType: 'json',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //查询用户的项目权限关系
+  }, { key: "findUserProjectRole", value: function findUserProjectRole(userId, projectId) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.userPojectRoleQuery,
+          data: {
+            userId: userId,
+            projectId: projectId },
+
+          dataType: 'json',
+          method: 'POST',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    } }]);return Query;}();
+
+
 module.exports = {
-  test: test };
+  Login: Login,
+  Query: Query };
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ }),
 
@@ -599,7 +975,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -6775,7 +7151,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -6796,14 +7172,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -6872,7 +7248,7 @@ var patch = function(oldVnode, vnode) {
         });
         var diffData = diff(data, mpData);
         if (Object.keys(diffData).length) {
-            if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+            if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
                 console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
                     ']差量更新',
                     JSON.stringify(diffData));

@@ -1,0 +1,148 @@
+
+.all{
+	width: 100%;
+	overflow: scroll;
+}
+.search_project{
+	width: 100%;
+	background-color: #2D8CF0;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	margin-top:160rpx;
+}
+::-webkit-scrollbar{
+	width: 4rpx;
+	height: 6rpx;
+}
+.ibutton{
+	width: 300rpx;
+	height: 200rpx;
+}
+.ipage{
+	width: 100%;
+	height: 800rpx;
+}
+.detail{
+	width: 100%;
+	height: 700rpx;
+	background-color: #FF9900;
+}
+.detail_project{
+	width: 100%;
+	height: 50rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	margin-top: 10rpx;
+	-webkit-justify-content: space-around;
+	    -ms-flex-pack: distribute;
+	        justify-content: space-around;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	background-color: #19BE6B;
+}
+.applyList{
+	width: 100%;
+	height: 650rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-justify-content: space-around;
+	    -ms-flex-pack: distribute;
+	        justify-content: space-around;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+}
+.applyList view{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-pack: start;
+	-webkit-justify-content: flex-start;
+	    -ms-flex-pack: start;
+	        justify-content: flex-start;
+	margin-top: 10rpx;
+	width: 100%;
+	font-size:25rpx;
+}
+.appListView1{
+	height: 100rpx;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+}
+.appListView1 input{
+	height: 60rpx;
+	width: 450rpx;
+    border: 1px solid #19BE6B;
+	-webkit-border-radius: 2%;
+	        border-radius: 2%;
+}
+.appListView1 text{
+	height: 100rpx;
+	margin-left: 30rpx;
+	width: 100rpx;
+	line-height: 100rpx;
+	font-size:30rpx!important ;
+}
+.appListView2{
+	height: 250rpx;
+	background-color: #19BE6B;
+}
+.appListView2 text{
+  margin-left: 30rpx;
+  line-height: 250rpx;
+  width: 100rpx;
+  height: 250rpx;
+  font-size:30rpx!important ;
+}
+.appListView2 textarea{
+	height: 250rpx;
+	border: 1px solid #2D8CF0;
+	margin-right: 10rpx;
+	-webkit-border-radius: 2%;
+	        border-radius: 2%;
+}
+/*提交申请表的按钮*/
+.submitApply{
+	width: 200rpx;
+	height: 100rpx;
+	-webkit-border-radius: 2%;
+	        border-radius: 2%;
+}
+
+

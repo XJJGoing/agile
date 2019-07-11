@@ -1,15 +1,102 @@
 
-.content {
-	text-align: center;
-	height: 400rpx;
+.project{
+	width: 100%;
+	height: auto;
+	overflow: scroll;
 }
-.logo {
-	height: 200rpx;
+::-webkit-scrollbar{
+	height: 6rpx;
+	width: 2rpx;
+}
+.chooseItem{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient:horizontal;
+	-webkit-box-direction:normal;
+	-webkit-flex-direction:row;
+	    -ms-flex-direction:row;
+	        flex-direction:row;
+	-webkit-justify-content: space-around;
+	    -ms-flex-pack: distribute;
+	        justify-content: space-around;
+}
+.chooseItem picker{
+	height: 60rpx;
 	width: 200rpx;
-	margin-top: 200rpx;
+	font-size:28rpx;
+	background-color: #19BE6B;
+	text-align: center;
+	line-height: 60rpx;
 }
-.title {
-	font-size: 36rpx;
-	color: #8f8f94;
+.title{
+	width: 100%;
+	height: 80rpx;
+	line-height: 80rpx;
+	font-size: 30rpx;
+	background-color: #F5A623;
+	padding: 10rpx;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.projectInfo{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.projectInfo view{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	height: 80rpx;
+	width: 100%;
+	padding: 20rpx;
+	margin-top: 3rpx;
+	background-color: #19BE6B;
+}
+.projectInfo view text{
+  font-size:30rpx;
+}
+.projectInfo view input{
+	font-size:30rpx;
+	height: 60rpx;
+	border: 1px solid #F0F8FF;
+	width: 500rpx;
+	margin-left: 5rpx;
+}
+.footer{
+	height: 200rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	width: 100%;
+}
+.footer button{
+	margin-top: 5rpx;
+	width: 80%;
+	height: 80rpx;
 }
 

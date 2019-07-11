@@ -1,40 +1,74 @@
 {
-  "description": "项目配置文件。",
-  "packOptions": {
-    "ignore": []
-  },
-  "setting": {
-    "urlCheck": false,
-    "es6": true,
-    "postcss": false,
-    "minified": false
-  },
-  "compileType": "miniprogram",
-  "libVersion": "2.7.0",
-  "appid": "wxd763acfcb06de61a",
-  "projectname": "agile",
-  "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
-    "game": {
-      "current": -1,
-      "list": []
-    },
-    "miniprogram": {
-      "current": 0,
-      "list": [
-        {
-          "name": "swiper1",
-          "id": 0,
-          "pathName": "pages/people/people"
-        }
-      ]
-    }
-  }
+	"description": "项目配置文件。",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": false,
+		"minified": false
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.7.0",
+	"appid": "wxd763acfcb06de61a",
+	"projectname": "agile",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 4,
+			"list": [
+				{
+					"id": 0,
+					"name": "swiper1",
+					"pathName": "pages/login/login",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "people",
+					"pathName": "pages/people/people",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "comment",
+					"pathName": "pages/comment/comment",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "index",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "addSprint",
+					"pathName": "pages/addSprint/addSprint",
+					"scene": null
+				}
+			]
+		}
+	}
 }

@@ -98,21 +98,100 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-var _default =
-{
-  data: function data() {
-    return {};
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var icard = function icard() {return __webpack_require__.e(/*! import() | static/dist/card/index */ "common/vendor").then(__webpack_require__.t.bind(null, /*! ../../static/dist/card/index.js */ "../../../../../个人信息/agile/static/dist/card/index.js", 7));};
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;
+var Login = new login();
+var _this;var _default =
+{
+  components: { uniCard: uniCard, icard: icard },
+  data: function data() {
+    return {
+      userInfo: {},
+      userProjectRole: {} };
 
   },
+
+  //这个只是暂时monn
+  onShow: function onShow() {
+    _this = this;
+    uni.getStorage({
+      key: 'userInfo',
+      success: function success(res) {
+        console.log(res.data);
+        _this.userInfo = res.data;
+        console.log("全局变量userInfo", _this.userInfo);
+      },
+      fail: function fail() {
+        uni.redirectTo({
+          url: '../login/login' });
+
+      } });
+
+  },
+
+  // //进行登录的更新
+  // onShow(){
+  //   _this = this
+  //   wx.getStorage({
+  //   	key:"userInfo",
+  // 	success:(res)=>{
+  // 	   let id = {
+  // 		   id:res.data.id
+  // 	   }
+  // 	   Login.findUser(id)
+  // 	   .then(data=>{
+  // 		   _this.userInfo = data.data
+  // 		  uni.setStorage('userInfo',data.data)
+  // 		  return Login.findUserProjectRole(data.data.id)
+  // 	   })
+  // 	   .then(data=>{
+  // 		   uni.setStorage('userProjectRole',data)
+  // 	   })
+  // 	},
+  // 	fail:()=>{
+  // 	  uni.redirectTo({
+  // 	  	url:'../login/login'
+  // 	  })
+  // 	}
+  //   })
+  // },
+  // 
   methods: {} };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ }),
 

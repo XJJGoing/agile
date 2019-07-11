@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "i-button": "/static/dist/button/index",
+    "i-page": "/static/dist/page/index",
+    "uni-pagination": "/components/uni-pagination/uni-pagination"
+  }
+}

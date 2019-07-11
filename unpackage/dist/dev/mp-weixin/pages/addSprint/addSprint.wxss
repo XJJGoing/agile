@@ -1,0 +1,108 @@
+
+.all{
+	height: auto;
+	overflow:scroll;
+	margin-top: 20rpx;
+}
+::-webkit-scrollbar{
+    width: 2rpx;
+	height: 6rpx;
+}
+.hadSprint{
+	width: 100%;
+	height: auto;
+	background-color: #F5A623;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.sprintNum{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-pack: start;
+	-webkit-justify-content: flex-start;
+	    -ms-flex-pack: start;
+	        justify-content: flex-start;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	width: auto;
+	overflow-x: scroll;
+	padding: 10rpx;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	height: 100rpx;
+	background-color: #007AFF;
+}
+#order{
+	font-size: 35rpx;
+}
+#target{
+	font-size:30rpx;
+	margin-left: 10rpx;
+}
+.sprintMessage{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	background-color: #007AFF;
+}
+.sprintMessage view{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	margin-top: 5rpx;
+	height: 100rpx;
+	width: 100%;
+	padding: 10rpx;
+	background-color: #F5A623;
+}
+.sprintMessage view text {
+	font-size:30rpx;
+	background-color: #19BE6B;
+}
+.sprintMessage view input{
+   	-webkit-border-radius: 2rpx;
+   	        border-radius: 2rpx;
+	border: 1rpx dotted #007AFF;
+	font-size:30rpx!important;
+	margin-left: 10rpx;
+	width: 500rpx; /*后期根据计算去修改*/
+}
+
+
+
