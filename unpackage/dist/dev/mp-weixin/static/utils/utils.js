@@ -117,7 +117,69 @@ class Query  {
 		})
 	}
 	
+	//根据用户的id对t_user_project_role表进行查询
+	findUserProjectRoleByUserId(userId){
+		return new Promise((resolve,reject)=>{
+			uni.request({
+				url:userPojectRoleQuery, 
+				data:{
+					userId:userId
+				},
+				method:"POST",
+				dataType:'json',
+				success:(res)=>{
+					resolve(res.data)
+				},
+				fail:(error)=>{
+					reject(error)
+				}
+			})
+		})
+	}
+	
+	//通过项目的projectId去查询t_user_project_role
+	findUserProjectRoleByProjectId(projectId){
+		return new Promise((resolve,reject)=>{
+			uni.request({
+				url:userPojectRoleQuery,
+				data:{
+					projectId:projectId
+				},
+				method:"POST",
+				dataType:'json',
+				success:(res)=>{
+					resolve(res.data)
+				},
+				fail:(Error)=>{
+					reject(Error)
+				}
+			})
+		})
+	}
+	
+	//不用根据任何条件，直接查询所有的t_user_project_role中的所有的数据
+	findAllUserProjectRole(){
+		return new Promise((resolve,reject)=>{
+			uni.request({
+				url:userPojectRoleQuery,
+				data:{
+					userId:"",
+					roleId:"",
+					projectId:""
+				},
+				dataType:'json',
+				success:(data)=>{
+				   resolve(res.data)
+				},
+				fail:(error)=>{
+					reject(error)
+				}
+			})
+		})
+	}
 }
+
+
 module.exports = {
 	  Login:Login,
 	  Query:Query

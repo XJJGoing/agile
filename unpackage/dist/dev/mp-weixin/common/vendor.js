@@ -41,6 +41,23 @@ createPage(_addSprint.default);
 
 /***/ }),
 
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FaddTask%2FaddTask\"}":
+/*!******************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2FaddTask%2FaddTask"} ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _addTask = _interopRequireDefault(__webpack_require__(/*! ./pages/addTask/addTask.vue */ "../../../../../个人信息/agile/pages/addTask/addTask.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_addTask.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
 /***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fadmin%2Fadmin\"}":
 /*!**************************************************************!*\
   !*** F:/个人信息/agile/main.js?{"page":"pages%2Fadmin%2Fadmin"} ***!
@@ -71,6 +88,23 @@ createPage(_admin.default);
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
 var _apply = _interopRequireDefault(__webpack_require__(/*! ./pages/apply/apply.vue */ "../../../../../个人信息/agile/pages/apply/apply.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_apply.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FchangeUserRole%2FchangeUserRole\"}":
+/*!********************************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2FchangeUserRole%2FchangeUserRole"} ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _changeUserRole = _interopRequireDefault(__webpack_require__(/*! ./pages/changeUserRole/changeUserRole.vue */ "../../../../../个人信息/agile/pages/changeUserRole/changeUserRole.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_changeUserRole.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
@@ -288,7 +322,7 @@ var register = "http://120.79.49.245:7377/user/registerByWeChat";
 //查找该用户
 var queryUser = "http://120.79.49.245:7377/user/query";
 
-//查找用户权限项目关系
+//查找用户权限项目关系，可以根据userId、roleId、projectId单独和两两和三去查
 var userPojectRoleQuery = "http://120.79.49.245:7377/userProjectRole/query";
 
 //查找项目，库查找所有的项目，也可以单个查询
@@ -306,6 +340,20 @@ var commnetQuery = "http://120.79.49.245:7377/comment/add";
 //增加冲刺的信息
 var sprintAdd = "http://120.79.49.245:7377/sprint/add";
 
+//进行项目的更新（可以单个，也可以多个）
+var projectUpdate = "http://120.79.49.245:7377/project/updateBatch";
+
+//获取所有权限
+var getAllRole = "http://120.79.49.245:7377/other/getAllRole";
+
+//改变某用户的权限
+var updateUserProjectRole = "http://120.79.49.245:7377/userProjectRole/updateBatch";
+
+//获取所有专业
+var getAllDepartment = "http://120.79.49.245:7377/other/getAllDepartment";
+
+//获取申请记录
+var roleApplyQuery = "http://120.79.49.245:7377/roleApply/query";
 
 module.exports = {
   register: register,
@@ -315,7 +363,12 @@ module.exports = {
   commnetQuery: commnetQuery,
   userPojectRoleQuery: userPojectRoleQuery,
   roleApplyAdd: roleApplyAdd,
-  sprintAdd: sprintAdd };
+  sprintAdd: sprintAdd,
+  projectUpdate: projectUpdate,
+  getAllRole: getAllRole,
+  updateUserProjectRole: updateUserProjectRole,
+  getAllDepartment: getAllDepartment,
+  roleApplyQuery: roleApplyQuery };
 
 /***/ }),
 
@@ -470,7 +523,69 @@ var Query = /*#__PURE__*/function () {
           } });
 
       });
+    }
+
+    //根据用户的id对t_user_project_role表进行查询
+  }, { key: "findUserProjectRoleByUserId", value: function findUserProjectRoleByUserId(userId) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.userPojectRoleQuery,
+          data: {
+            userId: userId },
+
+          method: "POST",
+          dataType: 'json',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //通过项目的projectId去查询t_user_project_role
+  }, { key: "findUserProjectRoleByProjectId", value: function findUserProjectRoleByProjectId(projectId) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.userPojectRoleQuery,
+          data: {
+            projectId: projectId },
+
+          method: "POST",
+          dataType: 'json',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(Error) {
+            reject(Error);
+          } });
+
+      });
+    }
+
+    //不用根据任何条件，直接查询所有的t_user_project_role中的所有的数据
+  }, { key: "findAllUserProjectRole", value: function findAllUserProjectRole() {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.userPojectRoleQuery,
+          data: {
+            userId: "",
+            roleId: "",
+            projectId: "" },
+
+          dataType: 'json',
+          success: function success(data) {
+            resolve(res.data);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
     } }]);return Query;}();
+
 
 
 module.exports = {

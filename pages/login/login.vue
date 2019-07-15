@@ -73,28 +73,19 @@
 					   	 key:'userInfo',
 						 data:data.data,
 						 success:()=>{
-						   uni.getStorage({
-						   	key:'userPorjectRole',
-						   	success:(res)=>{
-						   		uni.redirectTo({
-						   			url:'../index/index'
-						   	   })
-						   	},
-						   	fail:(Error)=>{
-								uni.redirectTo({ 
-									url:'../apply/apply'
-								})
-						   	 }
-						   })			 
-						 }
-					   })	     
-					 })
-					   
-					 // .then(data=>{   //设置项目的权限项目用户信息
-						//  console.log("返回来的用户的项目信息",data)
-						//  uni.setStorage('userProjectRole',data)
-						//  uni.hideLoading();
-					 // })
+							 uni.redirectTo({
+							 	url:'../apply/apply'
+							 })
+						 },
+						 fail:()=> {
+						   	uni.showToast({
+						   		title:"网络连接错误",
+								duration:1000,
+								icon:"loading"
+						   	})
+			              }
+					    })		
+					})	     
 				   .catch(error=>{
 				   	  console.log(error)
 				   })	

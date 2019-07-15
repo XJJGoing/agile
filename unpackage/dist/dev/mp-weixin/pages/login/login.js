@@ -173,29 +173,20 @@ var login = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../
               key: 'userInfo',
               data: data.data,
               success: function success() {
-                uni.getStorage({
-                  key: 'userPorjectRole',
-                  success: function success(res) {
-                    uni.redirectTo({
-                      url: '../index/index' });
+                uni.redirectTo({
+                  url: '../apply/apply' });
 
-                  },
-                  fail: function fail(Error) {
-                    uni.redirectTo({
-                      url: '../apply/apply' });
-
-                  } });
+              },
+              fail: function fail() {
+                uni.showToast({
+                  title: "网络连接错误",
+                  duration: 1000,
+                  icon: "loading" });
 
               } });
 
-          })
-
-          // .then(data=>{   //设置项目的权限项目用户信息
-          //  console.log("返回来的用户的项目信息",data)
-          //  uni.setStorage('userProjectRole',data)
-          //  uni.hideLoading();
-          // })
-          .catch(function (error) {
+          }).
+          catch(function (error) {
             console.log(error);
           });
         } });

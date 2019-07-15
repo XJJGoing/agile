@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 4,
+			"current": 3,
 			"list": [
 				{
 					"id": 0,
@@ -50,22 +50,15 @@
 				},
 				{
 					"id": -1,
-					"name": "comment",
-					"pathName": "pages/comment/comment",
+					"name": "admin",
+					"pathName": "pages/admin/admin",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "index",
-					"pathName": "pages/index/index",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "addSprint",
-					"pathName": "pages/addSprint/addSprint",
+					"name": "changeUserRole",
+					"pathName": "pages/changeUserRole/changeUserRole",
 					"scene": null
 				}
 			]

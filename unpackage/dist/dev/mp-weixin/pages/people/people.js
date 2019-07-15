@@ -98,7 +98,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var icard = function icard() {return __webpack_require__.e(/*! import() | static/dist/card/index */ "common/vendor").then(__webpack_require__.t.bind(null, /*! ../../static/dist/card/index.js */ "../../../../../个人信息/agile/static/dist/card/index.js", 7));};
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -131,29 +131,54 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
+var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var icard = function icard() {return __webpack_require__.e(/*! import() | static/dist/card/index */ "common/vendor").then(__webpack_require__.t.bind(null, /*! ../../static/dist/card/index.js */ "../../../../../个人信息/agile/static/dist/card/index.js", 7));};
 var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;
+var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;
+var Query = new query();
 var Login = new login();
+
 var _this;var _default =
 {
   components: { uniCard: uniCard, icard: icard },
   data: function data() {
     return {
       userInfo: {},
-      userProjectRole: {} };
-
+      roleId: "",
+      isRoot: "", //特别设置的超级权限用户.
+      roleName: "", //权限对应的名称
+      allRole: [] //存放获取到的所有的专业
+    };
   },
 
-  //这个只是暂时monn
+  // //进行登录的更新
   onShow: function onShow() {
     _this = this;
-    uni.getStorage({
-      key: 'userInfo',
+    wx.getStorage({
+      key: "userInfo",
       success: function success(res) {
-        console.log(res.data);
-        _this.userInfo = res.data;
-        console.log("全局变量userInfo", _this.userInfo);
+        var id = {
+          id: res.data.id };
+
+        Query.findUser(id).
+        then(function (data) {
+          console.log("返回的用户的信息", data.data);
+          _this.userInfo = data.data;
+          var isRoot = data.data.isRoot;
+          if (isRoot) {
+            _this.roleId = 0;
+            _this.roleName = "超级用户";
+          } else {
+            uni.getStorage({
+              key: "nowInProject",
+              success: function success(res) {
+                console.log("设置普通的权限", res.data.roleId);
+                _this.roleId = res.data.roleId;
+                //获取对应权限用户权限的名字。
+                _this.getRoleName();
+              } });
+
+          }
+        });
       },
       fail: function fail() {
         uni.redirectTo({
@@ -163,34 +188,45 @@ var _this;var _default =
 
   },
 
-  // //进行登录的更新
-  // onShow(){
-  //   _this = this
-  //   wx.getStorage({
-  //   	key:"userInfo",
-  // 	success:(res)=>{
-  // 	   let id = {
-  // 		   id:res.data.id
-  // 	   }
-  // 	   Login.findUser(id)
-  // 	   .then(data=>{
-  // 		   _this.userInfo = data.data
-  // 		  uni.setStorage('userInfo',data.data)
-  // 		  return Login.findUserProjectRole(data.data.id)
-  // 	   })
-  // 	   .then(data=>{
-  // 		   uni.setStorage('userProjectRole',data)
-  // 	   })
-  // 	},
-  // 	fail:()=>{
-  // 	  uni.redirectTo({
-  // 	  	url:'../login/login'
-  // 	  })
-  // 	}
-  //   })
-  // },
-  // 
-  methods: {} };exports.default = _default;
+  methods: {
+    //获取对应权限的名称
+    getRoleName: function getRoleName() {
+      _this = this;
+      uni.request({
+        url: _api.getAllRole,
+        method: 'GET',
+        dataType: 'json' }).
+
+      then(function (data) {
+        //根据查询到的权限的名臣对roleName进行赋值
+        var allRole = data[1].data.data;
+        _this.allRole = allRole;
+        allRole.forEach(function (item, index) {
+          if (item.id === _this.roleId) {
+            _this.roleName = item.name;
+          }
+        });
+      }).
+      catch(function (error) {
+        uni.showToast({
+          icon: "none",
+          duration: 1000,
+          title: "获取失败" });
+
+      });
+    },
+
+    //退出登录
+    logout: function logout() {
+      uni.removeStorage({
+        key: 'userInfo',
+        success: function success() {
+          uni.redirectTo({
+            url: '../login/login' });
+
+        } });
+
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ }),

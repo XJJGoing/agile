@@ -182,7 +182,49 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js"); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -255,31 +297,56 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query(); //引入时间格式处理函数
 var time = __webpack_require__(/*! ../../static/utils/time */ "../../../../../个人信息/agile/static/utils/time.js"); //引入分页的组建-实现分页查询
 var uniPagination = function uniPagination() {return __webpack_require__.e(/*! import() | components/uni-pagination/uni-pagination */ "components/uni-pagination/uni-pagination").then(__webpack_require__.bind(null, /*! ../../components/uni-pagination/uni-pagination.vue */ "../../../../../个人信息/agile/components/uni-pagination/uni-pagination.vue"));};var _this;var _default = { components: { uniPagination: uniPagination }, data: function data() {return { userInfo: {}, //用户的个人信息，
-      userProjectRole: {}, //用户的项目权限的信息
-      nowProjects: [], //实际的项目，存放着项目的信息。
-      projects: [], //非实际的项目，仅用于展示项目1 项目2 项目3 这些东西。
+      nowProjectItems: [], //实际的项目，存放着项目的信息。
       isLookProject: false, //是否显示查看项目列表
       current: 1, //分页查询的当前页面
       pageSize: 10, //分页查询的查询的最大个数
       isLookApply: false, windowWidth: "", //可使用的窗口的宽度
       isApplyProject: false, //展示申请项目的页面
-      lookProject: "", //存放选中要查看的项目
-      trueName: "", why: "", projectName: "" };}, onShow: function onShow() {_this = this;_this.getSystenInfo(); //获取系统信息
-    _this.firstProjectItem(); //获取第一页项目列表
-    uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };console.log(id), Query.findUser(id).then(function (data) {_this.userInfo = data.data.records[0];uni.getStorage({ key: "casualLookProjectId", success: function success(res) {Query.findUserProjectRole(_this.userInfo.id, res.data).then(function (data) {_this.userProjectRole = data.data.records[0];console.log(_this.userProjectRole);if (_this.userProjectRole.roleId != 4 && _this.userProjectRole.projectId) {//判断是否有这个项目的权限以及项目的Id
-                  uni.switchTab({ url: '../index/index' });} else if (_this.userProjectRole.roleId === 4) {uni.clearStorage('casualLookProjectId'); //提交的时候就设置casualProjectId
-                }});}, fail: function fail() {return;} });}).catch(function (error) {uni.showToast({ title: "网络连接错误", icon: 'none', duration: 500 });});}, fail: function fail(error) {uni.redirectTo({ url: '../login/login' });} });}, //检查用户查看项目的时间是否过期查看的项目的时间是否过期或者是否有查看项目的权限
-  methods: { inputName: function inputName(e) {_this = this;_this.trueName = e.detail.value;}, inputProjectName: function inputProjectName(e) {_this = this;_this.projectName = e.detail.value;},
-    inputWhy: function inputWhy(e) {
-      _this = this;
-      _this.why = e.detail.value;
+      lookProject: {}, //存放选中要查看的项目
+      trueName: "", why: "", projectName: "", ableLookProject: [], //可查看的项目
+      chargeProject: [], //负责的项目
+      joinProject: [] //参与的项目
+    };}, // mounted() {
+  // 	_this = this;
+  // 	//如果自己有项目的或者已经可以查看的项目就直接进行跳转
+  // 	uni.getStorage({
+  // 		key:"nowInProject",
+  // 		success:(res)=>{
+  // 			uni.redirectTo({
+  // 				url:'../index/index'
+  // 			})
+  // 		},
+  // 		fail:()=>{
+  // 			 
+  // 		}
+  // 	})
+  // },
+  onShow: function onShow() {_this = this;uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };_this.getSystenInfo(); //获取系统信息
+        _this.firstProjectItem(); //获取第一页项目列表
+        Query.findUser(id).then(function (data) {console.log(data);_this.userInfo = data.data;console.log(_this.userInfo.id);_this.getUserProjectRole(); //查询t_user_role_project中有的用户的项目	
+        }).catch(function (error) {uni.showToast({ title: "网络连接错误", icon: 'none', duration: 500 });});}, fail: function fail(error) {uni.redirectTo({ url: '../login/login' });} });}, //检查用户查看项目的时间是否过期查看的项目的时间是否过期或者是否有查看项目的权限
+  methods: { inputName: function inputName(e) {_this = this;_this.trueName = e.detail.value;}, inputProjectName: function inputProjectName(e) {_this = this;_this.projectName = e.detail.value;}, inputWhy: function inputWhy(e) {_this = this;_this.why = e.detail.value;}, //查询t_role_project_role表中所有用户的字段（userId、projectId、roleId）
+    getUserProjectRole: function getUserProjectRole() {_this = this;Query.findUserProjectRoleByUserId(_this.userInfo.id).then(function (data) {//console.log("查询到的用户权限项目",data)
+        var dataAll = data.data.records;var arry1 = [];var arry2 = [];var arry3 = [];console.log(dataAll);if (dataAll.length != 0) {dataAll.forEach(function (item, index) {if (item.roleId === 1) {arry1.push(item);} else if (item.roleId === 2) {arry2.push(item);} else if (item.roleId === 3) {arry3.push(item);}});}_this.chargeProject = arry1;_this.joinProject = arry2;_this.ableLookProject = arry3;}).catch(function (error) {uni.showToast({ title: "获取项目类表失败", icon: "none", duration: 1000 });});
+
     },
 
-    //进行项目的查找，查找到权限为1 或者2 或者3 的就直接跳转到相应的项目不进行casualProjectId的设置,申请查看项目的时候再填写表，
-    //填写申请，并且将信息保存在index页面里面，里面放置可以查看的项目、切换项目然后进行更新
+    //选择项目并进入选中项目，设置nowInProject
+    enterProject: function enterProject(e) {
+      var nowChooseProject = JSON.parse(e.target.id);
+      console.log(nowChooseProject);
+      uni.setStorage({
+        key: "nowInProject",
+        data: nowChooseProject,
+        success: function success() {
+          uni.switchTab({
+            url: '../index/index' });
 
-    getProjectRole: function getProjectRole() {
-      _this = this;
+        },
+        fail: function fail(error) {
+          console.log("请重新选择");
+        } });
 
     },
 
@@ -314,11 +381,8 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
 
       then(function (data) {
         console.log(data);
-        var nowProjects = data[1].data.data.records;
-        for (var i = 0; i < data[1].data.data.records.length; i++) {
-          _this.projects[i] = "项目" + (i + 1);
-        }
-        _this.nowProjects = nowProjects;
+        var nowProjectItems = data[1].data.data.records;
+        _this.nowProjectItems = nowProjectItems;
 
         // console.log("第一次查询的实际的project2",_this.nowProjects)
         // console.log("第一次查询的project",_this.projects)
@@ -377,8 +441,8 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
     //选择申请查看的按钮
     chooseProject: function chooseProject(e) {
       _this = this;
-      var chooseId = e.target.id;
-      _this.lookProject = _this.nowProjects[chooseId];
+      var chooseProjectItem = JSON.parse(e.target.id);
+      _this.lookProject = chooseProjectItem;
 
       if (_this.lookProject != "") {
         _this.isLookProject = !_this.isLookProject;
@@ -400,41 +464,42 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
       var id = e.target.id; //1 表示申请查看项目  2表示申请项目
       var applyTime = time.formatDate(new Date()).toString();
       //console.log("我的申请的时间",applyTime)
+      var data = {
+        projectId: _this.lookProject.id,
+        userId: _this.userInfo.id,
+        trueName: _this.trueName,
+        content: _this.why,
+        effectiveTime: applyTime };
+
+      console.log("提交的数据", data);
       if (id === "1" && _this.lookProject && _this.trueName && _this.why) {//申请查看的项目
-        //临时存储申请查看的项目的projectId
-        uni.setStorage({
-          key: 'casualLookProjectId',
-          data: _this.lookProject.id,
+        uni.showLoading({
+          title: "提交中",
           success: function success() {
-            uni.showLoading({
-              title: "提交中",
-              success: function success() {
-                uni.request({
-                  url: _api.roleApplyAdd,
-                  method: "POST",
-                  data: {
-                    projectId: _this.lookProject.id,
-                    userId: _this.userInfo.id,
-                    trueName: _this.trueName,
-                    content: _this.why,
-                    effectiveTime: applyTime },
+            uni.request({
+              url: _api.roleApplyAdd,
+              method: "POST",
+              data: {
+                projectId: _this.lookProject.id,
+                userId: _this.userInfo.id,
+                trueName: _this.trueName,
+                content: _this.why,
+                effectiveTime: applyTime },
 
-                  dataType: 'json' }).
+              dataType: 'json' }).
 
-                then(function (data) {
-                  console.log(data);
-                }).
-                catch(function (error) {
-                  uni.showToast({
-                    title: "提交失败",
-                    duration: 500,
-                    icon: 'none' });
+            then(function (data) {
+              uni.hideLoading();
+              console.log(data);
+            }).
+            catch(function (error) {
+              uni.showToast({
+                title: "提交失败",
+                duration: 500,
+                icon: 'none' });
 
-                });
-              } });
-
+            });
           } });
-
 
       } else if (id === "2" && _this.projectName && _this.why) {//申请项目,这里社
         // uni.request({
@@ -497,6 +562,45 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.nowProjectItems.map(function(item, index) {
+    var g0 = JSON.stringify(item)
+    return {
+      $orig: _vm.__get_orig(item),
+      g0: g0
+    }
+  })
+  var l1 = _vm.ableLookProject.map(function(item, index) {
+    var g1 = JSON.stringify(item)
+    return {
+      $orig: _vm.__get_orig(item),
+      g1: g1
+    }
+  })
+  var l2 = _vm.chargeProject.map(function(item, index) {
+    var g2 = JSON.stringify(item)
+    return {
+      $orig: _vm.__get_orig(item),
+      g2: g2
+    }
+  })
+  var l3 = _vm.joinProject.map(function(item, index) {
+    var g3 = JSON.stringify(item)
+    return {
+      $orig: _vm.__get_orig(item),
+      g3: g3
+    }
+  })
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0,
+        l1: l1,
+        l2: l2,
+        l3: l3
+      }
+    }
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

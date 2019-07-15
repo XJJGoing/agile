@@ -98,20 +98,41 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
 //
 //
-var _default =
+
+var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;
+var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;
+var Login = new login();
+var Query = new query();
+var _this;var _default =
 {
   data: function data() {
-    return {};
+    return {
+      userInfo: "" };
 
 
   },
+  onShow: function onShow() {
+    uni.getStorage({
+      key: "userInfo",
+      success: function success(res) {
+        var id = {
+          id: res.data.id };
+
+        Query.findUser(id).
+        then(function (data) {
+          _this.userInfo = data.data.records[0];
+        });
+      } });
+
+  },
   methods: {} };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ }),
 

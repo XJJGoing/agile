@@ -132,6 +132,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js"); //
 //
 //
@@ -162,10 +164,10 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 //
 //
 //
-var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var Login = new login();var _this;var _default = { data: function data() {return { userInfo: "", nowInProjectId: "", nowSprint: [], //获取项目
-      sprintOrder: "", //冲刺的序号,在数据库中即为sprintName
+var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Query = new query();var Login = new login();var _this;var _default = { data: function data() {return { userInfo: "", nowInProjectId: "", //当前所在项目的projectId
+      nowHadSprint: [], sprintName: "", //冲刺的序号.
       sprintTarget: "" //冲刺的目标
-    };}, onShow: function onShow() {_this = this;uni.getStorage({ key: "userInfo", success: function success(res) {console.log(res.data);var id = { id: res.data.id };return Login.findUser(id).then(function (data) {console.log("从数据库中返回的用户的信息", data);_this.userInfo = data.data.records[0];_this.getHadProjectSprint();});}, fail: function fail(error) {uni.redirectTo({ url: '../login/login' });} });
+    };}, onShow: function onShow() {_this = this;uni.getStorage({ key: "userInfo", success: function success(res) {console.log(res.data);var id = { id: res.data.id };return Query.findUser(id).then(function (data) {console.log("从数据库中返回的用户的信息", data);_this.userInfo = data.data;_this.getHadProjectSprint();});}, fail: function fail(error) {uni.redirectTo({ url: '../login/login' });} });
   },
 
   methods: {
@@ -183,22 +185,26 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     // },
 
     addSprintOrder: function addSprintOrder(e) {
-      this.sprintOrder = e.detail.value;
+      this.sprintName = e.detail.value;
     },
     addSprintTarget: function addSprintTarget(e) {
       this.sprintTarget = e.detail.value;
     },
+
     //查询本项目已经有的冲刺。
     getHadProjectSprint: function getHadProjectSprint() {//拿到当前所在的项目的id，在storage中存放着  NowInProjectId
       uni.getStorage({
-        key: "nowInProjectId",
+        key: "nowInProject",
         success: function success(res) {
-
-          _this.nowInProjectId = res.data;
+          _this.nowInProjectId = res.data.projectId;
           console.log("进来模拟数据");
 
-          //这里对数据进行模拟：    //这里要实现的就是对roleId=1 指定projectId  userId  进行查询
-          _this.nowSprint = [{
+          //根据projectId去查找
+
+
+          //这里对数据进行模拟：    
+
+          _this.nowHadSprint = [{
             id: 2,
             sprintName: "模拟名称2",
             sprintTarget: "冲呀2" },
@@ -213,16 +219,23 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
             sprintTarget: "冲呀3" }];
 
         },
+
         fail: function fail(error) {
-          console.log(error);
+          uni.showToast({
+            title: "获取失败",
+            duration: 1000,
+            icon: 'loading' });
+
         } });
 
     },
+
+
     addSprint: function addSprint() {
       _this = this;
-      console.log("提交的数据", _this.sprintOrder, _this.sprintTarget);
+      console.log("提交的数据", _this.sprintName, _this.sprintTarget);
 
-      if (_this.sprintOrder && _this.sprintTarget) {
+      if (_this.sprintName && _this.sprintTarget) {
         uni.showLoading({
           title: "提交中",
           success: function success() {
@@ -231,7 +244,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
               method: "POST",
               data: {
                 projectId: _this.nowInProjectId,
-                sprintName: _this.sprintOrder,
+                sprintName: _this.sprintName,
                 sprintTarget: _this.sprintTarget },
 
               dataType: 'json' }).
@@ -244,7 +257,17 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
                 title: "添加成功",
                 duration: 1000 });
 
-              _this.getHadProjectSprint(); //再次刷新调用这个界面
+              //_this.getHadProjectSprint()  //再次刷新调用这个获取该项目所有的冲刺
+
+              //暂时的处理
+              var item = {
+                id: _this.nowHadSprint.length + 1,
+                projectId: _this.nowInProjectId,
+                sprintName: _this.sprintName,
+                sprintTarget: _this.sprintTarget };
+
+              _this.nowHadSprint.push(item);
+
             }).
             catch(function (error) {
               console.log(error);

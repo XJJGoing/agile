@@ -2,7 +2,7 @@
 	<scroll-view class="all" scroll-y="true">
 		
 		<view class="search_project">
-			<i-button @click="bindChange()" i-class="ibutton">查看项目</i-button>
+			<i-button @click="bindChange()" i-class="ibutton">申请查看</i-button>
 			
 			<view class="ipage" v-if="isLookProject">
 					<uni-pagination 
@@ -13,10 +13,10 @@
 					>
 					</uni-pagination>
 					<view class="detail">
-						<view v-for="(item,index) in projects" >
-						   <button  @click="chooseProject" class="detail_project" :id="index" >
+						<view v-for="(item,index) in nowProjectItems" >
+						   <button  @click="chooseProject" class="detail_project" :id="JSON.stringify(item)" >
 								<view>P{{index}}</view>
-								<view>{{item}}</view>
+								<view>项目{{index}}</view>
 						   </button>								
 						</view>
 					</view>
@@ -41,6 +41,7 @@
 			</block>
 			
 		    <i-button @click="applyProject()" i-class="ibutton">申请项目</i-button>
+			
 			<block v-if="isApplyProject">
 				<view class="applyList">
 					<view class="appListView1">
@@ -62,8 +63,28 @@
 					<i-button @click='submit' id="2" class="submitApply">提交申请</i-button>
 				</view>
 			</block>
+			
 	    </view>
-		
+		<view class="ableProjects">
+			<view class="titleInfo">可看的项目:</view>
+			<block v-if="ableLookProject">
+				<view v-for="(item,index) in ableLookProject" :key="index" class="myHadProject">
+					<button :id="JSON.stringify(item)" @click="enterProject">A项目{{index+1}}</button>
+				</view>
+			</block>	
+			<view class="titleInfo">负责的项目:</view>
+			<block  v-if="chargeProject">
+				<view v-for="(item,index) in chargeProject" :key="index" class="myHadProject">
+					<button :id="JSON.stringify(item)" @click="enterProject">C项目{{index+1}}</button>
+				</view>	
+			</block>	
+			<view class="titleInfo">参与的项目:</view>
+			<block v-if="joinProject">
+				<view v-for="(item,index) in joinProject" :key="index" class="myHadProject">
+					<button :id="JSON.stringify(item)" @click="enterProject" >J项目{{index+1}}</button>
+				</view>	
+		    </block>
+		</view>
 	</scroll-view>
 </template>
 
@@ -90,58 +111,58 @@
 		data() {
 			return {
 				userInfo:{},              //用户的个人信息，
-				userProjectRole:{},       //用户的项目权限的信息
-				nowProjects:[],           //实际的项目，存放着项目的信息。
-				projects:[],              //非实际的项目，仅用于展示项目1 项目2 项目3 这些东西。
+				nowProjectItems:[],           //实际的项目，存放着项目的信息。
+			
 				isLookProject:false,     //是否显示查看项目列表
 				current:1,               //分页查询的当前页面
 				pageSize:10,             //分页查询的查询的最大个数
 				isLookApply:false,
 				windowWidth:"" ,          //可使用的窗口的宽度
 				isApplyProject:false,    //展示申请项目的页面
-				lookProject:"",          //存放选中要查看的项目
+				lookProject:{},          //存放选中要查看的项目
 				
 				trueName:"",
 				why:"",
-				projectName:""
+				projectName:"",
+				
+				ableLookProject:[],    //可查看的项目
+				chargeProject:[],     //负责的项目
+				joinProject:[],        //参与的项目
 			}
 		},
 		
+		// mounted() {
+		// 	_this = this;
+		// 	//如果自己有项目的或者已经可以查看的项目就直接进行跳转
+		// 	uni.getStorage({
+		// 		key:"nowInProject",
+		// 		success:(res)=>{
+		// 			uni.redirectTo({
+		// 				url:'../index/index'
+		// 			})
+		// 		},
+		// 		fail:()=>{
+		// 			 
+		// 		}
+		// 	})
+		// },
 		
 		onShow() {
 			_this = this;
-			_this.getSystenInfo();  //获取系统信息
-			_this.firstProjectItem(); //获取第一页项目列表
 			uni.getStorage({
 				key:"userInfo",
-				success:(res)=>{
+				success:(res)=>{ 
 				   let id = {
 					   id:res.data.id
 				   };
-				   console.log(id),
+				   _this.getSystenInfo();  //获取系统信息
+				   _this.firstProjectItem(); //获取第一页项目列表
 				   Query.findUser(id)
 				   .then(data=>{
-					  _this.userInfo = data.data.records[0];
-					  uni.getStorage({
-					  	key:"casualLookProjectId",  
-						success:(res)=>{
-						   Query.findUserProjectRole(_this.userInfo.id,res.data)
-						   .then(data=>{  
-						   	_this.userProjectRole = data.data.records[0];
-							console.log(_this.userProjectRole)
-						   	if(_this.userProjectRole.roleId!=4&&_this.userProjectRole.projectId){     //判断是否有这个项目的权限以及项目的Id
-						   		uni.switchTab({
-						   			url:'../index/index'
-						   	 })
-						    }else if(_this.userProjectRole.roleId===4){
-						   	    uni.clearStorage('casualLookProjectId')           //提交的时候就设置casualProjectId
-						   	}
-						  })
-						},
-						fail:()=>{
-							return 
-						}
-					  })
+					   console.log(data);
+					  _this.userInfo = data.data;
+					  console.log(_this.userInfo.id);
+					  _this.getUserProjectRole();     //查询t_user_role_project中有的用户的项目	
 				   })
 				   .catch(error=>{
 					   uni.showToast({ 
@@ -175,12 +196,58 @@
 				_this.why = e.detail.value;
 			},
 			
-			//进行项目的查找，查找到权限为1 或者2 或者3 的就直接跳转到相应的项目不进行casualProjectId的设置,申请查看项目的时候再填写表，
-			//填写申请，并且将信息保存在index页面里面，里面放置可以查看的项目、切换项目然后进行更新
-			
-			getProjectRole:function(){
-				_this = this;
+	        //查询t_role_project_role表中所有用户的字段（userId、projectId、roleId）
+			getUserProjectRole:function(){
+				_this = this;			
+				Query.findUserProjectRoleByUserId(_this.userInfo.id)
+				.then(data=>{
+					//console.log("查询到的用户权限项目",data)
+					let dataAll = data.data.records;
+					let arry1 = [];
+					let arry2 = [];
+					let arry3 = [];
+					console.log(dataAll);
+					if(dataAll.length!=0){
+					  dataAll.forEach((item,index)=>{
+					   if(item.roleId===1){
+					  	   arry1.push(item)
+					   }else if(item.roleId===2){
+					       arry2.push(item) 
+					   }else if(item.roleId===3){
+					       arry3.push(item)
+					   }
+					  });	
+					}
+					_this.chargeProject = arry1;
+					_this.joinProject = arry2;
+					_this.ableLookProject = arry3;	
+				})
+				.catch(error=>{
+					uni.showToast({
+						title:"获取项目类表失败",
+						icon:"none",
+						duration:1000
+					})
+				})
 				
+			},
+			
+			//选择项目并进入选中项目，设置nowInProject
+			enterProject:function(e){
+				let nowChooseProject = JSON.parse(e.target.id)
+				console.log(nowChooseProject);
+				uni.setStorage({
+					key:"nowInProject",
+					data:nowChooseProject,
+					success:()=>{
+						uni.switchTab({
+							url:'../index/index'
+						})
+					},
+					fail:(error)=>{
+						console.log("请重新选择")
+					}
+				})
 			},
 			
 			getSystenInfo:function(){
@@ -214,11 +281,8 @@
 			 	})
 			 	.then(data=>{
 			 		console.log(data)
-			 		let nowProjects = data[1].data.data.records;
-			 		for(let i = 0;i<data[1].data.data.records.length;i++){
-			 		    _this.projects[i] = "项目"+(i+1);
-			 		}
-			 	    _this.nowProjects = nowProjects;
+			 		let nowProjectItems = data[1].data.data.records;
+			 	    _this.nowProjectItems = nowProjectItems;
 			 		
 			 		 // console.log("第一次查询的实际的project2",_this.nowProjects)
 			 		 // console.log("第一次查询的project",_this.projects)
@@ -277,8 +341,8 @@
 			//选择申请查看的按钮
 			chooseProject:function(e){
 				_this = this;
-				let chooseId = e.target.id;
-				_this.lookProject = _this.nowProjects[chooseId];
+				let chooseProjectItem = JSON.parse(e.target.id);
+				_this.lookProject = chooseProjectItem;
 				
 				if(_this.lookProject!=""){
 					_this.isLookProject = !_this.isLookProject;
@@ -297,15 +361,18 @@
 			//提交申请的项目的函数 
 			submitApply:function(e){
 				_this = this;
-				let id = e.target.id              //1 表示申请查看项目  2表示申请项目
+				let id = e.target.id;            //1 表示申请查看项目  2表示申请项目
 				let applyTime = time.formatDate(new Date()).toString();  
 				//console.log("我的申请的时间",applyTime)
+				let data={
+					projectId:_this.lookProject.id,
+					userId:_this.userInfo.id,
+					trueName:_this.trueName,
+					content:_this.why,
+					effectiveTime:applyTime
+				};
+				console.log("提交的数据",data)
 				if(id==="1"&&_this.lookProject&&_this.trueName&&_this.why){  //申请查看的项目
-				   //临时存储申请查看的项目的projectId
-				   uni.setStorage({
-					 key:'casualLookProjectId',
-					 data:_this.lookProject.id,
-					 success:()=>{
 					   uni.showLoading({
 							   title:"提交中",
 							   success:()=>{
@@ -320,22 +387,20 @@
 										effectiveTime:applyTime
 									},
 									dataType:'json'
-							 })
-							 .then(data=>{
-								console.log(data)
-							 })
-							 .catch(error=>{
-								uni.showToast({
-								title:"提交失败",
-								duration:500,
-								icon:'none'
-							})
-						   })
-						 }
-					   })	
-					  }	  
-				    })
-				   
+								 })
+								 .then(data=>{
+									 uni.hideLoading();
+									 console.log(data)
+								 })
+								 .catch(error=>{
+									uni.showToast({
+									title:"提交失败",
+									duration:500,
+									icon:'none'
+								   })	
+					             })
+							}
+				         })	   
 				}else if(id==="2"&&_this.projectName&&_this.why){      //申请项目,这里社
 					// uni.request({
 					// 	url:tt                 ,//申请项目的url
@@ -382,7 +447,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top:160upx;
+	margin-top:100upx;
 }
 ::-webkit-scrollbar{
 	width: 4upx;
@@ -469,4 +534,29 @@
 	border-radius: 2%;
 }
 
+
+.ableProjects{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 100%;
+}
+.titleInfo{
+	height: 50upx;
+	background-color: #007AFF;
+	margin-top: 10upx;
+	width: 100%;
+}
+
+.myHadProject{
+	height: 50upx;
+	width: 90%;
+	font-size: 30upx;
+}
+.myHadProject button{
+	height: 50upx;
+	line-height: 50upx;
+	text-align: left;
+	font-size:25upx ;
+}
 </style>

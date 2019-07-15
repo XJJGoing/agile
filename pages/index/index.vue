@@ -4,8 +4,8 @@
 	>
 	
 	<view class="chooseItem">
-		<picker @change="bindPickerMyProject" :value="index1" :range="myProject">切换首页项目</picker>
-		<picker @change="bindPickerLookProject" :value="index2" :range="myLookProject">可查看的项目</picker>
+		<picker @change="bindPickerMyProject" :value="index" :range="myProject">切换首页项目</picker>
+		<picker @change="bindPickerLookProject" :value="index" :range="myLookProject">可查看的项目</picker>
 	</view>
 	
 	<view class="title">项目信息</view>
@@ -16,39 +16,40 @@
 		 </view>
 		 <view>
 			 <text>项目目标:</text>
-			 <input placeholder="填入项目的目标" :value="nowProject.projectTarget" @input="ftarget" :disabled="!isDisplay"></input>
+			 <input placeholder="填入项目的目标" :value="nowProject.projectTarget" @input="ftarget" :disabled="isChooseInput" ></input>
 		 </view>
 		 <view>
 			 <text>交付时间:</text>
-			 <input placeholder="填入项目交付的时间" :value="nowProject.projectFinishTime"  @input="ffinishTime" :disabled="!isDisplay"></input>
+			 <input placeholder="填入项目交付的时间" :value="nowProject.projectFinishTime"  @input="ffinishTime" :disabled="isChooseInput"></input>
 		 </view>
 		 <view>
 			 <text>项目成果:</text>
-			 <input placeholder="填入项目的成果" :value="nowProject.projectResult" @input="fresult" :disabled="!isDisplay"></input>
+			 <input placeholder="填入项目的成果" :value="nowProject.projectResult" @input="fresult" :disabled="isChooseInput"></input>
 		 </view>
 		 <view>
 			 <text>项目管理:</text>
-			 <input placeholder="填入项目的管理" :value="nowProject.projectManagement" @input="fmanagement" :disabled="!isDisplay"></input>
+			 <input placeholder="填入项目的管理" :value="nowProject.projectManagement" @input="fmanagement" :disabled="isChooseInput"></input>
 		 </view>
 		 <view>
 			 <text>冲刺个数:</text>
-			 <input placeholder="填入项目冲刺的个数" :value="nowProject.projectSprintNum" @input="fprintNum" :disabled="!isDisplay"></input>
+			 <input placeholder="填入项目冲刺的个数" :value="nowProject.projectSprintNum" @input="fprintNum" :disabled="isChooseInput"></input>
 		 </view>
 		 <view>
 			 <text>项目成员:</text>
-			 <input placeholder="填入项目的成员" :value="nowProject.projectPeople" @input="fpeople" :disabled="!isDisplay"></input>
+			 <input placeholder="填入项目的成员" :value="nowProject.projectPeople" @input="fpeople" :disabled="isChooseInput"></input>
 		 </view>
 	</view>
 	
-	<block v-if="roleId==1">
+	<block v-if="roleId===1">
 		 <view class="footer">
-			 <block v-if="roleId==1&&isDisplay">
-			   <button type="primary" @click="submit">提交</button>
+			 <block v-if="roleId===1&&isDisplay">
+			   <button type="primary" @click="saveProject">提交</button>
 			 </block>
-			 <button type="primary">添加项目冲刺</button>
+			 <button type="primary" @click="addSprint">添加项目冲刺</button>
 		 </view>
 	 </block>
 	 
+	 <button type="primary" @click="returnApply">申请查看其他项目</button>
 	</scroll-view>
 </template>
 
@@ -58,28 +59,29 @@
 	const Query = new query();
 	const Login = new login();
 	
-	import {projectQuery,userPojectRoleQuery} from '../../static/utils/api.js'
+	import {projectQuery,userPojectRoleQuery,projectUpdate} from '../../static/utils/api.js'
 	var _this;
 	export default {
 		data() {
 			return {
 				userInfo:{},
-				projectId:1,          //假数据根据 查看的casual去查找
+				projectId:"",                 //假数据 
                 nowProject:{},				  //显示的项目
-				isDisplay:true,             //是否显示按钮
+				isDisplay:true,              //是否显示按钮
+				isChooseInput:true,          //是否可以输入
 				roleId:"",
 				
 				target:"",
 				finishTime:"",
-				result:"",
+				result:"", 
 				management:"",
 				sprintNum:"",
 				people:"",
-	                                  
-				myProject:[],       //切换的项目,权限为 1 2的项目
-				index1:"",
-				myLookProject:[]   ,//切换项目，项目的权限为可查看的。	
-				index2:"",
+	            
+				allUserProjects:[],   //从t_user_role_project这张表中拿到的所有的权限为1234的项目					  
+				myProject:[],       //切换的项目,权限为 1 2的项目的id
+				myLookProject:[]   ,//切换项目，项目的权限为可查看的id	
+			    
 				
 			}
 		},
@@ -95,14 +97,14 @@
 				   }
 				   Query.findUser(id)
 				   .then(data=>{
-					 _this.userInfo = data.data.records[0];
+					 _this.userInfo = data.data;
 					 uni.getStorage({
-						 key:"casualLookProjectId",
+						 key:"nowInProject",
 						 success:(res)=>{
-							 _this.projectId = res.data;
-							 _this.getProject();                 //或者当前项目的信息
-							 _this.getUserProjectRole();        //所有的有关此用户的项目（1234权限）从用户权限关系表
-
+							 _this.projectId = res.data.id;
+							 _this.roleId = res.data.roleId;
+							 _this.getProject();                 //获得当前项目的信息
+							 _this.getUserProjectRole();        //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
 						 },
 						 fail:()=>{
 						    uni.redirectTo({
@@ -124,35 +126,7 @@
 		},
 		
 		
-		//授权登录暂时使用
-		// mounted(){
-		// 	uni.getStorage({
-		// 		key:"userInfo",
-		// 		success:(res)=>{
-		// 		  _this.userInfo = res.data;
-		// 		  uni.getStorage({
-		// 		  	key:'roleId',
-		// 			success:(res)=>{
-		// 				console.log(res.data)
-		// 				_this.roleId = res.data
-		// 			},
-		// 			fail:()=>{
-		// 				_this.roleId = ""
-		// 			}
-		// 		  })
-		// 		},
-		// 		fail:(error)=>{
-		// 			console.log(error)
-		// 			uni.redirectTo({
-		// 				  url:'../login/login'
-		// 			})
-		// 		}
-		// 	})
-  //       },
-		
-		onLoad() {
-			
-		},
+	
 		
 		methods: {
 			//填写信息的函数
@@ -168,51 +142,74 @@
 			fmanagement:function(e){
 				this.management = e.detail.value
 			},
-			fsprintNum:function(e){
+			fspintNum:function(e){
 				this.sprintNum = e.detail.value
 			},
 			fpeople:function(e){
 				this.people = e.detail.value
 			},
+			
+			//切换12权限项目
 			bindPickerMyProject:function(e){
+				_this = this;
 				let index = e.detail.value;
-				this.index1 = index;
-				this.projectId = this.myProject[index].projectId;
-				
-				//这里进行数据的模拟模拟改变nowProject  
-				this.nowProject = {
-				  projectName:"我是模拟名字",
-				  projectTarget:"我是模拟目标",
-				  projectSprintNum:"我是模拟冲刺",
-				  projectManagement:"我是模拟的项目管理",
-				  projectPeople:"我是模拟的人数",
-				  projectFinishTime:"我是模拟的完成时间",
-				  projectResult:"我是模拟交付结果"
-				}
-				
-				//根据实际的信息再次获取项目的数据
-				//this.getProject();
-				
+				let chooseProjectId = _this.myProject[index];  //选中的项目的id
+				let nowInProject;                              //暂时存放项目权限用户信息.
+				_this.allUserProjects.forEach((item,index)=>{
+					if(item.projectId === chooseProjectId){
+						nowInProject = item;
+					}
+				})
+				uni.setStorage({  //改变nowInProject
+					key:"nowInProject",
+					data:nowInProject,
+					success:()=>{
+					   //改变项目的项目的id和权限,并且重新获取信息.
+					  _this.projectId = nowInProject.projectId;
+					  _this.roleId = nowInProject.roleId;
+					  // console.log(_this.projectId,_this.roleId)
+					  _this.getProject();
+					},
+					fail:()=>{
+						uni.showToast({
+							title:"切换失败",
+							icon:"loading", 
+							duration:1000
+						})
+					}
+				})
 			},
+			
+			//切换3可看项目
 			bindPickerLookProject:function(e){
+				_this = this;
 				let index = e.detail.value;
-				this.index2 = index;
-				this.projectId = this.myLookProject[index].projectId;
-				
-				//进行数据的模拟
-				this.nowProject = {
-				  projectName:"我是模拟名字2",
-				  projectTarget:"我是模拟目标2",
-				  projectSprintNum:"我是模拟冲刺2",
-				  projectManagement:"我是模拟的项目管理2",
-				  projectPeople:"我是模拟的人数2",
-				  projectFinishTime:"我是模拟的完成时间2",
-				  projectResult:"我是模拟交付结果2"
-				}
-				
-				//再次获取项目的信息
-				//this.getProject()
+				let chooseProjectId = _this.myLookProject[index];  //选中的项目的id
+                let nowInProject;                                  //准备将storage中的nowInProject给替换掉.
+				_this.allUserProjects.forEach((item,index)=>{
+					if(item.projectId === chooseProjectId){
+						nowInProject = item
+					}
+				})
+				uni.setStorage({  
+					key:"nowInProject",
+					data:nowInProject,
+					success:()=>{
+					   //改变项目的项目的id和权限,并且重新获取信息.
+					  _this.projectId = nowInProject.projectId;
+					  _this.roleId = nowInProject.roleId; 
+					  _this.getProject();
+					},
+					fail:()=>{
+						uni.showToast({
+							title:"切换失败",
+							icon:"loading",
+							duration:1000
+						})
+					}
+				})
 			},
+			
 			
            //显示查看的项目,并且判断项目的信息为空的时候可以实现填写项目的信息。
 		   getProject:function(){
@@ -221,94 +218,101 @@
 			   	url:projectQuery,
 				method:"POST",
 				data:{
-					projectId:_this.projectId,
+					id:_this.projectId,
 				    pageNum: 0,
                     pageSize: 1,
 				 },
 				 dataType:'json'
 			   })
-			   .then(data=>{                      //这里增加个people
-				   let project = data[1].data.data.records[0];    //模拟增加个people
-				   let projectPeople = "5人";
-				   _this.nowProject = {
-					   ...project,
-					     projectPeople,
-				   };
-				   if(_this.nowProject.projectName&&_this.nowProject.projectTarget&&
-				     _this.nowProject.projectFinishTime&&_this.nowProject.projectResult
-					 &&_this.nowProject.projectManagement&&_this.nowProject.projectSprintNum&&_this.nowProject.projectPeople
+			   .then(data=>{       
+				   let project = data[1].data.data.records[0];  
+				   _this.nowProject = project;
+				   
+				   //判断是否显示按钮和是否可以输入
+				   if(project.projectName&&project.projectTarget&&
+				     project.projectFinishTime&&project.projectResult
+					 &&project.projectManagement&&project.projectSprintNum&&project.projectPeople!=0&&_this.roleId===1
 					 ){
-						 _this.isDisplay = false;
-					  } 
+						 _this.isDisplay = false;               //不为空不显示,输入默认就行了
+						 _this.isChooseInput = true;
+					  }else if(_this.roleId===1){
+						  _this.isDisplay = true;
+						  _this.isChooseInput = false;           //有空的并且权限为1
+					  }else{  //其他权限 不可以输入 以及不显示,无论空不空
+						  _this.isChooseInput = true;
+						  _this.isDisplay = false;
+					  }  
 			   })
-		   },
-		   
-		   //查询权限项目的函数 ：根据权限来查找
-		   queryProjectRole:function(data,callback){
-			   uni.request({
-			   	 url:userPojectRoleQuery,
-				 data:data,
-	             success:(res)=>{
-					 callback(res.data)
-				 },
-				 fail:()=>{
-					 uni.showToast({
-					 	title:"网络连接错误",
-						duration:1000,
-						icon:"none"
-					 })
-				 }
-			   })
-		   },
-		   
-		   //获取用户的权限为将1 2 3权限的项目全部查找到再进行分类
-		   getUserProjectRole:function(){
-			   console.log("进入此函数")
-			   _this = this;
-			   let data1 = {
-				   userId : _this.userInfo.id,    
-			   }
-			   let data = [{     //假数据
-				   id:2,
-				   roleId:1,
-				   projectId:3,
-		           userId:26
-			   },{
-				   	id:3,
-				   	roleId:2,
-				   	projectId:4,
-				    userId:26
-				},{
-					id:4,
-					roleId:3,
-					projectId:5,
-					userId:26	
-				},{
-					id:5,
-					roleId:4,
-					projectId:6,
-					userId:26	
-				}];
-		      data.forEach((item,index)=>{
-				 if(item.roleId===1||item.roleId===2){
-					 _this.myProject.push(item.projectId)
-				 }else if(item.roleId===3){
-					 _this.myLookProject.push(item.projectId)
-				 }  
-			  })	
-			  console.log(_this.myProject,"-------",_this.myLookProject)
 			   
 		   },
-		   // //设置当前所在项目的用户的权限以及当前所在的项目
-		   // setStorageRoleIdProjectId:function(){
-			  //  Query.findUserProjectRole()
-		   // }
+		   
+		   
+		   //获取用户的权限为将1 2 3 4权限的项目全部查找到再进行分类
+		   getUserProjectRole:function(){
+			   _this = this;
+				Query.findUserProjectRoleByUserId(_this.userInfo.id)
+				.then(data=>{
+					console.log("获取到的1234权限的项目",data);
+					let dataAll = data.data.records;
+					_this.allUserProjects = dataAll;
+					let arry1 = [];
+					let arry2 = [];
+					if(dataAll!=0){
+					  dataAll.forEach((item,index)=>{
+					    if(item.roleId===1||item.roleId===2){
+					  	  arry1.push(item.projectId);
+					  	 }else if(item.roleId===3){
+					  	  arry2.push(item.projectId); 
+					  	 }
+					   });	 
+					}
+					_this.myProject = arry1;
+					_this.myLookProject = arry2;
+				})
+		   },
+		   
 		   
 		   //提交项目的函数
-		   submit:function(){
+		   saveProject:function(){
 			   _this = this;
 			   if(_this.target&&_this.sprintNum&&_this.management&&_this.people&&_this.finishTime&&_this.result){
+				   //这里项目信息，将项目信息提交到服务端
+				   let data = {
+					   id:_this.projectId,
+					   projectId:_this.projectId,
+					   projectTarget:_this.target,
+					   projectSprintNum:_this.sprintNum,
+					   projectManagement:_this.management,
+					   projectPeople:_this.people,
+					   projectFinishTime:_this.finishTime,
+					   projectResult:_this.projectResult 
+				   }
 				   
+				   //提交到服务端并且进行项目的更新后并重新获取该项目的信息
+				   uni.showLoading({
+				   	  title:"提交中",
+					  success:()=>{
+					      uni.request({
+					       url:projectUpdate,
+					       data:data,
+					       method:'POST',
+					       dataType:'json' 
+					     })
+					     .then(data=>{
+					        console.log("更新后的项目",data); 
+						    uni.hideLoading();
+							
+					       //并且重新获取项目信息
+					       _this.getProject();
+					     })
+					     .catch(error=>{
+					         uni.showToast({
+					         title:"提交失败",
+							 duration:1000,
+					     	})
+					     })	  
+					  }
+				   })   
 			   }else{
 				   uni.showToast({
 						title:"请完善信息",   
@@ -316,11 +320,27 @@
 						duration:500
 				   })
 			   }
+		   },
+		   
+		   //添加冲刺进行页面的跳转。
+		   addSprint:function(){
+			   uni.navigateTo({
+			   	 url:"../addSprint/addSprint"
+			   })
+		   }, 
+		      
+		   //继续申请查看其他的项目
+		   returnApply:function(){
+			   uni.removeStorage({
+			   	key:"nowInProject",
+				success:()=>{
+				  uni.redirectTo({
+				  	url:'../apply/apply'
+				  })	
+				 }
+			   })
 		   }
-		   
-		   
-		   
-		   
+		        
 		}
 	}
 </script>

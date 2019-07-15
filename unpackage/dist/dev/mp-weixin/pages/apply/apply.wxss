@@ -19,7 +19,7 @@
 	-webkit-align-items: center;
 	    -ms-flex-align: center;
 	        align-items: center;
-	margin-top:160rpx;
+	margin-top:100rpx;
 }
 ::-webkit-scrollbar{
 	width: 4rpx;
@@ -144,5 +144,37 @@
 	-webkit-border-radius: 2%;
 	        border-radius: 2%;
 }
-
+.ableProjects{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-pack: start;
+	-webkit-justify-content: flex-start;
+	    -ms-flex-pack: start;
+	        justify-content: flex-start;
+	width: 100%;
+}
+.titleInfo{
+	height: 50rpx;
+	background-color: #007AFF;
+	margin-top: 10rpx;
+	width: 100%;
+}
+.myHadProject{
+	height: 50rpx;
+	width: 90%;
+	font-size: 30rpx;
+}
+.myHadProject button{
+	height: 50rpx;
+	line-height: 50rpx;
+	text-align: left;
+	font-size:25rpx;
+}
 

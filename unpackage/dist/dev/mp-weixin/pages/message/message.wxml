@@ -1,1 +1,1 @@
-<view></view>
+<scroll-view class="all" scroll-y="true"><view class="applyMessage"><text id="title">待审核的申请:</text><view></view></view></scroll-view>

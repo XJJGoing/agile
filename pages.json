@@ -1,26 +1,30 @@
 {
 	"pages": [
 		{
-		    "path" : "pages/apply/apply",
-		    "style" : {
-				"usingComponents":{
-					"i-button": "/static/dist/button/index",
-					"i-page":"/static/dist/page/index"
-				}
-			}
-		},
-		{
 			"path": "pages/index/index",
 			"style": {
 				"usingComponents":{
 				
 				}
 			}
+		},
+		{
+		    "path" : "pages/apply/apply",
+		    "style" : { 
+				"usingComponents":{
+					"i-button": "/static/dist/button/index",
+					"i-page":"/static/dist/page/index"
+				} 
+			}
 		}
 	    ,{
             "path" : "pages/plain/plain",
             "style" : {}
-        }
+        },
+		{
+		    "path" : "pages/login/login",
+		    "style" : {}
+		}
         ,{
             "path" : "pages/people/people",
             "style" : {
@@ -44,12 +48,8 @@
 					"i-card": "/static/dist/card/index"
 				}
 			}
-        },
-		{
-		    "path" : "pages/login/login",
-		    "style" : {}
-		}
-        ,{
+        }
+		,{
             "path" : "pages/comment/comment",
             "style" : {}
         }
@@ -75,6 +75,14 @@
         }
         ,{
             "path" : "pages/addSprint/addSprint",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/addTask/addTask",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/changeUserRole/changeUserRole",
             "style" : {}
         }
     ],

@@ -12,7 +12,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin_vue_vue_type_template_id_52d761a4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./admin.vue?vue&type=template&id=52d761a4& */ "../../../../../个人信息/agile/pages/admin/admin.vue?vue&type=template&id=52d761a4&");
 /* harmony import */ var _admin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin.vue?vue&type=script&lang=js& */ "../../../../../个人信息/agile/pages/admin/admin.vue?vue&type=script&lang=js&");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _admin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _admin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../谷歌下载内容保存地/HbuiderX/HBuilderX/plugins/uniapp-cli/node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _admin_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin.vue?vue&type=style&index=0&lang=css& */ "../../../../../个人信息/agile/pages/admin/admin.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../谷歌下载内容保存地/HbuiderX/HBuilderX/plugins/uniapp-cli/node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -20,7 +22,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _admin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _admin_vue_vue_type_template_id_52d761a4___WEBPACK_IMPORTED_MODULE_0__["render"],
   _admin_vue_vue_type_template_id_52d761a4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -54,6 +56,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "../../../../../个人信息/agile/pages/admin/admin.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************!*\
+  !*** F:/个人信息/agile/pages/admin/admin.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_6_oneOf_1_1_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_index_js_ref_6_oneOf_1_2_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_loaders_stylePostLoader_js_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_admin_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../谷歌下载内容保存地/HbuiderX/HBuilderX/plugins/uniapp-cli/node_modules/mini-css-extract-plugin/dist/loader.js??ref--6-oneOf-1-0!../../../../谷歌下载内容保存地/HbuiderX/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--6-oneOf-1-1!../../../../谷歌下载内容保存地/HbuiderX/HBuilderX/plugins/uniapp-cli/node_modules/css-loader??ref--6-oneOf-1-2!../../../../谷歌下载内容保存地/HbuiderX/HBuilderX/plugins/uniapp-cli/node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../谷歌下载内容保存地/HbuiderX/HBuilderX/plugins/uniapp-cli/node_modules/postcss-loader/src??ref--6-oneOf-1-3!../../../../谷歌下载内容保存地/HbuiderX/HBuilderX/plugins/uniapp-cli/node_modules/vue-loader/lib??vue-loader-options!./admin.vue?vue&type=style&index=0&lang=css& */ "./node_modules/mini-css-extract-plugin/dist/loader.js?!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader/index.js?!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!../../../../../个人信息/agile/pages/admin/admin.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_6_oneOf_1_1_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_index_js_ref_6_oneOf_1_2_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_loaders_stylePostLoader_js_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_admin_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_6_oneOf_1_1_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_index_js_ref_6_oneOf_1_2_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_loaders_stylePostLoader_js_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_admin_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_6_oneOf_1_1_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_index_js_ref_6_oneOf_1_2_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_loaders_stylePostLoader_js_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_admin_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_6_oneOf_1_1_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_index_js_ref_6_oneOf_1_2_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_loaders_stylePostLoader_js_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_admin_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_6_oneOf_1_1_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_index_js_ref_6_oneOf_1_2_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_loaders_stylePostLoader_js_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_HbuiderX_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_admin_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "../../../../../个人信息/agile/pages/admin/admin.vue?vue&type=template&id=52d761a4&":
 /*!**************************************************************************!*\
   !*** F:/个人信息/agile/pages/admin/admin.vue?vue&type=template&id=52d761a4& ***!
@@ -80,20 +98,220 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
 //
 //
-var _default =
-{
-  data: function data() {
-    return {};
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
+var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;
+var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};
+
+var Login = new login();
+var Query = new query();
+var _this;var _default =
+{
+  components: { uniCard: uniCard },
+  data: function data() {
+    return {
+      userInfo: " ",
+      projectId: " ", //所在的项目的id
+      userList1: [], //项目负责人
+      userList2: [], //2全新用户表
+      userList3: [], //3权限用户表
+      roleId: "" //用户的权限  1权限获取本项目的所有的工程师和Boss 0权限没有这个功
+    };
+  },
+  onShow: function onShow() {
+    _this = this;
+    uni.getStorage({
+      key: "userInfo",
+      success: function success(res) {
+        var id = {
+          id: res.data.id };
+
+        Query.findUser(id).
+        then(function (data) {
+          //console.log(data)
+          _this.userInfo = data.data;
+          var isRoot;
+          uni.getStorage({
+            key: "nowInProject",
+            success: function success(res) {
+              _this.projectId = res.data.projectId;
+              _this.roleId === 1; //能进来这个页面肯定为项目的负责人，权限为1
+              _this.getAllUserProjectRole1();
+            } });
+
+        });
+      },
+      fail: function fail() {
+        url: '../login/login';
+      } });
 
   },
-  methods: {} };exports.default = _default;
+
+  methods: {
+
+    //0权限用户的查询
+    // getAllUserProjectRole0:function(){
+    // 	_this = this;
+    // 	Query.findAllUserProjectRole()
+    // 	.then(data=>{
+    // 	   console.log("获取到的所有",data.data.records);
+    // 	   //对其进行分类
+    // 	   let allUser = data.data.records;
+    // 	   let userList1 = [];
+    // 	   let userList2 = [];
+    // 	   let userList3 = [];
+    // 	   allUser.forEach((item,index)=>{
+    // 		  switch (item.roleId){
+    // 		  	case 1:
+    // 			    userList1.push(item)
+    // 		  		break;
+    // 			case 2:
+    // 				userList2.push(item)
+    // 				break;
+    // 			case 3:
+    // 				userList3.push(item)
+    // 		  	default:
+    // 		  		break;
+    // 		  }
+    // 	   })
+    // 	   _this.userList1 = userList1;
+    // 	   _this.userList2 = userList2;
+    // 	   _this.userList3 = userList3
+    // 	})
+    // },
+
+    //1权限用户的查询
+    getAllUserProjectRole1: function getAllUserProjectRole1() {
+      _this = this;
+      Query.findUserProjectRoleByProjectId(_this.projectId).
+      then(function (data) {
+        console.log("1权限用户查询到的", data.data.records);
+        var allUser = data.data.records;
+        var userList1 = [];
+        var userList2 = [];
+        var userList3 = [];
+        allUser.forEach(function (item, index) {
+          switch (item.roleId) {
+            case 1:
+              Query.findUser({ id: item.userId }).
+              then(function (data) {
+                console.log("查询到的1去权限用户", data.data);
+                userList1.push(data.data);
+              }).
+              catch(function (error) {
+                uni.showToast({
+                  title: '获取失败',
+                  duration: 1000,
+                  icon: 'none' });
+
+              });
+              break;
+            case 2:
+              Query.findUser({ id: item.userId }).
+              then(function (data) {
+                console.log("查询到的2权限用户", data.data);
+                userList2.push(data.data);
+              }).
+              catch(function (error) {
+                uni.showToast({
+                  title: '获取失败',
+                  duration: 1000,
+                  icon: 'none' });
+
+              });
+              break;
+            case 3:
+              Query.findUser({ id: item.userId }).
+              then(function (data) {
+                console.log("查询到的3权限用户", data.data);
+                userList3.push(data.data);
+              }).
+              catch(function (error) {
+                uni.showToast({
+                  title: '获取失败',
+                  duration: 1000,
+                  icon: 'none' });
+
+              });
+            default:
+              break;}
+          ;
+          _this.userList1 = userList1;
+          _this.userList2 = userList2;
+          _this.userList3 = userList3;
+        });
+
+      });
+    },
+
+    //改变用户的权限
+    changeUserRole: function changeUserRole(e) {
+      var userId = e.detail.id;
+      uni.navigateTo({
+        url: "../changeUserRole/changeUserRole?userId=".concat(userId) });
+
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
+
+/***/ }),
+
+/***/ "./node_modules/mini-css-extract-plugin/dist/loader.js?!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader/index.js?!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!../../../../../个人信息/agile/pages/admin/admin.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--6-oneOf-1-0!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--6-oneOf-1-1!./node_modules/css-loader??ref--6-oneOf-1-2!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-oneOf-1-3!./node_modules/vue-loader/lib??vue-loader-options!F:/个人信息/agile/pages/admin/admin.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
