@@ -1,0 +1,83 @@
+
+.comment{
+	width: 100%;
+	height: auto;
+	overflow-y: scroll;
+	background-color: #007AFF;
+}
+::-webkit-scrollbar{
+	width: 2rpx;
+	height: 6rpx;
+}
+.addComment{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	height: 250rpx;
+}
+.addComment button{
+	margin-top: 15rpx;
+	width: 90%;
+	height: 85rpx;
+	border-radius: 1px solid #E9EFED;
+}
+.content{
+	width: 100%;
+	height: 100rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-pack: start;
+	-webkit-justify-content: flex-start;
+	    -ms-flex-pack: start;
+	        justify-content: flex-start;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	font-size: 35rpx;
+	margin-left:10rpx;
+	margin-top: 20rpx;
+}
+.content text{
+	height: 100rpx;
+	width: 140rpx;
+	line-height: 100rpx;
+	font-size: 30rpx!important;
+}
+.content input{
+	height: 100rpx;
+	line-height: ""!important;
+	font-size: 30rpx!important;
+}
+.commentDetail{
+	width: 100%;
+}
+.eachDetail{
+	width: 100%;
+	height: 200rpx;
+	margin-top: 15rpx;
+	background-color: #19BE6B;
+}
+.commentCard{
+	border-radius:10%!important;
+}
+/*消息模块评论的内容*/
+#content{
+   font-size:30rpx;
+}
+
+
+

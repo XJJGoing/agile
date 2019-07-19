@@ -260,11 +260,12 @@
 	width: 2upx;
 }
 #title{ 
-	height: 100upx;
+	height: 70upx;
 	width: 100%;
-	line-height: 100upx;
+	line-height: 70upx;
+	font-weight: bold;
 	font-size: 30upx;
-	background-color: rgba(127,238,68,1);
+	background-color: #9BC4CE;
 	margin-left: 10upx;
 }
 .reviewList{

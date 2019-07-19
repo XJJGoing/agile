@@ -282,7 +282,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       myProject: [], //切换的项目,权限为 1 2的项目的id
       myLookProject: [] //切换项目，项目的权限为可查看的id	
     };}, //写好的页面加载的函数
-  onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.id;_this.roleId = res.data.roleId;_this.getProject(); //获得当前项目的信息
+  onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId = res.data.roleId;_this.getProject(); //获得当前项目的信息
               _this.getUserProjectRole(); //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
             }, fail: function fail() {uni.redirectTo({ url: '../apply/apply' });} });}).catch(function (error) {console.log(error);});}, fail: function fail() {uni.redirectTo({ url: '../login/login' });} });}, methods: { //设置输入框的长度
     getSystem: function getSystem() {_this = this;uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 80;} });}, //填写信息的函数

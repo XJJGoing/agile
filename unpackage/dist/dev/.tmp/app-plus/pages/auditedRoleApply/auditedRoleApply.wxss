@@ -1,0 +1,75 @@
+
+.all{
+	width: 100%;
+	height:auto;
+	background-color: #F0F8FF;
+}
+.buttonAll{
+	height: 100rpx;
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-justify-content: space-around;
+	    -ms-flex-pack: distribute;
+	        justify-content: space-around;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+}
+.chooseTime{
+	height: 300rpx;
+	width: 100%;
+	background-color: #007AFF;
+	font-size: 30rpx;
+}
+.redictTime{
+	margin-top: 20rpx;
+	height: 200rpx;
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-pack: start;
+	-webkit-justify-content: flex-start;
+	    -ms-flex-pack: start;
+	        justify-content: flex-start;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+}
+.redictTime text{
+	height: 100rpx;
+	font-size: 40rpx;
+	line-height: 100rpx;
+	font-size: 30rpx!important;
+}
+.buttonAll button{
+	height: 80rpx;
+	width: 200rpx;
+	font-size:30rpx;
+	line-height:80rpx;
+}
+.pickerInput{
+	border: 1px solid #19BE6B;
+	height:100rpx;
+	border-radius: 2%;
+	width: 400rpx;
+}
+
+
+

@@ -5,9 +5,12 @@
 	 <view class="peopleInfo">
 	   <view class="title">
 			   <image :src="userInfo.avatarUrl"/>
-			   <text>{{userInfo.nickName}}</text>
+			   <text>{{userInfo.trueName}}</text>
 			   <text id="roleName" >{{roleName}}</text>
+			   <view class="hr"></view>
+			   <text id="department">{{departmentName}}</text>
 	   </view>
+	  
 	  <view class="function">
 		       <block v-if="roleId==0">
 				  <i-cell i-class="item" title="项目审核" is-link url="/pages/reviewProject/reviewProject"></i-cell>
@@ -31,7 +34,8 @@
 <script>
 	import uniCard from "@/components/uni-card/uni-card.vue";
 	import icard from "../../static/dist/card/index.js";
-	import {getAllRole} from "../../static/utils/api.js";
+	import {getAllRole,userProjectDepartmentQuery,departmentQuery} from "../../static/utils/api.js";
+	
 	const login = require('../../static/utils/utils').Login;
 	const query = require('../../static/utils/utils').Query;
 	const Query = new query();
@@ -46,7 +50,9 @@
 			    roleId:"",
 				isRoot:"" ,         //特别设置的超级权限用户.
 				roleName:"",        //权限对应的名称
-				allRole:[]         //存放获取到的所有的专业
+				allRole:[]         ,//存放获取到的所有的专业
+				
+				departmentName:"",   //用户专业的名称
 			}
 		},
 
@@ -72,10 +78,13 @@
 					   	key:"nowInProject",
 						success:(res)=>{
 							
-			 				//设置普通权限并且,获取对应权限用户权限的名称
+			 				//设置普通权限并且,获取对应权限用户权限的名称和专业名称
 							
 							_this.roleId = res.data.roleId;
 							_this.getRoleName();
+							if(_this.roleId ===2 ){
+							  _this.getUserDepartmentId();	
+							}
 						 }  
 					   })
 				   }
@@ -117,6 +126,68 @@
 				})
 			},
 			
+			//根据用户的projectId以及用户的userId查找专业
+			getUserDepartmentId:function(){
+				_this = this;
+				uni.showLoading({
+					title:"切换中",
+					success:()=>{
+							uni.request({
+							url:userProjectDepartmentQuery,
+							method:"POST",
+							data:{
+								projectId:_this.projectId,
+								roleId:_this.roleId
+							},
+							dataType:'json'
+						 })
+						.then(data=>{
+							uni.hideLoading();
+							if(data[1].data.data.records[0]){
+								_this.getUserDepartmentName(data[1].data.data.records[0].departmentId)
+							}else{
+								_this.departmentName = "";
+							}
+						})
+						.catch(Error=>{
+							uni.showToast({
+								title:"网络错误",
+								icon:"none",
+								duration:1000
+							})
+						})
+					}
+				})
+			},
+			
+			//根据专业的id进行查询专业的名称
+			getUserDepartmentName:function(departmentId){
+				uni.showLoading({
+				   title:"切换中",
+				   success:()=>{
+					   uni.request({
+					   	  url:departmentQuery,
+						  method:"POST",
+						  data:{
+							id:departmentId 
+						  },
+						  dataType:'json'
+					   })
+					   .then(data=>{
+						   uni.hideLoading()
+						   _this.departmentName = data[1].data.data.records[0].name
+					   })
+					   .catch(Error=>{
+						   uni.showToast({
+						   	 title:"网络错误",
+							 duration:1000,
+							 icon:"none"
+						   })
+					   })
+				   }
+				})
+			},
+			
 			//退出登录
 			logout:function(){
 			   uni.removeStorage({
@@ -137,7 +208,6 @@
 	height: auto;
 	width: 100%;
 	overflow: scroll;
-	background-color: #007AFF;
 }
 
 ::-webkit-scrollbar{
@@ -146,34 +216,50 @@
 }
 
 .peopleInfo{
-	height: 1000upx;
 	width: 100%;
-	background-color: #19BE6B;
 }
 
 .title{
+	height: 270upx;
 	width:100%;
-	height: 200upx;
-	background-color: #F5A623;
 	display: flex;
 	flex-direction: row;
-	align-items: center;
 	padding: 20upx;
-	border: 1px solid #007AFF;
-	border-radius:3% ;
+	border: 1upx solid #FEFEFE;
+	border-radius:2%;
+	position: relative;
 }
 .title image{
-	border: 1upx dotted #19BE6B;
 	width: 150upx;
 	height: 150upx;
+	margin-top: 20upx;
 }
 .title text{
 	font-size: 30upx;
-	margin-left: 20upx;
+	margin-left: 40upx;
+	color: #F0F8FF;
+	margin-top: 60upx;
 }
 #roleName{
-	font-size: 40upx;
-	margin-left: 250upx;
+	position: absolute;
+	right: 100upx;
+	font-size: 35upx;
+	color: #C0C0C0!important;
+}
+.hr{
+	position: absolute;
+	top:230upx;
+	left: 0upx; 
+	width: 100%;
+	border: 1upx solid #FFF5F2;
+	height: 1upx;
+}
+
+#department{
+	position: absolute;
+	top: 200upx!important;
+	left: 10upx;
+	color:#C0C0C0!important;
 }
 
 /*function部分*/
@@ -186,6 +272,7 @@
 	width: 100%;
 	height: 30upx;
     margin-top:5upx;
-	background-color: #19BE6B;
+	background-color: none;
+	border-radius: 2%;
 }
 </style>

@@ -1,8 +1,21 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/apply/apply",
     "pages/plain/plain",
-    "pages/people/people"
+    "pages/login/login",
+    "pages/people/people",
+    "pages/comment/comment",
+    "pages/updateTask/updateTask",
+    "pages/reviewProject/reviewProject",
+    "pages/admin/admin",
+    "pages/message/message",
+    "pages/reviewTask/reviewTask",
+    "pages/addSprint/addSprint",
+    "pages/addTask/addTask",
+    "pages/changeUserRole/changeUserRole",
+    "pages/auditedRoleApply/auditedRoleApply",
+    "pages/picture/picture"
   ],
   "subPackages": [],
   "window": {
@@ -24,7 +37,7 @@
         "selectedIconPath": "/static/img/home_select.png"
       },
       {
-        "pagePath": "pages/plain/plain",
+        "pagePath": "pages/picture/picture",
         "text": "燃尽图",
         "iconPath": "/static/img/picture.png",
         "selectedIconPath": "/static/img/picture_select.png"
@@ -43,6 +56,6 @@
     "autoclose": false
   },
   "appname": "agile",
-  "compilerVersion": "2.0.1",
+  "compilerVersion": "2.1.1",
   "usingComponents": {}
 }

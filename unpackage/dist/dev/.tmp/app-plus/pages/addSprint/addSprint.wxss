@@ -1,0 +1,146 @@
+
+.all{
+	height: auto;
+	overflow:scroll;
+	margin-top: 20rpx;
+}
+::-webkit-scrollbar{
+    width: 2rpx;
+	height: 6rpx;
+}
+.hadSprint{
+	width: 100%;
+	height: auto;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.titleView{
+  width: 100%;
+  height: 70rpx!important;
+  background-color:#6AA2D4;
+  margin-left: 0rpx;
+  margin-bottom: 5rpx;
+}
+.title{
+	width: 100%;
+	height: 70rpx!important;
+	line-height: 70rpx;
+	font-size: 35rpx;
+	font-weight: 400;
+	text-align: left!important;
+}
+.sprintNum{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-pack: start;
+	-webkit-justify-content: flex-start;
+	    -ms-flex-pack: start;
+	        justify-content: flex-start;
+	-webkit-box-align:center;
+	-webkit-align-items:center;
+	    -ms-flex-align:center;
+	        align-items:center;
+	margin-top:10rpx;
+    width: 100%;
+}
+.sprintDetail{
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.sprintDetail text{
+	height: 30rpx;
+	margin-top: 5rpx;
+	margin-left: 10rpx;
+	font-size: 30rpx;
+}
+/*
+#target{
+	font-size:30upx;
+}
+#startTime{
+	font-size:30upx;
+}
+#endTime{
+	
+}
+*/
+.sprintMessage{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	margin-top: 10rpx;
+}
+.sprintMessage view{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	margin-top: 5rpx;
+	height: 100rpx;
+	width: 100%;
+	padding: 10rpx;
+	color: #F8F1F3;
+}
+.sprintMessage view text {
+    width: 160rpx;
+	font-size:30rpx;
+	margin-left: 10rpx;
+	text-align: center;
+}
+.sprintMessage view input{
+	font-size:30rpx!important;
+	margin-left: 10rpx;
+	height: 80rpx;
+}
+.submitButton{
+	width: 60%;
+	height: 80rpx;
+	border-radius:2%;
+	margin-top: 10rpx;
+	background-color: #6AA2D4;
+	color: #E9EFED;
+}
+
+
+

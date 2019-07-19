@@ -140,7 +140,7 @@
 					 uni.getStorage({
 						 key:"nowInProject",
 						 success:(res)=>{
-							 _this.projectId = res.data.id;
+							 _this.projectId = res.data.projectId;
 							 _this.roleId = res.data.roleId;
 							 _this.getProject();                 //获得当前项目的信息
 							 _this.getUserProjectRole();        //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
@@ -275,7 +275,7 @@
 				 },
 				 dataType:'json'
 			   })
-			   .then(data=>{       
+			   .then(data=>{
 				   let project = data[1].data.data.records[0];  
 				   _this.nowProject = project;
 				   
@@ -283,7 +283,7 @@
 				   if(project.projectName&&project.projectTarget&&
 				     project.projectFinishTime&&project.projectResult
 					 &&project.projectManagement&&project.projectSprintNum&&project.projectPeople!=0&&_this.roleId===1
-					 ){
+					 ){ 
 						 _this.isDisplay = false;               //不为空不显示,输入默认就行了
 						 _this.isChooseInput = true;
 					  }else if(_this.roleId===1){

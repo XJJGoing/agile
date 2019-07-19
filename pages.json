@@ -94,7 +94,7 @@
         ,{
             "path" : "pages/picture/picture",
             "style" : {}
-        }
+        }  
     ],
 	
 	"globalStyle": {
@@ -105,10 +105,10 @@
 	},
    	"tabBar":{
 		"color": "#B0C4DE",
-		"selectedColor": "#F8F8FF",
+		"selectedColor": "#F8F8FF", 
 		"backgroundColor": "#2E3443",
 		"borderStyle": "white",
-		"list":[{
+		"list":[{ 
 			 "pagePath": "pages/index/index",
 			 "text": "主页",
 			 "iconPath": "/static/img/home.png",

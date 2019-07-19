@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "uni-icon": "/components/QS-WavesButton/uni-icon"
+  },
+  "component": true
+}

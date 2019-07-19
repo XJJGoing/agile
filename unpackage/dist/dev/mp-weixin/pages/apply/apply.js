@@ -409,8 +409,10 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
     //提交申请的项目的函数,提交之前先去t_project中寻找有没有这个项目编号.
     //有的就直接拿projectId下来
     submitApply: function submitApply(e) {
+      console.log("进入这个提交申请的函数");
       _this = this;
-      var applyTime = time.formatDate(new Date()).toString();
+      var applyTime = (0, _time.formatDate)(new Date());
+      console.log("获取申请的时间", applyTime);
       //console.log("我的申请的时间",applyTime)
       //console.log("提交申请的项目编号和真实姓名和原因",_this.projectName,_this.trueName,_this.why)
       if (_this.projectName && _this.trueName && _this.why) {//申请查看的项目

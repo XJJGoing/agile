@@ -1,0 +1,12 @@
+
+.all{
+	height: auto;
+	width: 100%;
+	overflow: scroll;
+}
+::-webkit-scrollbar{
+	height: 6rpx;
+	width: 2rpx;
+}
+
+

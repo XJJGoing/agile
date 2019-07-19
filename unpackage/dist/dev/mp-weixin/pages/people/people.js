@@ -131,7 +131,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var icard = function icard() {return __webpack_require__.e(/*! import() | static/dist/card/index */ "common/vendor").then(__webpack_require__.t.bind(null, /*! ../../static/dist/card/index.js */ "../../../../../个人信息/agile/static/dist/card/index.js", 7));};
+
 var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;
 var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;
 var Query = new query();
@@ -146,7 +150,9 @@ var _this;var _default =
       roleId: "",
       isRoot: "", //特别设置的超级权限用户.
       roleName: "", //权限对应的名称
-      allRole: [] //存放获取到的所有的专业
+      allRole: [], //存放获取到的所有的专业
+
+      departmentName: "" //用户专业的名称
     };
   },
 
@@ -172,10 +178,13 @@ var _this;var _default =
               key: "nowInProject",
               success: function success(res) {
 
-                //设置普通权限并且,获取对应权限用户权限的名称
+                //设置普通权限并且,获取对应权限用户权限的名称和专业名称
 
                 _this.roleId = res.data.roleId;
                 _this.getRoleName();
+                if (_this.roleId === 2) {
+                  _this.getUserDepartmentId();
+                }
               } });
 
           }
@@ -215,6 +224,68 @@ var _this;var _default =
           title: "获取失败" });
 
       });
+    },
+
+    //根据用户的projectId以及用户的userId查找专业
+    getUserDepartmentId: function getUserDepartmentId() {
+      _this = this;
+      uni.showLoading({
+        title: "切换中",
+        success: function success() {
+          uni.request({
+            url: _api.userProjectDepartmentQuery,
+            method: "POST",
+            data: {
+              projectId: _this.projectId,
+              roleId: _this.roleId },
+
+            dataType: 'json' }).
+
+          then(function (data) {
+            uni.hideLoading();
+            if (data[1].data.data.records[0]) {
+              _this.getUserDepartmentName(data[1].data.data.records[0].departmentId);
+            } else {
+              _this.departmentName = "";
+            }
+          }).
+          catch(function (Error) {
+            uni.showToast({
+              title: "网络错误",
+              icon: "none",
+              duration: 1000 });
+
+          });
+        } });
+
+    },
+
+    //根据专业的id进行查询专业的名称
+    getUserDepartmentName: function getUserDepartmentName(departmentId) {
+      uni.showLoading({
+        title: "切换中",
+        success: function success() {
+          uni.request({
+            url: _api.departmentQuery,
+            method: "POST",
+            data: {
+              id: departmentId },
+
+            dataType: 'json' }).
+
+          then(function (data) {
+            uni.hideLoading();
+            _this.departmentName = data[1].data.data.records[0].name;
+          }).
+          catch(function (Error) {
+            uni.showToast({
+              title: "网络错误",
+              duration: 1000,
+              icon: "none" });
+
+          });
+        } });
+
     },
 
     //退出登录

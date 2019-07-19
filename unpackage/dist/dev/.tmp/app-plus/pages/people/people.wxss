@@ -1,5 +1,83 @@
 
-.class{
-	 border:aqua;
+.people{
+	height: auto;
+	width: 100%;
+	overflow: scroll;
+}
+::-webkit-scrollbar{
+	width:2rpx;
+	height:6rpx;
+}
+.peopleInfo{
+	width: 100%;
+}
+.title{
+	height: 270rpx;
+	width:100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	padding: 20rpx;
+	border: 1rpx solid #FEFEFE;
+	border-radius:2%;
+	position: relative;
+}
+.title image{
+	width: 150rpx;
+	height: 150rpx;
+	margin-top: 20rpx;
+}
+.title text{
+	font-size: 30rpx;
+	margin-left: 40rpx;
+	color: #F0F8FF;
+	margin-top: 60rpx;
+}
+#roleName{
+	position: absolute;
+	right: 100rpx;
+	font-size: 35rpx;
+	color: #C0C0C0!important;
+}
+.hr{
+	position: absolute;
+	top:230rpx;
+	left: 0rpx; 
+	width: 100%;
+	border: 1rpx solid #FFF5F2;
+	height: 1rpx;
+}
+#department{
+	position: absolute;
+	top: 200rpx!important;
+	left: 10rpx;
+	color:#C0C0C0!important;
+}
+
+/*function部分*/
+.function{
+	width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.item{
+	width: 100%;
+	height: 30rpx;
+    margin-top:5rpx;
+	background-color: none;
+	border-radius: 2%;
 }
 

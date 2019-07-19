@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"all{ height: auto; width: 100%; overflow: scroll; }\n::-webkit-scrollbar{ height: ",[0,6],"; width: ",[0,2],"; }\n",],"Some selectors are not allowed in component wxss, including tag name selectors, ID selectors, and attribute selectors.(./pages/picture/picture.wxss:7:1)",{path:"./pages/picture/picture.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/picture/picture.wxml') } }));

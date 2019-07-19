@@ -100,7 +100,7 @@
         }
       }
     },
-    "arguments": "{\"name\":\"swiper1\",\"id\":0,\"pathName\":\"pages/people/people\"}",
+    "arguments": "{\"name\":\"swiper1\",\"id\":0,\"pathName\":\"pages/login/login\"}",
     "allowsInlineMediaPlayback": true,
     "safearea": {
       "background": "#2E3443",
@@ -109,17 +109,14 @@
       }
     },
     "uni-app": {
-      "compilerVersion": "2.0.1",
+      "compilerVersion": "2.1.1",
       "control": "v8",
       "nvueCompiler": "weex"
     },
     "secondwebview": {
       "id": "1",
       "launch_path": "__uniappview.html",
-      "kernel": "WKWebview",
-      "mode": "child",
-      "top": 0,
-      "bottom": 56
+      "kernel": "WKWebview"
     }
   }
 }
