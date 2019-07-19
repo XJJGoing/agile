@@ -33,8 +33,7 @@
 	        align-items: center;
 	padding: 20rpx;
 	border: 1px solid #007AFF;
-	-webkit-border-radius:3% ;
-	        border-radius:3% ;
+	border-radius:3% ;
 }
 .title image{
 	border: 1rpx dotted #19BE6B;

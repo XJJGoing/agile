@@ -2,83 +2,92 @@
 	<scroll-view class="all" scroll-y="true">
 		
 		<view class="search_project">
-			<i-button @click="bindChange()" i-class="ibutton">申请查看</i-button>
+			<button @click="bindChange()" 
+			        class="ibutton" 
+					plain="true" 
+					style="color:#fbf3f5; border:1px solid #fbf3f5;"
+			>查看项目</button>
 			
-			<view class="ipage" v-if="isLookProject">
-					<uni-pagination 
-						show-icon="true" 
-						total="50"
-						:current="current"
-						@change="handleChange()"
-					>
-					</uni-pagination>
-					<view class="detail">
-						<view v-for="(item,index) in nowProjectItems" >
-						   <button  @click="chooseProject" class="detail_project" :id="JSON.stringify(item)" >
-								<view>P{{index}}</view>
-								<view>项目{{index}}</view>
-						   </button>								
-						</view>
-					</view>
-			</view>
-			 
 			<block v-if="isLookApply">
 				<view class="applyList">
+					<view class="appListProjectName">
+						<text>项目编号:</text>
+						<input placeholder="请输入项目的编号..." @input="inputProjectName" :value="projectName" :style="{width:width+'px'}"></input>
+					</view>
 					<view class="appListView1">
 						 <text>申请人:</text>
-						 <input placeholder="请填入真实的姓名..." @input="inputName"></input>
+						 <input placeholder="请填入真实的姓名..." @input="inputName" :value="trueName" :style="{width:width+'px'}"></input>
 				    </view>
 					<view class="appListView2">
 						<text>理由:</text>
 						<textarea placeholder="填入申请查看项目的理由" 
-						          :style="{width:windowWidth+'px'}" 
-								  value="" 
+						          :style="{width:width+'px'}" 
+								  :value="why" 
 								  @input="inputWhy"
 						></textarea>
 					</view>
-					<i-button @click='submitApply' id="1" class="submitApply">提交申请</i-button>
+					<button @click='submitApply'  
+					          class="submitApply" 
+							  plain="true" 
+							  style="color:#fbf3f5; border:1px solid #fbf3f5;"
+					>提交申请</button>
 				</view>
 			</block>
 			
-		    <i-button @click="applyProject()" i-class="ibutton">申请项目</i-button>
+		    <button @click="applyProject()" 
+			        class="ibutton"
+					plain="true" 
+					style="color:#fbf3f5; border:1px solid #fbf3f5;"
+			>申请项目</button>
 			
 			<block v-if="isApplyProject">
 				<view class="applyList">
+					<view class="appListProjectName">
+						 <text>项目编号:</text>
+						 <input placeholder="填入项目编号(即名称15字以内)" @input="inputApplyProjectName" :value="applyProjectName" :style="{width:width+'px'}"></input>
+					</view> 
 					<view class="appListView1">
 						 <text>申请人:</text>
-						 <input placeholder="请填入真实的姓名..." @input="inputName"></input>
-					</view>
-					<view class="appListView1">
-						 <text>项目名:</text>
-						 <input placeholder="填入项目名称(15字以内)" @input="inputProjectName"></input>
+						 <input placeholder="请填入真实的姓名..." @input="inputApplyTrueName" :value="applyTrueName" :style="{width:width+'px'}"></input>
 					</view>
 					<view class="appListView2">
 						  <text>理由:</text>
 						  <textarea placeholder="填入申请项目的理由" 
-						            :style="{width:windowWidth+'px'}"
-									@input="inputWhy"
+						            :style="{width:width+'px'}"
+									:value="applyWhy"
+									@input="inputApplyWhy"
 						  >
 						  </textarea>
 					</view>
-					<i-button @click='submit' id="2" class="submitApply">提交申请</i-button>
+					<button @click='submitApplyProject' 
+					        class="submitApply" 
+							plain="true" 
+							style="color:#fbf3f5; border:1px solid #fbf3f5;"
+					>提交申请</button>
 				</view>
 			</block>
 			
 	    </view>
 		<view class="ableProjects">
-			<view class="titleInfo">可看的项目:</view>
+			<view class="titleInfo">
+				 <uni-tag text="可看的项目:" type="primary" ></uni-tag>
+			</view>
 			<block v-if="ableLookProject">
 				<view v-for="(item,index) in ableLookProject" :key="index" class="myHadProject">
 					<button :id="JSON.stringify(item)" @click="enterProject">A项目{{index+1}}</button>
 				</view>
 			</block>	
-			<view class="titleInfo">负责的项目:</view>
+			<view class="titleInfo">
+				<uni-tag text="负责的项目:" type="warning" ></uni-tag>
+			</view>
 			<block  v-if="chargeProject">
 				<view v-for="(item,index) in chargeProject" :key="index" class="myHadProject">
 					<button :id="JSON.stringify(item)" @click="enterProject">C项目{{index+1}}</button>
 				</view>	
 			</block>	
-			<view class="titleInfo">参与的项目:</view>
+			<view class="titleInfo">
+				<uni-tag text="参与的项目" type="error" ></uni-tag>
+			</view>
 			<block v-if="joinProject">
 				<view v-for="(item,index) in joinProject" :key="index" class="myHadProject">
 					<button :id="JSON.stringify(item)" @click="enterProject" >J项目{{index+1}}</button>
@@ -96,73 +105,58 @@
 	const Query = new query();
 	
 	//引入时间格式处理函数
-	const time = require('../../static/utils/time');
+	import {formatDate} from '../../static/utils/time.js';
 
 	
 	
 	//引入分页的组建-实现分页查询
 	import uniPagination from "../../components/uni-pagination/uni-pagination.vue"
-	
-	import {projectQuery,roleApplyAdd} from '../../static/utils/api.js';
+	import uniTag from "@/components/uni-tag/uni-tag.vue"
+	import {projectQuery,roleApplyAdd,sprintQuery} from '../../static/utils/api.js';
 	
 	var _this;
 	export default {
-		components: {uniPagination},
+		components: {uniPagination,uniTag},
 		data() {
 			return {
+				width:"",                 //设置输入框的长度
 				userInfo:{},              //用户的个人信息，
-				nowProjectItems:[],           //实际的项目，存放着项目的信息。
+				nowProjectItems:[],       //实际的项目，存放着项目的信息。
 			
-				isLookProject:false,     //是否显示查看项目列表
-				current:1,               //分页查询的当前页面
-				pageSize:10,             //分页查询的查询的最大个数
 				isLookApply:false,
 				windowWidth:"" ,          //可使用的窗口的宽度
 				isApplyProject:false,    //展示申请项目的页面
-				lookProject:{},          //存放选中要查看的项目
 				
-				trueName:"",
-				why:"",
-				projectName:"",
+				trueName:"",             //申请查看的人的真实姓名
+				why:"",                  //申请查看的理由
+				projectName:"",            //申请查项目的项目的编号
+				 
+				applyTrueName:"",      //申请项目的人的真实姓名
+				applyProjectName:"",   //申请项目的项目编号
+				applyWhy:"",           //申请项目的理由 
 				
-				ableLookProject:[],    //可查看的项目
-				chargeProject:[],     //负责的项目
-				joinProject:[],        //参与的项目
+				
+				ableLookProject:[],     //可查看的项目
+				chargeProject:[],       //负责的项目
+				joinProject:[],         //参与的项目
 			}
 		},
 		
-		// mounted() {
-		// 	_this = this;
-		// 	//如果自己有项目的或者已经可以查看的项目就直接进行跳转
-		// 	uni.getStorage({
-		// 		key:"nowInProject",
-		// 		success:(res)=>{
-		// 			uni.redirectTo({
-		// 				url:'../index/index'
-		// 			})
-		// 		},
-		// 		fail:()=>{
-		// 			 
-		// 		}
-		// 	})
-		// },
-		
 		onShow() {
 			_this = this;
+			_this.getSystem();
 			uni.getStorage({
 				key:"userInfo",
 				success:(res)=>{ 
 				   let id = {
 					   id:res.data.id
 				   };
-				   _this.getSystenInfo();  //获取系统信息
-				   _this.firstProjectItem(); //获取第一页项目列表
+				   _this.getSystem();  //获取系统信息
 				   Query.findUser(id)
 				   .then(data=>{
-					   console.log(data);
-					  _this.userInfo = data.data;
-					  console.log(_this.userInfo.id);
-					  _this.getUserProjectRole();     //查询t_user_role_project中有的用户的项目	
+					   console.log("用户的信息",data.data.records[0]);
+					  _this.userInfo = data.data.records[0];
+					  _this.getUserProjectRole();         //查询t_user_role_project中有的用户的项目	
 				   })
 				   .catch(error=>{
 					   uni.showToast({ 
@@ -181,32 +175,71 @@
 		},
 		 
 		 
-		//检查用户查看项目的时间是否过期查看的项目的时间是否过期或者是否有查看项目的权限
 		methods:{
+			
+			//获取系统信息设置输入框的长达
+			getSystem:function(){
+			 	uni.getSystemInfo({
+			 		success:(res)=> {
+			 			_this.width = (parseInt(res.windowWidth)-80);     //50px是text的upx转成px的长度
+			 		},
+			 		fail:()=> {
+			 			uni.showToast({
+			 				duration:500,
+			 				title:"获取宽度失败",
+			 				icon:"none"
+			 			})
+			 		}
+			 	})
+			 },
+			
+			//输入查看者的真实姓名
 			inputName:function(e){
 			   _this = this;
 			   _this.trueName = e.detail.value;
 			},
+			
+			//输入项目的编号
 			inputProjectName:function(e){
 				_this = this;
 				_this.projectName = e.detail.value;
 			},
+			
+			//输入申请查看项目的原因
 			inputWhy:function(e){
 				_this = this;
 				_this.why = e.detail.value;
 			},
+			
+			//输入申请项目人的真实姓名
+			inputApplyTrueName:function(e){
+				_this = this;
+				_this.applyTrueName = e.detail.value;
+			},
+			
+			//输入申请项目的名称
+			inputApplyProjectName:function(e){
+				_this = this;
+				_this.applyProjectName = e.detail.value;
+			},
+			
+			//输入申请项目的理由
+			inputApplyWhy:function(e){
+				_this = this;
+				_this.applyWhy = e.detail.value;
+			},
+			
 			
 	        //查询t_role_project_role表中所有用户的字段（userId、projectId、roleId）
 			getUserProjectRole:function(){
 				_this = this;			
 				Query.findUserProjectRoleByUserId(_this.userInfo.id)
 				.then(data=>{
-					//console.log("查询到的用户权限项目",data)
 					let dataAll = data.data.records;
+					console.log("查询到的用户权限项目",dataAll)
 					let arry1 = [];
 					let arry2 = [];
 					let arry3 = [];
-					console.log(dataAll);
 					if(dataAll.length!=0){
 					  dataAll.forEach((item,index)=>{
 					   if(item.roleId===1){
@@ -224,7 +257,7 @@
 				})
 				.catch(error=>{
 					uni.showToast({
-						title:"获取项目类表失败",
+						title:"网络错误",
 						icon:"none",
 						duration:1000
 					})
@@ -232,10 +265,15 @@
 				
 			},
 			
-			//选择项目并进入选中项目，设置nowInProject
+			//根据具体得到的ableLookProject chargeProject joinProject这三个去查询项目的信息
+			
+			//选择项目并进入选中项目，设置nowInProject,并且调用设置sprintId的函数
 			enterProject:function(e){
+				_this = this;
 				let nowChooseProject = JSON.parse(e.target.id)
 				console.log(nowChooseProject);
+				let projectId = nowChooseProject.projectId;
+				_this.setSprintId(projectId)
 				uni.setStorage({
 					key:"nowInProject",
 					data:nowChooseProject,
@@ -250,190 +288,194 @@
 				})
 			},
 			
-			getSystenInfo:function(){
-			 	uni.getSystemInfo({
-			 		success:(res)=> {
-			 			console.log(res)
-			 			_this.windowWidth = (parseInt(res.windowWidth)-80);     //50px是text的upx转成px的长度
-			 			console.log(_this.windowWidth)
-			 		},
-			 		fail:()=> {
-			 			uni.showToast({
-			 				duration:500,
-			 				title:"获取宽度失败",
-			 				icon:"none"
-			 			})
-			 		}
-			 	})
-			 },
-			 
-			 firstProjectItem:function() {
-			 	_this = this;
-			 	uni.request({
-			 		url:projectQuery,
-			 		method:"POST",
-			 		data:{
-			 			 id: "",
-			 			 pageNum:_this.current,
-			 			 pageSize:_this.pageSize
-			 		},
-			 		dataType:'json'
-			 	})
-			 	.then(data=>{
-			 		console.log(data)
-			 		let nowProjectItems = data[1].data.data.records;
-			 	    _this.nowProjectItems = nowProjectItems;
-			 		
-			 		 // console.log("第一次查询的实际的project2",_this.nowProjects)
-			 		 // console.log("第一次查询的project",_this.projects)
-			 	})
-			 },
 			 
 			//查看项目
 			bindChange:function(){
 				_this = this;
-				_this.isLookProject = !_this.isLookProject;
-				_this.isLookApply = false;
+				_this.isLookApply = !_this.isLookApply;
 				_this.isApplyProject = false
 			},
 			
 			
-			//封装从数据库中分页查询的函数
-			pageRequest:function(current){
-				_this = this;
-				uni.request({
-					url:projectQuery,
-					method:"POST",
-					data:{
-						id:'',
-						pageNum:current,
-						pageSize:_this.pageSize
-					},
-					dataType:'json'
-				})
-				.then(data=>{
-					if(data[1].data.data.records.length){
-					 let projects = [];
-					  for(let i = 0;i<data[1].data.data.records.length;i++){
-					      projects[i] = "项目"+(i+1);
-					  }
-						_this.nowProjects = data[1].data.data.records;
-						_this.projects = projects;
-					}else{
-						_this.nowProjects = "";
-						_this.projects = "";
-					}
-				})
-			},
 			
-			
-			//实现分页查询
-			handleChange:function({type,current}){
-				_this = this;
-				if(type=="next"){
-					//console.log("当前页面",current)
-					_this.pageRequest(current+1)
-				}else{//上一页
-					_this.pageRequest(current-1)
-				}
-			},
-			
-			//选择申请查看的按钮
-			chooseProject:function(e){
-				_this = this;
-				let chooseProjectItem = JSON.parse(e.target.id);
-				_this.lookProject = chooseProjectItem;
-				
-				if(_this.lookProject!=""){
-					_this.isLookProject = !_this.isLookProject;
-					_this.isLookApply = !_this.isLookApply;
-				}
-			},
-			
-			//申请项目按钮
+			//申请项目显示项目申请表
 			applyProject:function(){
 				_this = this;
 				_this.isApplyProject = !_this.isApplyProject;
 				_this.isLookApply = false;
-				_this.isLookProject = false;
 			},
 			
-			//提交申请的项目的函数 
+			
+			//提交申请的项目的函数,提交之前先去t_project中寻找有没有这个项目编号.
+			//有的就直接拿projectId下来
 			submitApply:function(e){
 				_this = this;
-				let id = e.target.id;            //1 表示申请查看项目  2表示申请项目
 				let applyTime = time.formatDate(new Date()).toString();  
 				//console.log("我的申请的时间",applyTime)
-				let data={
-					projectId:_this.lookProject.id,
-					userId:_this.userInfo.id,
-					trueName:_this.trueName,
-					content:_this.why,
-					effectiveTime:applyTime
-				};
-				console.log("提交的数据",data)
-				if(id==="1"&&_this.lookProject&&_this.trueName&&_this.why){  //申请查看的项目
-					   uni.showLoading({
-							   title:"提交中",
-							   success:()=>{
-							   uni.request({
-									url:roleApplyAdd,
-									method:"POST",
-									data:{
-										projectId:_this.lookProject.id,
-										userId:_this.userInfo.id,
-										trueName:_this.trueName,
-										content:_this.why,
-										effectiveTime:applyTime
-									},
-									dataType:'json'
-								 })
-								 .then(data=>{
-									 uni.hideLoading();
-									 console.log(data)
-								 })
-								 .catch(error=>{
-									uni.showToast({
-									title:"提交失败",
-									duration:500,
-									icon:'none'
-								   })	
-					             })
-							}
-				         })	   
-				}else if(id==="2"&&_this.projectName&&_this.why){      //申请项目,这里社
-					// uni.request({
-					// 	url:tt                 ,//申请项目的url
-					//     data:{
-					// 		userId:_this.data.id,
-					// 		projectName:_this.projectName,
-					// 		why:_this.why
-					// 	},
-		   //              dataType:'json',
-					// })
-					// .then(data=>{
-					// 	uni.setStorage({
-					// 		key:'casualApplyProject',
-					// 		success:()=>{
-					// 			uni.showToast({
-					// 				title:"提交成功",
-					// 				duration:500,
-					// 				icon:'none'
-					// 			})
-					// 		}
-					// 	})
-					// 	console.log(data)
-					// })
+				//console.log("提交申请的项目编号和真实姓名和原因",_this.projectName,_this.trueName,_this.why)
+				if(_this.projectName&&_this.trueName&&_this.why){    //申请查看的项目
+				    _this.findProjectIdByProjectName(_this.projectName,(data)=>{
+						console.log("查询搭配的即将发送的",data[0])
+						if(data.length!=0){
+						  let projectId = data[0].id;
+						   console.log(_this.toJude(projectId))
+						   //首先判断用户是不是已经有了这个项目的权限了
+	                       if(_this.toJude(projectId)){
+							   uni.showToast({
+							    	title:"您已有该项目权限",
+									duration:1000,
+									icon:"none"
+							   })
+						   }else{
+							    uni.showLoading({
+							      title:"提交中",
+							      success:()=>{
+							   		 uni.request({
+							   			url:roleApplyAdd,
+							   			method:"POST",
+							   			data:{
+							   				projectId:projectId,
+							   				userId:_this.userInfo.id,
+							   				trueName:_this.trueName,
+							   				content:_this.why,
+							   				effectiveTime:applyTime
+							   			},
+							   			dataType:'json'
+							   		 })
+							   		 .then(data=>{
+							   			 uni.hideLoading();
+							   			 console.log(data)
+							   		 })
+							   		 .catch(error=>{
+							   				uni.showToast({
+							   				title:"网络错误",
+							   				duration:500,
+							   				icon:'none'
+							   			 })	
+							   		 })
+							   	}
+							   })
+						   }
+								  
+						}else{
+							uni.showToast({
+								title:"项目的编号不存在",
+								duration:1500,
+								icon:"none"
+							})
+						}
+					})
 				}else{
 					uni.showToast({
 						duration:500,
 						icon:"none",
 					    title:"请完善信息"
 					})
-				}
+				 }
+			  },
+			  
+			  
+			  //根据项目编号(projectName)寻找projectId的函数
+			  findProjectIdByProjectName:function(projectName,callback){
+				  _this = this;
+				  uni.showLoading({
+				  	 title:"查询中",
+					 success:()=>{
+					   uni.request({
+					  	url:projectQuery,
+						method:"POST",
+						data:{
+							projectName:projectName
+						},
+						dataType:'json'
+					  }) 
+					  .then(data=>{
+					  	 uni.hideLoading();
+						 console.log("查询到的数据",data[1].data.data.records)
+						 callback(data[1].data.data.records)
+					  })
+					  .catch(Error=>{
+						  uni.showToast({
+						  	title:"网络错误",
+							duration:1000,
+							icon:"none"
+						  })
+					  }) 	   
+					 }
+				  })
+			  },
+			  
+			  //提交申请新增项目的函数                  申请项目待完善
+			  submitApplyProject:function(){
+				  
+			  },
+			  
+			  
+			  //设置冲刺到storage中的sprintId中
+			  setSprintId:function(projectId){
+				     console.log("进入设置冲刺的函数")
+				     _this = this;
+				  	if(projectId){
+				   	uni.request({
+				   	url:sprintQuery,
+				   	method:"POST",
+				   	data:{
+				   		projectId:projectId,
+				   	},
+				   	dataType:'json',
+				   })
+				   .then(data=>{
+				   	let allSprint = data[1].data.data.records;
+				  	let sprintId;
+				   	if(allSprint.length){
+				  	  //获取当前的时间并且进行时间转换用作比较
+				  	  let nowDateTime = new Date(Date.parse(formatDate(new Date())));
+				  	  for(var i in allSprint){
+				  	  	if(new Date(Date.parse(allSprint[i].startTime))<=nowDateTime
+				  	  	&&nowDateTime<new Date(Date.parse(allSprint[i].endTime))){
+				  	  		sprintId = allSprint[i].id;
+				  	  	}	
+				  	  }
+				  	  if(sprintId==""){ //如果实在都超过了时间段就默认进入最后一个
+				  		  sprintId = allSprint.pop().id;
+				  	  }
+				  	  uni.setStorage({
+				  	  	key:'sprintId',
+				  		data:sprintId
+				  	  })
+				   	}else{
+				  		uni.setStorage({
+				  			key:'sprintId',
+				  			data:""
+				  		})
+				  	}
+				   })
+				   .catch(Error=>{
+				   	uni.showToast({
+				   		title:"网络错误",
+				   		duration:1000,
+				   		icon:"loading"
+				   	})
+				   })	
 			  }
+			},
+			
+			//一个方法用户判断用户是否已经有了某些项目的权限,有了就不用再次提交了
+			toJude:function(projectId){
+				_this = this;
+				console.log(projectId)
+				let arry1 = _this.ableLookProject.concat(_this.joinProject);
+				let arry2 = arry1.concat(_this.chargeProject)
+				console.log("拼接后的项目",arry2)
+				for(var i in arry2){
+					if(arry2[i].projectId === projectId){
+						return true
+					}
+				}
+				return false;
 			}
 	}
+}
 </script>
 
 <style>
@@ -443,11 +485,11 @@
 }
 .search_project{
 	width: 100%;
-	background-color: #2D8CF0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top:100upx;
+	margin-top:50upx;
+	color:#FEFEFE;
 }
 ::-webkit-scrollbar{
 	width: 4upx;
@@ -455,76 +497,59 @@
 }
 .ibutton{
 	width: 300upx;
-	height: 200upx;
-}
-.ipage{
-	width: 100%;
-	height: 800upx;
-}
-.detail{
-	width: 100%;
-	height: 700upx;
-	background-color: #FF9900;
-}
-.detail_project{
-	width: 100%;
-	height: 50upx;
-	display: flex;
-	flex-direction: row;
+	height: 100upx;
+	color: #19BE6B;
+	border-radius: 4%;
+	font-size: 35upx;
+	font-weight: 300;
 	margin-top: 10upx;
-	justify-content: space-around;
-	align-items: center;
-	background-color: #19BE6B;
 }
+
 .applyList{
 	width: 100%;
-	height: 650upx;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-around;
+    justify-content: flex-start;
 	align-items: center;
 }
 .applyList view{
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
-	margin-top: 10upx;
-	width: 100%;
-	font-size:25upx;
-}
-.appListView1{
-	height: 100upx;
 	align-items: center;
-}
-.appListView1 input{
-	height: 60upx;
-	width: 450upx;
-    border: 1px solid #19BE6B;
-	border-radius: 2%;
-}
-.appListView1 text{
+	margin-top: 5upx;
 	height: 100upx;
-	margin-left: 30upx;
-	width: 100upx;
-	line-height: 100upx;
-	font-size:30upx!important ;
+	width: 100%;
+	font-size: 25upx;
 }
+.applyList view text{
+	width:120upx;
+	margin-left: 10upx;
+	line-height: 80upx;
+	height: 80upx;
+}
+.applyList view input{
+	margin-left: 5upx;
+	height: 80upx;
+	line-height: 80upx;
+	border-radius: 4%;
+	border:1upx solid #eea4b8;
+}
+
+
 .appListView2{
-	height: 250upx;
-	background-color: #19BE6B;
+	height: 250upx!important;
 }
 .appListView2 text{
-  margin-left: 30upx;
-  line-height: 250upx;
-  width: 100upx;
-  height: 250upx;
-  font-size:30upx!important ;
+  height: 250upx!important;
+  font-size:30upx!important;
+  line-height: 250upx!important;
 }
 .appListView2 textarea{
 	height: 250upx;
-	border: 1px solid #2D8CF0;
-	margin-right: 10upx;
+    border:1px solid #f8f1f3;
 	border-radius: 2%;
+	margin-top: 5upx;
 }
 
 /*提交申请表的按钮*/
@@ -532,6 +557,10 @@
 	width: 200upx;
 	height: 100upx;
 	border-radius: 2%;
+	margin-top: 15upx;
+	margin-bottom: 20upx;
+	font-size: 30upx;
+	line-height: 100upx;
 }
 
 
@@ -540,23 +569,25 @@
 	flex-direction: column;
 	justify-content: flex-start;
 	width: 100%;
+	margin-top: 50upx;
 }
 .titleInfo{
 	height: 50upx;
-	background-color: #007AFF;
 	margin-top: 10upx;
 	width: 100%;
+	margin-bottom: 15upx;
 }
 
 .myHadProject{
 	height: 50upx;
-	width: 90%;
+	width: 100%;
 	font-size: 30upx;
 }
 .myHadProject button{
 	height: 50upx;
 	line-height: 50upx;
 	text-align: left;
-	font-size:25upx ;
+	font-size:25upx;
+	width: 100%;
 }
 </style>

@@ -4,52 +4,81 @@
 	>
 	
 	<view class="chooseItem">
-		<picker @change="bindPickerMyProject" :value="index" :range="myProject">切换首页项目</picker>
-		<picker @change="bindPickerLookProject" :value="index" :range="myLookProject">可查看的项目</picker>
+			 <picker @change="bindPickerMyProject" :value="index" :range="myProject">
+				 <text>切换首页冲刺</text>
+			 </picker>
+			<picker @change="bindPickerLookProject" :value="index" :range="myLookProject">
+			    <text>切换可看项目</text>
+			</picker>
 	</view>
 	
-	<view class="title">项目信息</view>
+	<view class="titleView">
+	   <text class="title">项目信息:</text>
+	</view>
 	<view class="projectInfo">
 		 <view>
-			 <text>项目名称:</text>
-			 <input disabled="true" :value="nowProject.projectName"></input>
+			 <text>项目编号:</text>
+			 <input disabled="true" :value="nowProject.projectName" :style="{width:width+'px'}"></input>
 		 </view>
 		 <view>
 			 <text>项目目标:</text>
-			 <input placeholder="填入项目的目标" :value="nowProject.projectTarget" @input="ftarget" :disabled="isChooseInput" ></input>
+			 <input placeholder="填入项目的目标" :value="nowProject.projectTarget" @input="ftarget" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
 		 </view>
 		 <view>
 			 <text>交付时间:</text>
-			 <input placeholder="填入项目交付的时间" :value="nowProject.projectFinishTime"  @input="ffinishTime" :disabled="isChooseInput"></input>
+			 <input placeholder="填入项目交付的时间" :value="nowProject.projectFinishTime"  @input="ffinishTime" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
 		 </view>
 		 <view>
 			 <text>项目成果:</text>
-			 <input placeholder="填入项目的成果" :value="nowProject.projectResult" @input="fresult" :disabled="isChooseInput"></input>
+			 <input placeholder="填入项目的成果" :value="nowProject.projectResult" @input="fresult" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
 		 </view>
 		 <view>
 			 <text>项目管理:</text>
-			 <input placeholder="填入项目的管理" :value="nowProject.projectManagement" @input="fmanagement" :disabled="isChooseInput"></input>
+			 <input placeholder="填入项目的管理" :value="nowProject.projectManagement" @input="fmanagement" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
 		 </view>
 		 <view>
 			 <text>冲刺个数:</text>
-			 <input placeholder="填入项目冲刺的个数" :value="nowProject.projectSprintNum" @input="fprintNum" :disabled="isChooseInput"></input>
+			 <input placeholder="填入项目冲刺的个数" :value="nowProject.projectSprintNum" @input="fprintNum" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
 		 </view>
 		 <view>
 			 <text>项目成员:</text>
-			 <input placeholder="填入项目的成员" :value="nowProject.projectPeople" @input="fpeople" :disabled="isChooseInput"></input>
+			 <input placeholder="填入项目的成员" :value="nowProject.projectPeople" @input="fpeople" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
 		 </view>
 	</view>
-	
-	<block v-if="roleId===1">
+	   
+	 <block v-if="roleId===1">
 		 <view class="footer">
 			 <block v-if="roleId===1&&isDisplay">
-			   <button type="primary" @click="saveProject">提交</button>
+			   <QSWavesButton btnType="default" 
+			                  @click="saveProject"
+							  plain="true"
+							  class="QSbutton"
+							  wavesColor="rgba(211,220,114,0.93)"
+							  btnStyle="{font-size:35upx;color: #E9EFED;}"
+			    >
+				<text>提交</text>
+			   </QSWavesButton>
 			 </block>
-			 <button type="primary" @click="addSprint">添加项目冲刺</button>
+			 <QSWavesButton btnType="default" 
+							@click="addSprint"
+							plain="true"
+							class="QSbutton"
+							wavesColor="rgba(114,220,158,0.93)"
+							btnStyle="{font-size:35upx;color:#E9EFED;}"
+			 >
+			  <text>添加冲刺</text>
+			 </QSWavesButton>
 		 </view>
 	 </block>
-	 
-	 <button type="primary" @click="returnApply">申请查看其他项目</button>
+		 <QSWavesButton btnType="default" 
+						@click="returnApply"
+						plain="true"
+						class="QSbutton"
+						wavesColor="#e4712b"
+						btnStyle="{font-size:35upx;color:#E9EFED;width:400upx;}"
+		 >
+		 <text>申请查看其他项目</text>
+		 </QSWavesButton>
 	</scroll-view>
 </template>
 
@@ -59,11 +88,20 @@
 	const Query = new query();
 	const Login = new login();
 	
-	import {projectQuery,userPojectRoleQuery,projectUpdate} from '../../static/utils/api.js'
+	import {formatDate} from '../../static/utils/time.js';
+	import {projectQuery,userPojectRoleQuery,projectUpdate,sprintQuery} from '../../static/utils/api.js'
+	
+	 import uniTag from "@/components/uni-tag/uni-tag.vue"
+	 import QSWavesButton from '@/components/QS-WavesButton/QS-WavesButton.vue';
 	var _this;
 	export default {
+		components:{
+			QSWavesButton,
+			uniTag
+		},
 		data() {
 			return {
+				width:"",                  //设置input的长度
 				userInfo:{},
 				projectId:"",                 //假数据 
                 nowProject:{},				  //显示的项目
@@ -89,6 +127,7 @@
 		//写好的页面加载的函数
 		onShow(){
 			_this = this;
+			_this.getSystem();
 			uni.getStorage({
 				key:"userInfo",
 				success:(res)=>{
@@ -97,7 +136,7 @@
 				   }
 				   Query.findUser(id)
 				   .then(data=>{
-					 _this.userInfo = data.data;
+					 _this.userInfo = data.data.records[0];
 					 uni.getStorage({
 						 key:"nowInProject",
 						 success:(res)=>{
@@ -129,6 +168,17 @@
 	
 		
 		methods: {
+			
+			//设置输入框的长度
+			getSystem:function(){
+				_this = this;
+				uni.getSystemInfo({
+					success:(res)=>{
+						_this.width = parseInt(res.windowWidth)-80;
+					}
+				})
+			},
+			
 			//填写信息的函数
 			ftarget:function(e){
 				this.target = e.detail.value
@@ -167,11 +217,11 @@
 					   //改变项目的项目的id和权限,并且重新获取信息.
 					  _this.projectId = nowInProject.projectId;
 					  _this.roleId = nowInProject.roleId;
-					  // console.log(_this.projectId,_this.roleId)
 					  _this.getProject();
+					  _this.setSprintId(_this.projectId);
 					},
 					fail:()=>{
-						uni.showToast({
+						uni.showToast({  
 							title:"切换失败",
 							icon:"loading", 
 							duration:1000
@@ -199,6 +249,7 @@
 					  _this.projectId = nowInProject.projectId;
 					  _this.roleId = nowInProject.roleId; 
 					  _this.getProject();
+					  _this.setSprintId(_this.projectId);
 					},
 					fail:()=>{
 						uni.showToast({
@@ -248,11 +299,10 @@
 		   
 		   
 		   //获取用户的权限为将1 2 3 4权限的项目全部查找到再进行分类
-		   getUserProjectRole:function(){
+		   getUserProjectRole:function(){ 
 			   _this = this;
 				Query.findUserProjectRoleByUserId(_this.userInfo.id)
 				.then(data=>{
-					console.log("获取到的1234权限的项目",data);
 					let dataAll = data.data.records;
 					_this.allUserProjects = dataAll;
 					let arry1 = [];
@@ -339,7 +389,58 @@
 				  })	
 				 }
 			   })
-		   }
+		   },
+		   
+		   //设置冲刺到storage中的sprintId中
+		   setSprintId:function(projectId){
+		   	    console.log("进入设置冲刺的函数")
+		   	     _this = this;
+		   	  	if(projectId){
+		   	   	uni.request({
+		   	   	url:sprintQuery,
+		   	   	method:"POST",
+		   	   	data:{
+		   	   		projectId:projectId,
+		   	   	},
+		   	   	dataType:'json',
+		   	   })
+		   	   .then(data=>{
+				console.log("进入获取到的冲刺",data[1].data.data.records)
+		   	   	let allSprint = data[1].data.data.records;
+		   	  	let sprintId; 
+				console.log(allSprint.length)
+		   	   	if(allSprint.length){
+		   	  	  //获取当前的时间并且进行时间转换用作比较
+		   	  	  let nowDateTime = new Date(Date.parse(formatDate(new Date())));
+		   	  	  for(var i=0; i<allSprint.length;i++){
+		   	  	  	if(new Date(Date.parse(allSprint[i].startTime))<=nowDateTime
+		   	  	  	&&nowDateTime<new Date(Date.parse(allSprint[i].endTime))){
+		   	  	  		sprintId = allSprint[i].id;
+		   	  	  	}	
+		   	  	  }
+		   	  	  if(sprintId===""){ //如果实在都超过了时间段就默认进入最后一个
+		   	  		  sprintId = allSprint.pop().id;
+		   	  	  }
+		   	  	  uni.setStorage({
+		   	  	  	key:'sprintId',
+		   	  		data:sprintId
+		   	  	  })
+		   	   	}else{
+		   	  		uni.setStorage({
+		   	  			key:'sprintId',
+		   	  			data:""
+		   	  		})
+		   	  	}
+		   	   })
+		   	   .catch(Error=>{
+		   	   	uni.showToast({
+		   	   		title:"网络错误",
+		   	   		duration:1000,
+		   	   		icon:"loading"
+		   	   	})
+		   	   })	
+		     }
+		   },
 		        
 		}
 	}
@@ -359,24 +460,37 @@
 	display: flex;
 	flex-direction:row;
 	justify-content: space-around;
+	margin-bottom: 5upx;
 }
 .chooseItem picker{
 	height: 60upx;
 	width: 200upx;
-	font-size:28upx;
-	background-color: #19BE6B;
+	border-radius: 4%;
 	text-align: center;
-	line-height: 60upx;
+	background-color:rgba(171,159,174,0.93);
 }
+.chooseItem picker text{
+	height: 60upx;
+	width: 200upx;
+	line-height: 60upx;
+    font-size:28upx;
+	text-align: center;
+}
+
+.titleView{
+  width: 100%;
+  height: 70upx;
+  background-color:#94B6CB ;
+  margin-left: 0upx;
+}
+
 .title{
 	width: 100%;
-	height: 80upx;
-	line-height: 80upx;
-	font-size: 30upx;
-	background-color: #F5A623;
-	padding: 10upx;
-	box-sizing: border-box;
-}
+	height: 70upx;
+	line-height: 70upx;
+	font-size: 35upx;
+	font-family: webfont;
+}  
 
 .projectInfo{
 	display: flex;
@@ -386,31 +500,52 @@
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 80upx;
+	height: 70upx;
 	width: 100%;
 	padding: 20upx;
 	margin-top: 3upx;
-	background-color: #19BE6B;
 }
 .projectInfo view text{
   font-size:30upx;
+  width: 140upx;
+  font-weight: 500;
+  color:#FCFFFE;
 }
 .projectInfo view input{
-	font-size:30upx;
+	font-size:28upx;
 	height: 60upx;
-	border: 1px solid #F0F8FF;
-	width: 500upx;
 	margin-left: 5upx;
+	color: #FEFAFB;
+	line-height: 60upx;
 }
-.footer{
-	height: 200upx;
+.footer{ 
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	width: 100%;
 }
-.footer button{
+
+.QSbutton{
 	margin-top: 5upx;
-	width: 80%;
+	width: 50%;
 	height: 80upx;
+	line-height: 80upx;
+	margin-top: 10upx;
+	margin-bottom: 30upx;
+}
+.QSbutton text{
+	color:#E9EFED;
+}
+
+/*字体设置*/
+@font-face {
+  font-family: 'webfont';
+  font-display: swap;
+  src: url('//at.alicdn.com/t/webfont_i271qcyeekd.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/webfont_i271qcyeekd.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/webfont_i271qcyeekd.woff2') format('woff2'),
+  url('//at.alicdn.com/t/webfont_i271qcyeekd.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/webfont_i271qcyeekd.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/webfont_i271qcyeekd.svg#杨任东竹石体-Bold') format('svg'); /* iOS 4.1- */
 }
 </style>

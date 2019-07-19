@@ -2,6 +2,7 @@
   "usingComponents": {
     "i-button": "/static/dist/button/index",
     "i-page": "/static/dist/page/index",
-    "uni-pagination": "/components/uni-pagination/uni-pagination"
+    "uni-pagination": "/components/uni-pagination/uni-pagination",
+    "uni-tag": "/components/uni-tag/uni-tag"
   }
 }

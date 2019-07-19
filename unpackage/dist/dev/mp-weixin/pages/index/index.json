@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "q-s-waves-button": "/components/QS-WavesButton/QS-WavesButton",
+    "uni-tag": "/components/uni-tag/uni-tag"
+  }
 }

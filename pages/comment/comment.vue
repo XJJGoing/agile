@@ -5,15 +5,20 @@
 		  <view class="addComment">
 			  <view class="content">
 				  <text>评论内容:</text>
-				  <input placeholder="添加评论内容(最多少于50字)"></input>
+				  <input placeholder="添加评论内容(最多少于30字)" 
+				         @input="inputContent" 
+						 :value="content"
+						 :style="{width:width+'px'}"
+				  >
+				  </input>
 			  </view>
 			  <button @click="addComment">增加评论</button>
 		  </view>
 		   
-		  <view v-for="(item,index) in moonComment" :key="index" class="eachDetail">
+		  <view v-for="(item,index) in allComment" :key="index" class="eachDetail">
 			   <uni-card 
 				   :title="item.trueName" 
-				   :thumbnail="item.avatarUrl" 
+				   :thumbnail="item.avatarUrl"
 				   :note="item.time"
 				    class="commentCard"
 				>
@@ -33,140 +38,193 @@
 	
 	//引入登录的模块
 	const login = require('../../static/utils/utils').Login;
+	const query = require('../../static/utils/utils').Query;
 	const Login = new login();
+	const Query = new query();
+	
 	var _this;
 	export default {
 		components: {uniCard},
 		data() {
 			return {
-				userInfo:"",      //用户的信息
-				projectId:1,     //项目的id，拿到用户所在的项目的id
-				sprintId:1,      //用户选中的冲刺的id
-				allComment:[],   //所有的评论,包括评论的人（真实姓名），评论的内容，评论的时间
-				moonComment:[{    //模拟的数据
-				    id:1,
-					userId:21,
-					projectId:1,
-					sprintId:1,
-					trueName:"林永健",
-					avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
-					content:"这是模拟的评论测试",
-					time:"2019-07-09-17:00"                    
-				},{ 
-					id:2,
-					userId:21,
-					projectId:1,
-					sprintId:1,
-					trueName:"林永健",
-					avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
-					content:"这是模拟的评论测试",
-					time:"2019-07-09-17:00"                   
-				},{
-				    id:3,
-				    userId:21,
-				    projectId:1,
-					sprintId:1,
-					trueName:"林永健",
-					avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
-					content:"这是模拟的评论测试",
-					time:"2019-07-09-17:00" 
-				}]
+				width:'',           //输入框的长度
+				
+				userInfo:"",        //用户的信息
+				projectId:"",        //项目的id，拿到用户所在的项目的id
+				sprintId:"",         //用户选中的冲刺的id
+				allComment:[],      //所有的评论,包括评论的人（真实姓名），评论的内容，评论的时间
+				content:"",
 			}
 		},
 		
-	    //登录部分，进行全局变量userInfo以及storage的更新	
-		// onShow() {
-		//   _this = this
-		//   wx.getStorage({
-		//   	key:"userInfo",
-		// 	success:(res)=>{
-		// 	   let id = {
-		// 		   id:res.data.id
-		// 	   }
-		// 	   Login.findUser(id)
-		// 	   .then(data=>{
-		// 		   _this.userInfo = data.data
-		// 		  uni.setStorage('userInfo',data.data)
-		// 	   })
-		// 	},
-		// 	fail:() {
-		// 	  uni.redirectTo({
-		// 	  	url:'../login/login'
-		// 	  })
-		// 	}
-		//   })
-		// }
-		
-		//这个只是目前暂时使用的
 		onShow() {
-			_this = this;
-			uni.getStorage({
-				key:'userInfo',
-				success:(res)=>{
-					_this.userInfo = res.data;
-				}
-			})
+	      this.getSystem();    
+		  _this = this
+		  wx.getStorage({
+		  	key:"userInfo",
+			success:(res)=>{
+			   let id = {
+				   id:res.data.id
+			   }
+			   Query.findUser(id)
+			   .then(data=>{
+				   console.log("查询到的用户的信息",data.data.records[0])
+				   _this.userInfo = data.data.records[0];
+				   uni.getStorage({
+					   key:"nowInProject",
+					   success:(res)=>{
+						   _this.projectId = res.data.projectId;
+						   uni.getStorage({
+							   key:'sprintId',
+							   success:(res)=>{
+								   _this.sprintId = res.data;
+								   _this.queryComment();
+							   }
+						   })
+					   }
+				   })
+			   })
+			   .catch(Error=>{
+				   uni.showToast({
+				   	 title: '网络错误',
+					 duration:500,
+					 icon:"none"
+				   });
+			   })
+			},
+			fail:()=>{
+			  uni.redirectTo({
+			  	url:'../login/login'
+			  })
+			}
+		  })
 		},
 		
 		
 		methods: {
+			
+			//获取系统信息设置输入框长度
+			getSystem:function(){
+				_this = this;
+				uni.getSystemInfo({
+					success:(res)=>{
+						_this.width = (parseInt(res.windowWidth-80));
+					}
+				})
+			},
+			
+			//输入评论的内容
+			inputContent:function(e){
+				let content = e.detail.value;
+				if(content.length<=30){
+					this.content = content
+				}else{
+					this.content = "";
+					uni.showToast({
+						title:"内容过长",
+						duration:1000,
+						icon:"none"
+					})
+				}
+			},
+			
 		   //增加评论
 		   addComment:function(){
-		   	_this  = this;
-		   	let content  = "测试内容";
-		   	let userId = _this.userInfo.id;
-		   	let projectId = _this.projectId;
-		   	let sprintId = _this.sprintId;
-		   	let commentData = {
-		   	    userId,
-		   		projectId,
-		   		sprintId,
-		   		content
-		   	}
-		   	
-		   	//进行评论的增加
-		   	uni.request({
-		   		url:commentAdd,
-		   		data:commentData,
-		   		dataType:'json'
-		   	})
-		   	.then(data=>{  //增加成功并且重新获取
-		   		console.log("增加评论成功")
-		   	})
-		   	.catch(Error=>{
-		   		uni.showToast({
-		   			title:"增加评论失败",
-		   			icon:"none",
-		   			duration:500
-		   		})
-		   	})
+			 //这里mook增加
+			 if(this.content){
+				 let data = {
+					 id:5,
+					 trueName:"林永健",
+					 avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
+					 content:this.content,
+					 time:"2019-07-09-17:00"   
+				 }
+				 this.allComment.push(data)
+			 }
+			   
+			//下方为正确的代码   
+		    // _this  = this;
+			// if(_this.content){
+			//    uni.request({
+			//    	url:commentAdd,
+			//    	data:{
+			//    		userId:_this.userId,
+			//    		projectId:_this.projectId,
+			//    		sprintId:_this.sprintId,
+			//    		content:_this.content
+			//    	},
+			//    	dataType:'json'
+			//    })
+			//    .then(data=>{  
+			//    	console.log("增加评论成功")
+			//    })
+			//    .catch(Error=>{
+			//    	uni.showToast({
+			//    		title:"增加评论失败",
+			//    		icon:"none",
+			//    		duration:500
+			//    	})
+			//    })	
+			//  }else{
+			// 	 uni.showToast({
+			// 	 	title:"评论信息不正确",
+			// 		duration:1000,
+			// 		icon:"none"
+			// 	 })
+			//  }
 		   },
 		 
-		  //查找评论	
+		  //查找评论	  待完善
 		  queryComment:function(){
-			  _this = this;
-			  let queryData = {
-				  projectId: _this.projectId,
-				  sprintId :_this.sprintId
-			  }
-			 uni.request({
-			 	url:commnetQuery,
-				data:queryData,
-				dataType:'json'
-			 })
-			 .then(data=>{  //获取到的评论对
-				  console.log("拿到的评论",data)
-			 })
-			 .catch(Error=>{
-				 uni.showToast({
-				 	icon:"none",
-					title:"获取评论失败",  
-					duration:500
-				 })
-			 })
-		  }
+			  
+			  //先mook数据
+			let  moonComment = [{     
+			    id:1,
+			 	trueName:"林永健",
+			 	avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
+			 	content:"这是模拟的评论测试",
+			 	time:"2019-07-09-17:00"                    
+			 },{ 
+			 	id:2,
+			 	trueName:"林永健",
+			 	avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
+			 	content:"这是模拟的评论测试",
+			 	time:"2019-07-09-17:00"                   
+			 },{
+			     id:3,
+			     trueName:"林永健",
+			     avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
+			     content:"这是模拟的评论测试",
+			     time:"2019-07-09-17:00"   
+			 }] 
+			 
+			 this.allComment =  moonComment;
+			  
+			  //下方为正确代码
+			 //  _this = this;
+			 // uni.request({
+			 // 	url:xxx,
+				// data:{
+				// 	 projectId: _this.projectId,
+				// 	 sprintId :_this.sprintId
+				// },
+				// method:'POST',
+				// dataType:'json'
+			 // })
+			 // .then(data=>{  //获取到的评论对
+				//   console.log("拿到的评论",data)
+			 // })
+			 // .catch(Error=>{
+				//  uni.showToast({
+				//  	icon:"none",
+				// 	title:"获取评论失败",  
+				// 	duration:500
+				//  })
+			 // })
+		  // }
 		}
-	}
+	},
+}
 </script>
 
 <style>
@@ -206,12 +264,13 @@
 
 .content text{
 	height: 100upx;
+	width: 140upx;
 	line-height: 100upx;
+	font-size: 30upx!important;
 }
 
 .content input{
 	height: 100upx;
-	width: 500upx;
 	line-height: ""!important;
 	font-size: 30upx!important;
 }
@@ -222,7 +281,7 @@
 .eachDetail{
 	width: 100%;
 	height: 200upx;
-	margin-top: 10upx;
+	margin-top: 15upx;
 	background-color: #19BE6B;
 }
 .commentCard{

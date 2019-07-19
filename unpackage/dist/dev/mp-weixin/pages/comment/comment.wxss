@@ -25,8 +25,7 @@
 	margin-top: 15rpx;
 	width: 90%;
 	height: 85rpx;
-	-webkit-border-radius: 1px solid #E9EFED;
-	        border-radius: 1px solid #E9EFED;
+	border-radius: 1px solid #E9EFED;
 }
 .content{
 	width: 100%;
@@ -54,11 +53,12 @@
 }
 .content text{
 	height: 100rpx;
+	width: 140rpx;
 	line-height: 100rpx;
+	font-size: 30rpx!important;
 }
 .content input{
 	height: 100rpx;
-	width: 500rpx;
 	line-height: ""!important;
 	font-size: 30rpx!important;
 }
@@ -68,12 +68,11 @@
 .eachDetail{
 	width: 100%;
 	height: 200rpx;
-	margin-top: 10rpx;
+	margin-top: 15rpx;
 	background-color: #19BE6B;
 }
 .commentCard{
-	-webkit-border-radius:10%!important;
-	        border-radius:10%!important;
+	border-radius:10%!important;
 }
 /*消息模块评论的内容*/
 #content{

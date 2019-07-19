@@ -50,7 +50,7 @@
 			}
 		},
 
-		// //进行登录的更新
+		//进行登录的更新
 		onShow(){
 		  _this = this
 		  wx.getStorage({
@@ -61,9 +61,9 @@
 			   }
 			   Query.findUser(id)
 			   .then(data=>{
-				   console.log("返回的用户的信息",data.data) 
-				   _this.userInfo = data.data;
-				   let isRoot = data.data.isRoot;
+				   //console.log("返回的用户的信息",data.data.records[0]) 
+				   _this.userInfo = data.data.records[0];
+				   let isRoot =  data.data.records[0].isRoot;
 				   if(isRoot){
 					   _this.roleId = 0;
 					   _this.roleName = "超级用户"
@@ -71,9 +71,10 @@
 					   uni.getStorage({
 					   	key:"nowInProject",
 						success:(res)=>{
-			 				console.log("设置普通的权限",res.data.roleId)
+							
+			 				//设置普通权限并且,获取对应权限用户权限的名称
+							
 							_this.roleId = res.data.roleId;
-							 //获取对应权限用户权限的名字。
 							_this.getRoleName();
 						 }  
 					   })

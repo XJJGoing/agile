@@ -102,11 +102,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/uni-pagination/uni-pagination":1,"components/uni-card/uni-card":1,"components/uni-icon/uni-icon":1};
+/******/ 		var cssChunks = {"components/QS-WavesButton/QS-WavesButton":1,"components/uni-tag/uni-tag":1,"components/uni-pagination/uni-pagination":1,"components/uni-card/uni-card":1,"components/uni-icon/uni-icon":1,"components/w-picker/w-picker":1,"components/QS-WavesButton/uni-icon":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"components/uni-pagination/uni-pagination":"components/uni-pagination/uni-pagination","components/uni-card/uni-card":"components/uni-card/uni-card","components/uni-icon/uni-icon":"components/uni-icon/uni-icon"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"components/QS-WavesButton/QS-WavesButton":"components/QS-WavesButton/QS-WavesButton","components/uni-tag/uni-tag":"components/uni-tag/uni-tag","components/uni-pagination/uni-pagination":"components/uni-pagination/uni-pagination","components/uni-card/uni-card":"components/uni-card/uni-card","components/uni-icon/uni-icon":"components/uni-icon/uni-icon","components/w-picker/w-picker":"components/w-picker/w-picker","components/QS-WavesButton/uni-icon":"components/QS-WavesButton/uni-icon"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

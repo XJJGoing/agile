@@ -1,1 +1,78 @@
-/* pages/addTask/addTask.wxss */
+
+.all{
+	overflow: scroll;
+	height: auto;
+	width: 100%;
+	background-color:#FDFFF1;
+}
+::-webkit-scrollbar{
+	height: 6rpx;
+	width: 2rpx;
+}
+.addTask{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+#title{
+	height: 120rpx;
+	width: 100%;
+	font-size: 35rpx;
+	font-weight: 400;
+	line-height: 120rpx;
+	background-color:#6CA0D9;
+	margin-left: 2rpx;
+}
+.addTask view{
+	height: 100rpx;
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	margin-top: 5rpx;
+	background-color:#F4D8B1;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+}
+#heading{
+	font-size:30rpx;
+	height: 100rpx;
+	width: 150rpx;
+	margin-left:10rpx;
+    line-height: 100rpx;
+	background-color:#C9BFBD;
+	text-align: center;
+}
+.addTask view input{
+	margin-left: 10rpx;
+	height: 80rpx;
+	font-size:30rpx;
+	border-radius: 5%;
+	border: 1px solid #30FAF6;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+.submit{
+	height: 80rpx;
+	line-height: 80rpx;
+	font-size: 40rpx;
+	width: 90%;
+	margin-top: 10rpx;
+}
+

@@ -7,11 +7,17 @@
 				 <open-data  type="userNickName" style="color: white;"></open-data>
 			  </view>
 				<view class="login">
+		            <input placeholder="请输入真实姓名否则无法登陆" 
+					       @input="inputTrueName" 
+						   :value="trueName"
+				     >
+				    </input>         
 					<button open-type="getUserInfo"
 							v-if="canIUse"  
 							@click="bindGetUserInfo()"
 							style="color: white;"
-							plain="true"
+							plain="trueName"
+							:disabled="disable"
 					>
 						授权登录
 					</button>
@@ -32,7 +38,9 @@
 	export default {
 		data() {
 			return {
-				canIUse:wx.canIUse('button.open-type.getUserInfo')
+				canIUse:wx.canIUse('button.open-type.getUserInfo'),
+				trueName:"",
+				disable:true
 			}
 		},
 		
@@ -41,9 +49,29 @@
 		   
 		},
 		 methods:{
+			 
+		  //输入这是的姓名	 
+		  inputTrueName:function(e){
+			  let trueName = e.detail.value;
+			  let reg = /^[\u4e00-\u9fa5]+$/i;  //正则表达式匹配中文
+			  if(reg.test(trueName)&&trueName.length<=4&&trueName.length>=2){
+				  this.trueName = trueName;
+				  this.disable = false;
+			  }else{
+				  this.disable = true;
+				  uni.showToast({
+				  	title:"输入有误",
+					duration:1000,
+					icon:"none"
+				  })
+			  }
+		  },
+			 
+			   
 		  bindGetUserInfo:function(){
 			  let openId;
 			  let sessionKey;
+			  let trueName = this.trueName;
 			  uni.showLoading({
 				  title:"登录中",
 			  	  success:()=>{
@@ -60,7 +88,8 @@
 				   	   let userInfo = {
 						    ...data.userInfo,
 				   			openId,
-							sessionKey
+							sessionKey,
+							trueName
 				   		};
 						//console.log("发送到服务器的信息",userInfo)  
 				   	    return Login.insertUser(userInfo,register,"POST")
@@ -118,9 +147,21 @@
 	margin-top: 10upx;
 }
 .login{
-    width: 320upx;
-	height: 80upx;
+    width: 100%upx;
+	height: 200upx;
 	margin-top: 20upx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.login input{
+	width: 450upx;
+	height: 100upx;
+	border: 1upx solid #30FAF6;
+	border-radius: 2%;
+	font-size: 30upx;
+	line-height: 100upx;
+	color: #E9EFED;
 }
 .login button{
 	font-size: 30upx;
@@ -128,6 +169,7 @@
 	width: 320upx;
 	height: 80upx;
 	border:1px solid #FCFBFF;
+	margin-top: 10upx;
 }
 
 </style>

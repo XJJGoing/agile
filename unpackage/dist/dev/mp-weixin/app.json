@@ -13,7 +13,9 @@
     "pages/reviewTask/reviewTask",
     "pages/addSprint/addSprint",
     "pages/addTask/addTask",
-    "pages/changeUserRole/changeUserRole"
+    "pages/changeUserRole/changeUserRole",
+    "pages/auditedRoleApply/auditedRoleApply",
+    "pages/picture/picture"
   ],
   "subPackages": [],
   "window": {
@@ -35,7 +37,7 @@
         "selectedIconPath": "/static/img/home_select.png"
       },
       {
-        "pagePath": "pages/plain/plain",
+        "pagePath": "pages/picture/picture",
         "text": "燃尽图",
         "iconPath": "/static/img/picture.png",
         "selectedIconPath": "/static/img/picture_select.png"
@@ -49,5 +51,6 @@
     ]
   },
   "permission": {},
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }

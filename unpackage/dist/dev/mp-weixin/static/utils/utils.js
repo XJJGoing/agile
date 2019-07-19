@@ -1,5 +1,9 @@
 //引入api
-import {queryUser,userPojectRoleQuery} from './api';
+import {queryUser,
+        userProjectRoleQuery,
+		userProjectDepartmentQuery,
+		departmentQuery
+	   } from './api';
 
 //登录模块
 class Login {
@@ -100,7 +104,7 @@ class Query  {
 	findUserProjectRole(userId,projectId){
 		return new Promise((resolve,reject)=>{
 			uni.request({
-				url:userPojectRoleQuery,
+				url:userProjectRoleQuery,
 				data:{
 					userId:userId,
 					projectId:projectId
@@ -121,7 +125,7 @@ class Query  {
 	findUserProjectRoleByUserId(userId){
 		return new Promise((resolve,reject)=>{
 			uni.request({
-				url:userPojectRoleQuery, 
+				url:userProjectRoleQuery, 
 				data:{
 					userId:userId
 				},
@@ -141,7 +145,7 @@ class Query  {
 	findUserProjectRoleByProjectId(projectId){
 		return new Promise((resolve,reject)=>{
 			uni.request({
-				url:userPojectRoleQuery,
+				url:userProjectRoleQuery,
 				data:{
 					projectId:projectId
 				},
@@ -161,7 +165,7 @@ class Query  {
 	findAllUserProjectRole(){
 		return new Promise((resolve,reject)=>{
 			uni.request({
-				url:userPojectRoleQuery,
+				url:userProjectRoleQuery,
 				data:{
 					userId:"",
 					roleId:"",
@@ -173,6 +177,68 @@ class Query  {
 				},
 				fail:(error)=>{
 					reject(error)
+				}
+			})
+		})
+	}
+	
+	//根据项目的roleId和projectId去查询
+	findUserProjectRoleByRoleAndProject(roleId,projectId){
+		return new Promise((resolve,reject)=>{
+			uni.request({
+				url:userProjectRoleQuery,
+				data:{
+					roleId:roleId,
+					projectId:projectId
+				},
+				method:"POST",
+				dataType:'json',
+	            success:(res)=>{
+					resolve(res.data)
+				},
+				fail:(Error=>{
+					reject(Error)
+				})
+			})
+		})
+	}
+	
+	//根据projectId和useId查询用户所在的departmentId
+	findUserProjectDepartmentByUserIdAndProjectId(userId,projectId){
+		return new Promise((resolve,reject)=>{
+			uni.request({
+				url:userProjectDepartmentQuery,
+				data:{
+					userId:userId,
+					projectId:projectId
+				},
+				dataType:'json',
+				method:"POST",
+				success:(res)=>{
+					resolve(res.data)
+				},
+				fail:(Error)=>{
+					reject(Error)
+				}
+			})
+		})
+	}
+	
+	//根据专业的id去查询专业的名称
+	findUserDepartmentNameByDepartment(departmentId){
+		return new Promise((resolve,reject)=>{
+			uni.request({
+				url:departmentQuery,
+				data:{
+					departmentId:departmentId
+				},
+				dataType:'json',
+				method:'POST',
+				success:(res)=>{
+					resolve(res.data)
+				},
+				fail:(Error)=>{
+					reject(Error)
 				}
 			})
 		})

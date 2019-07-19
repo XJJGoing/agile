@@ -4,24 +4,31 @@
 		  <view>
 			  <text>权限:</text>
 			  <picker  @change="rolePickerChange" :value="index" :range="roleArry" >
-			    点击选择:{{displayRoleId}}
+				  {{beChangeUserRoleId}}
 			  </picker>
 		  </view>
 		  
-		   <view>
-		      <text>专业:</text>
-			  <picker @change="departmentPickerChange" :value="index" :range="departmentArry">
-                点击选择:{{displayDepartmentName}}
-              </picker>
-		  </view>
-		  
-		  <view class="addNewDepartment">
-			  <button @click="changeDisplay">新增专业:</button>
-			  <block v-if="isDisplay">
-				  <input placeholder="请输入专业的名称(4个字以内)" @input="inputDeparment"></input>
-				  <button @click="addDepartment">确认新增</button>
-			  </block>
-		  </view>
+		  <block v-if="beChangeUserRoleId===2">
+			   <view>
+				  <text>专业:</text>
+				  <picker @change="departmentPickerChange" :value="index" :range="departmentArry">
+					 <block v-if="hadDepartment">
+						 {{hadDepartment}}
+					 </block>
+					 <block v-else>
+						 请选择
+					 </block>
+				  </picker>
+			  </view>
+			  
+			  <view class="addNewDepartment">
+				  <button @click="changeDisplay">新增专业:</button>
+				  <block v-if="isDisplay">
+					  <input placeholder="请输入专业的名称(4个字以内)" @input="inputDeparment"></input>
+					  <button @click="addDepartment">确认新增</button>
+				  </block>
+			  </view>
+		  </block>
 		  
 		  <button @click="submitChange" class="submit" >提交修改</button>
 		  
@@ -34,32 +41,39 @@
 	const query = require('../../static/utils/utils').Query;
 	const Login = new login();
 	const Query = new query();
-	import {updateUserProjectRole,getAllDepartment} from '../../static/utils/api.js';
+	import {userProjectRoleUpdateBatch,
+	        getAllDepartment,
+			userProjectDepartmentAdd,
+			userProjectDepartmentQuery,
+			updateUserProjectDepartment,
+			departmentAdd
+			} from '../../static/utils/api.js';
 	var _this;
 	export default {
 		data() {
 			return {
 			   userInfo:" ",
 			   projectId:"",
-			   changeUserId:"",           //改变的权限的用户的id
+			   beChangeUserId:"",           //改变的权限的用户的id
+			   beChangeUserRoleId:"",         //原本的用户的权限
+			   beChangeUserProjectRoleId:"",  //t_user_project_role这张表中的id 用于更新权限用的
+			   
 			   roleArry:[2,3,4],          //可选的权限
 			   departmentArry:[],         //存放目前所有专业的专业名称
 			   isDisplay:false,          //是否显示新增专业的列表
 			   newDepartment:"",         //输入新增的专业
 			   allDepartmentArry:[],      //存放所有的专业的信息，包括专业的id、专业的名字。
-			   chooseRole:"" ,             //选择改变的权限
-			   chooseDepartmentId:"",     //选择改变的专业
+			   
 			    
-			   displayRoleId:"" ,          //用于显示的的roleId
-			   displayDepartmentName:""    //用于显示的选中的专业的名称
+			   hadDepartment:""         ,//查询到的用户已经有的专业
+			   hadDepartmentId:""        ,//查询到的原本已经有的departmentId
+			   hadUserProjectDepartmentId:""  ,//查询到原本已经有的t_user_project_department那张表的id用于更新用
+			   
+			   isHadUserProjectDepartment:false,    //判断这个用户之前有没有这个字段在t_user_project_department中
 			}
 		},
-		onShow(e){
-			 // console.log(e)
-		   //    let changeUserId = e.detail.id;
-			// console.log("改变的用户的权限的userid",changeUserId);
+		onShow(){
 			_this = this;
-			_this.changeUserId = 27;
 			uni.getStorage({
 				key:"userInfo",
 				success:(res)=>{
@@ -69,12 +83,12 @@
 					Query.findUser(id)
 					.then(data=>{
 						   _this.userInfo = data.data;
-					       let isRoot;
 						   uni.getStorage({
 						  	 	key:"nowInProject",
 						  	 	success:(res)=>{
 						  	 		_this.projectId = res.data.projectId;
-									_this.getAllDepartment();      //获取所有的专业
+									_this.getAllDepartment();             //获取所有的专业
+									_this.queryUserProjectDepartment();   //查询该用户目前的专业
 						  	 	}
 						  	 })	
 						 })
@@ -85,8 +99,17 @@
 			})
 		},
 		
+		onLoad(e){
+			_this = this;
+			let changeUserIdRoleId = e;
+			_this.beChangeUserId = parseInt(changeUserIdRoleId.userId);
+			_this.beChangeUserRoleId = parseInt(changeUserIdRoleId.roleId);
+			_this.beChangeUserProjectRoleId = parseInt(changeUserIdRoleId.id);
+			console.log(_this.beChangeUserId,_this.beChangeUserRoleId,_this.beChangeUserProjectRoleId)
+		},
+		
 		methods: {	
-			//获取目前所有的专业存放到departmentArry中
+			//获取目前所有的专业名称存放到departmentArry中供选择,所有专业的信息放到allDepartmentArry中
 			getAllDepartment:function(){
 			   _this = this;
 			   uni.request({
@@ -114,54 +137,152 @@
 			
 			
 			//改变用户对应的projectId的权限
-			changeUserRoleId:function(){
-				_this = this;
-			    uni.request({
-			    	url:updateUserProjectRole,
-					data:{
-						userId:_this.changeUserId,
-						roleId:_this.newRole,
+			updateUserRoleId:function(){
+				let data = {
+					    id:_this.beChangeUserProjectRoleId,
+						userId:_this.beChangeUserId,
+						roleId:_this.beChangeUserRoleId,
 						projectId:_this.projectId
-					}
+				};
+				console.log("url",userProjectRoleUpdateBatch)
+				console.log("提交修改权限的信息",data)
+				_this = this; 
+			    uni.request({
+			    	url:userProjectRoleUpdateBatch,
+					method:'POST',
+					data:[{
+						id:_this.beChangeUserProjectRoleId,
+						userId:_this.beChangeUserId,
+						roleId:_this.beChangeUserRoleId,
+						projectId:_this.projectId
+					}],
+					dataType:'json'
 			    })
-				.then(data=>{
+				.then(data=>{ 
 					console.log("更新成功",data)
 					uni.hideLoading();
 				})
 			},
 		
 		    
-		  //改变用户projectId对应departmentId  待完善
-		  changeUserDepartmentId:function(){
+		  //在t_user_project_department中增加projectId对应departmentId  
+		  addUserDepartmentId:function(){
 			  _this = this;
+			  let data = {
+				  userId:_this.beChangeUserId,
+				  departmentId:_this.hadDepartmentId, 
+				  projectId:_this.projectId
+			  };
+			  console.log("提交修改专业的信息",data)
 			  uni.request({
-			  	url:xxxxxxx,
-				data:{
-					userId:_this.changeUserId,
-					departmentId:_this.chooseDepartmentId, 
-					projectId:_this.projectId
+			  	url:userProjectDepartmentAdd,
+				method:"POST",
+				data:{ 
+					"departmentId": _this.hadDepartmentId,
+					"projectId": _this.projectId,
+				    "userId": _this.beChangeUserId
 				},
-				dataType:'json',
-				method:""
+				dataType:'json'
 			  })
 			  .then(data=>{
-				 console.log("更新成功",data);
+				 console.log("新增成功",data);
 				 uni.hideLoading();
 			  })
 		  },
 		  
+		  //在已经有t_user_project_department的情况下进行修改
+		  updateUserProjectDepartment:function(){
+			  uni.showLoading({
+			  	title:"修改中",
+				success:()=>{
+					uni.request({
+						url:updateUserProjectDepartment,
+						data:[{
+							id:_this.hadUserProjectDepartmentId,
+							userId:_this.beChangeUserId,
+							project:_this.projectId,
+							departmentId:_this.hadDepartmentId
+						}],
+						method:'POST',
+						success:(data)=>{
+							uni.hideLoading();
+							console.log("存在信息，进行更新",data)
+						}
+					})
+				 },
+				 fail:()=>{
+					 uni.showToast({
+					 	title:"网络连接错误",
+						duration:1000,
+						icon:"loading"
+					 })
+				 }
+			  })
+		  },
+		  
+		  //查询t_user_project_department中用户的专业
+		  queryUserProjectDepartment:function(){
+			  _this = this;
+			  uni.request({
+			  	url:userProjectDepartmentQuery,
+				data:{
+				  userId:_this.beChangeUserId,
+				  project:_this.projectId
+				},
+				dataType:'json',
+				method:"POST"
+			  })
+			  .then(data=>{
+				  console.log(data);
+				  console.log("查找到的用户项目专业信息",data[1].data.data.records[0]);
+				  let department = data[1].data.data.records[0];
+				  if(department!=undefined){
+					  _this.hadUserProjectDepartmentId = department.id;
+					  _this.isHadUserProjectDepartment = true;
+					  let departmentId = data[1].data.data.records[0].departmentId;
+					 _this.hadDepartmentId = departmentId;
+					 for(var i in _this.allDepartmentArry){
+					 	 if(departmentId === _this.allDepartmentArry[i].id){
+					 		  _this.hadDepartment = _this.allDepartmentArry[i].name
+							  console.log(_this.hadDepartment)
+					 	 }
+					 }  
+				  }else{
+					  _this.hadDepartment = "";
+					  _this.isHadUserProjectDepartment = false;
+					  _this.hadUserProjectDepartmentId = "";
+				  }
+				 
+			  })
+		  },
+		  
+		  
+		  
 		  //提交更改的时候
 		  submitChange:function(){
 			  _this = this;
-			  if(_this.chooseRole&&_this.chooseDepartmentId){
-				uni.showLoading({
-					 title:"提交中",
-					 success:()=>{
-						   _this.changeUserId();    //改变role
-						   _this.changeUserDepartmentId();  //改变department
-					 }
-				})
-			  }else{
+			  if(_this.hadDepartmentId){
+				 uni.showLoading({
+				 	 title:"提交中",
+				 	 success:()=>{
+				 		   if(_this.isHadUserProjectDepartment){ //已经有的字段，进行更新
+							   _this.updateUserProjectDepartment();
+						   }else{  //没有字段调用插入
+						       console.log("进行字段的插入")
+							   _this.addUserDepartmentId();
+						   }
+				 	 }
+				 }) 
+			  }
+			  if(_this.beChangeUserRoleId){
+				   uni.showLoading({
+				  	 title:"提交中",
+				  	 success:()=>{
+				  		   _this.updateUserRoleId();  //改变roleId
+				  	 }
+				  }) 
+			  }
+			  else{
 				 uni.showToast({
 				 	duration:1000,
 					icon:"none",
@@ -177,38 +298,68 @@
 		   
 		   //输入专业
 		   inputDeparment:function(e){
-			   console.log("输入的新增的专业",e.detail.value)
 			   this.newDepartment = e.detail.value;
 		   },
 			 
 		   //确认新增专业   ---
 		   addDepartment:function(){
-			   if(_this.inputDeparment){    //这里添加请求新增专业,待完善，完善对department的增删改查
-				  
+			   _this = this;
+			   if(_this.newDepartment&&_this.newDepartment.length<=4){ 
+	
+				  //这里添加请求新增专业
+				  uni.showLoading({
+				  	title:"添加中",
+				    success:()=>{ 
+						 uni.request({
+							url:departmentAdd,
+						    method:"POST",
+							data:{
+								name:_this.newDepartment
+							},
+						    dataType:'josn'
+						 })
+						 .then(data=>{ //新增专业成功，在此调用获取所有专业的函数
+							uni.hideLoading();
+						    _this.getAllDepartment() 
+						 })
+						 .catch(error=>{
+							uni.showToast({
+								title:"添加失败",
+								icon:"loading",
+								duration:1000
+							})
+						 })
+					}
+				  })
+			   }else{
+				  uni.showToast({
+				  	title:"请按照要求填入专业",
+					duration:1000,
+					icon:'none'
+				  })
 			   }
 		   },
 		   
 		   //选择权限的改变
 		   rolePickerChange:function(e){
 			   let index = e.detail.value;
-			   this.chooseRole = this.roleArry[index];
-			   console.log("选中的roleId",this.chooseRole);
-			   this.displayRoleId = this.chooseRole;
+			   console.log("选中的roleId",this.roleArry[index]);
+			   this.beChangeUserRoleId = this.roleArry[index]
 		   },
 		   
 		   //专业改变的时候
 		   departmentPickerChange:function(e){
 			   let index = e.detail.value;
 			   console.log("选中的department名字",this.departmentArry[index]);
-			   this.displayDepartmentName = this.departmentArry[index];
+			   this.hadDepartment = this.departmentArry[index];
 			   for(var i in this.allDepartmentArry){
 				   if(this.departmentArry[index] === this.allDepartmentArry[i].name){
-					   this.chooseDepartmentId = this.allDepartmentArry[i].id;
+					   this.hadDepartmentId = this.allDepartmentArry[i].id;
 				   }
 			   }
-			   console.log("选中的departmentId",this.chooseDepartmentId)
+			   console.log("选中的departmentId",this.hadDepartmentId)
 			   
-		   }
+		   } 
 	   }
 	   
 	}

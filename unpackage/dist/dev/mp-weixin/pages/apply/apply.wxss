@@ -5,7 +5,6 @@
 }
 .search_project{
 	width: 100%;
-	background-color: #2D8CF0;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -19,7 +18,8 @@
 	-webkit-align-items: center;
 	    -ms-flex-align: center;
 	        align-items: center;
-	margin-top:100rpx;
+	margin-top:50rpx;
+	color:#FEFEFE;
 }
 ::-webkit-scrollbar{
 	width: 4rpx;
@@ -27,42 +27,15 @@
 }
 .ibutton{
 	width: 300rpx;
-	height: 200rpx;
-}
-.ipage{
-	width: 100%;
-	height: 800rpx;
-}
-.detail{
-	width: 100%;
-	height: 700rpx;
-	background-color: #FF9900;
-}
-.detail_project{
-	width: 100%;
-	height: 50rpx;
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
-	        flex-direction: row;
+	height: 100rpx;
+	color: #19BE6B;
+	border-radius: 4%;
+	font-size: 35rpx;
+	font-weight: 300;
 	margin-top: 10rpx;
-	-webkit-justify-content: space-around;
-	    -ms-flex-pack: distribute;
-	        justify-content: space-around;
-	-webkit-box-align: center;
-	-webkit-align-items: center;
-	    -ms-flex-align: center;
-	        align-items: center;
-	background-color: #19BE6B;
 }
 .applyList{
 	width: 100%;
-	height: 650rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -72,9 +45,10 @@
 	-webkit-flex-direction: column;
 	    -ms-flex-direction: column;
 	        flex-direction: column;
-	-webkit-justify-content: space-around;
-	    -ms-flex-pack: distribute;
-	        justify-content: space-around;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
 	    -ms-flex-align: center;
@@ -94,55 +68,51 @@
 	-webkit-justify-content: flex-start;
 	    -ms-flex-pack: start;
 	        justify-content: flex-start;
-	margin-top: 10rpx;
-	width: 100%;
-	font-size:25rpx;
-}
-.appListView1{
-	height: 100rpx;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
 	    -ms-flex-align: center;
 	        align-items: center;
-}
-.appListView1 input{
-	height: 60rpx;
-	width: 450rpx;
-    border: 1px solid #19BE6B;
-	-webkit-border-radius: 2%;
-	        border-radius: 2%;
-}
-.appListView1 text{
+	margin-top: 5rpx;
 	height: 100rpx;
-	margin-left: 30rpx;
-	width: 100rpx;
-	line-height: 100rpx;
-	font-size:30rpx!important ;
+	width: 100%;
+	font-size: 25rpx;
+}
+.applyList view text{
+	width:120rpx;
+	margin-left: 10rpx;
+	line-height: 80rpx;
+	height: 80rpx;
+}
+.applyList view input{
+	margin-left: 5rpx;
+	height: 80rpx;
+	line-height: 80rpx;
+	border-radius: 4%;
+	border:1rpx solid #eea4b8;
 }
 .appListView2{
-	height: 250rpx;
-	background-color: #19BE6B;
+	height: 250rpx!important;
 }
 .appListView2 text{
-  margin-left: 30rpx;
-  line-height: 250rpx;
-  width: 100rpx;
-  height: 250rpx;
-  font-size:30rpx!important ;
+  height: 250rpx!important;
+  font-size:30rpx!important;
+  line-height: 250rpx!important;
 }
 .appListView2 textarea{
 	height: 250rpx;
-	border: 1px solid #2D8CF0;
-	margin-right: 10rpx;
-	-webkit-border-radius: 2%;
-	        border-radius: 2%;
+    border:1px solid #f8f1f3;
+	border-radius: 2%;
+	margin-top: 5rpx;
 }
 /*提交申请表的按钮*/
 .submitApply{
 	width: 200rpx;
 	height: 100rpx;
-	-webkit-border-radius: 2%;
-	        border-radius: 2%;
+	border-radius: 2%;
+	margin-top: 15rpx;
+	margin-bottom: 20rpx;
+	font-size: 30rpx;
+	line-height: 100rpx;
 }
 .ableProjects{
 	display: -webkit-box;
@@ -159,16 +129,17 @@
 	    -ms-flex-pack: start;
 	        justify-content: flex-start;
 	width: 100%;
+	margin-top: 50rpx;
 }
 .titleInfo{
 	height: 50rpx;
-	background-color: #007AFF;
 	margin-top: 10rpx;
 	width: 100%;
+	margin-bottom: 15rpx;
 }
 .myHadProject{
 	height: 50rpx;
-	width: 90%;
+	width: 100%;
 	font-size: 30rpx;
 }
 .myHadProject button{
@@ -176,5 +147,6 @@
 	line-height: 50rpx;
 	text-align: left;
 	font-size:25rpx;
+	width: 100%;
 }
 

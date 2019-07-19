@@ -85,6 +85,16 @@
             "path" : "pages/changeUserRole/changeUserRole",
             "style" : {}
         }
+        ,{
+            "path" : "pages/auditedRoleApply/auditedRoleApply",
+            "style" : {
+				
+			}
+        }
+        ,{
+            "path" : "pages/picture/picture",
+            "style" : {}
+        }
     ],
 	
 	"globalStyle": {
@@ -104,7 +114,7 @@
 			 "iconPath": "/static/img/home.png",
 			 "selectedIconPath": "/static/img/home_select.png"
 		},{
-			"pagePath": "pages/plain/plain",
+			"pagePath": "pages/picture/picture",
 			"text": "燃尽图",
 			"iconPath": "/static/img/picture.png",
 			"selectedIconPath": "/static/img/picture_select.png"

@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "w-picker": "/components/w-picker/w-picker",
+    "uni-card": "/components/uni-card/uni-card"
+  }
 }
