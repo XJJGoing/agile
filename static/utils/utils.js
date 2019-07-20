@@ -2,7 +2,8 @@
 import {queryUser,
         userProjectRoleQuery,
 		userProjectDepartmentQuery,
-		departmentQuery
+		departmentQuery,
+		projectQuery
 	   } from './api';
 
 //登录模块
@@ -234,6 +235,26 @@ class Query  {
 				},
 				dataType:'json',
 				method:'POST',
+				success:(res)=>{
+					resolve(res.data)
+				},
+				fail:(Error)=>{
+					reject(Error)
+				}
+			})
+		})
+	}
+	
+	//查询所有的项项目信息
+	findAllProjectInfo(){
+		return new Promise((resolve,reject)=>{
+			uni.request({
+				url:projectQuery,
+				method:"POST",
+				data:{
+					
+				},
+				dataType:'json',
 				success:(res)=>{
 					resolve(res.data)
 				},

@@ -74,7 +74,7 @@
 			</view>
 			<block v-if="ableLookProject">
 				<view v-for="(item,index) in ableLookProject" :key="index" class="myHadProject">
-					<button :id="JSON.stringify(item)" @click="enterProject">A项目{{index+1}}</button>
+					<button :id="JSON.stringify(item)" @click="enterProject">{{item.projectName}}</button>
 				</view>
 			</block>	
 			<view class="titleInfo">
@@ -82,7 +82,7 @@
 			</view>
 			<block  v-if="chargeProject">
 				<view v-for="(item,index) in chargeProject" :key="index" class="myHadProject">
-					<button :id="JSON.stringify(item)" @click="enterProject">C项目{{index+1}}</button>
+					<button :id="JSON.stringify(item)" @click="enterProject">{{item.projectName}}</button>
 				</view>	
 			</block>	
 			<view class="titleInfo">
@@ -90,7 +90,7 @@
 			</view>
 			<block v-if="joinProject">
 				<view v-for="(item,index) in joinProject" :key="index" class="myHadProject">
-					<button :id="JSON.stringify(item)" @click="enterProject" >J项目{{index+1}}</button>
+					<button :id="JSON.stringify(item)" @click="enterProject" >{{item.projectName}}</button>
 				</view>	
 		    </block>
 		</view>
@@ -121,7 +121,6 @@
 			return {
 				width:"",                 //设置输入框的长度
 				userInfo:{},              //用户的个人信息，
-				nowProjectItems:[],       //实际的项目，存放着项目的信息。
 			
 				isLookApply:false,
 				windowWidth:"" ,          //可使用的窗口的宽度
@@ -139,6 +138,8 @@
 				ableLookProject:[],     //可查看的项目
 				chargeProject:[],       //负责的项目
 				joinProject:[],         //参与的项目
+				
+				allUserProjectInfo:[]    //存放着所有项目的信息
 			}
 		},
 		
@@ -156,7 +157,7 @@
 				   .then(data=>{
 					   console.log("用户的信息",data.data.records[0]);
 					  _this.userInfo = data.data.records[0];
-					  _this.getUserProjectRole();         //查询t_user_role_project中有的用户的项目	
+					  _this.getAllProjectInfo();         //查询所有的项目信息
 				   })
 				   .catch(error=>{
 					   uni.showToast({ 
@@ -229,8 +230,32 @@
 				_this.applyWhy = e.detail.value;
 			},
 			
+			//获取所有项目的信息
+			 getAllProjectInfo:function(){
+						  _this = this;
+						  uni.showLoading({
+						  	title:"获取中",
+							success:()=>{
+							  Query.findAllProjectInfo()
+							  .then(data=>{
+								  uni.hideLoading();
+								  console.log("获取到的所有的项目的信息",data.data.records);
+								  _this.allUserProjectInfo = data.data.records;
+								  _this.getUserProjectRole();
+							   })
+							   .catch(Error=>{
+								   uni.showToast({
+								   	title:"网络错误",
+									icon:"none",
+									duration:1000
+								   })
+							   })
+							}
+						  })
+			    },
 			
-	        //查询t_role_project_role表中所有用户的字段（userId、projectId、roleId）
+			
+	        //查询t_role_project_role表中所有用户的字段（userId、projectId、roleId并进行显示编号处理
 			getUserProjectRole:function(){
 				_this = this;			
 				Query.findUserProjectRoleByUserId(_this.userInfo.id)
@@ -251,9 +276,42 @@
 					   }
 					  });	
 					}
-					_this.chargeProject = arry1;
-					_this.joinProject = arry2;
-					_this.ableLookProject = arry3;	
+					
+					//进行显示编号的处理
+					let arry4 = [];
+					let arry5 = [];
+					let arry6 = [];
+					for(let i = 0;i<_this.allUserProjectInfo.length;i++){
+						for(let j = 0;j<arry1.length;j++){
+							if(_this.allUserProjectInfo[i].id === arry1[j].projectId){
+								let projectName = _this.allUserProjectInfo[i].projectName;
+								let newObject = {...arry1[j],projectName};
+								arry4.push(newObject);
+							}
+						}
+					}
+					for(let i = 0;i<_this.allUserProjectInfo.length;i++){
+						for(let j = 0;j<arry2.length;j++){
+							if(_this.allUserProjectInfo[i].id === arry2[j].projectId){
+								let projectName = _this.allUserProjectInfo[i].projectName;
+								let newObject = {...arry2[j],projectName};
+								arry5.push(newObject);
+							}
+						}
+					}
+					for(let i = 0;i<_this.allUserProjectInfo.length;i++){
+						for(let j = 0;j<arry3.length;j++){
+							if(_this.allUserProjectInfo[i].id === arry3[j].projectId){
+								let projectName = _this.allUserProjectInfo[i].projectName;
+								let newObject = {...arry3[j],projectName};
+								arry6.push(newObject);
+							}
+						}
+					}
+					console.log("数组",arry4,arry5,arry6)
+					_this.chargeProject = arry4;
+					_this.joinProject = arry5;
+					_this.ableLookProject = arry6;	
 				})
 				.catch(error=>{
 					uni.showToast({
@@ -266,7 +324,6 @@
 			},
 			
 			//根据具体得到的ableLookProject chargeProject joinProject这三个去查询项目的信息
-			
 			//选择项目并进入选中项目，设置nowInProject,并且调用设置sprintId的函数
 			enterProject:function(e){
 				_this = this;
@@ -313,14 +370,12 @@
 				_this = this;
 				let applyTime = formatDate(new Date());  
 				console.log("获取申请的时间",applyTime)
-				//console.log("我的申请的时间",applyTime)
-				//console.log("提交申请的项目编号和真实姓名和原因",_this.projectName,_this.trueName,_this.why)
 				if(_this.projectName&&_this.trueName&&_this.why){    //申请查看的项目
 				    _this.findProjectIdByProjectName(_this.projectName,(data)=>{
-						console.log("查询搭配的即将发送的",data[0])
 						if(data.length!=0){
 						  let projectId = data[0].id;
 						   console.log(_this.toJude(projectId))
+						   
 						   //首先判断用户是不是已经有了这个项目的权限了
 	                       if(_this.toJude(projectId)){
 							   uni.showToast({

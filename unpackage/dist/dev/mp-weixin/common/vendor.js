@@ -15002,6 +15002,7 @@ var _api = __webpack_require__(/*! ./api */ "../../../../../个人信息/agile/s
 
 
 
+
 //登录模块
 var Login = /*#__PURE__*/function () {
   function Login(arg) {_classCallCheck(this, Login);
@@ -15231,6 +15232,26 @@ var Query = /*#__PURE__*/function () {
 
           dataType: 'json',
           method: 'POST',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(Error) {
+            reject(Error);
+          } });
+
+      });
+    }
+
+    //查询所有的项项目信息
+  }, { key: "findAllProjectInfo", value: function findAllProjectInfo() {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.projectQuery,
+          method: "POST",
+          data: {},
+
+
+          dataType: 'json',
           success: function success(res) {
             resolve(res.data);
           },

@@ -212,7 +212,7 @@ var _time = __webpack_require__(/*! ../../static/utils/time.js */ "../../../../.
 
 
 
-var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js"); //
+var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
 //
 //
 //
@@ -315,7 +315,6 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query(); //引入时间格式处理函数
 var uniPagination = function uniPagination() {return __webpack_require__.e(/*! import() | components/uni-pagination/uni-pagination */ "components/uni-pagination/uni-pagination").then(__webpack_require__.bind(null, /*! ../../components/uni-pagination/uni-pagination.vue */ "../../../../../个人信息/agile/components/uni-pagination/uni-pagination.vue"));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ "../../../../../个人信息/agile/components/uni-tag/uni-tag.vue"));};var _this;var _default = { components: { uniPagination: uniPagination, uniTag: uniTag }, data: function data() {return { width: "", //设置输入框的长度
       userInfo: {}, //用户的个人信息，
-      nowProjectItems: [], //实际的项目，存放着项目的信息。
       isLookApply: false, windowWidth: "", //可使用的窗口的宽度
       isApplyProject: false, //展示申请项目的页面
       trueName: "", //申请查看的人的真实姓名
@@ -326,9 +325,10 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
       applyWhy: "", //申请项目的理由 
       ableLookProject: [], //可查看的项目
       chargeProject: [], //负责的项目
-      joinProject: [] //参与的项目
+      joinProject: [], //参与的项目
+      allUserProjectInfo: [] //存放着所有项目的信息
     };}, onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };_this.getSystem(); //获取系统信息
-        Query.findUser(id).then(function (data) {console.log("用户的信息", data.data.records[0]);_this.userInfo = data.data.records[0];_this.getUserProjectRole(); //查询t_user_role_project中有的用户的项目	
+        Query.findUser(id).then(function (data) {console.log("用户的信息", data.data.records[0]);_this.userInfo = data.data.records[0];_this.getAllProjectInfo(); //查询所有的项目信息
         }).catch(function (error) {uni.showToast({ title: "网络连接错误", icon: 'none', duration: 500 });});}, fail: function fail(error) {uni.redirectTo({ url: '../login/login' });} });}, methods: { //获取系统信息设置输入框的长达
     getSystem: function getSystem() {uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 80; //50px是text的upx转成px的长度
         }, fail: function fail() {uni.showToast({ duration: 500, title: "获取宽度失败", icon: "none" });} });}, //输入查看者的真实姓名
@@ -337,8 +337,33 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
     inputWhy: function inputWhy(e) {_this = this;_this.why = e.detail.value;}, //输入申请项目人的真实姓名
     inputApplyTrueName: function inputApplyTrueName(e) {_this = this;_this.applyTrueName = e.detail.value;}, //输入申请项目的名称
     inputApplyProjectName: function inputApplyProjectName(e) {_this = this;_this.applyProjectName = e.detail.value;}, //输入申请项目的理由
-    inputApplyWhy: function inputApplyWhy(e) {_this = this;_this.applyWhy = e.detail.value;}, //查询t_role_project_role表中所有用户的字段（userId、projectId、roleId）
-    getUserProjectRole: function getUserProjectRole() {_this = this;Query.findUserProjectRoleByUserId(_this.userInfo.id).then(function (data) {var dataAll = data.data.records;console.log("查询到的用户权限项目", dataAll);var arry1 = [];var arry2 = [];
+    inputApplyWhy: function inputApplyWhy(e) {_this = this;_this.applyWhy = e.detail.value;}, //获取所有项目的信息
+    getAllProjectInfo: function getAllProjectInfo() {_this = this;uni.showLoading({ title: "获取中", success: function success() {Query.findAllProjectInfo().then(function (data) {uni.hideLoading();
+            console.log("获取到的所有的项目的信息", data.data.records);
+            _this.allUserProjectInfo = data.data.records;
+            _this.getUserProjectRole();
+          }).
+          catch(function (Error) {
+            uni.showToast({
+              title: "网络错误",
+              icon: "none",
+              duration: 1000 });
+
+          });
+        } });
+
+    },
+
+
+    //查询t_role_project_role表中所有用户的字段（userId、projectId、roleId并进行显示编号处理
+    getUserProjectRole: function getUserProjectRole() {
+      _this = this;
+      Query.findUserProjectRoleByUserId(_this.userInfo.id).
+      then(function (data) {
+        var dataAll = data.data.records;
+        console.log("查询到的用户权限项目", dataAll);
+        var arry1 = [];
+        var arry2 = [];
         var arry3 = [];
         if (dataAll.length != 0) {
           dataAll.forEach(function (item, index) {
@@ -351,9 +376,42 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
             }
           });
         }
-        _this.chargeProject = arry1;
-        _this.joinProject = arry2;
-        _this.ableLookProject = arry3;
+
+        //进行显示编号的处理
+        var arry4 = [];
+        var arry5 = [];
+        var arry6 = [];
+        for (var i = 0; i < _this.allUserProjectInfo.length; i++) {
+          for (var j = 0; j < arry1.length; j++) {
+            if (_this.allUserProjectInfo[i].id === arry1[j].projectId) {
+              var projectName = _this.allUserProjectInfo[i].projectName;
+              var newObject = _objectSpread({}, arry1[j], { projectName: projectName });
+              arry4.push(newObject);
+            }
+          }
+        }
+        for (var _i = 0; _i < _this.allUserProjectInfo.length; _i++) {
+          for (var _j = 0; _j < arry2.length; _j++) {
+            if (_this.allUserProjectInfo[_i].id === arry2[_j].projectId) {
+              var _projectName = _this.allUserProjectInfo[_i].projectName;
+              var _newObject = _objectSpread({}, arry2[_j], { projectName: _projectName });
+              arry5.push(_newObject);
+            }
+          }
+        }
+        for (var _i2 = 0; _i2 < _this.allUserProjectInfo.length; _i2++) {
+          for (var _j2 = 0; _j2 < arry3.length; _j2++) {
+            if (_this.allUserProjectInfo[_i2].id === arry3[_j2].projectId) {
+              var _projectName2 = _this.allUserProjectInfo[_i2].projectName;
+              var _newObject2 = _objectSpread({}, arry3[_j2], { projectName: _projectName2 });
+              arry6.push(_newObject2);
+            }
+          }
+        }
+        console.log("数组", arry4, arry5, arry6);
+        _this.chargeProject = arry4;
+        _this.joinProject = arry5;
+        _this.ableLookProject = arry6;
       }).
       catch(function (error) {
         uni.showToast({
@@ -366,7 +424,6 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
     },
 
     //根据具体得到的ableLookProject chargeProject joinProject这三个去查询项目的信息
-
     //选择项目并进入选中项目，设置nowInProject,并且调用设置sprintId的函数
     enterProject: function enterProject(e) {
       _this = this;
@@ -413,14 +470,12 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
       _this = this;
       var applyTime = (0, _time.formatDate)(new Date());
       console.log("获取申请的时间", applyTime);
-      //console.log("我的申请的时间",applyTime)
-      //console.log("提交申请的项目编号和真实姓名和原因",_this.projectName,_this.trueName,_this.why)
       if (_this.projectName && _this.trueName && _this.why) {//申请查看的项目
         _this.findProjectIdByProjectName(_this.projectName, function (data) {
-          console.log("查询搭配的即将发送的", data[0]);
           if (data.length != 0) {
             var projectId = data[0].id;
             console.log(_this.toJude(projectId));
+
             //首先判断用户是不是已经有了这个项目的权限了
             if (_this.toJude(projectId)) {
               uni.showToast({

@@ -24,17 +24,28 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
 			"current": -1,
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 1,
 			"list": [
 				{
-					"name": "swiper1",
 					"id": 0,
-					"pathName": "pages/login/login"
+					"name": "swiper1",
+					"pathName": "pages/login/login",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "apply",
+					"pathName": "pages/apply/apply",
+					"scene": null
 				}
 			]
 		}

@@ -278,23 +278,32 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       nowProject: {}, //显示的项目
       isDisplay: true, //是否显示按钮
       isChooseInput: true, //是否可以输入
-      roleId: "", target: "", finishTime: "", result: "", management: "", sprintNum: "", people: "", allUserProjects: [], //从t_user_role_project这张表中拿到的所有的权限为1234的项目					  
-      myProject: [], //切换的项目,权限为 1 2的项目的id
-      myLookProject: [] //切换项目，项目的权限为可查看的id	
-    };}, //写好的页面加载的函数
-  onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId = res.data.roleId;_this.getProject(); //获得当前项目的信息
-              _this.getUserProjectRole(); //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
+      roleId: "", target: "", finishTime: "", result: "", management: "", sprintNum: "", people: "", allUserProjectRoles: [], //从t_user_role_project这张表中拿到的所有的权限为1234的项目		
+      allUserProjectInfo: [], //所有的项目信息
+      myProject: [], //切换的项目,权限为 1 2的项目的编号即项目的projectName
+      myLookProject: [] //切换项目，项目的权限为可查看的编号projectName
+    };}, mounted: function mounted() {//获取所有的项目信息 
+  }, //写好的页面加载的函数
+  onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId = res.data.roleId;_this.getAllProjectInfo(); //获取所有项目的信息
             }, fail: function fail() {uni.redirectTo({ url: '../apply/apply' });} });}).catch(function (error) {console.log(error);});}, fail: function fail() {uni.redirectTo({ url: '../login/login' });} });}, methods: { //设置输入框的长度
     getSystem: function getSystem() {_this = this;uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 80;} });}, //填写信息的函数
-    ftarget: function ftarget(e) {this.target = e.detail.value;}, ffinishTime: function ffinishTime(e) {this.finishTime = e.detail.value;}, fresult: function fresult(e) {
+    ftarget: function ftarget(e) {this.target = e.detail.value;},
+    ffinishTime: function ffinishTime(e) {
+      this.finishTime = e.detail.value;
+    },
+
+    fresult: function fresult(e) {
       this.result = e.detail.value;
     },
+
     fmanagement: function fmanagement(e) {
       this.management = e.detail.value;
     },
+
     fspintNum: function fspintNum(e) {
       this.sprintNum = e.detail.value;
     },
+
     fpeople: function fpeople(e) {
       this.people = e.detail.value;
     },
@@ -303,9 +312,15 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     bindPickerMyProject: function bindPickerMyProject(e) {
       _this = this;
       var index = e.detail.value;
-      var chooseProjectId = _this.myProject[index]; //选中的项目的id
+      var chooseProjectName = _this.myProject[index]; //选中的项目的名称
+      var chooseProjectId; //选中的项目的id
+      for (var i = 0; i < _this.allUserProjectInfo.length; i++) {//筛选选中的项目的id
+        if (chooseProjectName === _this.allUserProjectInfo[i].projectName) {
+          chooseProjectId = _this.allUserProjectInfo[i].id;
+        }
+      }
       var nowInProject; //暂时存放项目权限用户信息.
-      _this.allUserProjects.forEach(function (item, index) {
+      _this.allUserProjectRoles.forEach(function (item, index) {
         if (item.projectId === chooseProjectId) {
           nowInProject = item;
         }
@@ -334,9 +349,15 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     bindPickerLookProject: function bindPickerLookProject(e) {
       _this = this;
       var index = e.detail.value;
-      var chooseProjectId = _this.myLookProject[index]; //选中的项目的id
+      var chooseProjectName = _this.myLookProject[index]; //选中的项目的名称
+      var chooseProjectId; //选中的项目的id
+      for (var i = 0; i < _this.allUserProjectInfo.length; i++) {//筛选选中的项目的id
+        if (chooseProjectName === _this.allUserProjectInfo[i].projectName) {
+          chooseProjectId = _this.allUserProjectInfo[i].id;
+        }
+      }
       var nowInProject; //准备将storage中的nowInProject给替换掉.
-      _this.allUserProjects.forEach(function (item, index) {
+      _this.allUserProjectRoles.forEach(function (item, index) {
         if (item.projectId === chooseProjectId) {
           nowInProject = item;
         }
@@ -361,50 +382,77 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
     },
 
+    //获取所有的项目的信息
+    getAllProjectInfo: function getAllProjectInfo() {
+      _this = this;
+      uni.showLoading({
+        title: "获取中",
+        success: function success() {
+          Query.findAllProjectInfo().
+          then(function (data) {
+            uni.hideLoading();
+            console.log("获取到的所有的项目的信息", data.data.records);
+            _this.allUserProjectInfo = data.data.records;
+            _this.getProject(); //请求结束之后页面项目的信息
+            _this.getUserProjectRole(); //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
+          }).
+          catch(function (Error) {
+            uni.showToast({
+              title: "网络错误",
+              icon: "none",
+              duration: 1000 });
 
-    //显示查看的项目,并且判断项目的信息为空的时候可以实现填写项目的信息。
+          });
+        } });
+
+    },
+
+    //显示查看的项目,并且判断项目的信息为空的时候可以实现填写项目的信息,
+    //不需要再次发送请求
     getProject: function getProject() {
       _this = this;
-      uni.request({
-        url: _api.projectQuery,
-        method: "POST",
-        data: {
-          id: _this.projectId,
-          pageNum: 0,
-          pageSize: 1 },
-
-        dataType: 'json' }).
-
-      then(function (data) {
-        var project = data[1].data.data.records[0];
-        _this.nowProject = project;
-
-        //判断是否显示按钮和是否可以输入
-        if (project.projectName && project.projectTarget &&
-        project.projectFinishTime && project.projectResult &&
-        project.projectManagement && project.projectSprintNum && project.projectPeople != 0 && _this.roleId === 1)
-        {
-          _this.isDisplay = false; //不为空不显示,输入默认就行了
-          _this.isChooseInput = true;
-        } else if (_this.roleId === 1) {
-          _this.isDisplay = true;
-          _this.isChooseInput = false; //有空的并且权限为1
-        } else {//其他权限 不可以输入 以及不显示,无论空不空
-          _this.isChooseInput = true;
-          _this.isDisplay = false;
+      var project;
+      for (var i = 0; i < _this.allUserProjectInfo.length; i++) {
+        if (_this.projectId === _this.allUserProjectInfo[i].id) {
+          project = _this.allUserProjectInfo[i];
         }
-      });
+      }
+      console.log("具体的项目", project);
+      _this.nowProject = project;
+
+      //对已经有的数据项赋值给输入赋值的数据项，即为空的填不为空的不用再填
+      _this.target = project.projectTarget;
+      _this.sprintNum = project.projectSprintNum;
+      _this.management = project.projectManagement;
+      _this.people = project.projectPeople;
+      _this.finishTime = project.projectFinishTime;
+      _this.result = project.projectResult;
+
+      //判断是否显示按钮和是否可以输入
+      if (project.projectName && project.projectTarget &&
+      project.projectFinishTime && project.projectResult &&
+      project.projectManagement && project.projectSprintNum && project.projectPeople != 0 && _this.roleId === 1)
+      {
+        _this.isDisplay = false; //不为空不显示,输入默认就行了
+        _this.isChooseInput = true;
+      } else if (_this.roleId === 1) {
+        _this.isDisplay = true;
+        _this.isChooseInput = false; //有空的并且权限为1
+      } else {//其他权限 不可以输入 以及不显示,无论空不空
+        _this.isChooseInput = true;
+        _this.isDisplay = false;
+      }
 
     },
 
 
-    //获取用户的权限为将1 2 3 4权限的项目全部查找到再进行分类
+    //获取用户的权限为将1 2 3 4权限的项目全部查找到再进行分类并且显示项目编号
     getUserProjectRole: function getUserProjectRole() {
       _this = this;
       Query.findUserProjectRoleByUserId(_this.userInfo.id).
       then(function (data) {
         var dataAll = data.data.records;
-        _this.allUserProjects = dataAll;
+        _this.allUserProjectRoles = dataAll;
         var arry1 = [];
         var arry2 = [];
         if (dataAll != 0) {
@@ -416,8 +464,26 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
             }
           });
         }
-        _this.myProject = arry1;
-        _this.myLookProject = arry2;
+
+        //进行显示项目编号处理
+        var arry3 = [];
+        var arry4 = [];
+        for (var i = 0; i < _this.allUserProjectInfo.length; i++) {
+          for (var j = 0; j < arry1.length; j++) {
+            if (_this.allUserProjectInfo[i].id === arry1[j]) {
+              arry3.push(_this.allUserProjectInfo[i].projectName);
+            }
+          }
+        }
+        for (var _i = 0; _i < _this.allUserProjectInfo.length; _i++) {
+          for (var _j = 0; _j < arry2.length; _j++) {
+            if (_this.allUserProjectInfo[_i].id === arry2[_j]) {
+              arry4.push(_this.allUserProjectInfo[_i].projectName);
+            }
+          }
+        }
+        _this.myProject = arry3;
+        _this.myLookProject = arry4;
       });
     },
 
@@ -425,6 +491,14 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     //提交项目的函数
     saveProject: function saveProject() {
       _this = this;
+      console.log("提交的信息", {
+        target: _this.target,
+        sprintNum: _this.sprintNum,
+        management: _this.management,
+        people: _this.people,
+        finishTime: _this.finishTime,
+        result: _this.result });
+
       if (_this.target && _this.sprintNum && _this.management && _this.people && _this.finishTime && _this.result) {
         //这里项目信息，将项目信息提交到服务端
         var data = {
