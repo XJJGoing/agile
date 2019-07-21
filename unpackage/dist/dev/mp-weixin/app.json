@@ -15,7 +15,8 @@
     "pages/addTask/addTask",
     "pages/changeUserRole/changeUserRole",
     "pages/auditedRoleApply/auditedRoleApply",
-    "pages/picture/picture"
+    "pages/picture/picture",
+    "pages/dateWork/dateWork"
   ],
   "subPackages": [],
   "window": {
@@ -51,6 +52,5 @@
     ]
   },
   "permission": {},
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

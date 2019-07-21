@@ -286,7 +286,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
   }, //写好的页面加载的函数
   onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId = res.data.roleId;_this.getAllProjectInfo(); //获取所有项目的信息
             }, fail: function fail() {uni.redirectTo({ url: '../apply/apply' });} });}).catch(function (error) {console.log(error);});}, fail: function fail() {uni.redirectTo({ url: '../login/login' });} });}, methods: { //设置输入框的长度
-    getSystem: function getSystem() {_this = this;uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 80;} });}, //填写信息的函数
+    getSystem: function getSystem() {_this = this;uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 80;} });}, //填写信息的函数 
     ftarget: function ftarget(e) {this.target = e.detail.value;},
     ffinishTime: function ffinishTime(e) {
       this.finishTime = e.detail.value;
@@ -305,7 +305,17 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     },
 
     fpeople: function fpeople(e) {
-      this.people = e.detail.value;
+      var reg = /^[0-9]$/g;
+      var people = e.detail.value;
+      if (reg.test(people)) {
+        this.people = people;
+      } else {
+        uni.showToast({
+          title: "请输入数字",
+          icon: "none",
+          duration: 500 });
+
+      }
     },
 
     //切换12权限项目
@@ -501,7 +511,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
       if (_this.target && _this.sprintNum && _this.management && _this.people && _this.finishTime && _this.result) {
         //这里项目信息，将项目信息提交到服务端
-        var data = {
+        var data = [{
           id: _this.projectId,
           projectId: _this.projectId,
           projectTarget: _this.target,
@@ -509,11 +519,11 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
           projectManagement: _this.management,
           projectPeople: _this.people,
           projectFinishTime: _this.finishTime,
-          projectResult: _this.projectResult
+          projectResult: _this.projectResult }];
 
 
-          //提交到服务端并且进行项目的更新后并重新获取该项目的信息
-        };uni.showLoading({
+        //提交到服务端并且进行项目的更新后并重新获取该项目的信息
+        uni.showLoading({
           title: "提交中",
           success: function success() {
             uni.request({
@@ -526,8 +536,9 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
               console.log("更新后的项目", data);
               uni.hideLoading();
 
-              //并且重新获取项目信息
-              _this.getProject();
+              //提交之后因为项目的信息有改变，所以重新获取全部的项目信息。
+              _this.getAllProjectInfo();
+
             }).
             catch(function (error) {
               uni.showToast({

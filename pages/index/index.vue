@@ -42,7 +42,7 @@
 		 </view>
 		 <view>
 			 <text>项目成员:</text>
-			 <input placeholder="填入项目的成员" :value="nowProject.projectPeople" @input="fpeople" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
+			 <input placeholder="填入项目的成员(输入数字)" :value="nowProject.projectPeople" @input="fpeople" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
 		 </view>
 	</view>
 	   
@@ -183,29 +183,39 @@
 				})
 			},
 			
-			//填写信息的函数
+			//填写信息的函数 
 			ftarget:function(e){
-					this.target = e.detail.value;
+				this.target = e.detail.value;
 			},
 			
 			ffinishTime:function(e){
-					this.finishTime = e.detail.value;
+				 this.finishTime = e.detail.value;
 			},
 			
 			fresult:function(e){
-					this.result = e.detail.value;
+				this.result = e.detail.value;
 			},
 			
 			fmanagement:function(e){
-					this.management = e.detail.value;
+				 this.management = e.detail.value;
 			},
 			
 			fspintNum:function(e){
-					this.sprintNum = e.detail.value;
+				this.sprintNum = e.detail.value;
 			},
 			
 			fpeople:function(e){
-					this.people = e.detail.value;
+				  let reg = /^[0-9]$/g
+				  let people = e.detail.value;
+				  if(reg.test(people)){
+					  this.people = people;
+				  }else{
+					uni.showToast({
+						title:"请输入数字",
+						icon:"none",
+						duration:500
+					})  
+				  }
 			},
 			
 			//切换12权限项目
@@ -255,7 +265,7 @@
 					if(chooseProjectName === _this.allUserProjectInfo[i].projectName){
 						chooseProjectId = _this.allUserProjectInfo[i].id;
 					}
-				}
+				} 
                 let nowInProject;                                   //准备将storage中的nowInProject给替换掉.
 				_this.allUserProjectRoles.forEach((item,index)=>{
 					if(item.projectId === chooseProjectId){
@@ -401,7 +411,7 @@
 			   })
 			   if(_this.target&&_this.sprintNum&&_this.management&&_this.people&&_this.finishTime&&_this.result){
 				   //这里项目信息，将项目信息提交到服务端
-				   let data = {
+				   let data = [{
 					   id:_this.projectId,
 					   projectId:_this.projectId,
 					   projectTarget:_this.target,
@@ -410,7 +420,7 @@
 					   projectPeople:_this.people,
 					   projectFinishTime:_this.finishTime,
 					   projectResult:_this.projectResult 
-				   }
+				   }];
 				   
 				   //提交到服务端并且进行项目的更新后并重新获取该项目的信息
 				   uni.showLoading({
@@ -426,8 +436,9 @@
 					        console.log("更新后的项目",data); 
 						    uni.hideLoading();
 							
-					       //并且重新获取项目信息
-					       _this.getProject();
+					       //提交之后因为项目的信息有改变，所以重新获取全部的项目信息。
+					       _this.getAllProjectInfo();
+						   
 					     })
 					     .catch(error=>{
 					         uni.showToast({

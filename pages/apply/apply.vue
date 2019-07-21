@@ -44,7 +44,7 @@
 				<view class="applyList">
 					<view class="appListProjectName">
 						 <text>项目编号:</text>
-						 <input placeholder="填入项目编号(即名称15字以内)" @input="inputApplyProjectName" :value="applyProjectName" :style="{width:width+'px'}"></input>
+						 <input placeholder="填入项目编号(数字和字母组合10位数以内)" @input="inputApplyProjectName" :value="applyProjectName" :style="{width:width+'px'}"></input>
 					</view> 
 					<view class="appListView1">
 						 <text>申请人:</text>
@@ -112,7 +112,11 @@
 	//引入分页的组建-实现分页查询
 	import uniPagination from "../../components/uni-pagination/uni-pagination.vue"
 	import uniTag from "@/components/uni-tag/uni-tag.vue"
-	import {projectQuery,roleApplyAdd,sprintQuery} from '../../static/utils/api.js';
+	import {projectQuery,
+	        roleApplyAdd,
+			sprintQuery,
+			projectApplyAdd
+	        } from '../../static/utils/api.js';
 	
 	var _this;
 	export default {
@@ -221,7 +225,19 @@
 			//输入申请项目的名称
 			inputApplyProjectName:function(e){
 				_this = this;
-				_this.applyProjectName = e.detail.value;
+				let reg = /[A-Za-z]+[0-9]+/g;
+			    let applyProjectName = e.detail.value;
+				if(reg.test(applyProjectName)){
+					_this.applyProjectName = applyProjectName;
+				}
+				if(applyProjectName.length>10){
+				      _this.applyProjectName = "";
+						uni.showToast({
+							title:"编号格式有误",
+							duration:1000,
+							icon:"none"
+						})
+				}
 			},
 			
 			//输入申请项目的理由
@@ -261,7 +277,6 @@
 				Query.findUserProjectRoleByUserId(_this.userInfo.id)
 				.then(data=>{
 					let dataAll = data.data.records;
-					console.log("查询到的用户权限项目",dataAll)
 					let arry1 = [];
 					let arry2 = [];
 					let arry3 = [];
@@ -308,7 +323,6 @@
 							}
 						}
 					}
-					console.log("数组",arry4,arry5,arry6)
 					_this.chargeProject = arry4;
 					_this.joinProject = arry5;
 					_this.ableLookProject = arry6;	
@@ -432,7 +446,7 @@
 			  },
 			  
 			  
-			  //根据项目编号(projectName)寻找projectId的函数
+			  //根据项目编号(projectName)寻找projectId的函数-用于申请查看项目
 			  findProjectIdByProjectName:function(projectName,callback){
 				  _this = this;
 				  uni.showLoading({
@@ -462,16 +476,65 @@
 				  })
 			  },
 			  
-			  //提交申请新增项目的函数                  申请项目待完善
+			  
+			  
+			  //提交申请新增项目的函数申请的时候已经有的不添加，没有的就添加
 			  submitApplyProject:function(){
-				  
+				  _this = this;
+				  if(_this.applyWhy&&_this.applyTrueName&&_this.applyProjectName){
+					   uni.showLoading({
+							title:"提交中",
+							success:()=>{
+								uni.request({
+									url:projectApplyAdd,
+									method:"POST",
+									data:{
+										projectName:_this.applyProjectName,
+										userId:_this.userInfo.id,
+										trueName:_this.applyTrueName,
+										reason:_this.applyWhy
+									},
+									dataType:'json'
+								})
+								.then(data=>{
+									uni.hideLoading();
+									if(data[1].data.code===200){
+										uni.showToast({
+											title:'提交申请成功',
+											icon:"none",
+											duration:500
+										})
+									}else if(data[1].data.code===525){
+										uni.showToast({
+											title:"编号已存在",
+											icon:"none",
+											duration:1000
+										})
+									}
+								})
+								.catch(Error=>{
+									uni.showToast({
+										title:"网路错误",
+										duration:1000,
+										icon:"none"
+									})
+								})
+							}
+					   })
+				  }else{
+					  uni.showToast({
+					  	title:"信息不完整",
+						icon:"none",
+						duration:1000
+					  })
+				  }
 			  },
 			  
 			  
 			  //设置冲刺到storage中的sprintId中
 			  setSprintId:function(projectId){
-				     console.log("进入设置冲刺的函数")
-				     _this = this;
+				    console.log("进入设置冲刺的函数")
+				    _this = this;
 				  	if(projectId){
 				   	uni.request({
 				   	url:sprintQuery,

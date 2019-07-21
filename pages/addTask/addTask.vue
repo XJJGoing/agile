@@ -2,24 +2,24 @@
 	<scroll-view class="all" scroll-y="true">
 		
 		<view class="addTask">
-			<text id="title">增加任务:</text>
+			<text id="title">新增任务:</text>
 			<view>
-				<text id="heading">标识号</text>
+				<text id="heading">标识号:</text>
 				<input :style="{width:inputWidth+'px'}"  placeholder="真实姓的首字母大写(仅限一个)" @input="inputTaskOrder" :value="taskOrder"></input>
 			</view>
 			<view>
-				<text id="heading">任务内容</text>
+				<text id="heading">任务内容:</text>
 				<input :style="{width:inputWidth+'px'}" placeholder="请输入任务的内容(20个字以内)" @input="inputTaskName"></input>
 			</view>
 			<view>
-				<text id="heading">优先级</text>
+				<text id="heading">优先级:</text>
 				<picker :range="priority" :value="index" @change="pickerPriorityChange">
-					<input :style="{width:inputWidth+'px'}" placeholder="点击选择" :value="taskPriority" type="button"></input>
+					<input :style="{width:inputWidth+'px'}" placeholder="点击选择" :value="taskPriority" disabled="true"></input>
 				</picker>
 			</view>
 			<view>
 				<text id="heading">预估工时</text>
-				<input :style="{width:inputWidth+'px'}" placeholder="请输入预估工时" :value="taskPredictTime" @input="inputTaskPredictTime"></input>
+				<input :style="{width:inputWidth+'px'}" placeholder="请输入预估工时(单位为小时)" :value="taskPredictTime" @input="inputTaskPredictTime"></input>
 			</view>
 			<view>
 				<text id="heading">专业</text>
@@ -324,7 +324,17 @@
 			
 			//输入预估工时
 			inputTaskPredictTime:function(e){
-				this.taskPredictTime = e.detail.value;
+				let taskPredictTime = e.detail.value;
+				let reg = /^[0-9]$/g;
+				if(reg.test(taskPredictTime)){
+					this.taskPredictTime = e.detail.value;
+				}else{
+					uni.showToast({
+						title:'请输入数字',
+						duration:500,
+						icon:"none"
+					})
+				}
 			},
 			
 		    //添加任务提交的函数
@@ -408,7 +418,6 @@
 	overflow: scroll;
 	height: auto;
 	width: 100%;
-	background-color:#FDFFF1;
 }
 ::-webkit-scrollbar{
 	height: 6upx;
@@ -419,12 +428,12 @@
 	flex-direction: column;
 }
 #title{
-	height: 120upx;
+	height: 80upx;
 	width: 100%;
 	font-size: 35upx;
-	font-weight: 400;
-	line-height: 120upx;
-	background-color:#6CA0D9;
+	font-weight:bold;
+	line-height: 80upx;
+	background-color:#6195C0;
 	margin-left: 2upx;
 }
 .addTask view{
@@ -433,32 +442,31 @@
 	display: flex;
 	flex-direction: row;
 	margin-top: 5upx;
-	background-color:#F4D8B1;
-	align-items: center;
+	align-items: center
 }
 
 #heading{
 	font-size:30upx;
-	height: 100upx;
+	height: 80upx;
 	width: 150upx;
 	margin-left:10upx;
-    line-height: 100upx;
-	background-color:#C9BFBD;
-	text-align: center;
+    line-height: 80upx;
+	text-align: left;
+	color: #F1F1F1;
+	font-weight: bold;
 }
 .addTask view input{
 	margin-left: 10upx;
 	height: 80upx;
 	font-size:30upx;
-	border-radius: 5%;
-	border: 1px solid #30FAF6;
     align-items: center;
+	color: #F0F8FF;
 }
 .submit{
-	height: 80upx;
-	line-height: 80upx;
-	font-size: 40upx;
-	width: 90%;
-	margin-top: 10upx;
+	height: 70upx;
+	line-height: 70upx;
+	font-size: 35upx;
+	width: 70%;
+	margin-top: 20upx;
 }
 </style>

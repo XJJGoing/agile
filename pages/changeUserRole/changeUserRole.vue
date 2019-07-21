@@ -3,7 +3,7 @@
 		<view class="updateUserRole">
 		  <view>
 			  <text>权限:</text>
-			  <picker  @change="rolePickerChange" :value="index" :range="roleArry" >
+			  <picker  @change="rolePickerChange" :value="index" :range="roleArry" :style="{width:width+'px'}">
 				  {{beChangeUserRoleId}}
 			  </picker>
 		  </view>
@@ -11,7 +11,7 @@
 		  <block v-if="beChangeUserRoleId===2">
 			   <view>
 				  <text>专业:</text>
-				  <picker @change="departmentPickerChange" :value="index" :range="departmentArry">
+				  <picker @change="departmentPickerChange" :value="index" :range="departmentArry" :style="{width:width+'px'}">
 					 <block v-if="hadDepartment">
 						 {{hadDepartment}}
 					 </block>
@@ -22,12 +22,11 @@
 			  </view>
 			  
 			  <view class="addNewDepartment">
-				  <button @click="changeDisplay">新增专业:</button>
-				  <block v-if="isDisplay">
-					  <input placeholder="请输入专业的名称(4个字以内)" @input="inputDeparment"></input>
-					  <button @click="addDepartment">确认新增</button>
-				  </block>
+				  <text>专业名:</text>
+				  <input placeholder="请输入新增专业的名称(4个字以内)" @input="inputDeparment" :style="{width:inputWidth+'px'}"></input>
 			  </view>
+			  
+			  <button @click="addDepartment" class="sureAddDepartment">确认新增</button>
 		  </block>
 		  
 		  <button @click="submitChange" class="submit" >提交修改</button>
@@ -52,6 +51,8 @@
 	export default {
 		data() {
 			return {
+			   pickerWidth:"",                         //picker的长度
+			   inputWidth:"",                     			 
 			   userInfo:" ",
 			   projectId:"",
 			   beChangeUserId:"",           //改变的权限的用户的id
@@ -74,6 +75,7 @@
 		},
 		onShow(){
 			_this = this;
+			_this.getSystem();
 			uni.getStorage({
 				key:"userInfo",
 				success:(res)=>{
@@ -109,6 +111,18 @@
 		},
 		
 		methods: {	
+			
+			//获取系统的信息设置picker的长度
+			getSystem:function(){
+				_this = this;
+				uni.getSystemInfo({
+					success:(res)=>{
+						_this.pickerWidth = parseInt(res.windowWidth)-60;
+						_this.inputWidth = parseInt(res.windowWidth)-100;
+					}
+				})
+			},
+			
 			//获取目前所有的专业名称存放到departmentArry中供选择,所有专业的信息放到allDepartmentArry中
 			getAllDepartment:function(){
 			   _this = this;
@@ -291,14 +305,21 @@
 			  }
 		  },
 		  
-		  //是否显示新增专业的代码块
-		   changeDisplay:function(){
-				this.isDisplay = !this.isDisplay;
-		   },
 		   
 		   //输入专业
 		   inputDeparment:function(e){
-			   this.newDepartment = e.detail.value;
+			  let departName = e.detail.value;
+			  let reg = /^[\u4e00-\u9fa5]+$/;    //匹配中文
+			  if(reg.test(departName)){
+				  this.newDepartment = departName;
+			  }else{
+				  uni.showToast({
+				  	title:"信息有误",
+					duration:1000,
+					icon:"none"
+				  })
+			  }
+			  
 		   },
 			 
 		   //确认新增专业   ---
@@ -369,7 +390,6 @@
 .all{
 	height: auto;
 	overflow: scroll;
-	background-color: #007AFF;
 }
 ::-webkit-scrollbar{
 	width: 2upx;
@@ -384,45 +404,50 @@
 }
 
 .updateUserRole view{
-	height: 100upx;
 	width: 100%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	background-color: #19BE6B;
 	margin-top: 10upx;
 }
-.updateUserRole view picker{
-	height: 80upx;
-	line-height: 80upx;
-	border: 1px solid #19BE6B;
-	width: 50%;
+.updateUserRole view text{
 	margin-left: 10upx;
-	background-color: #F5A623!important;
+	font-size: 30upx;
+	font-weight: bold;
+	color: #F0F8FF;
+	width: 100upx;
+}
+
+.updateUserRole view picker{
+	margin-left: 10upx;
+	color: #F1F1F1;
 }
 
 .addNewDepartment{
 	display: flex!important;
-	height: auto!important;
-	flex-direction: column!important;
-	justify-content: flex-start!important;
+	flex-direction: row!important;
+	margin-top: 15upx;
 }
 
-.addNewDepartment button{
-	width: 300upx;
-	height: 80upx;
-	margin-left: 0upx;
-	margin-top: 5upx;
+.addNewDepartment text{
+	height: 100upx;
+	font-size: 30upx;
+	width: 200upx;
+	line-height: 100upx;
+	margin-left: 5upx;
 }
 .addNewDepartment input{
-	margin-left: 0upx;
-	width: 100%;
-	margin-top: 4upx;
+	margin-left: 10upx;
+	height: 100upx;
 	font-size: 30upx;
-	border: 1px solid #FCFBFF;
+	color: #F0F8FF;
+}
+.sureAddDepartment{
+	margin-top: 10upx;
+	width:50%;
 }
 .submit{
-	width: 100%;
+	width: 90%;
 	margin-top: 10upx;
 }
 

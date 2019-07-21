@@ -95,6 +95,10 @@
             "path" : "pages/picture/picture",
             "style" : {}
         }  
+        ,{
+            "path" : "pages/dateWork/dateWork",
+            "style" : {}
+        }
     ],
 	
 	"globalStyle": {

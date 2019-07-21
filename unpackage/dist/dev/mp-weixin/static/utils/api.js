@@ -16,9 +16,6 @@ const roleApplyAdd = "http://120.79.49.245:7377/roleApply/add";
 //添加评论
 const commentAdd = "http://120.79.49.245:7377/comment/add";
 
-//查找评论
-const commnetQuery = "http://120.79.49.245:7377/comment/add";
-
 //增加冲刺的信息
 const sprintAdd = "http://120.79.49.245:7377/sprint/add";
 
@@ -76,14 +73,32 @@ const messageAdd = "http://120.79.49.245:7377/message/add";
 //删除任务 /task/deleteBatch
 const deleteTask ="http://120.79.49.245:7377/task/deleteBatch";
 
+//项目的申请
+const projectApplyAdd = "http://120.79.49.245:7377/projectapply/add";
 
+//项目申请表的查找
+const projectApplyQuery = "http://120.79.49.245:7377/projectapply/query";
+
+//项目申请表删除（不通过即删除）
+const projectApplyDeleteBatch = "http://120.79.49.245:7377/projectapply/deleteBatch";
+
+//增加项目(项目审核通过的时候)
+const projectAdd = "http://120.79.49.245:7377/project/add";
+
+//更改项目申请表(项目通过的时候更改审核状态) 
+const projectApplyUpdateBatch = "http://120.79.49.245:7377/projectapply/updateBatch";
+
+//消息模块的查找
+const messageQuery = "http://120.79.49.245:7377/message/query";
+
+//获取评论
+const commnetQuery = "http://120.79.49.245:7377/comment/query";
 
 module.exports = {
 	register:register,
 	queryUser:queryUser,
 	projectQuery:projectQuery,
 	commentAdd:commentAdd,
-	commnetQuery:commnetQuery,
 	userProjectRoleQuery:userProjectRoleQuery,
 	roleApplyAdd:roleApplyAdd,
 	sprintAdd:sprintAdd,
@@ -104,5 +119,12 @@ module.exports = {
 	taskQuery:taskQuery,
 	taskUpdateBatch:taskUpdateBatch,
 	messageAdd:messageAdd,
-	deleteTask:deleteTask
+	deleteTask:deleteTask,
+	projectApplyAdd:projectApplyAdd,
+	projectApplyQuery:projectApplyQuery,
+	projectAdd:projectAdd,
+	projectApplyDeleteBatch:projectApplyDeleteBatch,
+	projectApplyUpdateBatch:projectApplyUpdateBatch,
+	messageQuery:messageQuery,
+	commnetQuery:commnetQuery,
 }

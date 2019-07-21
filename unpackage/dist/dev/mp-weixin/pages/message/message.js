@@ -470,6 +470,7 @@ var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | co
 
         then(function (data) {
           uni.hideLoading();
+          console.log("申请的项目", data);
           _this.allNotAudited = data[1].data.data.records;
         }).
         catch(function (error) {
@@ -494,49 +495,36 @@ var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | co
   },
 
   //当进入这个消息中心的为工程师的时候内容显示为任务审核的部分
-
-
-  //进行查找消息，即工程师的添加的任务的审核的状态的提醒。	 待完善
+  //进行查找消息，即工程师的添加的任务的审核的状态的提醒。
   getTaskMessage: function getTaskMessage() {
     _this = this;
-    //目前这样运用假数据去处理现实
-    var data = [{
-      content: "Z1任务审核已经通过",
-      createTime: "2019-1xxxxxxxx" },
-    {
-      content: "Z2任务审核未通过",
-      createTime: "2019-1xxxxxxxx" },
-    {
-      content: "Z3任务审核已经通过",
-      createTime: "2019-1xxxxxxxx" }];
+    uni.showLoading({
+      title: '查找中',
+      success: function success() {
+        uni.request({
+          url: _api.messageQuery,
+          method: "POST",
+          data: {
+            messageTo: _this.userInfo.id,
+            isLook: 1 },
 
-    _this.myTaskMessage = data;
+          dataType: 'json' }).
 
-    //下方为正确的代码
-    // uni.showLoading({
-    // 	title:'查找中',
-    // 	success:()=>{
-    // 		uni.request({
-    // 			url:xxxx,
-    // 			method:"POST",
-    // 			data:{
-    // 				messageTo:_this.userInfo.id,
-    // 				isLook:1
-    // 			},
-    // 			dataType:json;
-    // 		})
-    // 		.then(data=>{
-    // 			console.log('查找成功',data[1].data.data.records);
-    // 		})
-    // 		.catch(Error=>{
-    // 			uni.showToast({
-    // 				title:"查找失败",
-    // 				icon:"none",
-    // 				duration:1000
-    // 			})
-    // 		})
-    // 	}
-    // })	
+        then(function (data) {
+          uni.hideLoading();
+          console.log(data);
+          console.log('查找成功', data[1].data.data.records);
+          _this.myTaskMessage = data[1].data.data.records;
+        }).
+        catch(function (Error) {
+          uni.showToast({
+            title: "查找失败",
+            icon: "none",
+            duration: 1000 });
+
+        });
+      } });
+
   } }), _components$component);exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

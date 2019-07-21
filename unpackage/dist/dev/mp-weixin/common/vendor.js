@@ -14644,6 +14644,23 @@ createPage(_comment.default);
 
 /***/ }),
 
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FdateWork%2FdateWork\"}":
+/*!********************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2FdateWork%2FdateWork"} ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _dateWork = _interopRequireDefault(__webpack_require__(/*! ./pages/dateWork/dateWork.vue */ "../../../../../个人信息/agile/pages/dateWork/dateWork.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_dateWork.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
 /***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Findex%2Findex\"}":
 /*!**************************************************************!*\
   !*** F:/个人信息/agile/main.js?{"page":"pages%2Findex%2Findex"} ***!
@@ -14869,9 +14886,6 @@ var roleApplyAdd = "http://120.79.49.245:7377/roleApply/add";
 //添加评论
 var commentAdd = "http://120.79.49.245:7377/comment/add";
 
-//查找评论
-var commnetQuery = "http://120.79.49.245:7377/comment/add";
-
 //增加冲刺的信息
 var sprintAdd = "http://120.79.49.245:7377/sprint/add";
 
@@ -14929,14 +14943,32 @@ var messageAdd = "http://120.79.49.245:7377/message/add";
 //删除任务 /task/deleteBatch
 var deleteTask = "http://120.79.49.245:7377/task/deleteBatch";
 
+//项目的申请
+var projectApplyAdd = "http://120.79.49.245:7377/projectapply/add";
 
+//项目申请表的查找
+var projectApplyQuery = "http://120.79.49.245:7377/projectapply/query";
+
+//项目申请表删除（不通过即删除）
+var projectApplyDeleteBatch = "http://120.79.49.245:7377/projectapply/deleteBatch";
+
+//增加项目(项目审核通过的时候)
+var projectAdd = "http://120.79.49.245:7377/project/add";
+
+//更改项目申请表(项目通过的时候更改审核状态) 
+var projectApplyUpdateBatch = "http://120.79.49.245:7377/projectapply/updateBatch";
+
+//消息模块的查找
+var messageQuery = "http://120.79.49.245:7377/message/query";
+
+//获取评论
+var commnetQuery = "http://120.79.49.245:7377/comment/query";
 
 module.exports = {
   register: register,
   queryUser: queryUser,
   projectQuery: projectQuery,
   commentAdd: commentAdd,
-  commnetQuery: commnetQuery,
   userProjectRoleQuery: userProjectRoleQuery,
   roleApplyAdd: roleApplyAdd,
   sprintAdd: sprintAdd,
@@ -14957,7 +14989,14 @@ module.exports = {
   taskQuery: taskQuery,
   taskUpdateBatch: taskUpdateBatch,
   messageAdd: messageAdd,
-  deleteTask: deleteTask };
+  deleteTask: deleteTask,
+  projectApplyAdd: projectApplyAdd,
+  projectApplyQuery: projectApplyQuery,
+  projectAdd: projectAdd,
+  projectApplyDeleteBatch: projectApplyDeleteBatch,
+  projectApplyUpdateBatch: projectApplyUpdateBatch,
+  messageQuery: messageQuery,
+  commnetQuery: commnetQuery };
 
 /***/ }),
 

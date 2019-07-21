@@ -2,7 +2,7 @@
 	
 	<view class="all">
 		<view class="chooseTime">
-		   <view>申请时间:{{chooseItem.effectiveTime}}</view>
+		   <view class="title">申请时间:{{chooseItem.effectiveTime}}</view>
            <view class="redictTime">
 			  <text>截止时间:</text>
 			  <w-picker
@@ -18,7 +18,8 @@
 			         @click="isDisplay" 
 					 placeholder="点击我选择" 
 					 :value="chooseTime"
-					 type="button"
+					 disabled="true"
+					 :style="{width:width+'px'}"
 			  >
 			  </input>
 		   </view>
@@ -45,18 +46,26 @@
         },
 		data(){
         return {
+		    width:"",         //输入框的长度
             chooseTime:"",    //设置的时间
 			chooseItem:"",   //选中的项目
         }
       },
-	  onLoad(e){;
-	  	console.log(e);
-	  	console.log(e.chooseItem);
+	  onLoad(e){
+		this.getSystem();
 	  	this.chooseItem = JSON.parse(e.chooseItem);
-	  	console.log(this.chooseItem);
 	   },  
 	   
 	   methods: {
+		   //获取系统信息
+		   getSystem:function(){
+			   _this = this;
+			   uni.getSystemInfo({
+			   	 success:(res)=>{
+					 _this.width = parseInt(res.windowWidth)-70;
+				 }
+			   })
+		   },
 		   
 		   //显示时间选择器
 			isDisplay:function(){
@@ -177,7 +186,38 @@
 .all{
 	width: 100%;
 	height:auto;
-	background-color: #F0F8FF;
+}
+
+.chooseTime{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	font-size: 30upx;
+}
+.title{
+	margin-top: 10upx;
+	font-weight: bold;
+	color: #F1F1F1;
+}
+.redictTime{
+	margin-top: 20upx;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+.redictTime text{
+	height: 100upx;
+	font-weight: bold;
+	margin-top: 50upx;
+	width: 150upx;
+	font-size: 30upx!important;
+	color: #F1F1F1;
+}
+.pickerInput{
+	height:100upx;
+	color: #F1F1F1;
 }
 .buttonAll{
 	height: 100upx;
@@ -187,28 +227,6 @@
 	justify-content: space-around;
 	align-items: center;
 }
-.chooseTime{
-	height: 300upx;
-	width: 100%;
-	background-color: #007AFF;
-	font-size: 30upx;
-}
-
-.redictTime{
-	margin-top: 20upx;
-	height: 200upx;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: center;
-}
-.redictTime text{
-	height: 100upx;
-	font-size: 40upx;
-	line-height: 100upx;
-	font-size: 30upx!important;
-}
 
 .buttonAll button{
 	height: 80upx;
@@ -216,11 +234,10 @@
 	font-size:30upx;
 	line-height:80upx ;
 }
-.pickerInput{
-	border: 1px solid #19BE6B;
-	height:100upx ;
-	border-radius: 2%;
-	width: 400upx;
+#content{
+	display: flex;
+	flex-direction: column;
+	margin-top: 10upx;
 }
 
 

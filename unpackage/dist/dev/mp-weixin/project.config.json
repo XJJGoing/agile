@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 9,
 			"list": [
 				{
 					"id": 0,
@@ -43,8 +43,64 @@
 				},
 				{
 					"id": -1,
-					"name": "apply",
-					"pathName": "pages/apply/apply",
+					"name": "reviewProject",
+					"pathName": "pages/reviewProject/reviewProject",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "message",
+					"pathName": "pages/message/message",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "index",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "reviewTask",
+					"pathName": "pages/reviewTask/reviewTask",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "comment",
+					"pathName": "pages/comment/comment",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "people",
+					"pathName": "pages/people/people",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "admin",
+					"pathName": "pages/admin/admin",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "changeRole",
+					"pathName": "pages/changeUserRole/changeUserRole",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "addTask",
+					"pathName": "pages/addTask/addTask",
 					"scene": null
 				}
 			]

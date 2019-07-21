@@ -243,44 +243,70 @@ var _this;var _default =
         cancelColor: "#DD524D",
         success: function success(res) {
           if (res.confirm) {
-            var content = "".concat(task.taskOrder, "\u5BA1\u6838\u5DF2\u901A\u8FC7");
-            uni.showLoading({
-              title: "提交中",
-              success: function success() {
-                uni.request({
-                  url: _api.taskUpdateBatch,
-                  method: "POST",
-                  data: [{
-                    "id": task.id,
-                    "isReview": 1 }],
+            uni.showModal({
+              title: '是否确定？',
+              confirmText: "确定",
+              cancelText: "取消",
+              confirmColor: "#19BE6B",
+              cancelColor: "#DD524D",
+              success: function success(res) {
+                if (res.confirm) {
+                  var content = "".concat(task.taskOrder, "\u5BA1\u6838\u5DF2\u901A\u8FC7");
+                  uni.showLoading({
+                    title: "提交中",
+                    success: function success() {
+                      uni.request({
+                        url: _api.taskUpdateBatch,
+                        method: "POST",
+                        data: [{
+                          "id": task.id,
+                          "isReview": 1 }],
 
-                  dataType: 'json' }).
+                        dataType: 'json' }).
 
-                then(function (data) {
-                  uni.hideLoading();
-                  console.log("审核成功", data);
-                  _this.getAllNoReview(); //重新获取未审核的任务
-                }).
-                catch(function (Error) {
-                  uni.showToast({
-                    title: "网络错误",
-                    duration: 500,
-                    icon: "none" });
+                      then(function (data) {
+                        uni.hideLoading();
+                        console.log("审核成功", data);
+                        _this.getAllNoReview(); //重新获取未审核的任务
+                      }).
+                      catch(function (Error) {
+                        uni.showToast({
+                          title: "网络错误",
+                          duration: 500,
+                          icon: "none" });
 
-                });
+                      });
+                    } });
+
+
+                  //同时也增加消息.
+                  _this.addMessage(task, content);
+                } else {
+
+                }
               } });
 
 
-            //同时也增加消息.
-            _this.addMessage(task, content);
-
           } else if (res.cancel) {//审核不通过向消息模块增加消息
-            var _content = "".concat(task.taskOrder, "\u5BA1\u6838\u672A\u901A\u8FC7");
+            uni.showModal({
+              title: "是否确定？",
+              confirmText: "确定",
+              cancelText: "取消",
+              confirmColor: "#19BE6B",
+              cancelColor: "#DD524D",
+              success: function success(res) {
+                if (res.confirm) {
+                  var content = "".concat(task.taskOrder, "\u5BA1\u6838\u672A\u901A\u8FC7");
 
-            //发送消息并且删除该任务,并且重新获取任务
-            _this.addMessage(task, _content);
-            _this.deteleTask(task.id);
-            _this.getAllNoReview();
+                  //发送消息并且删除该任务,并且重新获取任务
+                  _this.addMessage(task, content);
+                  _this.deteleTask(task.id);
+                  _this.getAllNoReview();
+                } else {
+
+                }
+              } });
+
           }
         } });
 

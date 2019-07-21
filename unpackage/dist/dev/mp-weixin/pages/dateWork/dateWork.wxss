@@ -1,0 +1,50 @@
+
+.all{
+	width: 100%;
+	height: auto;
+    overflow-y: scroll;
+}
+.dateWork{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.dateWork view{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.dateWorkDetail{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+}
+.dateWorkDetail text{
+    height: 60rpx;
+	line-height: 60rpx;
+	width: 100rpx;
+	margin-left: 10rpx;
+}
+.dateWorkDetail input{
+	height: 60rpx;
+	border: 1rpx solid #19BE6B;
+}
+

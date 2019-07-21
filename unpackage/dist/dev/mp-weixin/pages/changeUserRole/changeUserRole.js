@@ -140,7 +140,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js"); //
 //
 //
@@ -178,8 +177,8 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 //
 //
 //
-//
-var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query();var _this;var _default = { data: function data() {return { userInfo: " ", projectId: "", beChangeUserId: "", //改变的权限的用户的id
+var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query();var _this;var _default = { data: function data() {return { pickerWidth: "", //picker的长度
+      inputWidth: "", userInfo: " ", projectId: "", beChangeUserId: "", //改变的权限的用户的id
       beChangeUserRoleId: "", //原本的用户的权限
       beChangeUserProjectRoleId: "", //t_user_project_role这张表中的id 用于更新权限用的
       roleArry: [2, 3, 4], //可选的权限
@@ -191,9 +190,12 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       hadDepartmentId: "", //查询到的原本已经有的departmentId
       hadUserProjectDepartmentId: "", //查询到原本已经有的t_user_project_department那张表的id用于更新用
       isHadUserProjectDepartment: false //判断这个用户之前有没有这个字段在t_user_project_department中
-    };}, onShow: function onShow() {_this = this;uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data;uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.getAllDepartment(); //获取所有的专业
+    };}, onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data;uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.getAllDepartment(); //获取所有的专业
               _this.queryUserProjectDepartment(); //查询该用户目前的专业
-            } });});}, fail: function fail() {
+            } });
+        });
+      },
+      fail: function fail() {
         url: '../login/login';
       } });
 
@@ -209,6 +211,18 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
   },
 
   methods: {
+
+    //获取系统的信息设置picker的长度
+    getSystem: function getSystem() {
+      _this = this;
+      uni.getSystemInfo({
+        success: function success(res) {
+          _this.pickerWidth = parseInt(res.windowWidth) - 60;
+          _this.inputWidth = parseInt(res.windowWidth) - 100;
+        } });
+
+    },
+
     //获取目前所有的专业名称存放到departmentArry中供选择,所有专业的信息放到allDepartmentArry中
     getAllDepartment: function getAllDepartment() {
       _this = this;
@@ -391,14 +405,21 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       }
     },
 
-    //是否显示新增专业的代码块
-    changeDisplay: function changeDisplay() {
-      this.isDisplay = !this.isDisplay;
-    },
 
     //输入专业
     inputDeparment: function inputDeparment(e) {
-      this.newDepartment = e.detail.value;
+      var departName = e.detail.value;
+      var reg = /^[\u4e00-\u9fa5]+$/; //匹配中文
+      if (reg.test(departName)) {
+        this.newDepartment = departName;
+      } else {
+        uni.showToast({
+          title: "信息有误",
+          duration: 1000,
+          icon: "none" });
+
+      }
+
     },
 
     //确认新增专业   ---

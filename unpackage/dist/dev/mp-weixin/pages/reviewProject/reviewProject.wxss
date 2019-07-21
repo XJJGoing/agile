@@ -1,15 +1,14 @@
 
 .all{
-	width: 100%;
 	height: auto;
+	width: 100%;
 	overflow: scroll;
 }
 ::-webkit-scrollbar{
-	width: 2px;
-	height: 6px;
+	width: 2rpx;
+	height: 6rpx;
 }
-.userDetail{
-	height: auto;
+.project{
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -19,39 +18,42 @@
 	-webkit-flex-direction: column;
 	    -ms-flex-direction: column;
 	        flex-direction: column;
-	-webkit-box-pack: start;
-	-webkit-justify-content: flex-start;
-	    -ms-flex-pack: start;
-	        justify-content: flex-start;
-}
-#title{
-	font-size:35rpx;
-	color: #F9FAF0;
 	width: 100%;
-	text-align: left;
-	height: 50rpx;
-	line-height: 50rpx;
-	background-color: #5585BC;
-	margin-top: 10rpx;
 }
-.eachOne{
+.title{
 	width: 100%;
-	margin-top:10rpx;
+	height: 70rpx;
+	line-height: 70rpx;
+    font-size: 30rpx;
+	font-weight: bold;
+	background-color:#6CA0D9;
 }
-.info{
-	display:-webkit-box;
-	display:-webkit-flex;
-	display:-ms-flexbox;
-	display:flex;
+.title text{
+   margin-left: 5rpx;
+   height: 70rpx;
+   line-height: 70rpx;
+}
+.eachProject{
+	width: 100%;
+    margin-top: 10rpx;
+}
+.eachProjectDetail{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
 	    -ms-flex-direction: column;
 	        flex-direction: column;
+	background-color:#FEF2DA;
+    padding: 10rpx;
 }
-.info text{
-	font-size: 30rpx;
-	margin-top: 10rpx;
+.eachProjectDetail text{
+	margin-top: 5rpx;
 	margin-left: 5rpx;
+	font-size: 30rpx;
 }
+
 

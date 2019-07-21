@@ -60,7 +60,7 @@
 				projectId:""        //项目的id
 			}
 		},
-		onLaunch: function() {
+		onShow: function() {
 			_this = this;
 			console.log("启动微信小程序")
 			
@@ -134,8 +134,8 @@
 				   	})
 		 },
 			
-		onShow: function() {
-			console.log('App Show')
+	    onLaunch:function(){
+			
 		},
 		
 		//退出该小程序的时候再次进行权限的判断，将信息保存到nowInProject 中,应付1权限用户将2权限用户改成3、4权限

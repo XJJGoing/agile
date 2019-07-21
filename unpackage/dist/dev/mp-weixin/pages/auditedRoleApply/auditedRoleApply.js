@@ -136,6 +136,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js"); //
 //
 //
@@ -170,14 +171,22 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 //
 //
 //
+//
 var _this = void 0; //引入更新申请状态的记录
-var wPicker = function wPicker() {return Promise.all(/*! import() | components/w-picker/w-picker */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/w-picker/w-picker")]).then(__webpack_require__.bind(null, /*! @/components/w-picker/w-picker.vue */ "../../../../../个人信息/agile/components/w-picker/w-picker.vue"));};var _default = { components: { wPicker: wPicker }, data: function data() {return { chooseTime: "", //设置的时间
+var wPicker = function wPicker() {return Promise.all(/*! import() | components/w-picker/w-picker */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/w-picker/w-picker")]).then(__webpack_require__.bind(null, /*! @/components/w-picker/w-picker.vue */ "../../../../../个人信息/agile/components/w-picker/w-picker.vue"));};var _default = { components: { wPicker: wPicker }, data: function data() {return { width: "", //输入框的长度
+      chooseTime: "", //设置的时间
       chooseItem: "" //选中的项目
-    };}, onLoad: function onLoad(e) {;console.log(e);console.log(e.chooseItem);this.chooseItem = JSON.parse(e.chooseItem);console.log(this.chooseItem);}, methods: { //显示时间选择器
+    };}, onLoad: function onLoad(e) {this.getSystem();this.chooseItem = JSON.parse(e.chooseItem);}, methods: { //获取系统信息
+    getSystem: function getSystem() {_this = this;uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 70;} });}, //显示时间选择器
     isDisplay: function isDisplay() {this.$refs.picker.show();}, //监听时间选择器拿到的东西
     chooseDate: function chooseDate(e) {console.log("拿到的时间", e);this.chooseTime = e.result;}, //进行审核
     examine: function examine(e) {//通过和不同过监听同一个函数根据id去判断进而实现通过和不通过
-      _this = this;console.log(e.currentTarget.id);var state = parseInt(e.currentTarget.id);console.log(state);var roleId;if (state === 1) {roleId = 3;
+      _this = this;console.log(e.currentTarget.id);
+      var state = parseInt(e.currentTarget.id);
+      console.log(state);
+      var roleId;
+      if (state === 1) {
+        roleId = 3;
       } else {
         roleId = "";
       }

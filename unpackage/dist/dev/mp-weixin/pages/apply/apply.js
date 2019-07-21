@@ -336,9 +336,25 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
     inputProjectName: function inputProjectName(e) {_this = this;_this.projectName = e.detail.value;}, //输入申请查看项目的原因
     inputWhy: function inputWhy(e) {_this = this;_this.why = e.detail.value;}, //输入申请项目人的真实姓名
     inputApplyTrueName: function inputApplyTrueName(e) {_this = this;_this.applyTrueName = e.detail.value;}, //输入申请项目的名称
-    inputApplyProjectName: function inputApplyProjectName(e) {_this = this;_this.applyProjectName = e.detail.value;}, //输入申请项目的理由
-    inputApplyWhy: function inputApplyWhy(e) {_this = this;_this.applyWhy = e.detail.value;}, //获取所有项目的信息
-    getAllProjectInfo: function getAllProjectInfo() {_this = this;uni.showLoading({ title: "获取中", success: function success() {Query.findAllProjectInfo().then(function (data) {uni.hideLoading();
+    inputApplyProjectName: function inputApplyProjectName(e) {_this = this;var reg = /[A-Za-z]+[0-9]+/g;var applyProjectName = e.detail.value;if (reg.test(applyProjectName)) {_this.applyProjectName = applyProjectName;}if (applyProjectName.length > 10) {_this.applyProjectName = "";uni.showToast({ title: "编号格式有误", duration: 1000, icon: "none" });
+      }
+    },
+
+    //输入申请项目的理由
+    inputApplyWhy: function inputApplyWhy(e) {
+      _this = this;
+      _this.applyWhy = e.detail.value;
+    },
+
+    //获取所有项目的信息
+    getAllProjectInfo: function getAllProjectInfo() {
+      _this = this;
+      uni.showLoading({
+        title: "获取中",
+        success: function success() {
+          Query.findAllProjectInfo().
+          then(function (data) {
+            uni.hideLoading();
             console.log("获取到的所有的项目的信息", data.data.records);
             _this.allUserProjectInfo = data.data.records;
             _this.getUserProjectRole();
@@ -361,7 +377,6 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
       Query.findUserProjectRoleByUserId(_this.userInfo.id).
       then(function (data) {
         var dataAll = data.data.records;
-        console.log("查询到的用户权限项目", dataAll);
         var arry1 = [];
         var arry2 = [];
         var arry3 = [];
@@ -408,7 +423,6 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
             }
           }
         }
-        console.log("数组", arry4, arry5, arry6);
         _this.chargeProject = arry4;
         _this.joinProject = arry5;
         _this.ableLookProject = arry6;
@@ -532,7 +546,7 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
     },
 
 
-    //根据项目编号(projectName)寻找projectId的函数
+    //根据项目编号(projectName)寻找projectId的函数-用于申请查看项目
     findProjectIdByProjectName: function findProjectIdByProjectName(projectName, callback) {
       _this = this;
       uni.showLoading({
@@ -562,9 +576,58 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
 
     },
 
-    //提交申请新增项目的函数                  申请项目待完善
-    submitApplyProject: function submitApplyProject() {
 
+
+    //提交申请新增项目的函数申请的时候已经有的不添加，没有的就添加
+    submitApplyProject: function submitApplyProject() {
+      _this = this;
+      if (_this.applyWhy && _this.applyTrueName && _this.applyProjectName) {
+        uni.showLoading({
+          title: "提交中",
+          success: function success() {
+            uni.request({
+              url: _api.projectApplyAdd,
+              method: "POST",
+              data: {
+                projectName: _this.applyProjectName,
+                userId: _this.userInfo.id,
+                trueName: _this.applyTrueName,
+                reason: _this.applyWhy },
+
+              dataType: 'json' }).
+
+            then(function (data) {
+              uni.hideLoading();
+              if (data[1].data.code === 200) {
+                uni.showToast({
+                  title: '提交申请成功',
+                  icon: "none",
+                  duration: 500 });
+
+              } else if (data[1].data.code === 525) {
+                uni.showToast({
+                  title: "编号已存在",
+                  icon: "none",
+                  duration: 1000 });
+
+              }
+            }).
+            catch(function (Error) {
+              uni.showToast({
+                title: "网路错误",
+                duration: 1000,
+                icon: "none" });
+
+            });
+          } });
+
+      } else {
+        uni.showToast({
+          title: "信息不完整",
+          icon: "none",
+          duration: 1000 });
+
+      }
     },
 
 

@@ -424,7 +424,17 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
 
     //输入预估工时
     inputTaskPredictTime: function inputTaskPredictTime(e) {
-      this.taskPredictTime = e.detail.value;
+      var taskPredictTime = e.detail.value;
+      var reg = /^[0-9]$/g;
+      if (reg.test(taskPredictTime)) {
+        this.taskPredictTime = e.detail.value;
+      } else {
+        uni.showToast({
+          title: '请输入数字',
+          duration: 500,
+          icon: "none" });
+
+      }
     },
 
     //添加任务提交的函数

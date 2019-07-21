@@ -7,9 +7,13 @@
 				<view v-for="(item,index) in userList1" :key="index" class="eachOne">
 					<view :id="JSON.stringify({userId:item.id,roleId:1})" @click="changeUserRole">
 						<uni-card 
-							:title="item.nickName" 
+							:title="item.trueName" 
 							:thumbnail="item.avatarUrl" 
 						>
+						<view class="info">
+							<text>国家:{{item.country}}</text>
+							<text>城市:{{item.province}}</text>
+						</view>
 						</uni-card> 
 					</view>
 				</view>
@@ -20,10 +24,13 @@
 				<view v-for="(item,index) in userList2" :key="index" class="eachOne">
 				 <view :id="JSON.stringify({userId:item.id,roleId:2})" @click="changeUserRole">
 					<uni-card 
-						:title="item.nickName" 
+						:title="item.trueName" 
 						:thumbnail="item.avatarUrl" 
 					>
-						
+						<view class="info">
+							<text>国家:{{item.country}}</text>
+							<text>城市:{{item.province}}</text>
+						</view>
 					</uni-card>
 				 </view>
 				</view>
@@ -34,10 +41,13 @@
 				<view v-for="(item,index) in userList3" :key="index" class="eachOne">
 				  <view :id="JSON.stringify({userId:item.id,roleId:3})" @click="changeUserRole">
 					<uni-card 
-						:title="item.nickName" 
+						:title="item.trueName" 
 						:thumbnail="item.avatarUrl" 
 					>
-					  	
+					  <view class="info">
+					  	<text>国家:{{item.country}}</text>
+					  	<text>城市:{{item.province}}</text>
+					  </view>	
 					</uni-card>
 				   </view>	
 				</view>
@@ -193,11 +203,16 @@
 	width: 100%;
 	height: auto;
 	overflow: scroll;
-	background-color: #007AFF;
 }
 ::-webkit-scrollbar{
 	width: 2px;
 	height: 6px;
+}
+.userDetail{
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
 }
 #title{
 	font-size:35upx;
@@ -206,18 +221,20 @@
 	text-align: left;
 	height: 50upx;
 	line-height: 50upx;
-	background-color: #F5A623;
+	background-color: #5585BC;
 	margin-top: 10upx;
 }
-.userDetail{
-	height: auto;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-}
 .eachOne{
-	height: 100upx;
 	width: 100%;
 	margin-top:10upx;
+}
+.info{
+	display:flex;
+	flex-direction: column;
+}
+.info text{
+	font-size: 30upx;
+	margin-top: 10upx;
+	margin-left: 5upx;
 }
 </style>

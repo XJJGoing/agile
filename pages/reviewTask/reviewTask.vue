@@ -5,14 +5,14 @@
 			<text id="title">待审核的任务:</text>
 			<view v-for="(item,index) in noReviewTaskList" :key="index" class="eachOneTask">
 				<uni-card  
-				    :title="'任务序号'+item.taskOrder" 
+				    :title="'任务序号 '+item.taskOrder" 
 				>
 				    <view class="Taskdetail" :id="JSON.stringify(item)" @click="examine">
-						<text>申请人ID:{{item.taskExecuteUserId}}</text>
+						<text>申请人:{{item.taskExecuteTrueName}}</text>
 						<text>内容:{{item.taskName}}</text>
 						<text>优先级:{{item.taskPriority}}</text>
 						<text>预估工时:{{item.taskPredictTime}}</text>
-						<text>专业ID:{{item.departmentId}}</text>
+						<text>专业:{{item.departmentName}}</text>
 						<text>提交申请时间:{{item.createTime}}</text>
 					</view>
 				</uni-card>
@@ -143,44 +143,70 @@
 						cancelColor:"#DD524D",
 						success:(res)=>{
 							if(res.confirm){
-								let content = `${task.taskOrder}审核已通过`
-								uni.showLoading({
-									title:"提交中",
-									success:()=>{
-										uni.request({
-											url:taskUpdateBatch,
-											method:"POST",
-											data:[{
-												    "id":task.id,
-													"isReview": 1,
-												  }],
-											dataType:'json'
-										})
-										.then(data=>{
-											uni.hideLoading()
-											console.log("审核成功",data);
-											_this.getAllNoReview();            //重新获取未审核的任务
-							 			})
-										.catch(Error=>{
-											uni.showToast({
-												title:"网络错误",
-												duration:500,
-												icon:"none"
+								uni.showModal({
+									title:'是否确定？',
+									confirmText:"确定",
+									cancelText:"取消",
+									confirmColor:"#19BE6B",
+									cancelColor:"#DD524D",
+									success:(res)=>{
+										if(res.confirm){
+											let content = `${task.taskOrder}审核已通过`
+											uni.showLoading({
+												title:"提交中",
+												success:()=>{
+													uni.request({
+														url:taskUpdateBatch,
+														method:"POST",
+														data:[{
+															    "id":task.id,
+																"isReview": 1,
+															  }],
+														dataType:'json'
+													})
+													.then(data=>{
+														uni.hideLoading()
+														console.log("审核成功",data);
+														_this.getAllNoReview();            //重新获取未审核的任务
+													})
+													.catch(Error=>{
+														uni.showToast({
+															title:"网络错误",
+															duration:500,
+															icon:"none"
+														})
+													})
+												}
 											})
-										})
+											
+											//同时也增加消息.
+											_this.addMessage(task,content)
+										}else{
+											
+										}
 									}
 								})
 								
-								//同时也增加消息.
-								_this.addMessage(task,content);
-								
 							}else if(res.cancel){ //审核不通过向消息模块增加消息
-							   let content = `${task.taskOrder}审核未通过`;
-							   
-							   //发送消息并且删除该任务,并且重新获取任务
-							   _this.addMessage(task,content);
-							   _this.deteleTask(task.id);
-							   _this.getAllNoReview();
+							   uni.showModal({
+									title:"是否确定？",
+									confirmText:"确定",
+									cancelText:"取消",
+									confirmColor:"#19BE6B",
+									cancelColor:"#DD524D",
+									success:(res)=>{
+										if(res.confirm){
+											let content = `${task.taskOrder}审核未通过`;
+											
+											//发送消息并且删除该任务,并且重新获取任务
+											_this.addMessage(task,content);
+											_this.deteleTask(task.id);
+											_this.getAllNoReview();
+										}else{
+											
+										}
+									}
+							   })
 							}
 						}
 					})

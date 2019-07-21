@@ -12,26 +12,26 @@
 					   :id="JSON.stringify(item)"
 			    >
 					<uni-card 
-					    :title="item.trueName" 
-					    :extra="item.effectiveTime" 
+					    :title="'项目编号:'+item.projectName" 
+					    :note="'申请的时间 '+item.effectiveTime" 
 					>
-					   <view>申请理由:</view>
-					   <view id="content">
-						   {{item.content}}
+					   <view id="content"> 
+					       <text>申请人:{{item.trueName}}</text>
+						   <text>申请理由:{{item.content}}</text>
 					   </view>
 					</uni-card>
 				</view>
 			</view>
 		</block>
 		
-		<!--当权限为2的时候显示的是审核通过的任务-->
+		<!--当权限为2的时候显示的是审核通过的任务--> 
 	    <block v-if="roleId===2">
 			<view class="task">
 				<text id="title">任务进度消息:</text>
 				<view class="taskMessage" v-for="(item,index) in myTaskMessage" :key="index">
 					<uni-card 
 						:title="item.content" 
-						:note="item.createTime" 
+						:note="'通过时间 '+item.createTime" 
 					>
 					</uni-card>
 				</view>
@@ -46,7 +46,7 @@
 	const query = require('../../static/utils/utils').Query;
 	
 	//引入查找申请记录的api
-	import {roleApplyQuery} from '../../static/utils/api.js';
+	import {roleApplyQuery,messageQuery} from '../../static/utils/api.js';
 	
 	//引入uni-card
 	import uniCard from "@/components/uni-card/uni-card.vue"
@@ -63,7 +63,7 @@
 				userInfo:" ",  
 				projectId:" ",
 				roleId:" ",
-				allNotAudited:[],     //存放所有的未审核的项目
+				allNotAudited:[],          //存放所有的未审核的项目
 				
 				myTaskMessage:[],                     //存放
 			}
@@ -118,6 +118,7 @@
 					})
 					.then(data=>{
 					  uni.hideLoading();
+					  console.log("申请的项目",data)
 					  _this.allNotAudited = data[1].data.data.records;
 					})
 					.catch(error=>{
@@ -142,49 +143,36 @@
 		},
 		
 		 //当进入这个消息中心的为工程师的时候内容显示为任务审核的部分
-		 
-		 
-		//进行查找消息，即工程师的添加的任务的审核的状态的提醒。	 待完善
+		//进行查找消息，即工程师的添加的任务的审核的状态的提醒。
 	    getTaskMessage:function(){
 			_this = this;
-			//目前这样运用假数据去处理现实
-			let data = [{
-				 content:"Z1任务审核已经通过",
-				 createTime:"2019-1xxxxxxxx",
-			},{
-				 content:"Z2任务审核未通过",
-			     createTime:"2019-1xxxxxxxx",
-			},{
-				 content:"Z3任务审核已经通过",
-				 createTime:"2019-1xxxxxxxx",
-			}]
-			_this.myTaskMessage = data;
-			
-			//下方为正确的代码
-			// uni.showLoading({
-			// 	title:'查找中',
-			// 	success:()=>{
-			// 		uni.request({
-			// 			url:xxxx,
-			// 			method:"POST",
-			// 			data:{
-			// 				messageTo:_this.userInfo.id,
-			// 				isLook:1
-			// 			},
-			// 			dataType:json;
-			// 		})
-			// 		.then(data=>{
-			// 			console.log('查找成功',data[1].data.data.records);
-			// 		})
-			// 		.catch(Error=>{
-			// 			uni.showToast({
-			// 				title:"查找失败",
-			// 				icon:"none",
-			// 				duration:1000
-			// 			})
-			// 		})
-			// 	}
-			// })	
+			uni.showLoading({
+				title:'查找中',
+				success:()=>{
+					uni.request({
+						url:messageQuery,
+						method:"POST",
+						data:{
+							messageTo:_this.userInfo.id,
+							isLook:1
+						},
+						dataType:'json' 
+					})
+					.then(data=>{
+						uni.hideLoading()
+					    console.log(data)
+						console.log('查找成功',data[1].data.data.records);
+						_this.myTaskMessage = data[1].data.data.records;
+					})
+					.catch(Error=>{
+						uni.showToast({
+							title:"查找失败",
+							icon:"none",
+							duration:1000
+						})
+					})
+				}
+			})	
 		 }	 
 		
 		}
@@ -206,7 +194,8 @@
 	height: 80upx;
 	line-height: 80upx;
 	font-size:30upx;
-	background-color: #32FBF0;
+	font-weight: bold;
+	background-color: #6198C1;
 }
 .applyMessage{
 	display: flex;
@@ -226,7 +215,9 @@
     width: 100%;
 	font-size: 30upx;
 	border-radius: 5%;
-	margin-top: 10upx;
+	margin-top: 15upx;
+	display: flex;
+	flex-direction: column;
 }
 
 .task{
