@@ -1,100 +1,116 @@
-//注册的api
-const register = "http://120.79.49.245:7377/user/registerByWeChat";
+//主机域名:
+const host = "https://agile.guohe3.com"
 
-//查找该用户
-const queryUser = "http://120.79.49.245:7377/user/query";
+//拿用户openid
+const getUserOpenId = `${host}/user/getOpenId`
+
+//注册的api
+const register = `${host}/user/registerByWeChat`; 
+
+//查找该用户 
+const queryUser = `${host}/user/query`;
 
 //查找用户权限项目关系，可以根据userId、roleId、projectId单独和两两和三去查
-const userProjectRoleQuery = "http://120.79.49.245:7377/userProjectRole/query";
+const userProjectRoleQuery = `${host}/userProjectRole/query`;
 
 //查找项目，库查找所有的项目，也可以单个查询
-const projectQuery = "http://120.79.49.245:7377/project/query";
+const projectQuery = `${host}/project/query`; 
 
 //添加申请
-const roleApplyAdd = "http://120.79.49.245:7377/roleApply/add";
+const roleApplyAdd = `${host}/roleApply/add`; 
 
 //添加评论
-const commentAdd = "http://120.79.49.245:7377/comment/add";
+const commentAdd = `${host}/comment/add`;
 
 //增加冲刺的信息
-const sprintAdd = "http://120.79.49.245:7377/sprint/add";
+const sprintAdd = `${host}/sprint/add`;
 
 //进行项目的更新（可以单个，也可以多个）
-const projectUpdate = "http://120.79.49.245:7377/project/updateBatch";
+const projectUpdate = `${host}/project/updateBatch`;
 
 //获取所有权限
-const getAllRole = "http://120.79.49.245:7377/other/getAllRole";
+const getAllRole = `${host}/other/getAllRole`;
 
 //在t_user_project_role中增加信息
-const userProjectRoleAdd = "http://120.79.49.245:7377/userProjectRole/add";
+const userProjectRoleAdd = `${host}/userProjectRole/add`;
 
 //在t_user_project_role中更新权限信息
-const userProjectRoleUpdateBatch = "http://120.79.49.245:7377/userProjectRole/updateBatch"
+const userProjectRoleUpdateBatch = `${host}/userProjectRole/updateBatch`;
 
 //获取所有专业
-const getAllDepartment = "http://120.79.49.245:7377/other/getAllDepartment";
+const getAllDepartment = `${host}/other/getAllDepartment`;
 
 //获取申请记录
-const roleApplyQuery = "http://120.79.49.245:7377/roleApply/query";
+const roleApplyQuery = `${host}/roleApply/query`;
 
 //增加用户项目专业记录
-const userProjectDepartmentAdd = "http://120.79.49.245:7377/userprojectdepartment/add";
+const userProjectDepartmentAdd = `${host}/userprojectdepartment/add`;
 
 //查找用户项目专业记录
-const userProjectDepartmentQuery = "http://120.79.49.245:7377/userprojectdepartment/query";
+const userProjectDepartmentQuery = `${host}/userprojectdepartment/query`;
 
 //修改t_user_project_department中的数据
-const updateUserProjectDepartment = "http://120.79.49.245:7377/userprojectdepartment/updateBatch";
+const updateUserProjectDepartment = `${host}/userprojectdepartment/updateBatch`;
 
 //审核的时候更新申请记录
-const updateRoleApply = "http://120.79.49.245:7377/roleApply/updateBatch";
+const updateRoleApply = `${host}/roleApply/updateBatch`;
 
 //新增专业的api
-const departmentAdd = "http://120.79.49.245:7377/department/add";
+const departmentAdd = `${host}/department/add`;
 
 //新增任务的api
-const taskAdd = "http://120.79.49.245:7377/task/add";
+const taskAdd = `${host}/task/add`;
 
 //查找专业
-const departmentQuery = "http://120.79.49.245:7377/department/query";
+const departmentQuery = `${host}/department/query`;
 
 //查找任务
-const taskQuery = "http://120.79.49.245:7377/task/query";
+const taskQuery = `${host}/task/query`;
 
 //查找冲刺
-const sprintQuery = "http://120.79.49.245:7377/sprint/query";
+const sprintQuery = `${host}/sprint/query`;
 
 //任务的更新
-const taskUpdateBatch = "http://120.79.49.245:7377/task/updateBatch";
+const taskUpdateBatch = `${host}/task/updateBatch`;
 
 //增加消息
-const messageAdd = "http://120.79.49.245:7377/message/add";
+const messageAdd = `${host}/message/add`;
 
 //删除任务 /task/deleteBatch
-const deleteTask ="http://120.79.49.245:7377/task/deleteBatch";
+const deleteTask = `${host}/task/deleteBatch`;
 
 //项目的申请
-const projectApplyAdd = "http://120.79.49.245:7377/projectapply/add";
+const projectApplyAdd = `${host}/projectapply/add`;
 
 //项目申请表的查找
-const projectApplyQuery = "http://120.79.49.245:7377/projectapply/query";
+const projectApplyQuery = `${host}/projectapply/query`;
 
 //项目申请表删除（不通过即删除）
-const projectApplyDeleteBatch = "http://120.79.49.245:7377/projectapply/deleteBatch";
+const projectApplyDeleteBatch = `${host}/projectapply/deleteBatch`;
 
 //增加项目(项目审核通过的时候)
-const projectAdd = "http://120.79.49.245:7377/project/add";
+const projectAdd = `${host}/project/add`;
 
 //更改项目申请表(项目通过的时候更改审核状态) 
-const projectApplyUpdateBatch = "http://120.79.49.245:7377/projectapply/updateBatch";
+const projectApplyUpdateBatch = `${host}/projectapply/updateBatch`;
 
 //消息模块的查找
-const messageQuery = "http://120.79.49.245:7377/message/query";
+const messageQuery = `${host}/message/query`;
 
 //获取评论
-const commnetQuery = "http://120.79.49.245:7377/comment/query";
+const commnetQuery = `${host}/comment/query`;
+
+//提交每日输入工时打卡阶段
+const dateWorkAdd = `${host}/datework/add`;
+
+//查找dateWork
+const dateWorkQuery = `${host}/datework/query`;
+
+//微信消息推送
+const messageSend = `${host}/message/send`;
 
 module.exports = {
+	getUserOpenId:getUserOpenId,
 	register:register,
 	queryUser:queryUser,
 	projectQuery:projectQuery,
@@ -127,4 +143,7 @@ module.exports = {
 	projectApplyUpdateBatch:projectApplyUpdateBatch,
 	messageQuery:messageQuery,
 	commnetQuery:commnetQuery,
-}
+	dateWorkAdd:dateWorkAdd,
+	dateWorkQuery:dateWorkQuery,
+	messageSend:messageSend
+} 

@@ -179,10 +179,9 @@ var wPicker = function wPicker() {return Promise.all(/*! import() | components/w
     };}, onLoad: function onLoad(e) {this.getSystem();this.chooseItem = JSON.parse(e.chooseItem);}, methods: { //获取系统信息
     getSystem: function getSystem() {_this = this;uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 70;} });}, //显示时间选择器
     isDisplay: function isDisplay() {this.$refs.picker.show();}, //监听时间选择器拿到的东西
-    chooseDate: function chooseDate(e) {console.log("拿到的时间", e);this.chooseTime = e.result;}, //进行审核
+    chooseDate: function chooseDate(e) {this.chooseTime = e.result;}, //进行审核
     examine: function examine(e) {//通过和不同过监听同一个函数根据id去判断进而实现通过和不通过
-      _this = this;console.log(e.currentTarget.id);
-      var state = parseInt(e.currentTarget.id);
+      _this = this;console.log(e.currentTarget.id);var state = parseInt(e.currentTarget.id);
       console.log(state);
       var roleId;
       if (state === 1) {
@@ -192,15 +191,6 @@ var wPicker = function wPicker() {return Promise.all(/*! import() | components/w
       }
       _this = this;
       if (_this.chooseTime != "") {
-        var data = [{
-          id: _this.chooseItem.id,
-          effectiveTime: _this.chooseTime,
-          projectId: _this.chooseItem.projectId,
-          roleId: roleId,
-          state: state,
-          userId: _this.chooseItem.userId }];
-
-        console.log("提交的数据", data);
         uni.showLoading({
           title: "提交中",
           success: function success() {
@@ -266,6 +256,11 @@ var wPicker = function wPicker() {return Promise.all(/*! import() | components/w
           then(function (data) {
             console.log("插入成功", data);
             uni.hideLoading();
+            uni.showToast({
+              title: "提交成功",
+              icon: "none",
+              duration: 1000 });
+
           }).
           catch(function (error) {
             uni.showToast({

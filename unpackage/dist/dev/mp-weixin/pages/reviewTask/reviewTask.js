@@ -196,6 +196,10 @@ var _this;var _default =
       } });
 
   },
+  onPullDownRefresh: function onPullDownRefresh() {
+    _this = this;
+    _this.getAllNoReview();
+  },
   methods: {
 
     //查询为未审核的项目  等待完善等着接口的api

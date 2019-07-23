@@ -14525,6 +14525,23 @@ createApp(app).$mount();
 
 /***/ }),
 
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fabout%2Fabout\"}":
+/*!**************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fabout%2Fabout"} ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _about = _interopRequireDefault(__webpack_require__(/*! ./pages/about/about.vue */ "../../../../../个人信息/agile/pages/about/about.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_about.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
 /***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FaddSprint%2FaddSprint\"}":
 /*!**********************************************************************!*\
   !*** F:/个人信息/agile/main.js?{"page":"pages%2FaddSprint%2FaddSprint"} ***!
@@ -14868,103 +14885,119 @@ Component({
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
- //注册的api
-var register = "http://120.79.49.245:7377/user/registerByWeChat";
+ //主机域名:
+var host = "https://agile.guohe3.com";
 
-//查找该用户
-var queryUser = "http://120.79.49.245:7377/user/query";
+//拿用户openid
+var getUserOpenId = "".concat(host, "/user/getOpenId");
+
+//注册的api
+var register = "".concat(host, "/user/registerByWeChat");
+
+//查找该用户 
+var queryUser = "".concat(host, "/user/query");
 
 //查找用户权限项目关系，可以根据userId、roleId、projectId单独和两两和三去查
-var userProjectRoleQuery = "http://120.79.49.245:7377/userProjectRole/query";
+var userProjectRoleQuery = "".concat(host, "/userProjectRole/query");
 
 //查找项目，库查找所有的项目，也可以单个查询
-var projectQuery = "http://120.79.49.245:7377/project/query";
+var projectQuery = "".concat(host, "/project/query");
 
 //添加申请
-var roleApplyAdd = "http://120.79.49.245:7377/roleApply/add";
+var roleApplyAdd = "".concat(host, "/roleApply/add");
 
 //添加评论
-var commentAdd = "http://120.79.49.245:7377/comment/add";
+var commentAdd = "".concat(host, "/comment/add");
 
 //增加冲刺的信息
-var sprintAdd = "http://120.79.49.245:7377/sprint/add";
+var sprintAdd = "".concat(host, "/sprint/add");
 
 //进行项目的更新（可以单个，也可以多个）
-var projectUpdate = "http://120.79.49.245:7377/project/updateBatch";
+var projectUpdate = "".concat(host, "/project/updateBatch");
 
 //获取所有权限
-var getAllRole = "http://120.79.49.245:7377/other/getAllRole";
+var getAllRole = "".concat(host, "/other/getAllRole");
 
 //在t_user_project_role中增加信息
-var userProjectRoleAdd = "http://120.79.49.245:7377/userProjectRole/add";
+var userProjectRoleAdd = "".concat(host, "/userProjectRole/add");
 
 //在t_user_project_role中更新权限信息
-var userProjectRoleUpdateBatch = "http://120.79.49.245:7377/userProjectRole/updateBatch";
+var userProjectRoleUpdateBatch = "".concat(host, "/userProjectRole/updateBatch");
 
 //获取所有专业
-var getAllDepartment = "http://120.79.49.245:7377/other/getAllDepartment";
+var getAllDepartment = "".concat(host, "/other/getAllDepartment");
 
 //获取申请记录
-var roleApplyQuery = "http://120.79.49.245:7377/roleApply/query";
+var roleApplyQuery = "".concat(host, "/roleApply/query");
 
 //增加用户项目专业记录
-var userProjectDepartmentAdd = "http://120.79.49.245:7377/userprojectdepartment/add";
+var userProjectDepartmentAdd = "".concat(host, "/userprojectdepartment/add");
 
 //查找用户项目专业记录
-var userProjectDepartmentQuery = "http://120.79.49.245:7377/userprojectdepartment/query";
+var userProjectDepartmentQuery = "".concat(host, "/userprojectdepartment/query");
 
 //修改t_user_project_department中的数据
-var updateUserProjectDepartment = "http://120.79.49.245:7377/userprojectdepartment/updateBatch";
+var updateUserProjectDepartment = "".concat(host, "/userprojectdepartment/updateBatch");
 
 //审核的时候更新申请记录
-var updateRoleApply = "http://120.79.49.245:7377/roleApply/updateBatch";
+var updateRoleApply = "".concat(host, "/roleApply/updateBatch");
 
 //新增专业的api
-var departmentAdd = "http://120.79.49.245:7377/department/add";
+var departmentAdd = "".concat(host, "/department/add");
 
 //新增任务的api
-var taskAdd = "http://120.79.49.245:7377/task/add";
+var taskAdd = "".concat(host, "/task/add");
 
 //查找专业
-var departmentQuery = "http://120.79.49.245:7377/department/query";
+var departmentQuery = "".concat(host, "/department/query");
 
 //查找任务
-var taskQuery = "http://120.79.49.245:7377/task/query";
+var taskQuery = "".concat(host, "/task/query");
 
 //查找冲刺
-var sprintQuery = "http://120.79.49.245:7377/sprint/query";
+var sprintQuery = "".concat(host, "/sprint/query");
 
 //任务的更新
-var taskUpdateBatch = "http://120.79.49.245:7377/task/updateBatch";
+var taskUpdateBatch = "".concat(host, "/task/updateBatch");
 
 //增加消息
-var messageAdd = "http://120.79.49.245:7377/message/add";
+var messageAdd = "".concat(host, "/message/add");
 
 //删除任务 /task/deleteBatch
-var deleteTask = "http://120.79.49.245:7377/task/deleteBatch";
+var deleteTask = "".concat(host, "/task/deleteBatch");
 
 //项目的申请
-var projectApplyAdd = "http://120.79.49.245:7377/projectapply/add";
+var projectApplyAdd = "".concat(host, "/projectapply/add");
 
 //项目申请表的查找
-var projectApplyQuery = "http://120.79.49.245:7377/projectapply/query";
+var projectApplyQuery = "".concat(host, "/projectapply/query");
 
 //项目申请表删除（不通过即删除）
-var projectApplyDeleteBatch = "http://120.79.49.245:7377/projectapply/deleteBatch";
+var projectApplyDeleteBatch = "".concat(host, "/projectapply/deleteBatch");
 
 //增加项目(项目审核通过的时候)
-var projectAdd = "http://120.79.49.245:7377/project/add";
+var projectAdd = "".concat(host, "/project/add");
 
 //更改项目申请表(项目通过的时候更改审核状态) 
-var projectApplyUpdateBatch = "http://120.79.49.245:7377/projectapply/updateBatch";
+var projectApplyUpdateBatch = "".concat(host, "/projectapply/updateBatch");
 
 //消息模块的查找
-var messageQuery = "http://120.79.49.245:7377/message/query";
+var messageQuery = "".concat(host, "/message/query");
 
 //获取评论
-var commnetQuery = "http://120.79.49.245:7377/comment/query";
+var commnetQuery = "".concat(host, "/comment/query");
+
+//提交每日输入工时打卡阶段
+var dateWorkAdd = "".concat(host, "/datework/add");
+
+//查找dateWork
+var dateWorkQuery = "".concat(host, "/datework/query");
+
+//微信消息推送
+var messageSend = "".concat(host, "/message/send");
 
 module.exports = {
+  getUserOpenId: getUserOpenId,
   register: register,
   queryUser: queryUser,
   projectQuery: projectQuery,
@@ -14996,7 +15029,10 @@ module.exports = {
   projectApplyDeleteBatch: projectApplyDeleteBatch,
   projectApplyUpdateBatch: projectApplyUpdateBatch,
   messageQuery: messageQuery,
-  commnetQuery: commnetQuery };
+  commnetQuery: commnetQuery,
+  dateWorkAdd: dateWorkAdd,
+  dateWorkQuery: dateWorkQuery,
+  messageSend: messageSend };
 
 /***/ }),
 
@@ -15017,12 +15053,25 @@ var formatDate = function formatDate(date) {
   var seconds = date.getSeconds();
   return [year, month, day].map(formatNumber).join('-') + " " + [hours, minutes, seconds].map(formatNumber).join(':');
 };
+
+var format = function format(date) {
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+  return [year, month, day].map(formatNumber).join('-');
+};
+
 var formatNumber = function formatNumber(n) {
   n = n.toString();
   return n[1] ? n : '0' + n; //表示字符串第一个数是否存在
 };
+
 module.exports = {
-  formatDate: formatDate };
+  formatDate: formatDate,
+  format: format };
 
 /***/ }),
 
@@ -15036,6 +15085,7 @@ module.exports = {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {
 var _api = __webpack_require__(/*! ./api */ "../../../../../个人信息/agile/static/utils/api.js");function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}
+
 
 
 
@@ -15075,15 +15125,22 @@ var Login = /*#__PURE__*/function () {
       });
     }
 
-    //得到OpenId
+    //得到OpenId `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`
   }, { key: "getOpenId", value: function getOpenId(code) {
       return new Promise(function (resolve, reject) {
         var appId = "wxd763acfcb06de61a";
         var appSecret = "e8e7ea381fff59c2081d115cb312b22e";
         uni.request({
-          url: "https://api.weixin.qq.com/sns/jscode2session?appid=".concat(appId, "&secret=").concat(appSecret, "&js_code=").concat(code, "&grant_type=authorization_code"),
-          method: "GET",
-          data: {},
+          url: _api.getUserOpenId,
+          method: "POST",
+          data: {
+            appId: appId,
+            appSecret: appSecret,
+            code: code },
+
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded" },
+
           success: function success(res) {
             resolve(res);
           },
@@ -15101,6 +15158,7 @@ var Login = /*#__PURE__*/function () {
           url: api,
           method: method,
           data: userInfo,
+          dataType: 'json',
           success: function success(res) {
             resolve(res.data);
           },
@@ -15289,6 +15347,26 @@ var Query = /*#__PURE__*/function () {
           method: "POST",
           data: {},
 
+
+          dataType: 'json',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(Error) {
+            reject(Error);
+          } });
+
+      });
+    }
+
+    //查询超级用户的信息进而拿openId
+  }, { key: "findRootUserInfo", value: function findRootUserInfo() {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: xxx,
+          method: "POST",
+          data: {
+            isRoot: 1 },
 
           dataType: 'json',
           success: function success(res) {
@@ -15839,7 +15917,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -22042,7 +22120,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -22063,14 +22141,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -22146,7 +22224,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));

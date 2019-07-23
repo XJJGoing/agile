@@ -40,11 +40,11 @@
 		   </view>
 		   <view>
 		   	  <text>启动时间:</text>
-		      <input placeholder="点击选择冲刺启动时间"  :style="{width:width+'px'}" @click="openStartTimePicker" :value="startTime" ></input>
+		      <input placeholder="点击选择冲刺启动时间"  :style="{width:width+'px'}" @click="openStartTimePicker" :value="startTime" disabled="true"></input>
 		   </view>
 		   <view>
 		   	  <text>截止时间:</text>
-		      <input placeholder="点击选择冲刺截止时间"  :style="{width:width+'px'}" :value="endTime" @click="openEndTimePicker"></input>
+		      <input placeholder="点击选择冲刺截止时间"  :style="{width:width+'px'}" :value="endTime" @click="openEndTimePicker" disabled="true"></input>
 		   </view>
 		   
 			<button class="submitButton" @click="addSprint" >提交</button>

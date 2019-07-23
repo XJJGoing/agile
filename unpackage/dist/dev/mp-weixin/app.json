@@ -16,14 +16,16 @@
     "pages/changeUserRole/changeUserRole",
     "pages/auditedRoleApply/auditedRoleApply",
     "pages/picture/picture",
-    "pages/dateWork/dateWork"
+    "pages/dateWork/dateWork",
+    "pages/about/about"
   ],
   "subPackages": [],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#21242E",
     "navigationBarTitleText": "JOYEA",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "color": "#B0C4DE",
@@ -52,5 +54,6 @@
     ]
   },
   "permission": {},
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }

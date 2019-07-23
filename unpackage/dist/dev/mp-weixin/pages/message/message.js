@@ -452,10 +452,24 @@ var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | co
         _this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId = res.data.roleId; //进行相关权限的获取
             if (_this.roleId === 1) {//当为1权限的时候，消息中心获取的是申请查看项目的信息 2权限的时候为审核通过和未通过的任务
               _this.getNotAuditedRole1();} else if (_this2.roleId === 2) {_this.getTaskMessage(); //获取任务审核状态的消息	
-            }} });});}, fail: function fail() {url: '../login/login';} });}), _defineProperty(_components$component, "methods", {
+            }} });});}, fail: function fail() {url: '../login/login';} });}), _defineProperty(_components$component, "onPullDownRefresh", function onPullDownRefresh() {_this = this;
+  if (_this.roleId === 1) {
+    _this.getNotAuditedRole1();
+  } else if (this.roleId === 2) {
+    _this.getTaskMessage();
+  }
+}), _defineProperty(_components$component, "methods",
+{
+
+  //onPullDownRefresh
+  reRresh: function reRresh() {
+    this.onShow();
+  },
+
   //当进入这个消息中心的为项目的负责人的时候根据projectId和state为0去查找
   getNotAuditedRole1: function getNotAuditedRole1() {
     _this = this;
+    console.log('本项目', _this.projectId);
     uni.showLoading({
       title: '获取中',
       success: function success() {
@@ -469,8 +483,8 @@ var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | co
           dataType: 'json' }).
 
         then(function (data) {
+          console.log("获取到的数据", data);
           uni.hideLoading();
-          console.log("申请的项目", data);
           _this.allNotAudited = data[1].data.data.records;
         }).
         catch(function (error) {

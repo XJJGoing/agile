@@ -78,6 +78,10 @@
 				}
 			})
 		},
+		onPullDownRefresh(){
+			_this = this;
+			_this.getAllNoExamineProjects();
+		},
 		methods: {
 			
 			//获取申请项目表的所有未审核的项目

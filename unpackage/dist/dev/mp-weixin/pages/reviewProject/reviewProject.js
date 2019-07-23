@@ -178,6 +178,10 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       } });
 
   },
+  onPullDownRefresh: function onPullDownRefresh() {
+    _this = this;
+    _this.getAllNoExamineProjects();
+  },
   methods: {
 
     //获取申请项目表的所有未审核的项目

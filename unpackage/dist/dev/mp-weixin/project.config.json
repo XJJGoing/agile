@@ -24,84 +24,92 @@
 			"current": -1,
 			"list": []
 		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
 		"game": {
 			"current": -1,
 			"list": []
 		},
 		"miniprogram": {
-			"current": 9,
+			"current": 0,
 			"list": [
 				{
+					"name": "login",
 					"id": 0,
-					"name": "swiper1",
-					"pathName": "pages/login/login",
-					"query": ""
+					"pathName": "pages/login/login"
 				},
 				{
-					"id": -1,
-					"name": "reviewProject",
-					"pathName": "pages/reviewProject/reviewProject",
-					"query": "",
-					"scene": null
+					"name": "apply",
+					"id": 1,
+					"pathName": "pages/apply/apply"
 				},
 				{
-					"id": -1,
-					"name": "message",
-					"pathName": "pages/message/message",
-					"query": "",
-					"scene": null
+					"name": "about",
+					"id": 2,
+					"pathName": "pages/addSprint/addSprint"
 				},
 				{
-					"id": -1,
-					"name": "index",
-					"pathName": "pages/index/index",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "reviewTask",
-					"pathName": "pages/reviewTask/reviewTask",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "comment",
-					"pathName": "pages/comment/comment",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "people",
-					"pathName": "pages/people/people",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "admin",
-					"pathName": "pages/admin/admin",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "changeRole",
-					"pathName": "pages/changeUserRole/changeUserRole",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
 					"name": "addTask",
-					"pathName": "pages/addTask/addTask",
-					"scene": null
+					"id": 3,
+					"pathName": "pages/addTask/addTask"
+				},
+				{
+					"name": "admin",
+					"id": 4,
+					"pathName": "pages/admin/admin"
+				},
+				{
+					"name": "auditedRoleApply",
+					"id": 5,
+					"pathName": "pages/auditedRoleApply/auditedRoleApply"
+				},
+				{
+					"name": "changeUserRole",
+					"id": 6,
+					"pathName": "pages/changeUserRole/changeUserRole"
+				},
+				{
+					"name": "comment",
+					"id": 7,
+					"pathName": "pages/comment/comment"
+				},
+				{
+					"name": "dateWork",
+					"id": 8,
+					"pathName": "pages/dateWork/dateWork"
+				},
+				{
+					"name": "index",
+					"id": 9,
+					"pathName": "pages/index/index"
+				},
+				{
+					"name": "message",
+					"id": 10,
+					"pathName": "pages/message/message"
+				},
+				{
+					"name": "people",
+					"id": 11,
+					"pathName": "pages/people/people"
+				},
+				{
+					"name": "picture",
+					"id": 12,
+					"pathName": "pages/picture/picture"
+				},
+				{
+					"name": "reviewProject",
+					"id": 13,
+					"pathName": "pages/reviewProject/reviewProject"
+				},
+				{
+					"name": "reviewTask",
+					"id": 14,
+					"pathName": "pages/reviewTask/reviewTask"
+				},
+				{
+					"name": "addSprint",
+					"id": 15,
+					"pathName": "pages/addSprint/addSprint"
 				}
 			]
 		}

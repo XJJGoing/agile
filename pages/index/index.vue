@@ -141,6 +141,7 @@
 				   }
 				   Query.findUser(id)
 				   .then(data=>{
+					   console.log(data)
 					 _this.userInfo = data.data.records[0];
 					 uni.getStorage({
 						 key:"nowInProject",

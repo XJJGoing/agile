@@ -23,7 +23,8 @@
 			   <block v-if="roleId==2">
 				 <i-cell i-class="item" title="新建任务" is-link url="/pages/addTask/addTask"></i-cell>
 				 <i-cell i-class="item" title="消息中心" is-link url="/pages/message/message"></i-cell>
-			   </block>  
+			   </block>
+				 <i-cell i-class="item" title="关于" is-link url="/pages/about/about"></i-cell>
                 <i-cell i-class="item" title="退出"  @click="logout"></i-cell>
 	   </view> 
 	 </view>

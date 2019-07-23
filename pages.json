@@ -59,7 +59,9 @@
         }
         ,{
             "path" : "pages/reviewProject/reviewProject",
-            "style" : {}
+            "style" : {
+				"enablePullDownRefresh":true
+			}
         }
         ,{
             "path" : "pages/admin/admin",
@@ -67,11 +69,11 @@
         }
         ,{
             "path" : "pages/message/message",
-            "style" : {}
+            "style" : {"enablePullDownRefresh":true}
         }
         ,{
             "path" : "pages/reviewTask/reviewTask",
-            "style" : {}
+            "style" : {"enablePullDownRefresh":true}
         }
         ,{
             "path" : "pages/addSprint/addSprint",
@@ -99,13 +101,18 @@
             "path" : "pages/dateWork/dateWork",
             "style" : {}
         }
+        ,{
+            "path" : "pages/about/about",
+            "style" : {}
+        }
     ],
 	
 	"globalStyle": {
 		"backgroundTextStyle": "light",
 		"navigationBarBackgroundColor": "#21242E",
 		"navigationBarTitleText": "JOYEA",
-		"navigationBarTextStyle": "white"
+		"navigationBarTextStyle": "white",
+		"enablePullDownRefresh":true
 	},
    	"tabBar":{
 		"color": "#B0C4DE",
@@ -115,7 +122,7 @@
 		"list":[{ 
 			 "pagePath": "pages/index/index",
 			 "text": "主页",
-			 "iconPath": "/static/img/home.png",
+			 "iconPath": "/static/img/home.png", 
 			 "selectedIconPath": "/static/img/home_select.png"
 		},{
 			"pagePath": "pages/picture/picture",
@@ -133,8 +140,68 @@
 		"current":0,
 		"list":[
 			{
-				"name":"swiper1",
+				"name":"login",
 				"path":"pages/login/login"
+			},
+			{
+				"name":"apply",
+				"path":"pages/apply/apply"
+			},
+			{
+				"name":"about",
+				"path":"pages/addSprint/addSprint"
+			},
+			{
+				"name":"addTask",
+				"path":"pages/addTask/addTask"
+			},
+			{
+				"name":"admin",
+				"path":"pages/admin/admin"
+			},
+			{
+				"name":"auditedRoleApply",
+				"path":"pages/auditedRoleApply/auditedRoleApply"
+			},
+			{
+				"name":"changeUserRole",
+				"path":"pages/changeUserRole/changeUserRole"
+			},
+			{
+				"name":"comment",
+				"path":"pages/comment/comment"
+			},
+			{
+				"name":"dateWork",
+				"path":"pages/dateWork/dateWork"
+			},
+			{
+				"name":"index",
+				"path":"pages/index/index"
+			},
+			{
+				"name":"message",
+				"path":"pages/message/message"
+			},
+			{
+				"name":"people",
+				"path":"pages/people/people"
+			},
+			{
+				"name":"picture",
+				"path":"pages/picture/picture"
+			},
+			{
+				"name":"reviewProject",
+				"path":"pages/reviewProject/reviewProject"
+			},
+			{
+				"name":"reviewTask",
+				"path":"pages/reviewTask/reviewTask"
+			},
+			{
+				"name":"addSprint",
+				"path":"pages/addSprint/addSprint"
 			}
 		]
 	}

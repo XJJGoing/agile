@@ -80,24 +80,22 @@
 				   		return Login.getOpenId(data)
 				   })
 				   .then(data=>{
-				   	   openId = data.data.openid;
-					   sessionKey = data.data.session_key;
+				   	   openId = JSON.parse(data.data.data).openid;
+					   sessionKey = JSON.parse(data.data.data).session_key;
 				   	   return Login.getUserInfo()
 				   })
 				   .then(data=>{
 				   	   let userInfo = {
-						    ...data.userInfo,
+						    ...data.userInfo, 
 				   			openId,
 							sessionKey,
 							trueName
 				   		};
-						//console.log("发送到服务器的信息",userInfo)  
 				   	    return Login.insertUser(userInfo,register,"POST")
 				   })
 				   .then(data=>{
 					   uni.hideLoading();
 					   console.log("返回的用户的信息",data.data)
-					  // console.log(userInfo)
 					   uni.setStorage({
 					   	 key:'userInfo',
 						 data:data.data,
@@ -158,7 +156,7 @@
 	width: 450upx;
 	height: 100upx;
 	border: 1upx solid #30FAF6;
-	border-radius: 2%;
+	border-radius: 4%;
 	font-size: 30upx;
 	line-height: 100upx;
 	color: #E9EFED;

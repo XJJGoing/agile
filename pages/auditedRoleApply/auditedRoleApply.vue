@@ -44,7 +44,7 @@
         components:{
            wPicker
         },
-		data(){
+		data(){ 
         return {
 		    width:"",         //输入框的长度
             chooseTime:"",    //设置的时间
@@ -74,7 +74,6 @@
 			
 			//监听时间选择器拿到的东西
 			chooseDate:function(e){
-				console.log("拿到的时间",e)
 				this.chooseTime = e.result;
 			},
 			
@@ -92,15 +91,6 @@
 				}
 				_this = this;
 				if(_this.chooseTime!=""){
-					let data = [{
-						        id:_this.chooseItem.id,
-						  		effectiveTime: _this.chooseTime,
-						  		projectId: _this.chooseItem.projectId,
-						  		roleId:roleId,
-						  		state: state,
-						  		userId: _this.chooseItem.userId
-						  	  }]
-					console.log("提交的数据",data)
 					uni.showLoading({
 						title:"提交中",
 						success:()=>{
@@ -166,6 +156,11 @@
 					  .then(data=>{
 						  console.log("插入成功",data);
 						  uni.hideLoading();
+						  uni.showToast({
+						  	title:"提交成功",
+							icon:"none",
+							duration:1000
+						  })
 					  })
 					  .catch(error=>{
 						  uni.showToast({
