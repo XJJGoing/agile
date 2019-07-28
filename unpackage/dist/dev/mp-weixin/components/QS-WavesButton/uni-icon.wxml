@@ -1,1 +1,1 @@
-<view data-event-opts="{{[['tap',[['onClick']]]]}}" class="{{['uni-icon margin5px data-v-5fcb5bf1','uni-icon-'+type]}}" style="{{'color:'+(color)+';'+('font-size:'+(fontSize)+';')}}" bindtap="__e"></view>
+<view data-event-opts="{{[['tap',[['onClick']]]]}}" class="{{['uni-icon margin5px data-v-50f6a4eb','uni-icon-'+type]}}" style="{{'color:'+(color)+';'+('font-size:'+(fontSize)+';')}}" bindtap="__e"></view>

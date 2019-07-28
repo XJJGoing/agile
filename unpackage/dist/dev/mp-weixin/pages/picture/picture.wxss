@@ -1,12 +1,19 @@
 
-.all{
-	height: auto;
+.charts {
+	width: 730rpx;
+	height: 500rpx;
+	background-color: transparent;
+}
+.bookshelf-content {
+	white-space: nowrap;
 	width: 100%;
-	overflow: scroll;
 }
-::-webkit-scrollbar{
-	height: 6rpx;
-	width: 2rpx;
+.my-button {
+	margin-left: 1rem;
+	font-size: 12px;
+	color: white;
+	background-color: rgb(71, 84, 103);
+	border-radius: 5px;
+	width: 90%;
 }
-
 

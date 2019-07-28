@@ -61,6 +61,9 @@ const taskAdd = "http://120.79.49.245:7377/task/add";
 //查找专业
 const departmentQuery = "http://120.79.49.245:7377/department/query";
 
+//查找所有专业
+const departmentQueryAll = "http://120.79.49.245:7377/department/queryAll";
+
 //查找任务
 const taskQuery = "http://120.79.49.245:7377/task/query";
 
@@ -76,9 +79,12 @@ const messageAdd = "http://120.79.49.245:7377/message/add";
 //删除任务 /task/deleteBatch
 const deleteTask ="http://120.79.49.245:7377/task/deleteBatch";
 
+//获取折线图数据
+const getLineData ="http://120.79.49.245:7377/picture/getLineData";
 
 
 module.exports = {
+	departmentQueryAll:departmentQueryAll,
 	register:register,
 	queryUser:queryUser,
 	projectQuery:projectQuery,

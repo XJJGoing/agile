@@ -1,9 +1,9 @@
 
-.QS_WavesButton.data-v-a0a083c8 {
+.QS_WavesButton.data-v-3e1ae396 {
 	position: relative;
 	overflow: hidden;
 }
-.waves-ripple.data-v-a0a083c8 {
+.waves-ripple.data-v-3e1ae396 {
 	position: absolute;
 	border-radius: 100%;
 	background-clip: padding-box;
@@ -17,7 +17,7 @@
 	        transform: scale(0);
 	opacity: 1;
 }
-.waves-ripple.z-active.data-v-a0a083c8 {
+.waves-ripple.z-active.data-v-3e1ae396 {
 	opacity: 0;
 	-webkit-transform: scale(2);
 	    -ms-transform: scale(2);
@@ -28,7 +28,7 @@
 	transition: opacity 1.2s ease-out, transform 0.6s ease-out;
 	transition: opacity 1.2s ease-out, transform 0.6s ease-out, -webkit-transform 0.6s ease-out;
 }
-.btn_icon.data-v-a0a083c8{
+.btn_icon.data-v-3e1ae396{
 	margin: 5px;
 }
 

@@ -1,274 +1,6081 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],{
 
-/***/ "../../../../../个人信息/agile/common/w-picker.js":
-/*!****************************************!*\
-  !*** F:/个人信息/agile/common/w-picker.js ***!
-  \****************************************/
+/***/ 0:
+/*!*****************************************!*\
+  !*** E:/code/agile-front/agile/main.js ***!
+  \*****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var forMatNum = function forMatNum(num) {
-  return num < 10 ? '0' + num : num + '';
-};
-var initPicker = {
-  initDays: function initDays(year, month) {
-    var totalDays = new Date(year, month, 0).getDate();
-    var dates = [];
-    for (var d = 1; d <= totalDays; d++) {
-      dates.push(forMatNum(d));
-    };
-    return dates;
-  },
-  //日期初始化
-  date: function date(start, end) {var mode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "date";var step = arguments.length > 3 ? arguments[3] : undefined;var value = arguments.length > 4 ? arguments[4] : undefined;var flag = arguments.length > 5 ? arguments[5] : undefined;
-    var aToday = new Date();
-    var tYear,tMonth,tDay,tHours,tMinutes,tSeconds,defaultVal = [];
-    var initstartDate = new Date(start);
-    var endDate = new Date(end);
-    if (start > end) {
-      initstartDate = new Date(end);
-      endDate = new Date(start);
-    };
-    var startYear = initstartDate.getFullYear();
-    var startMonth = initstartDate.getMonth() + 1;
-    var endYear = endDate.getFullYear();
-    var years = [],months = [],days = [],hours = [],minutes = [],seconds = [],returnArr = [];
-    var curMonth = flag ? value[1] * 1 : value[1] + 1;
-    var totalDays = new Date(startYear, curMonth, 0).getDate();
-    for (var s = startYear; s <= endYear; s++) {
-      years.push(s + '');
-    };
-    for (var m = 1; m <= 12; m++) {
-      months.push(forMatNum(m));
-    };
-    for (var d = 1; d <= totalDays; d++) {
-      days.push(forMatNum(d));
-    }
-    for (var h = 0; h < 24; h++) {
-      hours.push(forMatNum(h));
-    }
-    for (var _m = 0; _m < 60; _m += step * 1) {
-      minutes.push(forMatNum(_m));
-    }
-    for (var _s = 0; _s < 60; _s++) {
-      seconds.push(forMatNum(_s));
-    }
-    if (flag) {
-      returnArr = [
-      years.indexOf(value[0]),
-      months.indexOf(value[1]),
-      days.indexOf(value[2]),
-      hours.indexOf(value[3]),
-      minutes.indexOf(value[4]) == -1 ? 0 : minutes.indexOf(value[4]),
-      seconds.indexOf(value[5])];
+/* WEBPACK VAR INJECTION */(function(createApp) {__webpack_require__(/*! uni-pages */ 4);
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 5));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
-    };
-    switch (mode) {
-      case "range":
-        if (flag) {
-          defaultVal = [returnArr[0], returnArr[1], returnArr[2], 0, returnArr[0], returnArr[1], returnArr[2]];
-          return { years: years, months: months, days: days, defaultVal: defaultVal };
-        } else {
-          return { years: years, months: months, days: days };
-        }
-        break;
-      case "date":
-        if (flag) {
-          defaultVal = [returnArr[0], returnArr[1], returnArr[2]];
-          return { years: years, months: months, days: days, defaultVal: defaultVal };
-        } else {
-          return { years: years, months: months, days: days };
-        }
-        break;
-      case "yearMonth":
-        if (flag) {
-          defaultVal = [returnArr[0], returnArr[1]];
-          return { years: years, months: months, defaultVal: defaultVal };
-        } else {
-          return { years: years, months: months };
-        }
-        break;
-      case "dateTime":
-        if (flag) {
-          defaultVal = returnArr;
-          return { years: years, months: months, days: days, hours: hours, minutes: minutes, seconds: seconds, defaultVal: defaultVal };
-        } else {
-          return { years: years, months: months, days: days, hours: hours, minutes: minutes, seconds: seconds };
-        }
-        break;
-      case "time":
-        if (flag) {
-          defaultVal = [returnArr[3], returnArr[4], returnArr[5]];
-          return { hours: hours, minutes: minutes, seconds: seconds, defaultVal: defaultVal };
-        } else {
-          return { hours: hours, minutes: minutes, seconds: seconds };
-        }
-        break;}
+_vue.default.config.productionTip = false;
 
-  },
-  //短期时间初始化小时
-  initLimitHours: function initLimitHours(startHour, endHour) {
-    var hours = [];
-    for (var k = startHour * 1; k <= endHour * 1; k++) {
-      hours.push({
-        label: forMatNum(k),
-        value: forMatNum(k),
-        flag: false });
+_App.default.mpType = 'app';
 
-    }
-    return hours;
-  },
-  //短期时间初始化分钟
-  initLimitMinutes: function initLimitMinutes(minuteStep) {
-    var minutes = [];
-    for (var j = 0; j < 60; j += minuteStep * 1) {
-      minutes.push({
-        label: forMatNum(j),
-        value: forMatNum(j) });
+var app = new _vue.default(_objectSpread({},
+_App.default));
 
-    }
-    return minutes;
-  },
-  //短期时间初始化
-  limit: function limit() {var dayStep = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 7;var startHour = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 8;var endHour = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;var minuteStep = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;var afterStep = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 30;
-    var startDate = new Date();
-    var bsDate = new Date(new Date().getTime() + afterStep * 60 * 1000);
-    var date = [];
-    var hours = [];
-    var minutes = [];
-    var hour = bsDate.getHours();
-    var minute = Math.floor(bsDate.getMinutes() / minuteStep) * minuteStep;
-    var weeks = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
-    for (var i = 0; i < dayStep; i++) {
-      var year = void 0,month = void 0,day = void 0,weekday = void 0;
-      year = startDate.getFullYear();
-      month = forMatNum(startDate.getMonth() + 1);
-      day = forMatNum(startDate.getDate());
-      weekday = weeks[startDate.getDay()];
-      var label = "";
-      switch (i) {
-        case 0:
-          label = "今天";
-          break;
-        case 1:
-          label = "明天";
-          break;
-        case 2:
-          label = "后天";
-          break;
-        default:
-          label = month + "月" + day + "日" + " " + weekday;
-          break;}
-
-      date.push({
-        label: label,
-        value: year + "-" + month + "-" + day,
-        flag: i == 0 ? true : false });
-
-      startDate.setDate(startDate.getDate() + 1);
-    }
-    if (hour > endHour) {
-      hour = endHour;
-    };
-    for (var k = hour * 1; k <= endHour * 1; k++) {
-      hours.push({
-        label: forMatNum(k),
-        value: forMatNum(k),
-        flag: k == hour ? true : false });
-
-    };
-    for (var j = minute; j < 60; j += minuteStep * 1) {
-      minutes.push({
-        label: forMatNum(j),
-        value: forMatNum(j) });
-
-    }
-    return { date: date, hours: hours, minutes: minutes };
-  },
-  //选择区间初始化日期
-  initRangeDays: function initRangeDays(year, month) {
-    var totalDays = new Date(year, month, 0).getDate();
-    var dates = [];
-    for (var d = 1; d <= totalDays; d++) {
-      dates.push(forMatNum(d));
-    };
-    return dates;
-  },
-  //选择区间初始化
-  range: function range(start, end, value, flag) {
-    var aToday = new Date();
-    var tYear,tMonth,tDay,tHours,tMinutes,tSeconds,defaultVal = [];
-    var initstartDate = new Date(start);
-    var endDate = new Date(end);
-    if (start > end) {
-      initstartDate = new Date(end);
-      endDate = new Date(start);
-    };
-    var startYear = initstartDate.getFullYear();
-    var startMonth = initstartDate.getMonth() + 1;
-    var endYear = endDate.getFullYear();
-    var fyears = [],fmonths = [],fdays = [],tyears = [],tmonths = [],tdays = [],returnArr = [];
-    var curMonth = flag ? value[1] * 1 : value[1] + 1;
-    var totalDays = new Date(startYear, curMonth, 0).getDate();
-    for (var s = startYear; s <= endYear; s++) {
-      fyears.push(s + '');
-    };
-    for (var m = 1; m <= 12; m++) {
-      fmonths.push(forMatNum(m));
-    };
-    for (var d = 1; d <= totalDays; d++) {
-      fdays.push(forMatNum(d));
-    };
-    for (var _s2 = startYear; _s2 <= endYear; _s2++) {
-      tyears.push(_s2 + '');
-    };
-    for (var _m2 = 1; _m2 <= 12; _m2++) {
-      tmonths.push(forMatNum(_m2));
-    };
-    for (var _d = 1; _d <= totalDays; _d++) {
-      tdays.push(forMatNum(_d));
-    };
-    if (flag) {
-      defaultVal = [
-      fyears.indexOf(value[0]),
-      fmonths.indexOf(value[1]),
-      fdays.indexOf(value[2]),
-      0,
-      tyears.indexOf(value[0]),
-      tmonths.indexOf(value[1]),
-      tdays.indexOf(value[2])];
-
-      return {
-        fyears: fyears,
-        fmonths: fmonths,
-        fdays: fdays,
-        tyears: tyears,
-        tmonths: tmonths,
-        tdays: tdays,
-        defaultVal: defaultVal };
-
-    } else {
-      return {
-        fyears: fyears,
-        fmonths: fmonths,
-        fdays: fdays,
-        tyears: tyears,
-        tmonths: tmonths,
-        tdays: tdays };
-
-    }
-  } };var _default =
-
-
-initPicker;exports.default = _default;
+createApp(app).$mount();
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createApp"]))
 
 /***/ }),
 
-/***/ "../../../../../个人信息/agile/components/QS-WavesButton/app.js":
-/*!******************************************************!*\
-  !*** F:/个人信息/agile/components/QS-WavesButton/app.js ***!
-  \******************************************************/
+/***/ 1:
+/*!************************************************************!*\
+  !*** ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.createApp = createApp;exports.createPage = createPage;exports.createComponent = createComponent;exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance");}function _iterableToArray(iter) {if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;}}
+
+var _toString = Object.prototype.toString;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function isFn(fn) {
+  return typeof fn === 'function';
+}
+
+function isStr(str) {
+  return typeof str === 'string';
+}
+
+function isPlainObject(obj) {
+  return _toString.call(obj) === '[object Object]';
+}
+
+function hasOwn(obj, key) {
+  return hasOwnProperty.call(obj, key);
+}
+
+function noop() {}
+
+/**
+                    * Create a cached version of a pure function.
+                    */
+function cached(fn) {
+  var cache = Object.create(null);
+  return function cachedFn(str) {
+    var hit = cache[str];
+    return hit || (cache[str] = fn(str));
+  };
+}
+
+/**
+   * Camelize a hyphen-delimited string.
+   */
+var camelizeRE = /-(\w)/g;
+var camelize = cached(function (str) {
+  return str.replace(camelizeRE, function (_, c) {return c ? c.toUpperCase() : '';});
+});
+
+var HOOKS = [
+'invoke',
+'success',
+'fail',
+'complete',
+'returnValue'];
+
+
+var globalInterceptors = {};
+var scopedInterceptors = {};
+
+function mergeHook(parentVal, childVal) {
+  var res = childVal ?
+  parentVal ?
+  parentVal.concat(childVal) :
+  Array.isArray(childVal) ?
+  childVal : [childVal] :
+  parentVal;
+  return res ?
+  dedupeHooks(res) :
+  res;
+}
+
+function dedupeHooks(hooks) {
+  var res = [];
+  for (var i = 0; i < hooks.length; i++) {
+    if (res.indexOf(hooks[i]) === -1) {
+      res.push(hooks[i]);
+    }
+  }
+  return res;
+}
+
+function removeHook(hooks, hook) {
+  var index = hooks.indexOf(hook);
+  if (index !== -1) {
+    hooks.splice(index, 1);
+  }
+}
+
+function mergeInterceptorHook(interceptor, option) {
+  Object.keys(option).forEach(function (hook) {
+    if (HOOKS.indexOf(hook) !== -1 && isFn(option[hook])) {
+      interceptor[hook] = mergeHook(interceptor[hook], option[hook]);
+    }
+  });
+}
+
+function removeInterceptorHook(interceptor, option) {
+  if (!interceptor || !option) {
+    return;
+  }
+  Object.keys(option).forEach(function (hook) {
+    if (HOOKS.indexOf(hook) !== -1 && isFn(option[hook])) {
+      removeHook(interceptor[hook], option[hook]);
+    }
+  });
+}
+
+function addInterceptor(method, option) {
+  if (typeof method === 'string' && isPlainObject(option)) {
+    mergeInterceptorHook(scopedInterceptors[method] || (scopedInterceptors[method] = {}), option);
+  } else if (isPlainObject(method)) {
+    mergeInterceptorHook(globalInterceptors, method);
+  }
+}
+
+function removeInterceptor(method, option) {
+  if (typeof method === 'string') {
+    if (isPlainObject(option)) {
+      removeInterceptorHook(scopedInterceptors[method], option);
+    } else {
+      delete scopedInterceptors[method];
+    }
+  } else if (isPlainObject(method)) {
+    removeInterceptorHook(globalInterceptors, method);
+  }
+}
+
+function wrapperHook(hook) {
+  return function (data) {
+    return hook(data) || data;
+  };
+}
+
+function isPromise(obj) {
+  return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+}
+
+function queue(hooks, data) {
+  var promise = false;
+  for (var i = 0; i < hooks.length; i++) {
+    var hook = hooks[i];
+    if (promise) {
+      promise = Promise.then(wrapperHook(hook));
+    } else {
+      var res = hook(data);
+      if (isPromise(res)) {
+        promise = Promise.resolve(res);
+      }
+      if (res === false) {
+        return {
+          then: function then() {} };
+
+      }
+    }
+  }
+  return promise || {
+    then: function then(callback) {
+      return callback(data);
+    } };
+
+}
+
+function wrapperOptions(interceptor) {var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  ['success', 'fail', 'complete'].forEach(function (name) {
+    if (Array.isArray(interceptor[name])) {
+      var oldCallback = options[name];
+      options[name] = function callbackInterceptor(res) {
+        queue(interceptor[name], res).then(function (res) {
+          /* eslint-disable no-mixed-operators */
+          return isFn(oldCallback) && oldCallback(res) || res;
+        });
+      };
+    }
+  });
+  return options;
+}
+
+function wrapperReturnValue(method, returnValue) {
+  var returnValueHooks = [];
+  if (Array.isArray(globalInterceptors.returnValue)) {
+    returnValueHooks.push.apply(returnValueHooks, _toConsumableArray(globalInterceptors.returnValue));
+  }
+  var interceptor = scopedInterceptors[method];
+  if (interceptor && Array.isArray(interceptor.returnValue)) {
+    returnValueHooks.push.apply(returnValueHooks, _toConsumableArray(interceptor.returnValue));
+  }
+  returnValueHooks.forEach(function (hook) {
+    returnValue = hook(returnValue) || returnValue;
+  });
+  return returnValue;
+}
+
+function getApiInterceptorHooks(method) {
+  var interceptor = Object.create(null);
+  Object.keys(globalInterceptors).forEach(function (hook) {
+    if (hook !== 'returnValue') {
+      interceptor[hook] = globalInterceptors[hook].slice();
+    }
+  });
+  var scopedInterceptor = scopedInterceptors[method];
+  if (scopedInterceptor) {
+    Object.keys(scopedInterceptor).forEach(function (hook) {
+      if (hook !== 'returnValue') {
+        interceptor[hook] = (interceptor[hook] || []).concat(scopedInterceptor[hook]);
+      }
+    });
+  }
+  return interceptor;
+}
+
+function invokeApi(method, api, options) {for (var _len = arguments.length, params = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {params[_key - 3] = arguments[_key];}
+  var interceptor = getApiInterceptorHooks(method);
+  if (interceptor && Object.keys(interceptor).length) {
+    if (Array.isArray(interceptor.invoke)) {
+      var res = queue(interceptor.invoke, options);
+      return res.then(function (options) {
+        return api.apply(void 0, [wrapperOptions(interceptor, options)].concat(params));
+      });
+    } else {
+      return api.apply(void 0, [wrapperOptions(interceptor, options)].concat(params));
+    }
+  }
+  return api.apply(void 0, [options].concat(params));
+}
+
+var promiseInterceptor = {
+  returnValue: function returnValue(res) {
+    if (!isPromise(res)) {
+      return res;
+    }
+    return res.then(function (res) {
+      return res[1];
+    }).catch(function (res) {
+      return res[0];
+    });
+  } };
+
+
+var SYNC_API_RE =
+/^\$|interceptors|Interceptor$|getSubNVueById|requireNativePlugin|upx2px|hideKeyboard|canIUse|^create|Sync$|Manager$|base64ToArrayBuffer|arrayBufferToBase64/;
+
+var CONTEXT_API_RE = /^create|Manager$/;
+
+var CALLBACK_API_RE = /^on/;
+
+function isContextApi(name) {
+  return CONTEXT_API_RE.test(name);
+}
+function isSyncApi(name) {
+  return SYNC_API_RE.test(name);
+}
+
+function isCallbackApi(name) {
+  return CALLBACK_API_RE.test(name);
+}
+
+function handlePromise(promise) {
+  return promise.then(function (data) {
+    return [null, data];
+  }).
+  catch(function (err) {return [err];});
+}
+
+function shouldPromise(name) {
+  if (
+  isContextApi(name) ||
+  isSyncApi(name) ||
+  isCallbackApi(name))
+  {
+    return false;
+  }
+  return true;
+}
+
+function promisify(name, api) {
+  if (!shouldPromise(name)) {
+    return api;
+  }
+  return function promiseApi() {var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};for (var _len2 = arguments.length, params = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {params[_key2 - 1] = arguments[_key2];}
+    if (isFn(options.success) || isFn(options.fail) || isFn(options.complete)) {
+      return wrapperReturnValue(name, invokeApi.apply(void 0, [name, api, options].concat(params)));
+    }
+    return wrapperReturnValue(name, handlePromise(new Promise(function (resolve, reject) {
+      invokeApi.apply(void 0, [name, api, Object.assign({}, options, {
+        success: resolve,
+        fail: reject })].concat(
+      params));
+      /* eslint-disable no-extend-native */
+      if (!Promise.prototype.finally) {
+        Promise.prototype.finally = function (callback) {
+          var promise = this.constructor;
+          return this.then(
+          function (value) {return promise.resolve(callback()).then(function () {return value;});},
+          function (reason) {return promise.resolve(callback()).then(function () {
+              throw reason;
+            });});
+
+        };
+      }
+    })));
+  };
+}
+
+var EPS = 1e-4;
+var BASE_DEVICE_WIDTH = 750;
+var isIOS = false;
+var deviceWidth = 0;
+var deviceDPR = 0;
+
+function checkDeviceWidth() {var _wx$getSystemInfoSync =
+
+
+
+
+  wx.getSystemInfoSync(),platform = _wx$getSystemInfoSync.platform,pixelRatio = _wx$getSystemInfoSync.pixelRatio,windowWidth = _wx$getSystemInfoSync.windowWidth; // uni=>wx runtime 编译目标是 uni 对象，内部不允许直接使用 uni
+
+  deviceWidth = windowWidth;
+  deviceDPR = pixelRatio;
+  isIOS = platform === 'ios';
+}
+
+function upx2px(number, newDeviceWidth) {
+  if (deviceWidth === 0) {
+    checkDeviceWidth();
+  }
+
+  number = Number(number);
+  if (number === 0) {
+    return 0;
+  }
+  var result = number / BASE_DEVICE_WIDTH * (newDeviceWidth || deviceWidth);
+  if (result < 0) {
+    result = -result;
+  }
+  result = Math.floor(result + EPS);
+  if (result === 0) {
+    if (deviceDPR === 1 || !isIOS) {
+      return 1;
+    } else {
+      return 0.5;
+    }
+  }
+  return number < 0 ? -result : result;
+}
+
+var interceptors = {
+  promiseInterceptor: promiseInterceptor };
+
+
+
+
+var baseApi = /*#__PURE__*/Object.freeze({
+  upx2px: upx2px,
+  interceptors: interceptors,
+  addInterceptor: addInterceptor,
+  removeInterceptor: removeInterceptor });
+
+
+var previewImage = {
+  args: function args(fromArgs) {
+    var currentIndex = parseInt(fromArgs.current);
+    if (isNaN(currentIndex)) {
+      return;
+    }
+    var urls = fromArgs.urls;
+    if (!Array.isArray(urls)) {
+      return;
+    }
+    var len = urls.length;
+    if (!len) {
+      return;
+    }
+    if (currentIndex < 0) {
+      currentIndex = 0;
+    } else if (currentIndex >= len) {
+      currentIndex = len - 1;
+    }
+    if (currentIndex > 0) {
+      fromArgs.current = urls[currentIndex];
+      fromArgs.urls = urls.filter(
+      function (item, index) {return index < currentIndex ? item !== urls[currentIndex] : true;});
+
+    } else {
+      fromArgs.current = urls[0];
+    }
+    return {
+      indicator: false,
+      loop: false };
+
+  } };
+
+
+var protocols = {
+  previewImage: previewImage };
+
+var todos = [];
+var canIUses = [];
+
+var CALLBACKS = ['success', 'fail', 'cancel', 'complete'];
+
+function processCallback(methodName, method, returnValue) {
+  return function (res) {
+    return method(processReturnValue(methodName, res, returnValue));
+  };
+}
+
+function processArgs(methodName, fromArgs) {var argsOption = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};var returnValue = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};var keepFromArgs = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+  if (isPlainObject(fromArgs)) {// 一般 api 的参数解析
+    var toArgs = keepFromArgs === true ? fromArgs : {}; // returnValue 为 false 时，说明是格式化返回值，直接在返回值对象上修改赋值
+    if (isFn(argsOption)) {
+      argsOption = argsOption(fromArgs, toArgs) || {};
+    }
+    for (var key in fromArgs) {
+      if (hasOwn(argsOption, key)) {
+        var keyOption = argsOption[key];
+        if (isFn(keyOption)) {
+          keyOption = keyOption(fromArgs[key], fromArgs, toArgs);
+        }
+        if (!keyOption) {// 不支持的参数
+          console.warn("\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F ".concat(methodName, "\u6682\u4E0D\u652F\u6301").concat(key));
+        } else if (isStr(keyOption)) {// 重写参数 key
+          toArgs[keyOption] = fromArgs[key];
+        } else if (isPlainObject(keyOption)) {// {name:newName,value:value}可重新指定参数 key:value
+          toArgs[keyOption.name ? keyOption.name : key] = keyOption.value;
+        }
+      } else if (CALLBACKS.indexOf(key) !== -1) {
+        toArgs[key] = processCallback(methodName, fromArgs[key], returnValue);
+      } else {
+        if (!keepFromArgs) {
+          toArgs[key] = fromArgs[key];
+        }
+      }
+    }
+    return toArgs;
+  } else if (isFn(fromArgs)) {
+    fromArgs = processCallback(methodName, fromArgs, returnValue);
+  }
+  return fromArgs;
+}
+
+function processReturnValue(methodName, res, returnValue) {var keepReturnValue = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  if (isFn(protocols.returnValue)) {// 处理通用 returnValue
+    res = protocols.returnValue(methodName, res);
+  }
+  return processArgs(methodName, res, returnValue, {}, keepReturnValue);
+}
+
+function wrapper(methodName, method) {
+  if (hasOwn(protocols, methodName)) {
+    var protocol = protocols[methodName];
+    if (!protocol) {// 暂不支持的 api
+      return function () {
+        console.error("\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F \u6682\u4E0D\u652F\u6301".concat(methodName));
+      };
+    }
+    return function (arg1, arg2) {// 目前 api 最多两个参数
+      var options = protocol;
+      if (isFn(protocol)) {
+        options = protocol(arg1);
+      }
+
+      arg1 = processArgs(methodName, arg1, options.args, options.returnValue);
+
+      var args = [arg1];
+      if (typeof arg2 !== 'undefined') {
+        args.push(arg2);
+      }
+      var returnValue = wx[options.name || methodName].apply(wx, args);
+      if (isSyncApi(methodName)) {// 同步 api
+        return processReturnValue(methodName, returnValue, options.returnValue, isContextApi(methodName));
+      }
+      return returnValue;
+    };
+  }
+  return method;
+}
+
+var todoApis = Object.create(null);
+
+var TODOS = [
+'subscribePush',
+'unsubscribePush',
+'onPush',
+'offPush',
+'share'];
+
+
+function createTodoApi(name) {
+  return function todoApi(_ref)
+
+
+  {var fail = _ref.fail,complete = _ref.complete;
+    var res = {
+      errMsg: "".concat(name, ":fail:\u6682\u4E0D\u652F\u6301 ").concat(name, " \u65B9\u6CD5") };
+
+    isFn(fail) && fail(res);
+    isFn(complete) && complete(res);
+  };
+}
+
+TODOS.forEach(function (name) {
+  todoApis[name] = createTodoApi(name);
+});
+
+var providers = {
+  oauth: ['weixin'],
+  share: ['weixin'],
+  payment: ['wxpay'],
+  push: ['weixin'] };
+
+
+function getProvider(_ref2)
+
+
+
+
+{var service = _ref2.service,success = _ref2.success,fail = _ref2.fail,complete = _ref2.complete;
+  var res = false;
+  if (providers[service]) {
+    res = {
+      errMsg: 'getProvider:ok',
+      service: service,
+      provider: providers[service] };
+
+    isFn(success) && success(res);
+  } else {
+    res = {
+      errMsg: 'getProvider:fail:服务[' + service + ']不存在' };
+
+    isFn(fail) && fail(res);
+  }
+  isFn(complete) && complete(res);
+}
+
+var extraApi = /*#__PURE__*/Object.freeze({
+  getProvider: getProvider });
+
+
+var getEmitter = function () {
+  if (typeof getUniEmitter === 'function') {
+    /* eslint-disable no-undef */
+    return getUniEmitter;
+  }
+  var Emitter;
+  return function getUniEmitter() {
+    if (!Emitter) {
+      Emitter = new _vue.default();
+    }
+    return Emitter;
+  };
+}();
+
+function apply(ctx, method, args) {
+  return ctx[method].apply(ctx, args);
+}
+
+function $on() {
+  return apply(getEmitter(), '$on', Array.prototype.slice.call(arguments));
+}
+function $off() {
+  return apply(getEmitter(), '$off', Array.prototype.slice.call(arguments));
+}
+function $once() {
+  return apply(getEmitter(), '$once', Array.prototype.slice.call(arguments));
+}
+function $emit() {
+  return apply(getEmitter(), '$emit', Array.prototype.slice.call(arguments));
+}
+
+
+
+var eventApi = /*#__PURE__*/Object.freeze({
+  $on: $on,
+  $off: $off,
+  $once: $once,
+  $emit: $emit });
+
+
+
+
+var api = /*#__PURE__*/Object.freeze({});
+
+
+
+var MPPage = Page;
+var MPComponent = Component;
+
+var customizeRE = /:/g;
+
+var customize = cached(function (str) {
+  return camelize(str.replace(customizeRE, '-'));
+});
+
+function initTriggerEvent(mpInstance) {
+  {
+    if (!wx.canIUse('nextTick')) {
+      return;
+    }
+  }
+  var oldTriggerEvent = mpInstance.triggerEvent;
+  mpInstance.triggerEvent = function (event) {for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {args[_key3 - 1] = arguments[_key3];}
+    return oldTriggerEvent.apply(mpInstance, [customize(event)].concat(args));
+  };
+}
+
+function initHook(name, options) {
+  var oldHook = options[name];
+  if (!oldHook) {
+    options[name] = function () {
+      initTriggerEvent(this);
+    };
+  } else {
+    options[name] = function () {
+      initTriggerEvent(this);for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {args[_key4] = arguments[_key4];}
+      return oldHook.apply(this, args);
+    };
+  }
+}
+
+Page = function Page() {var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  initHook('onLoad', options);
+  return MPPage(options);
+};
+
+Component = function Component() {var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  initHook('created', options);
+  return MPComponent(options);
+};
+
+var PAGE_EVENT_HOOKS = [
+'onPullDownRefresh',
+'onReachBottom',
+'onShareAppMessage',
+'onPageScroll',
+'onResize',
+'onTabItemTap'];
+
+
+function initMocks(vm, mocks) {
+  var mpInstance = vm.$mp[vm.mpType];
+  mocks.forEach(function (mock) {
+    if (hasOwn(mpInstance, mock)) {
+      vm[mock] = mpInstance[mock];
+    }
+  });
+}
+
+function hasHook(hook, vueOptions) {
+  if (!vueOptions) {
+    return true;
+  }
+
+  if (_vue.default.options && Array.isArray(_vue.default.options[hook])) {
+    return true;
+  }
+
+  vueOptions = vueOptions.default || vueOptions;
+
+  if (isFn(vueOptions)) {
+    if (isFn(vueOptions.extendOptions[hook])) {
+      return true;
+    }
+    if (vueOptions.super &&
+    vueOptions.super.options &&
+    Array.isArray(vueOptions.super.options[hook])) {
+      return true;
+    }
+    return false;
+  }
+
+  if (isFn(vueOptions[hook])) {
+    return true;
+  }
+  var mixins = vueOptions.mixins;
+  if (Array.isArray(mixins)) {
+    return !!mixins.find(function (mixin) {return hasHook(hook, mixin);});
+  }
+}
+
+function initHooks(mpOptions, hooks, vueOptions) {
+  hooks.forEach(function (hook) {
+    if (hasHook(hook, vueOptions)) {
+      mpOptions[hook] = function (args) {
+        return this.$vm && this.$vm.__call_hook(hook, args);
+      };
+    }
+  });
+}
+
+function initVueComponent(Vue$$1, vueOptions) {
+  vueOptions = vueOptions.default || vueOptions;
+  var VueComponent;
+  if (isFn(vueOptions)) {
+    VueComponent = vueOptions;
+    vueOptions = VueComponent.extendOptions;
+  } else {
+    VueComponent = Vue$$1.extend(vueOptions);
+  }
+  return [VueComponent, vueOptions];
+}
+
+function initSlots(vm, vueSlots) {
+  if (Array.isArray(vueSlots) && vueSlots.length) {
+    var $slots = Object.create(null);
+    vueSlots.forEach(function (slotName) {
+      $slots[slotName] = true;
+    });
+    vm.$scopedSlots = vm.$slots = $slots;
+  }
+}
+
+function initVueIds(vueIds, mpInstance) {
+  vueIds = (vueIds || '').split(',');
+  var len = vueIds.length;
+
+  if (len === 1) {
+    mpInstance._$vueId = vueIds[0];
+  } else if (len === 2) {
+    mpInstance._$vueId = vueIds[0];
+    mpInstance._$vuePid = vueIds[1];
+  }
+}
+
+function initData(vueOptions, context) {
+  var data = vueOptions.data || {};
+  var methods = vueOptions.methods || {};
+
+  if (typeof data === 'function') {
+    try {
+      data = data.call(context); // 支持 Vue.prototype 上挂的数据
+    } catch (e) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
+      }
+    }
+  } else {
+    try {
+      // 对 data 格式化
+      data = JSON.parse(JSON.stringify(data));
+    } catch (e) {}
+  }
+
+  if (!isPlainObject(data)) {
+    data = {};
+  }
+
+  Object.keys(methods).forEach(function (methodName) {
+    if (context.__lifecycle_hooks__.indexOf(methodName) === -1 && !hasOwn(data, methodName)) {
+      data[methodName] = methods[methodName];
+    }
+  });
+
+  return data;
+}
+
+var PROP_TYPES = [String, Number, Boolean, Object, Array, null];
+
+function createObserver(name) {
+  return function observer(newVal, oldVal) {
+    if (this.$vm) {
+      this.$vm[name] = newVal; // 为了触发其他非 render watcher
+    }
+  };
+}
+
+function initBehaviors(vueOptions, initBehavior) {
+  var vueBehaviors = vueOptions['behaviors'];
+  var vueExtends = vueOptions['extends'];
+  var vueMixins = vueOptions['mixins'];
+
+  var vueProps = vueOptions['props'];
+
+  if (!vueProps) {
+    vueOptions['props'] = vueProps = [];
+  }
+
+  var behaviors = [];
+  if (Array.isArray(vueBehaviors)) {
+    vueBehaviors.forEach(function (behavior) {
+      behaviors.push(behavior.replace('uni://', "wx".concat("://")));
+      if (behavior === 'uni://form-field') {
+        if (Array.isArray(vueProps)) {
+          vueProps.push('name');
+          vueProps.push('value');
+        } else {
+          vueProps['name'] = {
+            type: String,
+            default: '' };
+
+          vueProps['value'] = {
+            type: [String, Number, Boolean, Array, Object, Date],
+            default: '' };
+
+        }
+      }
+    });
+  }
+  if (isPlainObject(vueExtends) && vueExtends.props) {
+    behaviors.push(
+    initBehavior({
+      properties: initProperties(vueExtends.props, true) }));
+
+
+  }
+  if (Array.isArray(vueMixins)) {
+    vueMixins.forEach(function (vueMixin) {
+      if (isPlainObject(vueMixin) && vueMixin.props) {
+        behaviors.push(
+        initBehavior({
+          properties: initProperties(vueMixin.props, true) }));
+
+
+      }
+    });
+  }
+  return behaviors;
+}
+
+function parsePropType(key, type, defaultValue, file) {
+  // [String]=>String
+  if (Array.isArray(type) && type.length === 1) {
+    return type[0];
+  }
+  return type;
+}
+
+function initProperties(props) {var isBehavior = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;var file = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+  var properties = {};
+  if (!isBehavior) {
+    properties.vueId = {
+      type: String,
+      value: '' };
+
+    properties.vueSlots = { // 小程序不能直接定义 $slots 的 props，所以通过 vueSlots 转换到 $slots
+      type: null,
+      value: [],
+      observer: function observer(newVal, oldVal) {
+        var $slots = Object.create(null);
+        newVal.forEach(function (slotName) {
+          $slots[slotName] = true;
+        });
+        this.setData({
+          $slots: $slots });
+
+      } };
+
+  }
+  if (Array.isArray(props)) {// ['title']
+    props.forEach(function (key) {
+      properties[key] = {
+        type: null,
+        observer: createObserver(key) };
+
+    });
+  } else if (isPlainObject(props)) {// {title:{type:String,default:''},content:String}
+    Object.keys(props).forEach(function (key) {
+      var opts = props[key];
+      if (isPlainObject(opts)) {// title:{type:String,default:''}
+        var value = opts['default'];
+        if (isFn(value)) {
+          value = value();
+        }
+
+        opts.type = parsePropType(key, opts.type, value, file);
+
+        properties[key] = {
+          type: PROP_TYPES.indexOf(opts.type) !== -1 ? opts.type : null,
+          value: value,
+          observer: createObserver(key) };
+
+      } else {// content:String
+        var type = parsePropType(key, opts, null, file);
+        properties[key] = {
+          type: PROP_TYPES.indexOf(type) !== -1 ? type : null,
+          observer: createObserver(key) };
+
+      }
+    });
+  }
+  return properties;
+}
+
+function wrapper$1(event) {
+  // TODO 又得兼容 mpvue 的 mp 对象
+  try {
+    event.mp = JSON.parse(JSON.stringify(event));
+  } catch (e) {}
+
+  event.stopPropagation = noop;
+  event.preventDefault = noop;
+
+  event.target = event.target || {};
+
+  if (!hasOwn(event, 'detail')) {
+    event.detail = {};
+  }
+
+  if (isPlainObject(event.detail)) {
+    event.target = Object.assign({}, event.target, event.detail);
+  }
+
+  return event;
+}
+
+function getExtraValue(vm, dataPathsArray) {
+  var context = vm;
+  dataPathsArray.forEach(function (dataPathArray) {
+    var dataPath = dataPathArray[0];
+    var value = dataPathArray[2];
+    if (dataPath || typeof value !== 'undefined') {// ['','',index,'disable']
+      var propPath = dataPathArray[1];
+      var valuePath = dataPathArray[3];
+
+      var vFor = dataPath ? vm.__get_value(dataPath, context) : context;
+
+      if (Number.isInteger(vFor)) {
+        context = value;
+      } else if (!propPath) {
+        context = vFor[value];
+      } else {
+        if (Array.isArray(vFor)) {
+          context = vFor.find(function (vForItem) {
+            return vm.__get_value(propPath, vForItem) === value;
+          });
+        } else if (isPlainObject(vFor)) {
+          context = Object.keys(vFor).find(function (vForKey) {
+            return vm.__get_value(propPath, vFor[vForKey]) === value;
+          });
+        } else {
+          console.error('v-for 暂不支持循环数据：', vFor);
+        }
+      }
+
+      if (valuePath) {
+        context = vm.__get_value(valuePath, context);
+      }
+    }
+  });
+  return context;
+}
+
+function processEventExtra(vm, extra, event) {
+  var extraObj = {};
+
+  if (Array.isArray(extra) && extra.length) {
+    /**
+                                                  *[
+                                                  *    ['data.items', 'data.id', item.data.id],
+                                                  *    ['metas', 'id', meta.id]
+                                                  *],
+                                                  *[
+                                                  *    ['data.items', 'data.id', item.data.id],
+                                                  *    ['metas', 'id', meta.id]
+                                                  *],
+                                                  *'test'
+                                                  */
+    extra.forEach(function (dataPath, index) {
+      if (typeof dataPath === 'string') {
+        if (!dataPath) {// model,prop.sync
+          extraObj['$' + index] = vm;
+        } else {
+          if (dataPath === '$event') {// $event
+            extraObj['$' + index] = event;
+          } else if (dataPath.indexOf('$event.') === 0) {// $event.target.value
+            extraObj['$' + index] = vm.__get_value(dataPath.replace('$event.', ''), event);
+          } else {
+            extraObj['$' + index] = vm.__get_value(dataPath);
+          }
+        }
+      } else {
+        extraObj['$' + index] = getExtraValue(vm, dataPath);
+      }
+    });
+  }
+
+  return extraObj;
+}
+
+function getObjByArray(arr) {
+  var obj = {};
+  for (var i = 1; i < arr.length; i++) {
+    var element = arr[i];
+    obj[element[0]] = element[1];
+  }
+  return obj;
+}
+
+function processEventArgs(vm, event) {var args = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];var extra = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];var isCustom = arguments.length > 4 ? arguments[4] : undefined;var methodName = arguments.length > 5 ? arguments[5] : undefined;
+  var isCustomMPEvent = false; // wxcomponent 组件，传递原始 event 对象
+  if (isCustom) {// 自定义事件
+    isCustomMPEvent = event.currentTarget &&
+    event.currentTarget.dataset &&
+    event.currentTarget.dataset.comType === 'wx';
+    if (!args.length) {// 无参数，直接传入 event 或 detail 数组
+      if (isCustomMPEvent) {
+        return [event];
+      }
+      return event.detail.__args__ || event.detail;
+    }
+  }
+
+  var extraObj = processEventExtra(vm, extra, event);
+
+  var ret = [];
+  args.forEach(function (arg) {
+    if (arg === '$event') {
+      if (methodName === '__set_model' && !isCustom) {// input v-model value
+        ret.push(event.target.value);
+      } else {
+        if (isCustom && !isCustomMPEvent) {
+          ret.push(event.detail.__args__[0]);
+        } else {// wxcomponent 组件或内置组件
+          ret.push(event);
+        }
+      }
+    } else {
+      if (Array.isArray(arg) && arg[0] === 'o') {
+        ret.push(getObjByArray(arg));
+      } else if (typeof arg === 'string' && hasOwn(extraObj, arg)) {
+        ret.push(extraObj[arg]);
+      } else {
+        ret.push(arg);
+      }
+    }
+  });
+
+  return ret;
+}
+
+var ONCE = '~';
+var CUSTOM = '^';
+
+function isMatchEventType(eventType, optType) {
+  return eventType === optType ||
+
+  optType === 'regionchange' && (
+
+  eventType === 'begin' ||
+  eventType === 'end');
+
+
+}
+
+function handleEvent(event) {var _this = this;
+  event = wrapper$1(event);
+
+  // [['tap',[['handle',[1,2,a]],['handle1',[1,2,a]]]]]
+  var dataset = (event.currentTarget || event.target).dataset;
+  if (!dataset) {
+    return console.warn("\u4E8B\u4EF6\u4FE1\u606F\u4E0D\u5B58\u5728");
+  }
+  var eventOpts = dataset.eventOpts || dataset['event-opts']; // 支付宝 web-view 组件 dataset 非驼峰
+  if (!eventOpts) {
+    return console.warn("\u4E8B\u4EF6\u4FE1\u606F\u4E0D\u5B58\u5728");
+  }
+
+  // [['handle',[1,2,a]],['handle1',[1,2,a]]]
+  var eventType = event.type;
+  eventOpts.forEach(function (eventOpt) {
+    var type = eventOpt[0];
+    var eventsArray = eventOpt[1];
+
+    var isCustom = type.charAt(0) === CUSTOM;
+    type = isCustom ? type.slice(1) : type;
+    var isOnce = type.charAt(0) === ONCE;
+    type = isOnce ? type.slice(1) : type;
+
+    if (eventsArray && isMatchEventType(eventType, type)) {
+      eventsArray.forEach(function (eventArray) {
+        var methodName = eventArray[0];
+        if (methodName) {
+          var handlerCtx = _this.$vm;
+          if (
+          handlerCtx.$options.generic &&
+          handlerCtx.$parent &&
+          handlerCtx.$parent.$parent)
+          {// mp-weixin,mp-toutiao 抽象节点模拟 scoped slots
+            handlerCtx = handlerCtx.$parent.$parent;
+          }
+          var handler = handlerCtx[methodName];
+          if (!isFn(handler)) {
+            throw new Error(" _vm.".concat(methodName, " is not a function"));
+          }
+          if (isOnce) {
+            if (handler.once) {
+              return;
+            }
+            handler.once = true;
+          }
+          handler.apply(handlerCtx, processEventArgs(
+          _this.$vm,
+          event,
+          eventArray[1],
+          eventArray[2],
+          isCustom,
+          methodName));
+
+        }
+      });
+    }
+  });
+}
+
+var hooks = [
+'onShow',
+'onHide',
+'onError',
+'onPageNotFound'];
+
+
+function parseBaseApp(vm, _ref3)
+
+
+{var mocks = _ref3.mocks,initRefs = _ref3.initRefs;
+  _vue.default.prototype.mpHost = "mp-weixin";
+
+  _vue.default.mixin({
+    beforeCreate: function beforeCreate() {
+      if (!this.$options.mpType) {
+        return;
+      }
+
+      this.mpType = this.$options.mpType;
+
+      this.$mp = _defineProperty({
+        data: {} },
+      this.mpType, this.$options.mpInstance);
+
+
+      this.$scope = this.$options.mpInstance;
+
+      delete this.$options.mpType;
+      delete this.$options.mpInstance;
+
+      if (this.mpType !== 'app') {
+        initRefs(this);
+        initMocks(this, mocks);
+      }
+    } });
+
+
+  var appOptions = {
+    onLaunch: function onLaunch(args) {
+      if (this.$vm) {// 已经初始化过了，主要是为了百度，百度 onShow 在 onLaunch 之前
+        return;
+      }
+      {
+        if (!wx.canIUse('nextTick')) {// 事实 上2.2.3 即可，简单使用 2.3.0 的 nextTick 判断
+          console.error('当前微信基础库版本过低，请将 微信开发者工具-详情-项目设置-调试基础库版本 更换为`2.3.0`以上');
+        }
+      }
+
+      this.$vm = vm;
+
+      this.$vm.$mp = {
+        app: this };
+
+
+      this.$vm.$scope = this;
+
+      this.$vm._isMounted = true;
+      this.$vm.__call_hook('mounted', args);
+
+      this.$vm.__call_hook('onLaunch', args);
+    } };
+
+
+  // 兼容旧版本 globalData
+  appOptions.globalData = vm.$options.globalData || {};
+
+  initHooks(appOptions, hooks);
+
+  return appOptions;
+}
+
+var mocks = ['__route__', '__wxExparserNodeId__', '__wxWebviewId__'];
+
+function findVmByVueId(vm, vuePid) {
+  var $children = vm.$children;
+  // 优先查找直属
+  var parentVm = $children.find(function (childVm) {return childVm.$scope._$vueId === vuePid;});
+  if (parentVm) {
+    return parentVm;
+  }
+  // 反向递归查找
+  for (var i = $children.length - 1; i >= 0; i--) {
+    parentVm = findVmByVueId($children[i], vuePid);
+    if (parentVm) {
+      return parentVm;
+    }
+  }
+}
+
+function initBehavior(options) {
+  return Behavior(options);
+}
+
+function isPage() {
+  return !!this.route;
+}
+
+function initRelation(detail) {
+  this.triggerEvent('__l', detail);
+}
+
+function initRefs(vm) {
+  var mpInstance = vm.$scope;
+  Object.defineProperty(vm, '$refs', {
+    get: function get() {
+      var $refs = {};
+      var components = mpInstance.selectAllComponents('.vue-ref');
+      components.forEach(function (component) {
+        var ref = component.dataset.ref;
+        $refs[ref] = component.$vm || component;
+      });
+      var forComponents = mpInstance.selectAllComponents('.vue-ref-in-for');
+      forComponents.forEach(function (component) {
+        var ref = component.dataset.ref;
+        if (!$refs[ref]) {
+          $refs[ref] = [];
+        }
+        $refs[ref].push(component.$vm || component);
+      });
+      return $refs;
+    } });
+
+}
+
+function handleLink(event) {var _ref4 =
+
+
+
+  event.detail || event.value,vuePid = _ref4.vuePid,vueOptions = _ref4.vueOptions; // detail 是微信,value 是百度(dipatch)
+
+  var parentVm;
+
+  if (vuePid) {
+    parentVm = findVmByVueId(this.$vm, vuePid);
+  }
+
+  if (!parentVm) {
+    parentVm = this.$vm;
+  }
+
+  vueOptions.parent = parentVm;
+}
+
+function parseApp(vm) {
+  return parseBaseApp(vm, {
+    mocks: mocks,
+    initRefs: initRefs });
+
+}
+
+function createApp(vm) {
+  App(parseApp(vm));
+  return vm;
+}
+
+function parseBaseComponent(vueComponentOptions)
+
+
+{var _ref5 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},isPage$$1 = _ref5.isPage,initRelation$$1 = _ref5.initRelation;var _initVueComponent =
+  initVueComponent(_vue.default, vueComponentOptions),_initVueComponent2 = _slicedToArray(_initVueComponent, 2),VueComponent = _initVueComponent2[0],vueOptions = _initVueComponent2[1];
+
+  var componentOptions = {
+    options: {
+      multipleSlots: true,
+      addGlobalClass: true },
+
+    data: initData(vueOptions, _vue.default.prototype),
+    behaviors: initBehaviors(vueOptions, initBehavior),
+    properties: initProperties(vueOptions.props, false, vueOptions.__file),
+    lifetimes: {
+      attached: function attached() {
+        var properties = this.properties;
+
+        var options = {
+          mpType: isPage$$1.call(this) ? 'page' : 'component',
+          mpInstance: this,
+          propsData: properties };
+
+
+        initVueIds(properties.vueId, this);
+
+        // 处理父子关系
+        initRelation$$1.call(this, {
+          vuePid: this._$vuePid,
+          vueOptions: options });
+
+
+        // 初始化 vue 实例
+        this.$vm = new VueComponent(options);
+
+        // 处理$slots,$scopedSlots（暂不支持动态变化$slots）
+        initSlots(this.$vm, properties.vueSlots);
+
+        // 触发首次 setData
+        this.$vm.$mount();
+      },
+      ready: function ready() {
+        // 当组件 props 默认值为 true，初始化时传入 false 会导致 created,ready 触发, 但 attached 不触发
+        // https://developers.weixin.qq.com/community/develop/doc/00066ae2844cc0f8eb883e2a557800
+        if (this.$vm) {
+          this.$vm._isMounted = true;
+          this.$vm.__call_hook('mounted');
+          this.$vm.__call_hook('onReady');
+        }
+      },
+      detached: function detached() {
+        this.$vm.$destroy();
+      } },
+
+    pageLifetimes: {
+      show: function show(args) {
+        this.$vm && this.$vm.__call_hook('onPageShow', args);
+      },
+      hide: function hide() {
+        this.$vm && this.$vm.__call_hook('onPageHide');
+      },
+      resize: function resize(size) {
+        this.$vm && this.$vm.__call_hook('onPageResize', size);
+      } },
+
+    methods: {
+      __l: handleLink,
+      __e: handleEvent } };
+
+
+
+  if (isPage$$1) {
+    return componentOptions;
+  }
+  return [componentOptions, VueComponent];
+}
+
+function parseComponent(vueComponentOptions) {
+  return parseBaseComponent(vueComponentOptions, {
+    isPage: isPage,
+    initRelation: initRelation });
+
+}
+
+var hooks$1 = [
+'onShow',
+'onHide',
+'onUnload'];
+
+
+hooks$1.push.apply(hooks$1, PAGE_EVENT_HOOKS);
+
+function parseBasePage(vuePageOptions, _ref6)
+
+
+{var isPage = _ref6.isPage,initRelation = _ref6.initRelation;
+  var pageOptions = parseComponent(vuePageOptions, {
+    isPage: isPage,
+    initRelation: initRelation });
+
+
+  initHooks(pageOptions.methods, hooks$1, vuePageOptions);
+
+  pageOptions.methods.onLoad = function (args) {
+    this.$vm.$mp.query = args; // 兼容 mpvue
+    this.$vm.__call_hook('onLoad', args);
+  };
+
+  return pageOptions;
+}
+
+function parsePage(vuePageOptions) {
+  return parseBasePage(vuePageOptions, {
+    isPage: isPage,
+    initRelation: initRelation });
+
+}
+
+function createPage(vuePageOptions) {
+  {
+    return Component(parsePage(vuePageOptions));
+  }
+}
+
+function createComponent(vueOptions) {
+  {
+    return Component(parseComponent(vueOptions));
+  }
+}
+
+todos.forEach(function (todoApi) {
+  protocols[todoApi] = false;
+});
+
+canIUses.forEach(function (canIUseApi) {
+  var apiName = protocols[canIUseApi] && protocols[canIUseApi].name ? protocols[canIUseApi].name :
+  canIUseApi;
+  if (!wx.canIUse(apiName)) {
+    protocols[canIUseApi] = false;
+  }
+});
+
+var uni = {};
+
+if (typeof Proxy !== 'undefined' && "mp-weixin" !== 'app-plus') {
+  uni = new Proxy({}, {
+    get: function get(target, name) {
+      if (baseApi[name]) {
+        return baseApi[name];
+      }
+      if (api[name]) {
+        return promisify(name, api[name]);
+      }
+      {
+        if (extraApi[name]) {
+          return promisify(name, extraApi[name]);
+        }
+        if (todoApis[name]) {
+          return promisify(name, todoApis[name]);
+        }
+      }
+      if (eventApi[name]) {
+        return eventApi[name];
+      }
+      if (!hasOwn(wx, name) && !hasOwn(protocols, name)) {
+        return;
+      }
+      return promisify(name, wrapper(name, wx[name]));
+    } });
+
+} else {
+  Object.keys(baseApi).forEach(function (name) {
+    uni[name] = baseApi[name];
+  });
+
+  {
+    Object.keys(todoApis).forEach(function (name) {
+      uni[name] = promisify(name, todoApis[name]);
+    });
+    Object.keys(extraApi).forEach(function (name) {
+      uni[name] = promisify(name, todoApis[name]);
+    });
+  }
+
+  Object.keys(eventApi).forEach(function (name) {
+    uni[name] = eventApi[name];
+  });
+
+  Object.keys(api).forEach(function (name) {
+    uni[name] = promisify(name, api[name]);
+  });
+
+  Object.keys(wx).forEach(function (name) {
+    if (hasOwn(wx, name) || hasOwn(protocols, name)) {
+      uni[name] = promisify(name, wrapper(name, wx[name]));
+    }
+  });
+}
+
+wx.createApp = createApp;
+wx.createPage = createPage;
+wx.createComponent = createComponent;
+
+var uni$1 = uni;var _default =
+
+uni$1;exports.default = _default;
+
+/***/ }),
+
+/***/ 10:
+/*!*******************************************************!*\
+  !*** E:/code/agile-front/agile/static/utils/utils.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {
+var _api = __webpack_require__(/*! ./api */ 8);function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}
+
+
+
+
+
+
+//登录模块
+var Login = /*#__PURE__*/function () {
+  function Login(arg) {_classCallCheck(this, Login);
+
+  }
+  //得到code
+  _createClass(Login, [{ key: "getCode", value: function getCode() {
+      return new Promise(function (resolve, reject) {
+        uni.login({
+          success: function success(res) {
+            resolve(res.code);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //得到UserInfo
+  }, { key: "getUserInfo", value: function getUserInfo() {
+      return new Promise(function (resolve, reject) {
+        uni.getUserInfo({
+          success: function success(res) {
+            resolve(res);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //得到OpenId
+  }, { key: "getOpenId", value: function getOpenId(code) {
+      return new Promise(function (resolve, reject) {
+        var appId = "wxd763acfcb06de61a";
+        var appSecret = "e8e7ea381fff59c2081d115cb312b22e";
+        uni.request({
+          url: "https://api.weixin.qq.com/sns/jscode2session?appid=".concat(appId, "&secret=").concat(appSecret, "&js_code=").concat(code, "&grant_type=authorization_code"),
+          method: "GET",
+          data: {},
+          success: function success(res) {
+            resolve(res);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //发送整理好的用户的信息到服务器
+  }, { key: "insertUser", value: function insertUser(userInfo, api, method) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: api,
+          method: method,
+          data: userInfo,
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    } }]);return Login;}();
+
+
+
+
+//查询的模块
+var Query = /*#__PURE__*/function () {
+  function Query(arg) {_classCallCheck(this, Query);
+
+  }
+  //查询数据库中的用户
+  _createClass(Query, [{ key: "findUser", value: function findUser(id) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.queryUser,
+          method: "POST",
+          data: id,
+          dataType: 'json',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //查询用户的项目权限关系
+  }, { key: "findUserProjectRole", value: function findUserProjectRole(userId, projectId) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.userProjectRoleQuery,
+          data: {
+            userId: userId,
+            projectId: projectId },
+
+          dataType: 'json',
+          method: 'POST',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //根据用户的id对t_user_project_role表进行查询
+  }, { key: "findUserProjectRoleByUserId", value: function findUserProjectRoleByUserId(userId) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.userProjectRoleQuery,
+          data: {
+            userId: userId },
+
+          method: "POST",
+          dataType: 'json',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //通过项目的projectId去查询t_user_project_role
+  }, { key: "findUserProjectRoleByProjectId", value: function findUserProjectRoleByProjectId(projectId) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.userProjectRoleQuery,
+          data: {
+            projectId: projectId },
+
+          method: "POST",
+          dataType: 'json',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(Error) {
+            reject(Error);
+          } });
+
+      });
+    }
+
+    //不用根据任何条件，直接查询所有的t_user_project_role中的所有的数据
+  }, { key: "findAllUserProjectRole", value: function findAllUserProjectRole() {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.userProjectRoleQuery,
+          data: {
+            userId: "",
+            roleId: "",
+            projectId: "" },
+
+          dataType: 'json',
+          success: function success(data) {
+            resolve(res.data);
+          },
+          fail: function fail(error) {
+            reject(error);
+          } });
+
+      });
+    }
+
+    //根据项目的roleId和projectId去查询
+  }, { key: "findUserProjectRoleByRoleAndProject", value: function findUserProjectRoleByRoleAndProject(roleId, projectId) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.userProjectRoleQuery,
+          data: {
+            roleId: roleId,
+            projectId: projectId },
+
+          method: "POST",
+          dataType: 'json',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(Error) {
+            reject(Error);
+          } });
+
+      });
+    }
+
+    //根据projectId和useId查询用户所在的departmentId
+  }, { key: "findUserProjectDepartmentByUserIdAndProjectId", value: function findUserProjectDepartmentByUserIdAndProjectId(userId, projectId) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.userProjectDepartmentQuery,
+          data: {
+            userId: userId,
+            projectId: projectId },
+
+          dataType: 'json',
+          method: "POST",
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(Error) {
+            reject(Error);
+          } });
+
+      });
+    }
+
+    //根据专业的id去查询专业的名称
+  }, { key: "findUserDepartmentNameByDepartment", value: function findUserDepartmentNameByDepartment(departmentId) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.departmentQuery,
+          data: {
+            departmentId: departmentId },
+
+          dataType: 'json',
+          method: 'POST',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(Error) {
+            reject(Error);
+          } });
+
+      });
+    }
+
+    //查询所有的项项目信息
+  }, { key: "findAllProjectInfo", value: function findAllProjectInfo() {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.projectQuery,
+          method: "POST",
+          data: {},
+
+
+          dataType: 'json',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(Error) {
+            reject(Error);
+          } });
+
+      });
+    } }]);return Query;}();
+
+
+
+module.exports = {
+  Login: Login,
+  Query: Query };
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 105:
+/*!**********************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2FaddSprint%2FaddSprint"} ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _addSprint = _interopRequireDefault(__webpack_require__(/*! ./pages/addSprint/addSprint.vue */ 106));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_addSprint.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 113:
+/*!******************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2FaddTask%2FaddTask"} ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _addTask = _interopRequireDefault(__webpack_require__(/*! ./pages/addTask/addTask.vue */ 114));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_addTask.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 121:
+/*!********************************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2FchangeUserRole%2FchangeUserRole"} ***!
+  \********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _changeUserRole = _interopRequireDefault(__webpack_require__(/*! ./pages/changeUserRole/changeUserRole.vue */ 122));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_changeUserRole.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 129:
+/*!************************************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2FauditedRoleApply%2FauditedRoleApply"} ***!
+  \************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _auditedRoleApply = _interopRequireDefault(__webpack_require__(/*! ./pages/auditedRoleApply/auditedRoleApply.vue */ 130));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_auditedRoleApply.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 13:
+/*!********************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+
+/***/ 137:
+/*!******************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2Fpicture%2Fpicture"} ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _picture = _interopRequireDefault(__webpack_require__(/*! ./pages/picture/picture.vue */ 138));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_picture.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 14:
+/*!**************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2Findex%2Findex"} ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _index = _interopRequireDefault(__webpack_require__(/*! ./pages/index/index.vue */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_index.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 143:
+/*!**********************************************************************!*\
+  !*** E:/code/agile-front/agile/js_sdk/u-charts/u-charts/u-charts.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {/*
+ * uCharts v1.7.0.20190713
+ * uni-app平台高性能跨全端图表，支持H5、APP、小程序（微信/支付宝/百度/头条）
+ * Copyright (c) 2019 QIUN秋云 https://www.ucharts.cn All rights reserved.
+ * Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
+ * 
+ * uCharts官方网站
+ * https://www.uCharts.cn
+ * 
+ * 开源地址:
+ * https://gitee.com/uCharts/uCharts
+ * 
+ * uni-app插件市场地址：
+ * http://ext.dcloud.net.cn/plugin?id=271
+ * 
+ * 
+ */
+
+
+
+var config = {
+  yAxisWidth: 15,
+  yAxisSplit: 5,
+  xAxisHeight: 15,
+  xAxisLineHeight: 15,
+  legendHeight: 15,
+  yAxisTitleWidth: 15,
+  padding: 12,
+  pixelRatio: 1, //适配H5高分屏
+  rotate: false, //横屏模式
+  columePadding: 3,
+  fontSize: 13,
+  //dataPointShape: ['diamond', 'circle', 'triangle', 'rect'],
+  dataPointShape: ['circle', 'circle', 'circle', 'circle'], //仿F2图例样式改为圆点
+  colors: ['#1890ff', '#2fc25b', '#facc14', '#f04864', '#8543e0', '#90ed7d'],
+  pieChartLinePadding: 15,
+  pieChartTextPadding: 5,
+  xAxisTextPadding: 3,
+  titleColor: '#333333',
+  titleFontSize: 20,
+  subtitleColor: '#999999',
+  subtitleFontSize: 15,
+  toolTipPadding: 3,
+  toolTipBackground: '#000000',
+  toolTipOpacity: 0.7,
+  toolTipLineHeight: 20,
+  radarGridCount: 3,
+  radarLabelTextMargin: 15,
+  gaugeLabelTextMargin: 15 };
+
+
+// Object.assign polyfill
+// https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+function assign(target, varArgs) {
+  if (target == null) {
+    // TypeError if undefined or null
+    throw new TypeError('Cannot convert undefined or null to object');
+  }
+
+  var to = Object(target);
+
+  for (var index = 1; index < arguments.length; index++) {
+    var nextSource = arguments[index];
+
+    if (nextSource != null) {
+      // Skip over if undefined or null
+      for (var nextKey in nextSource) {
+        // Avoid bugs when hasOwnProperty is shadowed
+        if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+          to[nextKey] = nextSource[nextKey];
+        }
+      }
+    }
+  }
+  return to;
+}
+
+var util = {
+  toFixed: function toFixed(num, limit) {
+    limit = limit || 2;
+    if (this.isFloat(num)) {
+      num = num.toFixed(limit);
+    }
+    return num;
+  },
+  isFloat: function isFloat(num) {
+    return num % 1 !== 0;
+  },
+  approximatelyEqual: function approximatelyEqual(num1, num2) {
+    return Math.abs(num1 - num2) < 1e-10;
+  },
+  isSameSign: function isSameSign(num1, num2) {
+    return Math.abs(num1) === num1 && Math.abs(num2) === num2 || Math.abs(num1) !== num1 && Math.abs(num2) !== num2;
+  },
+  isSameXCoordinateArea: function isSameXCoordinateArea(p1, p2) {
+    return this.isSameSign(p1.x, p2.x);
+  },
+  isCollision: function isCollision(obj1, obj2) {
+    obj1.end = {};
+    obj1.end.x = obj1.start.x + obj1.width;
+    obj1.end.y = obj1.start.y - obj1.height;
+    obj2.end = {};
+    obj2.end.x = obj2.start.x + obj2.width;
+    obj2.end.y = obj2.start.y - obj2.height;
+    var flag = obj2.start.x > obj1.end.x || obj2.end.x < obj1.start.x || obj2.end.y > obj1.start.y || obj2.start.y <
+    obj1.end.y;
+
+    return !flag;
+  } };
+
+
+//兼容H5点击事件
+function getH5Offset(e) {
+  e.mp = { changedTouches: [] };
+  e.mp.changedTouches.push({ x: e.offsetX, y: e.offsetY });
+  return e;
+}
+
+// hex 转 rgba
+function hexToRgb(hexValue, opc) {
+  var rgx = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  var hex = hexValue.replace(rgx, function (m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+  var rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  var r = parseInt(rgb[1], 16);
+  var g = parseInt(rgb[2], 16);
+  var b = parseInt(rgb[3], 16);
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + opc + ')';
+}
+
+function findRange(num, type, limit) {
+  if (isNaN(num)) {
+    throw new Error('[wxCharts] unvalid series data!');
+  }
+  limit = limit || 10;
+  type = type ? type : 'upper';
+  var multiple = 1;
+  while (limit < 1) {
+    limit *= 10;
+    multiple *= 10;
+  }
+  if (type === 'upper') {
+    num = Math.ceil(num * multiple);
+  } else {
+    num = Math.floor(num * multiple);
+  }
+  while (num % limit !== 0) {
+    if (type === 'upper') {
+      num++;
+    } else {
+      num--;
+    }
+  }
+
+  return num / multiple;
+}
+
+function calCandleMA(dayArr, nameArr, colorArr, kdata) {
+  var seriesTemp = [];
+  for (var k = 0; k < dayArr.length; k++) {
+    var seriesItem = {
+      data: [],
+      name: nameArr[k],
+      color: colorArr[k] };
+
+    for (var i = 0, len = kdata.length; i < len; i++) {
+      if (i < dayArr[k]) {
+        seriesItem.data.push(null);
+        continue;
+      }
+      var sum = 0;
+      for (var j = 0; j < dayArr[k]; j++) {
+        sum += kdata[i - j][1];
+      }
+      seriesItem.data.push(+(sum / dayArr[k]).toFixed(3));
+    }
+    seriesTemp.push(seriesItem);
+  }
+  return seriesTemp;
+}
+
+function calValidDistance(distance, chartData, config, opts) {
+
+  var dataChartAreaWidth = opts.width - config.padding - chartData.xAxisPoints[0];
+  var dataChartWidth = chartData.eachSpacing * opts.categories.length;
+  var validDistance = distance;
+  if (distance >= 0) {
+    validDistance = 0;
+  } else if (Math.abs(distance) >= dataChartWidth - dataChartAreaWidth) {
+    validDistance = dataChartAreaWidth - dataChartWidth;
+  }
+  return validDistance;
+}
+
+function isInAngleRange(angle, startAngle, endAngle) {
+  function adjust(angle) {
+    while (angle < 0) {
+      angle += 2 * Math.PI;
+    }
+    while (angle > 2 * Math.PI) {
+      angle -= 2 * Math.PI;
+    }
+
+    return angle;
+  }
+
+  angle = adjust(angle);
+  startAngle = adjust(startAngle);
+  endAngle = adjust(endAngle);
+  if (startAngle > endAngle) {
+    endAngle += 2 * Math.PI;
+    if (angle < startAngle) {
+      angle += 2 * Math.PI;
+    }
+  }
+
+  return angle >= startAngle && angle <= endAngle;
+}
+
+function calRotateTranslate(x, y, h) {
+  var xv = x;
+  var yv = h - y;
+
+  var transX = xv + (h - yv - xv) / Math.sqrt(2);
+  transX *= -1;
+
+  var transY = (h - yv) * (Math.sqrt(2) - 1) - (h - yv - xv) / Math.sqrt(2);
+
+  return {
+    transX: transX,
+    transY: transY };
+
+}
+
+function createCurveControlPoints(points, i) {
+
+  function isNotMiddlePoint(points, i) {
+    if (points[i - 1] && points[i + 1]) {
+      return points[i].y >= Math.max(points[i - 1].y, points[i + 1].y) || points[i].y <= Math.min(points[i - 1].y, points[
+      i + 1].y);
+    } else {
+      return false;
+    }
+  }
+
+  var a = 0.2;
+  var b = 0.2;
+  var pAx = null;
+  var pAy = null;
+  var pBx = null;
+  var pBy = null;
+  if (i < 1) {
+    pAx = points[0].x + (points[1].x - points[0].x) * a;
+    pAy = points[0].y + (points[1].y - points[0].y) * a;
+  } else {
+    pAx = points[i].x + (points[i + 1].x - points[i - 1].x) * a;
+    pAy = points[i].y + (points[i + 1].y - points[i - 1].y) * a;
+  }
+
+  if (i > points.length - 3) {
+    var last = points.length - 1;
+    pBx = points[last].x - (points[last].x - points[last - 1].x) * b;
+    pBy = points[last].y - (points[last].y - points[last - 1].y) * b;
+  } else {
+    pBx = points[i + 1].x - (points[i + 2].x - points[i].x) * b;
+    pBy = points[i + 1].y - (points[i + 2].y - points[i].y) * b;
+  }
+
+  // fix issue https://github.com/xiaolin3303/wx-charts/issues/79
+  if (isNotMiddlePoint(points, i + 1)) {
+    pBy = points[i + 1].y;
+  }
+  if (isNotMiddlePoint(points, i)) {
+    pAy = points[i].y;
+  }
+
+  return {
+    ctrA: {
+      x: pAx,
+      y: pAy },
+
+    ctrB: {
+      x: pBx,
+      y: pBy } };
+
+
+}
+
+function convertCoordinateOrigin(x, y, center) {
+  return {
+    x: center.x + x,
+    y: center.y - y };
+
+}
+
+function avoidCollision(obj, target) {
+  if (target) {
+    // is collision test
+    while (util.isCollision(obj, target)) {
+      if (obj.start.x > 0) {
+        obj.start.y--;
+      } else if (obj.start.x < 0) {
+        obj.start.y++;
+      } else {
+        if (obj.start.y > 0) {
+          obj.start.y++;
+        } else {
+          obj.start.y--;
+        }
+      }
+    }
+  }
+  return obj;
+}
+
+function fillSeriesColor(series, config) {
+  var index = 0;
+  return series.map(function (item) {
+    if (!item.color) {
+      item.color = config.colors[index];
+      index = (index + 1) % config.colors.length;
+    }
+    return item;
+  });
+}
+
+function fillSeriesType(series, opts) {
+  return series.map(function (item) {
+    if (!item.type) {
+      item.type = opts.type;
+    }
+    return item;
+  });
+}
+
+function getDataRange(minData, maxData) {
+  var limit = 0;
+  var range = maxData - minData;
+  if (range >= 10000) {
+    limit = 1000;
+  } else if (range >= 1000) {
+    limit = 100;
+  } else if (range >= 100) {
+    limit = 10;
+  } else if (range >= 10) {
+    limit = 5;
+  } else if (range >= 1) {
+    limit = 1;
+  } else if (range >= 0.1) {
+    limit = 0.1;
+  } else {
+    limit = 0.01;
+  }
+  return {
+    minRange: findRange(minData, 'lower', limit),
+    maxRange: findRange(maxData, 'upper', limit) };
+
+}
+
+function measureText(text) {
+  var fontSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : config.fontSize;
+
+  // wx canvas 未实现measureText方法, 此处自行实现
+  // 适配修改初始字体10px为其他大小的方法
+  text = String(text);
+  var text = text.split('');
+  var width = 0;
+  for (var i = 0; i < text.length; i++) {
+    var item = text[i];
+    if (/[a-zA-Z]/.test(item)) {
+      width += 7;
+    } else if (/[0-9]/.test(item)) {
+      width += 5.5;
+    } else if (/\./.test(item)) {
+      width += 2.7;
+    } else if (/-/.test(item)) {
+      width += 3.25;
+    } else if (/[\u4e00-\u9fa5]/.test(item)) {
+      width += 10;
+    } else if (/\(|\)/.test(item)) {
+      width += 3.73;
+    } else if (/\s/.test(item)) {
+      width += 2.5;
+    } else if (/%/.test(item)) {
+      width += 8;
+    } else {
+      width += 10;
+    }
+  }
+  return width * fontSize / 10;
+}
+
+function dataCombine(series) {
+  return series.reduce(function (a, b) {
+    return (a.data ? a.data : a).concat(b.data);
+  }, []);
+}
+
+function dataCombineStack(series) {
+  var sum = new Array(series[0].data.length);
+  for (var j = 0; j < sum.length; j++) {
+    sum[j] = 0;
+  }
+  for (var i = 0; i < series.length; i++) {
+    for (var j = 0; j < sum.length; j++) {
+      sum[j] += series[i].data[j];
+    }
+  }
+  return series.reduce(function (a, b) {
+    return (a.data ? a.data : a).concat(b.data).concat(sum);
+  }, []);
+}
+
+function getTouches(touches, opts, e) {
+  var x, y;
+  if (touches.clientX) {
+    if (opts.rotate) {//适配横屏
+      y = opts.height - touches.clientX * opts.pixelRatio;
+      x = (touches.pageY - e.currentTarget.offsetTop - opts.height / opts.pixelRatio / 2 * (opts.pixelRatio - 1)) *
+      opts.pixelRatio;
+    } else {
+      x = touches.clientX * opts.pixelRatio;
+      y = (touches.pageY - e.currentTarget.offsetTop - opts.height / opts.pixelRatio / 2 * (opts.pixelRatio - 1)) *
+      opts.pixelRatio;
+    }
+  } else {
+    if (opts.rotate) {//适配横屏
+      y = opts.height - touches.x * opts.pixelRatio;
+      x = touches.y * opts.pixelRatio;
+    } else {
+      x = touches.x * opts.pixelRatio;
+      y = touches.y * opts.pixelRatio;
+    }
+  }
+  return {
+    x: x,
+    y: y };
+
+}
+
+function getSeriesDataItem(series, index) {
+  var data = [];
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    if (item.data[index] !== null && typeof item.data[index] !== 'undefined') {
+      var seriesItem = {};
+      seriesItem.color = item.color;
+      seriesItem.type = item.type;
+      seriesItem.style = item.style;
+      seriesItem.shape = item.shape;
+      seriesItem.disableLegend = item.disableLegend;
+      seriesItem.name = item.name;
+      seriesItem.data = item.format ? item.format(item.data[index]) : item.data[index];
+      data.push(seriesItem);
+    }
+  }
+  return data;
+}
+
+function getMaxTextListLength(list) {
+  var lengthList = list.map(function (item) {
+    return measureText(item);
+  });
+  return Math.max.apply(null, lengthList);
+}
+
+function getRadarCoordinateSeries(length) {
+  var eachAngle = 2 * Math.PI / length;
+  var CoordinateSeries = [];
+  for (var i = 0; i < length; i++) {
+    CoordinateSeries.push(eachAngle * i);
+  }
+
+  return CoordinateSeries.map(function (item) {
+    return -1 * item + Math.PI / 2;
+  });
+}
+
+function getToolTipData(seriesData, calPoints, index, categories) {
+  var option = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+
+  var textList = seriesData.map(function (item) {
+    return {
+      text: option.format ? option.format(item, categories[index]) : item.name + ': ' + item.data,
+      color: item.color };
+
+  });
+  var validCalPoints = [];
+  var offset = {
+    x: 0,
+    y: 0 };
+
+  for (var i = 0; i < calPoints.length; i++) {
+    var points = calPoints[i];
+    if (typeof points[index] !== 'undefined' && points[index] !== null) {
+      validCalPoints.push(points[index]);
+    }
+  }
+  for (var _i = 0; _i < validCalPoints.length; _i++) {
+    var item = validCalPoints[_i];
+    offset.x = Math.round(item.x);
+    offset.y += item.y;
+  }
+  offset.y /= validCalPoints.length;
+  return {
+    textList: textList,
+    offset: offset };
+
+}
+
+function getMixToolTipData(seriesData, calPoints, index, categories) {
+  var option = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+  var textList = seriesData.map(function (item) {
+    return {
+      text: option.format ? option.format(item, categories[index]) : item.name + ': ' + item.data,
+      color: item.color,
+      disableLegend: item.disableLegend ? true : false };
+
+  });
+  textList = textList.filter(function (item) {
+    if (item.disableLegend !== true) {
+      return item;
+    }
+  });
+  var validCalPoints = [];
+  var offset = {
+    x: 0,
+    y: 0 };
+
+  for (var i = 0; i < calPoints.length; i++) {
+    var points = calPoints[i];
+    if (typeof points[index] !== 'undefined' && points[index] !== null) {
+      validCalPoints.push(points[index]);
+    }
+  }
+  for (var _i2 = 0; _i2 < validCalPoints.length; _i2++) {
+    var item = validCalPoints[_i2];
+    offset.x = Math.round(item.x);
+    offset.y += item.y;
+  }
+  offset.y /= validCalPoints.length;
+  return {
+    textList: textList,
+    offset: offset };
+
+}
+
+function getCandleToolTipData(series, seriesData, calPoints, index, categories, extra) {
+  var option = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : {};
+  var upColor = extra.color.upFill;
+  var downColor = extra.color.downFill;
+  //颜色顺序为开盘，收盘，最低，最高
+  var color = [upColor, upColor, downColor, upColor];
+  var textList = [];
+  var text0 = {
+    text: categories[index],
+    color: null };
+
+  textList.push(text0);
+  seriesData.map(function (item) {
+    //console.log(color)
+    if (index == 0 && item.data[1] - item.data[0] < 0) {
+      color[1] = downColor;
+    } else {
+      if (item.data[0] < series[index - 1][1]) {
+        color[0] = downColor;
+      }
+      if (item.data[1] < item.data[0]) {
+        color[1] = downColor;
+      }
+      if (item.data[2] > series[index - 1][1]) {
+        color[2] = upColor;
+      }
+      if (item.data[3] < series[index - 1][1]) {
+        color[3] = downColor;
+      }
+    }
+
+    var text1 = {
+      text: '开盘：' + item.data[0],
+      color: color[0] };
+
+    var text2 = {
+      text: '收盘：' + item.data[1],
+      color: color[1] };
+
+    var text3 = {
+      text: '最低：' + item.data[2],
+      color: color[2] };
+
+    var text4 = {
+      text: '最高：' + item.data[3],
+      color: color[3] };
+
+    textList.push(text1, text2, text3, text4);
+  });
+  var validCalPoints = [];
+  var offset = {
+    x: 0,
+    y: 0 };
+
+  for (var i = 0; i < calPoints.length; i++) {
+    var points = calPoints[i];
+    if (typeof points[index] !== 'undefined' && points[index] !== null) {
+      validCalPoints.push(points[index]);
+    }
+  }
+  offset.x = Math.round(validCalPoints[0][0].x);
+  return {
+    textList: textList,
+    offset: offset };
+
+}
+
+function findCurrentIndex(currentPoints, xAxisPoints, opts, config) {
+  var offset = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+  var currentIndex = -1;
+  if (isInExactChartArea(currentPoints, opts, config)) {
+    xAxisPoints.forEach(function (item, index) {
+      if (currentPoints.x + offset > item) {
+        currentIndex = index;
+      }
+    });
+  }
+
+  return currentIndex;
+}
+
+function isInExactChartArea(currentPoints, opts, config) {
+  return currentPoints.x < opts.width - config.padding && currentPoints.x > config.padding + config.yAxisWidth + config.yAxisTitleWidth &&
+  currentPoints.y > config.padding && currentPoints.y < opts.height - config.legendHeight - config.xAxisHeight - config.
+  padding;
+}
+
+function findRadarChartCurrentIndex(currentPoints, radarData, count) {
+  var eachAngleArea = 2 * Math.PI / count;
+  var currentIndex = -1;
+  if (isInExactPieChartArea(currentPoints, radarData.center, radarData.radius)) {
+    var fixAngle = function fixAngle(angle) {
+      if (angle < 0) {
+        angle += 2 * Math.PI;
+      }
+      if (angle > 2 * Math.PI) {
+        angle -= 2 * Math.PI;
+      }
+      return angle;
+    };
+
+    var angle = Math.atan2(radarData.center.y - currentPoints.y, currentPoints.x - radarData.center.x);
+    angle = -1 * angle;
+    if (angle < 0) {
+      angle += 2 * Math.PI;
+    }
+
+    var angleList = radarData.angleList.map(function (item) {
+      item = fixAngle(-1 * item);
+
+      return item;
+    });
+
+    angleList.forEach(function (item, index) {
+      var rangeStart = fixAngle(item - eachAngleArea / 2);
+      var rangeEnd = fixAngle(item + eachAngleArea / 2);
+      if (rangeEnd < rangeStart) {
+        rangeEnd += 2 * Math.PI;
+      }
+      if (angle >= rangeStart && angle <= rangeEnd || angle + 2 * Math.PI >= rangeStart && angle + 2 * Math.PI <=
+      rangeEnd) {
+        currentIndex = index;
+      }
+    });
+  }
+
+  return currentIndex;
+}
+
+function findPieChartCurrentIndex(currentPoints, pieData) {
+  var currentIndex = -1;
+  if (isInExactPieChartArea(currentPoints, pieData.center, pieData.radius)) {
+    var angle = Math.atan2(pieData.center.y - currentPoints.y, currentPoints.x - pieData.center.x);
+    angle = -angle;
+    for (var i = 0, len = pieData.series.length; i < len; i++) {
+      var item = pieData.series[i];
+      if (isInAngleRange(angle, item._start_, item._start_ + item._proportion_ * 2 * Math.PI)) {
+        currentIndex = i;
+        break;
+      }
+    }
+  }
+
+  return currentIndex;
+}
+
+function isInExactPieChartArea(currentPoints, center, radius) {
+  return Math.pow(currentPoints.x - center.x, 2) + Math.pow(currentPoints.y - center.y, 2) <= Math.pow(radius, 2);
+}
+
+function splitPoints(points) {
+  var newPoints = [];
+  var items = [];
+  points.forEach(function (item, index) {
+    if (item !== null) {
+      items.push(item);
+    } else {
+      if (items.length) {
+        newPoints.push(items);
+      }
+      items = [];
+    }
+  });
+  if (items.length) {
+    newPoints.push(items);
+  }
+
+  return newPoints;
+}
+
+function calLegendData(series, opts, config) {
+  if (opts.legend === false) {
+    return {
+      legendList: [],
+      legendHeight: 0 };
+
+  }
+  //适配H5高分屏
+  var padding = 5 * opts.pixelRatio;
+  var marginTop = 8 * opts.pixelRatio;
+  var shapeWidth = 15 * opts.pixelRatio;
+  var legendList = [];
+  var widthCount = 0;
+  var currentRow = [];
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    var itemWidth = 3 * padding + shapeWidth + measureText(item.name || 'undefined');
+    if (widthCount + itemWidth > opts.width) {
+      legendList.push(currentRow);
+      widthCount = itemWidth;
+      currentRow = [item];
+    } else {
+      widthCount += itemWidth;
+      currentRow.push(item);
+    }
+  }
+  if (currentRow.length) {
+    legendList.push(currentRow);
+  }
+
+  return {
+    legendList: legendList,
+    legendHeight: legendList.length * (config.fontSize + marginTop) + padding };
+
+}
+
+function calCategoriesData(categories, opts, config) {
+  var result = {
+    angle: 0,
+    xAxisHeight: config.xAxisHeight };
+
+
+  var _getXAxisPoints = getXAxisPoints(categories, opts, config),
+  eachSpacing = _getXAxisPoints.eachSpacing;
+
+  // get max length of categories text
+
+
+  var categoriesTextLenth = categories.map(function (item) {
+    return measureText(item);
+  });
+
+  var maxTextLength = Math.max.apply(this, categoriesTextLenth);
+
+  if (opts.xAxis.rotateLabel == true && maxTextLength + 2 * config.xAxisTextPadding > eachSpacing) {
+    result.angle = 45 * Math.PI / 180;
+    result.xAxisHeight = 2 * config.xAxisTextPadding + maxTextLength * Math.sin(result.angle);
+  }
+
+  return result;
+}
+
+function getRadarDataPoints(angleList, center, radius, series, opts) {
+  var process = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;
+
+  var radarOption = opts.extra.radar || {};
+  radarOption.max = radarOption.max || 0;
+  var maxData = Math.max(radarOption.max, Math.max.apply(null, dataCombine(series)));
+
+  var data = [];var _loop2 = function _loop2(
+  i) {
+    var each = series[i];
+    var listItem = {};
+    listItem.color = each.color;
+    listItem.data = [];
+    each.data.forEach(function (item, index) {
+      var tmp = {};
+      tmp.angle = angleList[index];
+
+      tmp.proportion = item / maxData;
+      tmp.position = convertCoordinateOrigin(radius * tmp.proportion * process * Math.cos(tmp.angle), radius * tmp.proportion *
+      process * Math.sin(tmp.angle), center);
+      listItem.data.push(tmp);
+    });
+
+    data.push(listItem);};for (var i = 0; i < series.length; i++) {_loop2(i);
+  }
+
+  return data;
+}
+
+function getPieDataPoints(series, radius) {
+  var process = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+
+  var count = 0;
+  var _start_ = 0;
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    item.data = item.data === null ? 0 : item.data;
+    count += item.data;
+  }
+  for (var _i3 = 0; _i3 < series.length; _i3++) {
+    var _item = series[_i3];
+    _item.data = _item.data === null ? 0 : _item.data;
+    if (count === 0) {
+      _item._proportion_ = 1 / series.length * process;
+    } else {
+      _item._proportion_ = _item.data / count * process;
+    }
+    _item._radius_ = radius;
+  }
+  for (var _i4 = 0; _i4 < series.length; _i4++) {
+    var _item2 = series[_i4];
+    _item2._start_ = _start_;
+    _start_ += 2 * _item2._proportion_ * Math.PI;
+  }
+
+  return series;
+}
+
+function getRoseDataPoints(series, type, minRadius, radius) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var count = 0;
+  var _start_ = 0;
+
+  var dataArr = [];
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    item.data = item.data === null ? 0 : item.data;
+    count += item.data;
+    dataArr.push(item.data);
+  }
+  var minData = dataArr.pop();
+  var maxData = dataArr.shift();
+  var radiusLength = radius - minRadius;
+
+  for (var _i5 = 0; _i5 < series.length; _i5++) {
+    var _item3 = series[_i5];
+    _item3.data = _item3.data === null ? 0 : _item3.data;
+    if (count === 0 || type == 'area') {
+      _item3._proportion_ = 1 / series.length * process;
+    } else {
+      _item3._proportion_ = _item3.data / count * process;
+    }
+    _item3._radius_ = minRadius + radiusLength * ((_item3.data - minData) / (maxData - minData));
+  }
+  for (var _i6 = 0; _i6 < series.length; _i6++) {
+    var _item4 = series[_i6];
+    _item4._start_ = _start_;
+    _start_ += 2 * _item4._proportion_ * Math.PI;
+  }
+
+  return series;
+}
+
+function getArcbarDataPoints(series, arcbarOption) {
+  var process = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+  if (process == 1) {
+    process = 0.999999;
+  }
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    item.data = item.data === null ? 0 : item.data;
+    var totalAngle = void 0;
+    if (arcbarOption.type == 'default') {
+      totalAngle = arcbarOption.startAngle - arcbarOption.endAngle + 1;
+    } else {
+      totalAngle = 2;
+    }
+    item._proportion_ = totalAngle * item.data * process + arcbarOption.startAngle;
+    if (item._proportion_ >= 2) {
+      item._proportion_ = item._proportion_ % 2;
+    }
+  }
+  return series;
+}
+
+function getGaugeAxisPoints(categories, startAngle, endAngle) {
+  var totalAngle = startAngle - endAngle + 1;
+  var tempStartAngle = startAngle;
+  for (var i = 0; i < categories.length; i++) {
+    categories[i].value = categories[i].value === null ? 0 : categories[i].value;
+    categories[i]._startAngle_ = tempStartAngle;
+    categories[i]._endAngle_ = totalAngle * categories[i].value + startAngle;
+    if (categories[i]._endAngle_ >= 2) {
+      categories[i]._endAngle_ = categories[i]._endAngle_ % 2;
+    }
+    tempStartAngle = categories[i]._endAngle_;
+  }
+  return categories;
+}
+
+function getGaugeDataPoints(series, categories, gaugeOption) {
+  var process = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    item.data = item.data === null ? 0 : item.data;
+    if (gaugeOption.pointer.color == 'auto') {
+      for (var _i7 = 0; _i7 < categories.length; _i7++) {
+        if (item.data <= categories[_i7].value) {
+          item.color = categories[_i7].color;
+          break;
+        }
+      }
+    } else {
+      item.color = gaugeOption.pointer.color;
+    }
+    var totalAngle = gaugeOption.startAngle - gaugeOption.endAngle + 1;
+    item._endAngle_ = totalAngle * item.data + gaugeOption.startAngle;
+    item._oldAngle_ = gaugeOption.oldAngle;
+    if (gaugeOption.oldAngle < gaugeOption.endAngle) {
+      item._oldAngle_ += 2;
+    }
+    if (item.data >= gaugeOption.oldData) {
+      item._proportion_ = (item._endAngle_ - item._oldAngle_) * process + gaugeOption.oldAngle;
+    } else {
+      item._proportion_ = item._oldAngle_ - (item._oldAngle_ - item._endAngle_) * process;
+    }
+    if (item._proportion_ >= 2) {
+      item._proportion_ = item._proportion_ % 2;
+    }
+  }
+  return series;
+}
+
+
+function getPieTextMaxLength(series) {
+  series = getPieDataPoints(series);
+  var maxLength = 0;
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    var text = item.format ? item.format(+item._proportion_.toFixed(2)) : util.toFixed(item._proportion_ * 100) + '%';
+    maxLength = Math.max(maxLength, measureText(text));
+  }
+
+  return maxLength;
+}
+
+function fixColumeData(points, eachSpacing, columnLen, index, config, opts) {
+  return points.map(function (item) {
+    if (item === null) {
+      return null;
+    }
+    item.width = Math.ceil((eachSpacing - 2 * config.columePadding) / columnLen);
+
+    if (opts.extra.column && opts.extra.column.width && +opts.extra.column.width > 0) {
+      item.width = Math.min(item.width, +opts.extra.column.width);
+    }
+    item.x += (index + 0.5 - columnLen / 2) * item.width;
+    return item;
+  });
+}
+
+function fixColumeMeterData(points, eachSpacing, columnLen, index, config, opts, border) {
+  return points.map(function (item) {
+    if (item === null) {
+      return null;
+    }
+    item.width = eachSpacing - 2 * config.columePadding;
+
+    if (opts.extra.column && opts.extra.column.width && +opts.extra.column.width > 0) {
+      item.width = Math.min(item.width, +opts.extra.column.width);
+    } else {
+      item.width = Math.min(item.width, 25);
+    }
+    if (index > 0) {
+      item.width -= 2 * border;
+    }
+    return item;
+  });
+}
+
+function fixColumeStackData(points, eachSpacing, columnLen, index, config, opts, series) {
+
+  return points.map(function (item, indexn) {
+
+    if (item === null) {
+      return null;
+    }
+    item.width = eachSpacing - 2 * config.columePadding;
+
+    if (opts.extra.column && opts.extra.column.width && +opts.extra.column.width > 0) {
+      item.width = Math.min(item.width, +opts.extra.column.width);
+    } else {
+      item.width = Math.min(item.width, 25);
+    }
+    return item;
+  });
+}
+
+function getXAxisPoints(categories, opts, config) {
+  var yAxisTotalWidth = config.yAxisWidth + config.yAxisTitleWidth;
+  var spacingValid = opts.width - 2 * config.padding - yAxisTotalWidth;
+  var dataCount = opts.enableScroll ? Math.min(opts.xAxis.itemCount, categories.length) : categories.length;
+  var eachSpacing = spacingValid / dataCount;
+
+  var xAxisPoints = [];
+  var startX = config.padding + yAxisTotalWidth;
+  var endX = opts.width - config.padding;
+  categories.forEach(function (item, index) {
+    xAxisPoints.push(startX + index * eachSpacing);
+  });
+  if (opts.enableScroll === true) {
+    xAxisPoints.push(startX + categories.length * eachSpacing);
+  } else {
+    xAxisPoints.push(endX);
+  }
+
+  return {
+    xAxisPoints: xAxisPoints,
+    startX: startX,
+    endX: endX,
+    eachSpacing: eachSpacing };
+
+}
+
+function getCandleDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config) {
+  var process = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 1;
+
+  var points = [];
+  var validHeight = opts.height - 2 * config.padding - config.xAxisHeight - config.legendHeight;
+  data.forEach(function (item, index) {
+    if (item === null) {
+      points.push(null);
+    } else {
+      var cPoints = [];
+      item.forEach(function (items, indexs) {
+        var point = {};
+        point.x = xAxisPoints[index] + Math.round(eachSpacing / 2);
+        var value = items.value || items;
+        var height = validHeight * (value - minRange) / (maxRange - minRange);
+        height *= process;
+        point.y = opts.height - config.xAxisHeight - config.legendHeight - Math.round(height) - config.padding;
+        cPoints.push(point);
+      });
+      points.push(cPoints);
+    }
+  });
+
+  return points;
+}
+
+function getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config) {
+  var process = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 1;
+
+  var points = [];
+  var validHeight = opts.height - 2 * config.padding - config.xAxisHeight - config.legendHeight;
+  data.forEach(function (item, index) {
+    if (item === null) {
+      points.push(null);
+    } else {
+      var point = {};
+      point.color = item.color;
+      point.x = xAxisPoints[index] + Math.round(eachSpacing / 2);
+      var value = item;
+      if (typeof item === 'object' && item !== null) {
+        value = item.value;
+      }
+      var height = validHeight * (value - minRange) / (maxRange - minRange);
+      height *= process;
+      point.y = opts.height - config.xAxisHeight - config.legendHeight - Math.round(height) - config.padding;
+      points.push(point);
+    }
+  });
+
+  return points;
+}
+
+function getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, seriesIndex, stackSeries) {
+  var process = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 1;
+  var points = [];
+  var validHeight = opts.height - 2 * config.padding - config.xAxisHeight - config.legendHeight;
+
+  data.forEach(function (item, index) {
+    if (item === null) {
+      points.push(null);
+    } else {
+      var point = {};
+      point.color = item.color;
+      point.x = xAxisPoints[index] + Math.round(eachSpacing / 2);
+
+      if (seriesIndex > 0) {
+        var value = 0;
+        for (var i = 0; i <= seriesIndex; i++) {
+          value += stackSeries[i].data[index];
+        }
+        var value0 = value - item;
+        var height = validHeight * (value - minRange) / (maxRange - minRange);
+        var height0 = validHeight * (value0 - minRange) / (maxRange - minRange);
+      } else {
+        var value = item;
+        var height = validHeight * (value - minRange) / (maxRange - minRange);
+        var height0 = 0;
+      }
+      var heightc = height0;
+      height *= process;
+      heightc *= process;
+      point.y = opts.height - config.xAxisHeight - config.legendHeight - Math.round(height) - config.padding;
+      point.y0 = opts.height - config.xAxisHeight - config.legendHeight - Math.round(heightc) - config.padding;
+      points.push(point);
+    }
+  });
+
+  return points;
+}
+
+function getYAxisTextList(series, opts, config, stack) {
+  var data;
+  if (stack == 'stack') {
+    //data = dataCombine(series);
+    data = dataCombineStack(series);
+  } else {
+    data = dataCombine(series);
+  }
+
+  var sorted = [];
+  // remove null from data
+  data = data.filter(function (item) {
+    //return item !== null;
+    if (typeof item === 'object' && item !== null) {
+      //判断是否为数组
+      if (item.constructor == Array) {
+        return item !== null;
+      } else {
+        return item.value !== null;
+      }
+    } else {
+      return item !== null;
+    }
+  });
+  //var minData = Math.min.apply(this, data);
+  //var maxData = Math.max.apply(this, data);
+  data.map(function (item) {
+    if (typeof item === 'object') {
+      if (item.constructor == Array) {
+        item.map(function (subitem) {
+          sorted.push(subitem);
+        });
+      } else {
+        sorted.push(item.value);
+      }
+    } else {
+      sorted.push(item);
+    }
+    //typeof item === 'object' ? sorted.push(item.value) : sorted.push(item)
+  });
+  var minData = 0;
+  var maxData = 0;
+  if (sorted.length > 0) {
+    minData = Math.min.apply(this, sorted);
+    maxData = Math.max.apply(this, sorted);
+  }
+  if (typeof opts.yAxis.min === 'number') {
+    minData = Math.min(opts.yAxis.min, minData);
+  }
+  if (typeof opts.yAxis.max === 'number') {
+    maxData = Math.max(opts.yAxis.max, maxData);
+  }
+
+  // fix issue https://github.com/xiaolin3303/wx-charts/issues/9
+  if (minData === maxData) {
+    var rangeSpan = maxData || 10;
+    //minData -= rangeSpan;
+    maxData += rangeSpan;
+  }
+
+  var dataRange = getDataRange(minData, maxData);
+  var minRange = dataRange.minRange;
+  var maxRange = dataRange.maxRange;
+
+  var range = [];
+  var eachRange = (maxRange - minRange) / config.yAxisSplit;
+
+  for (var i = 0; i <= config.yAxisSplit; i++) {
+    range.push(minRange + eachRange * i);
+  }
+  return range.reverse();
+}
+
+function calYAxisData(series, opts, config) {
+  //堆叠图重算Y轴
+  var columnstyle = assign({}, opts.extra.column || {
+    "type": "" });
+
+
+  var ranges = getYAxisTextList(series, opts, config, columnstyle.type);
+  var yAxisWidth = config.yAxisWidth;
+  var rangesFormat = ranges.map(function (item) {
+    item = util.toFixed(item, 2);
+    item = opts.yAxis.format ? opts.yAxis.format(Number(item)) : item;
+    yAxisWidth = Math.max(yAxisWidth, measureText(item) + 5);
+    return item;
+  });
+  if (opts.yAxis.disabled === true) {
+    yAxisWidth = 0;
+  }
+
+  return {
+    rangesFormat: rangesFormat,
+    ranges: ranges,
+    yAxisWidth: yAxisWidth };
+
+}
+
+function calTooltipYAxisData(point, series, opts, config, eachSpacing) {
+  var ranges = getYAxisTextList(series, opts, config);
+  var spacingValid = opts.height - 2 * config.padding - config.xAxisHeight - config.legendHeight;
+  var maxVal = ranges[0];
+  var minVal = ranges[ranges.length - 1];
+  var minAxis = config.padding;
+  var maxAxis = config.padding + spacingValid;
+  var item = maxVal - (maxVal - minVal) * (point - minAxis) / (maxAxis - minAxis);
+  item = opts.yAxis.format ? opts.yAxis.format(Number(item)) : item;
+  return item;
+}
+
+function contextRotate(context, opts) {
+  if (opts.rotateLock !== true) {
+    context.translate(opts.height, 0);
+    context.rotate(90 * Math.PI / 180);
+  } else if (opts._rotate_ !== true) {
+    context.translate(opts.height, 0);
+    context.rotate(90 * Math.PI / 180);
+    opts._rotate_ = true;
+  }
+}
+
+function drawPointShape(points, color, shape, context, opts) {
+  context.beginPath();
+  context.setStrokeStyle("#ffffff");
+  context.setLineWidth(1 * opts.pixelRatio);
+  context.setFillStyle(color);
+  if (shape === 'diamond') {
+    points.forEach(function (item, index) {
+      if (item !== null) {
+        context.moveTo(item.x, item.y - 4.5);
+        context.lineTo(item.x - 4.5, item.y);
+        context.lineTo(item.x, item.y + 4.5);
+        context.lineTo(item.x + 4.5, item.y);
+        context.lineTo(item.x, item.y - 4.5);
+      }
+    });
+  } else if (shape === 'circle') {
+    points.forEach(function (item, index) {
+      if (item !== null) {
+        context.moveTo(item.x + 3.5 * opts.pixelRatio, item.y);
+        context.arc(item.x, item.y, 4 * opts.pixelRatio, 0, 2 * Math.PI, false);
+      }
+    });
+  } else if (shape === 'rect') {
+    points.forEach(function (item, index) {
+      if (item !== null) {
+        context.moveTo(item.x - 3.5, item.y - 3.5);
+        context.rect(item.x - 3.5, item.y - 3.5, 7, 7);
+      }
+    });
+  } else if (shape === 'triangle') {
+    points.forEach(function (item, index) {
+      if (item !== null) {
+        context.moveTo(item.x, item.y - 4.5);
+        context.lineTo(item.x - 4.5, item.y + 4.5);
+        context.lineTo(item.x + 4.5, item.y + 4.5);
+        context.lineTo(item.x, item.y - 4.5);
+      }
+    });
+  }
+  context.closePath();
+  context.fill();
+  context.stroke();
+}
+
+function drawRingTitle(opts, config, context) {
+  var titlefontSize = opts.title.fontSize || config.titleFontSize;
+  var subtitlefontSize = opts.subtitle.fontSize || config.subtitleFontSize;
+  var title = opts.title.name || '';
+  var subtitle = opts.subtitle.name || '';
+  var titleFontColor = opts.title.color || config.titleColor;
+  var subtitleFontColor = opts.subtitle.color || config.subtitleColor;
+  var titleHeight = title ? titlefontSize : 0;
+  var subtitleHeight = subtitle ? subtitlefontSize : 0;
+  var margin = 5;
+  if (subtitle) {
+    var textWidth = measureText(subtitle, subtitlefontSize);
+    var startX = (opts.width - textWidth) / 2 + (opts.subtitle.offsetX || 0);
+    var startY = (opts.height - config.legendHeight + subtitlefontSize) / 2 + (opts.subtitle.offsetY || 0);
+    if (title) {
+      startY -= (titleHeight + margin) / 2;
+    }
+    context.beginPath();
+    context.setFontSize(subtitlefontSize);
+    context.setFillStyle(subtitleFontColor);
+    context.fillText(subtitle, startX, startY);
+    context.closePath();
+    context.stroke();
+  }
+  if (title) {
+    var _textWidth = measureText(title, titlefontSize);
+    var _startX = (opts.width - _textWidth) / 2 + (opts.title.offsetX || 0);
+    var _startY = (opts.height - config.legendHeight + titlefontSize) / 2 + (opts.title.offsetY || 0);
+    if (subtitle) {
+      _startY += (subtitleHeight + margin) / 2;
+    }
+    context.beginPath();
+    context.setFontSize(titlefontSize);
+    context.setFillStyle(titleFontColor);
+    context.fillText(title, _startX, _startY);
+    context.closePath();
+    context.stroke();
+  }
+}
+
+function drawPointText(points, series, config, context) {
+  // 绘制数据文案
+  var data = series.data;
+  points.forEach(function (item, index) {
+    if (item !== null) {
+      //var formatVal = series.format ? series.format(data[index]) : data[index];
+      context.beginPath();
+      context.setFontSize(series.textSize || config.fontSize);
+      context.setFillStyle(series.textColor || '#666666');
+      var value = data[index];
+      if (typeof data[index] === 'object' && data[index] !== null) {
+        value = data[index].value;
+      }
+      var formatVal = series.format ? series.format(value) : value;
+      context.fillText(formatVal, item.x - measureText(formatVal, series.textSize || config.fontSize) / 2, item.y - 2);
+      context.closePath();
+      context.stroke();
+    }
+  });
+
+}
+
+function drawGaugeLabel(gaugeOption, radius, centerPosition, opts, config, context) {
+  radius -= gaugeOption.width / 2 + config.gaugeLabelTextMargin;
+
+  var totalAngle = gaugeOption.startAngle - gaugeOption.endAngle + 1;
+  var splitAngle = totalAngle / gaugeOption.splitLine.splitNumber;
+  var totalNumber = gaugeOption.endNumber - gaugeOption.startNumber;
+  var splitNumber = totalNumber / gaugeOption.splitLine.splitNumber;
+  var nowAngle = gaugeOption.startAngle;
+  var nowNumber = gaugeOption.startNumber;
+  for (var i = 0; i < gaugeOption.splitLine.splitNumber + 1; i++) {
+    var pos = {
+      x: radius * Math.cos(nowAngle * Math.PI),
+      y: radius * Math.sin(nowAngle * Math.PI) };
+
+    var labelText = gaugeOption.labelFormat ? gaugeOption.labelFormat(nowNumber) : nowNumber;
+    pos.x += centerPosition.x - measureText(labelText) / 2;
+    pos.y += centerPosition.y;
+    var startX = pos.x;
+    var startY = pos.y;
+    context.beginPath();
+    context.setFontSize(config.fontSize);
+    context.setFillStyle(gaugeOption.labelColor || '#666666');
+    context.fillText(labelText, startX, startY + config.fontSize / 2);
+    context.closePath();
+    context.stroke();
+
+    nowAngle += splitAngle;
+    if (nowAngle >= 2) {
+      nowAngle = nowAngle % 2;
+    }
+    nowNumber += splitNumber;
+  }
+
+}
+
+function drawRadarLabel(angleList, radius, centerPosition, opts, config, context) {
+  var radarOption = opts.extra.radar || {};
+  radius += config.radarLabelTextMargin;
+
+  angleList.forEach(function (angle, index) {
+    var pos = {
+      x: radius * Math.cos(angle),
+      y: radius * Math.sin(angle) };
+
+    var posRelativeCanvas = convertCoordinateOrigin(pos.x, pos.y, centerPosition);
+    var startX = posRelativeCanvas.x;
+    var startY = posRelativeCanvas.y;
+    if (util.approximatelyEqual(pos.x, 0)) {
+      startX -= measureText(opts.categories[index] || '') / 2;
+    } else if (pos.x < 0) {
+      startX -= measureText(opts.categories[index] || '');
+    }
+    context.beginPath();
+    context.setFontSize(config.fontSize);
+    context.setFillStyle(radarOption.labelColor || '#666666');
+    context.fillText(opts.categories[index] || '', startX, startY + config.fontSize / 2);
+    context.closePath();
+    context.stroke();
+  });
+
+}
+
+function drawPieText(series, opts, config, context, radius, center) {
+  var lineRadius = config.pieChartLinePadding;
+  var textObjectCollection = [];
+  var lastTextObject = null;
+
+  var seriesConvert = series.map(function (item) {
+    var arc = 2 * Math.PI - (item._start_ + 2 * Math.PI * item._proportion_ / 2);
+    var text = item.format ? item.format(+item._proportion_.toFixed(2)) : util.toFixed(item._proportion_ * 100) + '%';
+    var color = item.color;
+    var radius = item._radius_;
+    return {
+      arc: arc,
+      text: text,
+      color: color,
+      radius: radius,
+      textColor: item.textColor,
+      textSize: item.textSize };
+
+  });
+  for (var i = 0; i < seriesConvert.length; i++) {
+    var item = seriesConvert[i];
+    // line end
+    var orginX1 = Math.cos(item.arc) * (item.radius + lineRadius);
+    var orginY1 = Math.sin(item.arc) * (item.radius + lineRadius);
+
+    // line start
+    var orginX2 = Math.cos(item.arc) * item.radius;
+    var orginY2 = Math.sin(item.arc) * item.radius;
+
+    // text start
+    var orginX3 = orginX1 >= 0 ? orginX1 + config.pieChartTextPadding : orginX1 - config.pieChartTextPadding;
+    var orginY3 = orginY1;
+    var textWidth = measureText(item.text);
+    var startY = orginY3;
+
+    if (lastTextObject && util.isSameXCoordinateArea(lastTextObject.start, {
+      x: orginX3 }))
+    {
+      if (orginX3 > 0) {
+        startY = Math.min(orginY3, lastTextObject.start.y);
+      } else if (orginX1 < 0) {
+        startY = Math.max(orginY3, lastTextObject.start.y);
+      } else {
+        if (orginY3 > 0) {
+          startY = Math.max(orginY3, lastTextObject.start.y);
+        } else {
+          startY = Math.min(orginY3, lastTextObject.start.y);
+        }
+      }
+    }
+    if (orginX3 < 0) {
+      orginX3 -= textWidth;
+    }
+
+    var textObject = {
+      lineStart: {
+        x: orginX2,
+        y: orginY2 },
+
+      lineEnd: {
+        x: orginX1,
+        y: orginY1 },
+
+      start: {
+        x: orginX3,
+        y: startY },
+
+      width: textWidth,
+      height: config.fontSize,
+      text: item.text,
+      color: item.color,
+      textColor: item.textColor,
+      textSize: item.textSize };
+
+    lastTextObject = avoidCollision(textObject, lastTextObject);
+    textObjectCollection.push(lastTextObject);
+  }
+
+  for (var _i8 = 0; _i8 < textObjectCollection.length; _i8++) {
+    var _item5 = textObjectCollection[_i8];
+    var lineStartPoistion = convertCoordinateOrigin(_item5.lineStart.x, _item5.lineStart.y, center);
+    var lineEndPoistion = convertCoordinateOrigin(_item5.lineEnd.x, _item5.lineEnd.y, center);
+    var textPosition = convertCoordinateOrigin(_item5.start.x, _item5.start.y, center);
+    context.setLineWidth(1 * opts.pixelRatio);
+    context.setFontSize(config.fontSize);
+    context.beginPath();
+    context.setStrokeStyle(_item5.color);
+    context.setFillStyle(_item5.color);
+    context.moveTo(lineStartPoistion.x, lineStartPoistion.y);
+    var curveStartX = _item5.start.x < 0 ? textPosition.x + _item5.width : textPosition.x;
+    var textStartX = _item5.start.x < 0 ? textPosition.x - 5 : textPosition.x + 5;
+    context.quadraticCurveTo(lineEndPoistion.x, lineEndPoistion.y, curveStartX, textPosition.y);
+    context.moveTo(lineStartPoistion.x, lineStartPoistion.y);
+    context.stroke();
+    context.closePath();
+    context.beginPath();
+    context.moveTo(textPosition.x + _item5.width, textPosition.y);
+    context.arc(curveStartX, textPosition.y, 2, 0, 2 * Math.PI);
+    context.closePath();
+    context.fill();
+    context.beginPath();
+    context.setFontSize(_item5.textSize || config.fontSize);
+    context.setFillStyle(_item5.textColor || '#666666');
+    context.fillText(_item5.text, textStartX, textPosition.y + 3);
+    context.closePath();
+    context.stroke();
+    context.closePath();
+  }
+}
+
+function drawToolTipSplitLine(offsetX, opts, config, context) {
+  var toolTipOption = opts.extra.tooltip || {};
+  toolTipOption.gridType = toolTipOption.gridType == undefined ? 'solid' : toolTipOption.gridType;
+  toolTipOption.dashLength = toolTipOption.dashLength == undefined ? 4 : toolTipOption.dashLength;
+  var startY = config.padding;
+  var endY = opts.height - config.padding - config.xAxisHeight - config.legendHeight;
+
+  if (toolTipOption.gridType == 'dash') {
+    context.setLineDash([toolTipOption.dashLength, toolTipOption.dashLength]);
+  }
+  context.beginPath();
+  context.setStrokeStyle(toolTipOption.gridColor || '#cccccc');
+  context.setLineWidth(1 * opts.pixelRatio);
+  context.moveTo(offsetX, startY);
+  context.lineTo(offsetX, endY);
+  context.closePath();
+  context.stroke();
+  context.setLineDash([]);
+
+  if (toolTipOption.xAxisLabel) {
+    var labelText = opts.categories[opts.tooltip.index];
+    context.setFontSize(config.fontSize);
+    var textWidth = context.measureText(labelText).width;
+
+    var textX = offsetX - config.toolTipPadding - 0.5 * textWidth;
+    var textY = endY;
+    context.beginPath();
+    context.setFillStyle(hexToRgb(toolTipOption.labelBgColor || config.toolTipBackground, toolTipOption.labelBgOpacity ||
+    config.toolTipOpacity));
+    context.setStrokeStyle(toolTipOption.labelBgColor || config.toolTipBackground);
+    context.setLineWidth(1 * opts.pixelRatio);
+    context.rect(textX, textY, textWidth + 2 * config.toolTipPadding, config.fontSize + 2 * config.toolTipPadding);
+    context.closePath();
+    context.stroke();
+    context.fill();
+
+    context.beginPath();
+    context.setFontSize(config.fontSize);
+    context.setFillStyle(toolTipOption.labelFontColor || config.fontColor);
+    context.fillText(labelText, textX + 2 * config.toolTipPadding, textY + config.toolTipPadding + config.fontSize);
+    context.closePath();
+    context.stroke();
+  }
+}
+
+function drawToolTipHorizentalLine(opts, config, context, eachSpacing, xAxisPoints) {
+  var toolTipOption = opts.extra.tooltip || {};
+  toolTipOption.gridType = toolTipOption.gridType == undefined ? 'solid' : toolTipOption.gridType;
+  toolTipOption.dashLength = toolTipOption.dashLength == undefined ? 4 : toolTipOption.dashLength;
+  var startX = config.padding + config.yAxisWidth + config.yAxisTitleWidth;
+  var endX = opts.width - config.padding;
+
+  if (toolTipOption.gridType == 'dash') {
+    context.setLineDash([toolTipOption.dashLength, toolTipOption.dashLength]);
+  }
+  context.beginPath();
+  context.setStrokeStyle(toolTipOption.gridColor || '#cccccc');
+  context.setLineWidth(1 * opts.pixelRatio);
+  context.moveTo(startX, opts.tooltip.offset.y);
+  context.lineTo(endX, opts.tooltip.offset.y);
+  context.closePath();
+  context.stroke();
+  context.setLineDash([]);
+
+  if (toolTipOption.yAxisLabel) {
+
+    var labelText = calTooltipYAxisData(opts.tooltip.offset.y, opts.series, opts, config, eachSpacing);
+    context.setFontSize(config.fontSize);
+    var textWidth = context.measureText(labelText).width;
+
+    var textX = startX - 2 * config.toolTipPadding - textWidth;
+    var textY = opts.tooltip.offset.y;
+    context.beginPath();
+    context.setFillStyle(hexToRgb(toolTipOption.labelBgColor || config.toolTipBackground, toolTipOption.labelBgOpacity ||
+    config.toolTipOpacity));
+    context.setStrokeStyle(toolTipOption.labelBgColor || config.toolTipBackground);
+    context.setLineWidth(1 * opts.pixelRatio);
+    context.rect(textX, textY - 0.5 * config.fontSize - config.toolTipPadding, textWidth + 2 * config.toolTipPadding,
+    config.fontSize + 2 * config.toolTipPadding);
+    context.closePath();
+    context.stroke();
+    context.fill();
+
+    context.beginPath();
+    context.setFontSize(config.fontSize);
+    context.setFillStyle(toolTipOption.labelFontColor || config.fontColor);
+    context.fillText(labelText, textX + config.toolTipPadding, textY + 0.5 * config.fontSize);
+    context.closePath();
+    context.stroke();
+  }
+}
+
+
+function drawToolTipSplitArea(offsetX, opts, config, context, eachSpacing) {
+  var toolTipOption = opts.extra.tooltip || {
+    activeBgColor: '#000000',
+    activeBgOpacity: 0.08 };
+
+  toolTipOption.activeBgColor = toolTipOption.activeBgColor ? toolTipOption.activeBgColor : '#000000';
+  toolTipOption.activeBgOpacity = toolTipOption.activeBgOpacity ? toolTipOption.activeBgOpacity : 0.08;
+  var startY = config.padding;
+  var endY = opts.height - config.padding - config.xAxisHeight - config.legendHeight;
+  context.beginPath();
+  context.setFillStyle(hexToRgb(toolTipOption.activeBgColor, toolTipOption.activeBgOpacity));
+  context.rect(offsetX - eachSpacing / 2, startY, eachSpacing, endY - startY);
+  context.closePath();
+  context.fill();
+}
+
+function drawToolTip(textList, offset, opts, config, context, eachSpacing, xAxisPoints) {
+  var toolTipOption = opts.extra.tooltip || {
+    bgColor: '#000000',
+    bgOpacity: 0.7,
+    fontColor: '#FFFFFF' };
+
+  toolTipOption.bgColor = toolTipOption.bgColor ? toolTipOption.bgColor : '#000000';
+  toolTipOption.bgOpacity = toolTipOption.bgOpacity ? toolTipOption.bgOpacity : 0.7;
+  toolTipOption.fontColor = toolTipOption.fontColor ? toolTipOption.fontColor : '#FFFFFF';
+  var legendWidth = 4 * opts.pixelRatio;
+  var legendMarginRight = 5 * opts.pixelRatio;
+  var arrowWidth = 8 * opts.pixelRatio;
+  var isOverRightBorder = false;
+  if (opts.type == 'line' || opts.type == 'area' || opts.type == 'candle' || opts.type == 'mix') {
+    drawToolTipSplitLine(opts.tooltip.offset.x, opts, config, context);
+  }
+
+  offset = assign({
+    x: 0,
+    y: 0 },
+  offset);
+  offset.y -= 8 * opts.pixelRatio;
+  var textWidth = textList.map(function (item) {
+    return measureText(item.text);
+  });
+
+  var toolTipWidth = legendWidth + legendMarginRight + 4 * config.toolTipPadding + Math.max.apply(null, textWidth);
+  var toolTipHeight = 2 * config.toolTipPadding + textList.length * config.toolTipLineHeight;
+
+  // if beyond the right border
+  if (offset.x - Math.abs(opts._scrollDistance_) + arrowWidth + toolTipWidth > opts.width) {
+    isOverRightBorder = true;
+  }
+
+  // draw background rect
+  context.beginPath();
+  context.setFillStyle(hexToRgb(toolTipOption.bgColor || config.toolTipBackground, toolTipOption.bgOpacity || config.toolTipOpacity));
+  if (isOverRightBorder) {
+    context.moveTo(offset.x, offset.y + 10 * opts.pixelRatio);
+    context.lineTo(offset.x - arrowWidth, offset.y + 10 * opts.pixelRatio - 5 * opts.pixelRatio);
+    context.lineTo(offset.x - arrowWidth, offset.y);
+    context.lineTo(offset.x - arrowWidth - Math.round(toolTipWidth), offset.y);
+    context.lineTo(offset.x - arrowWidth - Math.round(toolTipWidth), offset.y + toolTipHeight);
+    context.lineTo(offset.x - arrowWidth, offset.y + toolTipHeight);
+    context.lineTo(offset.x - arrowWidth, offset.y + 10 * opts.pixelRatio + 5 * opts.pixelRatio);
+    context.lineTo(offset.x, offset.y + 10 * opts.pixelRatio);
+  } else {
+    context.moveTo(offset.x, offset.y + 10 * opts.pixelRatio);
+    context.lineTo(offset.x + arrowWidth, offset.y + 10 * opts.pixelRatio - 5 * opts.pixelRatio);
+    context.lineTo(offset.x + arrowWidth, offset.y);
+    context.lineTo(offset.x + arrowWidth + Math.round(toolTipWidth), offset.y);
+    context.lineTo(offset.x + arrowWidth + Math.round(toolTipWidth), offset.y + toolTipHeight);
+    context.lineTo(offset.x + arrowWidth, offset.y + toolTipHeight);
+    context.lineTo(offset.x + arrowWidth, offset.y + 10 * opts.pixelRatio + 5 * opts.pixelRatio);
+    context.lineTo(offset.x, offset.y + 10 * opts.pixelRatio);
+  }
+
+  context.closePath();
+  context.fill();
+
+  // draw legend
+  textList.forEach(function (item, index) {
+    if (item.color !== null) {
+      context.beginPath();
+      context.setFillStyle(item.color);
+      var startX = offset.x + arrowWidth + 2 * config.toolTipPadding;
+      var startY = offset.y + (config.toolTipLineHeight - config.fontSize) / 2 + config.toolTipLineHeight * index +
+      config.toolTipPadding + 1;
+      if (isOverRightBorder) {
+        startX = offset.x - toolTipWidth - arrowWidth + 2 * config.toolTipPadding;
+      }
+      context.fillRect(startX, startY, legendWidth, config.fontSize);
+      context.closePath();
+    }
+  });
+
+  // draw text list
+
+  textList.forEach(function (item, index) {
+    var startX = offset.x + arrowWidth + 2 * config.toolTipPadding + legendWidth + legendMarginRight;
+    if (isOverRightBorder) {
+      startX = offset.x - toolTipWidth - arrowWidth + 2 * config.toolTipPadding + +legendWidth + legendMarginRight;
+    }
+    var startY = offset.y + (config.toolTipLineHeight - config.fontSize) / 2 + config.toolTipLineHeight * index +
+    config.toolTipPadding;
+    context.beginPath();
+    context.setFontSize(config.fontSize);
+    context.setFillStyle(toolTipOption.fontColor);
+    context.fillText(item.text, startX, startY + config.fontSize);
+    context.closePath();
+    context.stroke();
+  });
+}
+
+function drawYAxisTitle(title, opts, config, context) {
+  var startX = config.xAxisHeight + (opts.height - config.xAxisHeight - measureText(title)) / 2;
+  context.save();
+  context.beginPath();
+  context.setFontSize(config.fontSize);
+  context.setFillStyle(opts.yAxis.titleFontColor || '#333333');
+  context.translate(0, opts.height);
+  context.rotate(-90 * Math.PI / 180);
+  context.fillText(title, startX, config.padding + 0.5 * config.fontSize);
+  context.closePath();
+  context.stroke();
+  context.restore();
+}
+
+function drawColumnDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var columnOption = opts.extra.column || {
+    type: {},
+    meter: {} };
+
+  columnOption.type = columnOption.type == undefined ? 'group' : columnOption.type;
+  columnOption.meter = columnOption.meter || {};
+  columnOption.meter.border = columnOption.meter.border == undefined ? 4 : columnOption.meter.border;
+  columnOption.meter.fillColor = columnOption.meter.fillColor == undefined ? '#FFFFFF' : columnOption.meter.fillColor;
+  var _calYAxisData = calYAxisData(series, opts, config),
+  ranges = _calYAxisData.ranges;
+
+  var _getXAxisPoints = getXAxisPoints(opts.categories, opts, config),
+  xAxisPoints = _getXAxisPoints.xAxisPoints,
+  eachSpacing = _getXAxisPoints.eachSpacing;
+
+  var minRange = ranges.pop();
+  var maxRange = ranges.shift();
+  var calPoints = [];
+
+  context.save();
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+  if (opts.tooltip && opts.tooltip.textList && opts.tooltip.textList.length && process === 1) {
+    drawToolTipSplitArea(opts.tooltip.offset.x, opts, config, context, eachSpacing);
+  }
+
+  series.forEach(function (eachSeries, seriesIndex) {
+    var data = eachSeries.data;
+    switch (columnOption.type) {
+      case 'group':
+        var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+        var tooltipPoints = getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config,
+        seriesIndex, series, process);
+        calPoints.push(tooltipPoints);
+        points = fixColumeData(points, eachSpacing, series.length, seriesIndex, config, opts);
+        points.forEach(function (item, index) {
+          if (item !== null) {
+            context.beginPath();
+            context.setFillStyle(item.color || eachSeries.color);
+            var startX = item.x - item.width / 2 + 1;
+            var height = opts.height - item.y - config.padding - config.xAxisHeight - config.legendHeight;
+            context.moveTo(startX, item.y);
+            context.fillRect(startX, item.y, item.width - 2, height);
+            context.closePath();
+            context.fill();
+          }
+        });
+        break;
+      case 'stack':
+        // 绘制堆叠数据图
+        var points = getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, seriesIndex,
+        series, process);
+        calPoints.push(points);
+        points = fixColumeStackData(points, eachSpacing, series.length, seriesIndex, config, opts, series);
+
+        points.forEach(function (item, index) {
+          if (item !== null) {
+            context.beginPath();
+            context.setFillStyle(item.color || eachSeries.color);
+            var startX = item.x - item.width / 2 + 1;
+            var height = opts.height - item.y - config.padding - config.xAxisHeight - config.legendHeight;
+            var height0 = opts.height - item.y0 - config.padding - config.xAxisHeight - config.legendHeight;
+            if (seriesIndex > 0) {
+              height -= height0;
+            }
+            context.moveTo(startX, item.y);
+            context.fillRect(startX, item.y, item.width - 2, height);
+            context.closePath();
+            context.fill();
+          }
+        });
+        break;
+      case 'meter':
+        // 绘制温度计数据图
+        var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+        calPoints.push(points);
+        points = fixColumeMeterData(points, eachSpacing, series.length, seriesIndex, config, opts, columnOption.meter.border);
+        if (seriesIndex == 0) {
+          points.forEach(function (item, index) {
+            if (item !== null) {
+              //画背景颜色
+              context.beginPath();
+              context.setFillStyle(columnOption.meter.fillColor);
+              var startX = item.x - item.width / 2;
+              var height = opts.height - item.y - config.padding - config.xAxisHeight - config.legendHeight;
+              context.moveTo(startX, item.y);
+              context.fillRect(startX, item.y, item.width, height);
+              context.closePath();
+              context.fill();
+              //画边框线
+              if (columnOption.meter.border > 0) {
+                context.beginPath();
+                context.setStrokeStyle(eachSeries.color);
+                context.setLineWidth(columnOption.meter.border * opts.pixelRatio);
+                context.moveTo(startX + columnOption.meter.border * 0.5, item.y + height);
+                context.lineTo(startX + columnOption.meter.border * 0.5, item.y + columnOption.meter.border * 0.5);
+                context.lineTo(startX + item.width - columnOption.meter.border * 0.5, item.y + columnOption.meter.border * 0.5);
+                context.lineTo(startX + item.width - columnOption.meter.border * 0.5, item.y + height);
+                context.stroke();
+              }
+            }
+          });
+        } else {
+          points.forEach(function (item, index) {
+            if (item !== null) {
+              context.beginPath();
+              context.setFillStyle(item.color || eachSeries.color);
+              var startX = item.x - item.width / 2;
+              var height = opts.height - item.y - config.padding - config.xAxisHeight - config.legendHeight;
+              context.moveTo(startX, item.y);
+              context.fillRect(startX, item.y, item.width, height);
+              context.closePath();
+              context.fill();
+            }
+          });
+        }
+        break;}
+
+  });
+  if (opts.dataLabel !== false && process === 1) {
+    series.forEach(function (eachSeries, seriesIndex) {
+      var data = eachSeries.data;
+      switch (columnOption.type) {
+        case 'group':
+          var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+          points = fixColumeData(points, eachSpacing, series.length, seriesIndex, config, opts);
+
+          drawPointText(points, eachSeries, config, context);
+          break;
+        case 'stack':
+          var points = getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, seriesIndex,
+          series, process);
+          drawPointText(points, eachSeries, config, context);
+          break;
+        case 'meter':
+          var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+          drawPointText(points, eachSeries, config, context);
+          break;}
+
+    });
+  }
+
+  context.restore();
+
+  return {
+    xAxisPoints: xAxisPoints,
+    calPoints: calPoints,
+    eachSpacing: eachSpacing };
+
+}
+
+function drawCandleDataPoints(series, seriesMA, opts, config, context) {
+  var process = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;
+  var candleOption = opts.extra.candle || {
+    color: {},
+    average: {} };
+
+  candleOption.color.upLine = candleOption.color.upLine ? candleOption.color.upLine : '#f04864';
+  candleOption.color.upFill = candleOption.color.upFill ? candleOption.color.upFill : '#f04864';
+  candleOption.color.downLine = candleOption.color.downLine ? candleOption.color.downLine : '#2fc25b';
+  candleOption.color.downFill = candleOption.color.downFill ? candleOption.color.downFill : '#2fc25b';
+  candleOption.average.show = candleOption.average.show === true ? true : false;
+  candleOption.average.name = candleOption.average.name ? candleOption.average.name : [];
+  candleOption.average.day = candleOption.average.day ? candleOption.average.day : [];
+  candleOption.average.color = candleOption.average.color ? candleOption.average.color : ['#1890ff', '#2fc25b',
+  '#facc14', '#f04864', '#8543e0', '#90ed7d'];
+
+  opts.extra.candle = candleOption;
+
+  var _calYAxisData5 = calYAxisData(series, opts, config),
+  ranges = _calYAxisData5.ranges;
+
+  var _getXAxisPoints5 = getXAxisPoints(opts.categories, opts, config),
+  xAxisPoints = _getXAxisPoints5.xAxisPoints,
+  eachSpacing = _getXAxisPoints5.eachSpacing;
+
+  var minRange = ranges.pop();
+  var maxRange = ranges.shift();
+  var calPoints = [];
+
+  context.save();
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+  //画均线
+  if (candleOption.average.show) {
+    seriesMA.forEach(function (eachSeries, seriesIndex) {
+      var data = eachSeries.data;
+      var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+      //calPoints.push(points);
+      var splitPointList = splitPoints(points);
+
+      splitPointList.forEach(function (points, index) {
+        context.beginPath();
+        context.setStrokeStyle(eachSeries.color);
+        context.setLineWidth(1);
+        if (points.length === 1) {
+          context.moveTo(points[0].x, points[0].y);
+          context.arc(points[0].x, points[0].y, 1, 0, 2 * Math.PI);
+        } else {
+          context.moveTo(points[0].x, points[0].y);
+          points.forEach(function (item, index) {
+            if (index > 0) {
+              var ctrlPoint = createCurveControlPoints(points, index - 1);
+              context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y, item.x, item.
+              y);
+            }
+          });
+          context.moveTo(points[0].x, points[0].y);
+        }
+        context.closePath();
+        context.stroke();
+      });
+    });
+  }
+  //画K线
+  series.forEach(function (eachSeries, seriesIndex) {
+    var data = eachSeries.data;
+    var points = getCandleDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+    calPoints.push(points);
+    var splitPointList = splitPoints(points);
+    splitPointList = splitPointList[0];
+
+    splitPointList.forEach(function (points, index) {
+      context.beginPath();
+      //如果上涨
+      if (data[index][1] - data[index][0] > 0) {
+        context.setStrokeStyle(candleOption.color.upLine);
+        context.setFillStyle(candleOption.color.upFill);
+        context.setLineWidth(1 * opts.pixelRatio);
+        context.moveTo(points[3].x, points[3].y); //顶点
+        context.lineTo(points[1].x, points[1].y); //收盘中间点
+        context.lineTo(points[1].x - eachSpacing / 4, points[1].y); //收盘左侧点
+        context.lineTo(points[0].x - eachSpacing / 4, points[0].y); //开盘左侧点
+        context.lineTo(points[0].x, points[0].y); //开盘中间点
+        context.lineTo(points[2].x, points[2].y); //底点
+        context.lineTo(points[0].x, points[0].y); //开盘中间点
+        context.lineTo(points[0].x + eachSpacing / 4, points[0].y); //开盘右侧点
+        context.lineTo(points[1].x + eachSpacing / 4, points[1].y); //收盘右侧点
+        context.lineTo(points[1].x, points[1].y); //收盘中间点
+        context.moveTo(points[3].x, points[3].y); //顶点
+      } else {
+        context.setStrokeStyle(candleOption.color.downLine);
+        context.setFillStyle(candleOption.color.downFill);
+        context.setLineWidth(1 * opts.pixelRatio);
+        context.moveTo(points[3].x, points[3].y); //顶点
+        context.lineTo(points[0].x, points[0].y); //开盘中间点
+        context.lineTo(points[0].x - eachSpacing / 4, points[0].y); //开盘左侧点
+        context.lineTo(points[1].x - eachSpacing / 4, points[1].y); //收盘左侧点
+        context.lineTo(points[1].x, points[1].y); //收盘中间点
+        context.lineTo(points[2].x, points[2].y); //底点
+        context.lineTo(points[1].x, points[1].y); //收盘中间点
+        context.lineTo(points[1].x + eachSpacing / 4, points[1].y); //收盘右侧点
+        context.lineTo(points[0].x + eachSpacing / 4, points[0].y); //开盘右侧点
+        context.lineTo(points[0].x, points[0].y); //开盘中间点
+        context.moveTo(points[3].x, points[3].y); //顶点
+      }
+      context.closePath();
+      context.fill();
+      context.stroke();
+    });
+  });
+
+
+  context.restore();
+
+
+
+  return {
+    xAxisPoints: xAxisPoints,
+    calPoints: calPoints,
+    eachSpacing: eachSpacing };
+
+}
+
+function drawAreaDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var areaOption = opts.extra.area || {
+    type: 'straight',
+    opacity: 0.5,
+    addLine: false,
+    width: 2 };
+
+  areaOption.type = areaOption.type ? areaOption.type : 'straight';
+  areaOption.opacity = areaOption.opacity ? areaOption.opacity : 0.2;
+  areaOption.addLine = areaOption.addLine == true ? true : false;
+  areaOption.width = areaOption.width ? areaOption.width : 2;
+  var _calYAxisData2 = calYAxisData(series, opts, config),
+  ranges = _calYAxisData2.ranges;
+
+  var _getXAxisPoints2 = getXAxisPoints(opts.categories, opts, config),
+  xAxisPoints = _getXAxisPoints2.xAxisPoints,
+  eachSpacing = _getXAxisPoints2.eachSpacing;
+
+  var minRange = ranges.pop();
+  var maxRange = ranges.shift();
+  var endY = opts.height - config.padding - config.xAxisHeight - config.legendHeight;
+  var calPoints = [];
+
+  context.save();
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+
+  if (opts.tooltip && opts.tooltip.textList && opts.tooltip.textList.length && process === 1) {
+    drawToolTipSplitLine(opts.tooltip.offset.x, opts, config, context);
+  }
+
+
+  series.forEach(function (eachSeries, seriesIndex) {
+    var data = eachSeries.data;
+    var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+    calPoints.push(points);
+
+    var splitPointList = splitPoints(points);var _loop3 = function _loop3(
+
+    i) {
+      var points = splitPointList[i];
+      // 绘制区域数
+      context.beginPath();
+      context.setStrokeStyle(hexToRgb(eachSeries.color, areaOption.opacity));
+      context.setFillStyle(hexToRgb(eachSeries.color, areaOption.opacity));
+      context.setLineWidth(areaOption.width * opts.pixelRatio);
+      if (points.length > 1) {
+        var firstPoint = points[0];
+        var lastPoint = points[points.length - 1];
+
+        context.moveTo(firstPoint.x, firstPoint.y);
+        if (areaOption.type === 'curve') {
+          points.forEach(function (item, index) {
+            if (index > 0) {
+              var ctrlPoint = createCurveControlPoints(points, index - 1);
+              context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y, item.x, item.
+              y);
+            }
+          });
+        } else {
+          points.forEach(function (item, index) {
+            if (index > 0) {
+              context.lineTo(item.x, item.y);
+            }
+          });
+        }
+
+        context.lineTo(lastPoint.x, endY);
+        context.lineTo(firstPoint.x, endY);
+        context.lineTo(firstPoint.x, firstPoint.y);
+      } else {
+        var item = points[0];
+        context.moveTo(item.x - eachSpacing / 2, item.y);
+        context.lineTo(item.x + eachSpacing / 2, item.y);
+        context.lineTo(item.x + eachSpacing / 2, endY);
+        context.lineTo(item.x - eachSpacing / 2, endY);
+        context.moveTo(item.x - eachSpacing / 2, item.y);
+      }
+      context.closePath();
+      context.fill();
+
+
+      //画连线
+      if (areaOption.addLine) {
+        context.beginPath();
+        context.setStrokeStyle(eachSeries.color);
+        context.setLineWidth(areaOption.width * opts.pixelRatio);
+        if (points.length === 1) {
+          context.moveTo(points[0].x, points[0].y);
+          context.arc(points[0].x, points[0].y, 1, 0, 2 * Math.PI);
+        } else {
+          context.moveTo(points[0].x, points[0].y);
+          if (areaOption.type === 'curve') {
+            points.forEach(function (item, index) {
+              if (index > 0) {
+                var ctrlPoint = createCurveControlPoints(points, index - 1);
+                context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y, item.x,
+                item.y);
+              }
+            });
+          } else {
+            points.forEach(function (item, index) {
+              if (index > 0) {
+                context.lineTo(item.x, item.y);
+              }
+            });
+          }
+          context.moveTo(points[0].x, points[0].y);
+        }
+        context.closePath();
+        context.stroke();
+      }};for (var i = 0; i < splitPointList.length; i++) {_loop3(i);
+    }
+
+    //画点
+    if (opts.dataPointShape !== false) {
+      var shape = config.dataPointShape[seriesIndex % config.dataPointShape.length];
+      drawPointShape(points, eachSeries.color, shape, context, opts);
+    }
+
+  });
+  if (opts.dataLabel !== false && process === 1) {
+    series.forEach(function (eachSeries, seriesIndex) {
+      var data = eachSeries.data;
+      var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+      drawPointText(points, eachSeries, config, context);
+    });
+  }
+
+  context.restore();
+
+  return {
+    xAxisPoints: xAxisPoints,
+    calPoints: calPoints,
+    eachSpacing: eachSpacing };
+
+}
+
+function drawLineDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var lineOption = opts.extra.line || {
+    type: 'straight',
+    width: 2 };
+
+  lineOption.type = lineOption.type ? lineOption.type : 'straight';
+  lineOption.width = lineOption.width ? lineOption.width : 2;
+  var _calYAxisData3 = calYAxisData(series, opts, config),
+  ranges = _calYAxisData3.ranges;
+
+  var _getXAxisPoints3 = getXAxisPoints(opts.categories, opts, config),
+  xAxisPoints = _getXAxisPoints3.xAxisPoints,
+  eachSpacing = _getXAxisPoints3.eachSpacing;
+
+  var minRange = ranges.pop();
+  var maxRange = ranges.shift();
+  var calPoints = [];
+
+  context.save();
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+
+  if (opts.tooltip && opts.tooltip.textList && opts.tooltip.textList.length && process === 1) {
+    drawToolTipSplitLine(opts.tooltip.offset.x, opts, config, context);
+  }
+
+  series.forEach(function (eachSeries, seriesIndex) {
+    var data = eachSeries.data;
+    var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+    calPoints.push(points);
+    var splitPointList = splitPoints(points);
+
+    splitPointList.forEach(function (points, index) {
+      context.beginPath();
+      context.setStrokeStyle(eachSeries.color);
+      context.setLineWidth(lineOption.width * opts.pixelRatio);
+      if (points.length === 1) {
+        context.moveTo(points[0].x, points[0].y);
+        context.arc(points[0].x, points[0].y, 1, 0, 2 * Math.PI);
+      } else {
+        context.moveTo(points[0].x, points[0].y);
+        if (lineOption.type === 'curve') {
+          points.forEach(function (item, index) {
+            if (index > 0) {
+              var ctrlPoint = createCurveControlPoints(points, index - 1);
+              context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y, item.x, item.
+              y);
+            }
+          });
+        } else {
+          points.forEach(function (item, index) {
+            if (index > 0) {
+              context.lineTo(item.x, item.y);
+            }
+          });
+        }
+        context.moveTo(points[0].x, points[0].y);
+      }
+      context.closePath();
+      context.stroke();
+    });
+
+    if (opts.dataPointShape !== false) {
+      var shape = config.dataPointShape[seriesIndex % config.dataPointShape.length];
+      drawPointShape(points, eachSeries.color, shape, context, opts);
+    }
+  });
+  if (opts.dataLabel !== false && process === 1) {
+    series.forEach(function (eachSeries, seriesIndex) {
+      var data = eachSeries.data;
+      var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+      drawPointText(points, eachSeries, config, context);
+    });
+  }
+
+  context.restore();
+
+  return {
+    xAxisPoints: xAxisPoints,
+    calPoints: calPoints,
+    eachSpacing: eachSpacing };
+
+}
+
+function drawMixDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+
+  var _calYAxisData6 = calYAxisData(series, opts, config),
+  ranges = _calYAxisData6.ranges;
+
+  var _getXAxisPoints6 = getXAxisPoints(opts.categories, opts, config),
+  xAxisPoints = _getXAxisPoints6.xAxisPoints,
+  eachSpacing = _getXAxisPoints6.eachSpacing;
+
+  var minRange = ranges.pop();
+  var maxRange = ranges.shift();
+  var endY = opts.height - config.padding - config.xAxisHeight - config.legendHeight;
+  var calPoints = [];
+
+  var columnIndex = 0;
+  var columnLength = 0;
+  series.forEach(function (eachSeries, seriesIndex) {
+    if (eachSeries.type == 'column') {
+      columnLength += 1;
+    }
+  });
+  context.save();
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+
+  if (opts.tooltip && opts.tooltip.textList && opts.tooltip.textList.length && process === 1) {
+    drawToolTipSplitLine(opts.tooltip.offset.x, opts, config, context);
+  }
+
+  series.forEach(function (eachSeries, seriesIndex) {
+    var data = eachSeries.data;
+    var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+    calPoints.push(points);
+
+    // 绘制柱状数据图
+    if (eachSeries.type == 'column') {
+      points = fixColumeData(points, eachSpacing, columnLength, columnIndex, config, opts);
+      points.forEach(function (item, index) {
+        if (item !== null) {
+          context.beginPath();
+          context.setFillStyle(item.color || eachSeries.color);
+          var startX = item.x - item.width / 2 + 1;
+          var height = opts.height - item.y - config.padding - config.xAxisHeight - config.legendHeight;
+          context.moveTo(startX, item.y);
+          context.rect(startX, item.y, item.width - 2, height);
+          context.closePath();
+          context.fill();
+        }
+      });
+      columnIndex += 1;
+    }
+
+    //绘制区域图数据
+
+    if (eachSeries.type == 'area') {
+      var _splitPointList = splitPoints(points);var _loop4 = function _loop4(
+      i) {
+        var points = _splitPointList[i];
+        // 绘制区域数据
+        context.beginPath();
+        context.setStrokeStyle(eachSeries.color);
+        context.setFillStyle(eachSeries.color);
+        context.setGlobalAlpha(0.2);
+        context.setLineWidth(2 * opts.pixelRatio);
+        if (points.length > 1) {
+          firstPoint = points[0];
+          var lastPoint = points[points.length - 1];
+          context.moveTo(firstPoint.x, firstPoint.y);
+          if (eachSeries.style === 'curve') {
+            points.forEach(function (item, index) {
+              if (index > 0) {
+                var ctrlPoint = createCurveControlPoints(points, index - 1);
+                context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y, item.x,
+                item.y);
+              }
+            });
+          } else {
+            points.forEach(function (item, index) {
+              if (index > 0) {
+                context.lineTo(item.x, item.y);
+              }
+            });
+          }
+          context.lineTo(lastPoint.x, endY);
+          context.lineTo(firstPoint.x, endY);
+          context.lineTo(firstPoint.x, firstPoint.y);
+        } else {
+          var item = points[0];
+          context.moveTo(item.x - eachSpacing / 2, item.y);
+          context.lineTo(item.x + eachSpacing / 2, item.y);
+          context.lineTo(item.x + eachSpacing / 2, endY);
+          context.lineTo(item.x - eachSpacing / 2, endY);
+          context.moveTo(item.x - eachSpacing / 2, item.y);
+        }
+        context.closePath();
+        context.fill();
+        context.setGlobalAlpha(1);};for (var i = 0; i < _splitPointList.length; i++) {var firstPoint;_loop4(i);
+      }
+    }
+
+    // 绘制折线数据图
+    if (eachSeries.type == 'line') {
+      var splitPointList = splitPoints(points);
+      splitPointList.forEach(function (points, index) {
+        context.beginPath();
+        context.setStrokeStyle(eachSeries.color);
+        context.setLineWidth(2 * opts.pixelRatio);
+        if (points.length === 1) {
+          context.moveTo(points[0].x, points[0].y);
+          context.arc(points[0].x, points[0].y, 1, 0, 2 * Math.PI);
+        } else {
+          context.moveTo(points[0].x, points[0].y);
+          if (eachSeries.style == 'curve') {
+            points.forEach(function (item, index) {
+              if (index > 0) {
+                var ctrlPoint = createCurveControlPoints(points, index - 1);
+                context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y, item.x,
+                item.y);
+              }
+            });
+          } else {
+            points.forEach(function (item, index) {
+              if (index > 0) {
+                context.lineTo(item.x, item.y);
+              }
+            });
+          }
+          context.moveTo(points[0].x, points[0].y);
+        }
+        context.closePath();
+        context.stroke();
+      });
+    }
+
+    // 绘制点数据图
+    if (eachSeries.type == 'point') {
+      points.forEach(function (pointsa, index) {
+        if (pointsa) {
+          context.beginPath();
+          context.setFillStyle(eachSeries.color);
+          context.setStrokeStyle('#FFFFFF');
+          context.setLineWidth(1 * opts.pixelRatio);
+          context.moveTo(pointsa.x + 3.5 * opts.pixelRatio, pointsa.y);
+          context.arc(pointsa.x, pointsa.y, 4 * opts.pixelRatio, 0, 2 * Math.PI);
+          context.closePath();
+          context.fill();
+          context.stroke();
+        }
+      });
+    }
+
+    if (eachSeries.addPoint == true && eachSeries.type !== 'column') {
+      var shape = config.dataPointShape[seriesIndex % config.dataPointShape.length];
+      drawPointShape(points, eachSeries.color, shape, context, opts);
+    }
+  });
+  if (opts.dataLabel !== false && process === 1) {
+    var columnIndex = 0;
+    series.forEach(function (eachSeries, seriesIndex) {
+      var data = eachSeries.data;
+      var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+      if (eachSeries.type !== 'column') {
+        drawPointText(points, eachSeries, config, context);
+      } else {
+        points = fixColumeData(points, eachSpacing, columnLength, columnIndex, config, opts);
+        drawPointText(points, eachSeries, config, context);
+        columnIndex += 1;
+      }
+
+    });
+  }
+
+  context.restore();
+
+  return {
+    xAxisPoints: xAxisPoints,
+    calPoints: calPoints,
+    eachSpacing: eachSpacing };
+
+}
+
+function drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints) {
+  var toolTipOption = opts.extra.tooltip || {};
+  if (toolTipOption.horizentalLine && opts.tooltip && process === 1 && (opts.type == 'line' || opts.type == 'area' ||
+  opts.type == 'column' || opts.type == 'candle' || opts.type == 'mix')) {
+    drawToolTipHorizentalLine(opts, config, context, eachSpacing, xAxisPoints);
+  }
+  context.save();
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+  if (opts.tooltip && opts.tooltip.textList && opts.tooltip.textList.length && process === 1) {
+    drawToolTip(opts.tooltip.textList, opts.tooltip.offset, opts, config, context, eachSpacing, xAxisPoints);
+  }
+  context.restore();
+
+}
+
+function drawXAxis(categories, opts, config, context) {
+
+  var _getXAxisPoints4 = getXAxisPoints(categories, opts, config),
+  xAxisPoints = _getXAxisPoints4.xAxisPoints,
+  startX = _getXAxisPoints4.startX,
+  endX = _getXAxisPoints4.endX,
+  eachSpacing = _getXAxisPoints4.eachSpacing;
+
+  var startY = opts.height - config.padding - config.xAxisHeight - config.legendHeight;
+  var endY = config.padding;
+
+
+  //绘制滚动条
+  if (opts.enableScroll && opts.xAxis.scrollShow) {
+    var scrollY = opts.height - config.padding - config.legendHeight + 6 * opts.pixelRatio;
+    var scrollScreenWidth = endX - startX;
+    var scrollTotalWidth = eachSpacing * (xAxisPoints.length - 1);
+    var scrollWidth = scrollScreenWidth * scrollScreenWidth / scrollTotalWidth;
+    var scrollLeft = 0;
+    if (opts._scrollDistance_) {
+      scrollLeft = -opts._scrollDistance_ * scrollScreenWidth / scrollTotalWidth;
+    }
+    context.beginPath();
+    context.setLineCap('round');
+    context.setLineWidth(6 * opts.pixelRatio);
+    context.setStrokeStyle(opts.xAxis.scrollBackgroundColor || "#EFEBEF");
+    context.moveTo(startX, scrollY);
+    context.lineTo(endX, scrollY);
+    context.stroke();
+    context.closePath();
+    context.beginPath();
+    context.setLineCap('round');
+    context.setLineWidth(6 * opts.pixelRatio);
+    context.setStrokeStyle(opts.xAxis.scrollColor || "#A6A6A6");
+    context.moveTo(startX + scrollLeft, scrollY);
+    context.lineTo(startX + scrollLeft + scrollWidth, scrollY);
+    context.stroke();
+    context.setLineCap('butt');
+    context.closePath();
+  }
+
+  context.save();
+
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+
+  context.beginPath();
+  context.setStrokeStyle(opts.xAxis.gridColor || "#cccccc");
+  context.setLineCap('butt');
+  context.setLineWidth(1 * opts.pixelRatio);
+  if (opts.xAxis.gridType == 'dash') {
+    context.setLineDash([opts.xAxis.dashLength, opts.xAxis.dashLength]);
+  }
+  if (opts.xAxis.disableGrid !== true) {
+    if (opts.xAxis.type === 'calibration') {
+      xAxisPoints.forEach(function (item, index) {
+        if (index > 0) {
+          context.moveTo(item - eachSpacing / 2, startY);
+          context.lineTo(item - eachSpacing / 2, startY + 4 * opts.pixelRatio);
+        }
+      });
+    } else {
+      opts.xAxis.gridEval = opts.xAxis.gridEval || 1;
+      xAxisPoints.forEach(function (item, index) {
+        if (index % opts.xAxis.gridEval == 0) {
+          context.moveTo(item, startY);
+          context.lineTo(item, endY);
+        }
+      });
+    }
+  }
+  context.closePath();
+  context.stroke();
+  context.setLineDash([]);
+
+  //不绘制X轴
+  if (opts.xAxis.disabled !== true) {
+    // 对X轴列表做抽稀处理
+    var validWidth = opts.width - 2 * config.padding - config.yAxisWidth - config.yAxisTitleWidth;
+    //默认全部显示X轴标签
+    var maxXAxisListLength = categories.length;
+    //如果设置了X轴单屏数量
+    if (opts.xAxis.labelCount) {
+      //如果设置X轴密度
+      if (opts.xAxis.itemCount) {
+        maxXAxisListLength = Math.ceil(categories.length / opts.xAxis.itemCount * opts.xAxis.labelCount);
+      } else {
+        maxXAxisListLength = opts.xAxis.labelCount;
+      }
+      maxXAxisListLength -= 1;
+    }
+
+    var ratio = Math.ceil(categories.length / maxXAxisListLength);
+
+    var newCategories = [];
+    var cgLength = categories.length;
+    for (var i = 0; i < cgLength; i++) {
+      if (i % ratio !== 0) {
+        newCategories.push("");
+      } else {
+        newCategories.push(categories[i]);
+      }
+    }
+    newCategories[cgLength - 1] = categories[cgLength - 1];
+    /*
+                                                            categories = categories.map(function (item, index) {
+                                                            	return index % ratio !== 0 ? '' : item;
+                                                            });*/
+
+    var xAxisFontSize = opts.xAxis.fontSize || config.fontSize;
+    if (config._xAxisTextAngle_ === 0) {
+      newCategories.forEach(function (item, index) {
+        var offset = eachSpacing / 2 - measureText(item, xAxisFontSize) / 2;
+        context.beginPath();
+        context.setFontSize(xAxisFontSize);
+        context.setFillStyle(opts.xAxis.fontColor || '#666666');
+        context.fillText(item, xAxisPoints[index] + offset, startY + xAxisFontSize + 5);
+        context.closePath();
+        context.stroke();
+      });
+
+    } else {
+      newCategories.forEach(function (item, index) {
+        context.save();
+        context.beginPath();
+        context.setFontSize(xAxisFontSize);
+        context.setFillStyle(opts.xAxis.fontColor || '#666666');
+        var textWidth = measureText(item);
+        var offset = eachSpacing / 2 - textWidth;
+
+        var _calRotateTranslate = calRotateTranslate(xAxisPoints[index] + eachSpacing / 2, startY + xAxisFontSize / 2 + 5, opts.height),
+        transX = _calRotateTranslate.transX,
+        transY = _calRotateTranslate.transY;
+
+        context.rotate(-1 * config._xAxisTextAngle_);
+        context.translate(transX, transY);
+        context.fillText(item, xAxisPoints[index] + offset, startY + xAxisFontSize + 5);
+        context.closePath();
+        context.stroke();
+        context.restore();
+      });
+    }
+  }
+  context.restore();
+
+}
+
+function drawYAxisGrid(categories, opts, config, context) {
+  if (opts.yAxis.disableGrid === true) {
+    return;
+  }
+  var spacingValid = opts.height - 2 * config.padding - config.xAxisHeight - config.legendHeight;
+  var eachSpacing = Math.floor(spacingValid / config.yAxisSplit);
+  var yAxisTotalWidth = config.yAxisWidth + config.yAxisTitleWidth;
+  var startX = config.padding + yAxisTotalWidth;
+  var _getXAxisPoints4 = getXAxisPoints(categories, opts, config),
+  xAxisPoints = _getXAxisPoints4.xAxisPoints,
+  xAxiseachSpacing = _getXAxisPoints4.eachSpacing;
+  var TotalWidth = xAxiseachSpacing * (xAxisPoints.length - 1);
+  var endX = startX + TotalWidth;
+
+  var points = [];
+  for (var i = 0; i < config.yAxisSplit; i++) {
+    points.push(config.padding + eachSpacing * i);
+  }
+  points.push(config.padding + eachSpacing * config.yAxisSplit + 2);
+
+  context.save();
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+
+  if (opts.yAxis.gridType == 'dash') {
+    context.setLineDash([opts.yAxis.dashLength, opts.yAxis.dashLength]);
+  }
+  context.beginPath();
+  context.setStrokeStyle(opts.yAxis.gridColor || "#cccccc");
+
+  context.setLineWidth(1 * opts.pixelRatio);
+  points.forEach(function (item, index) {
+    context.moveTo(startX, item);
+    context.lineTo(endX, item);
+  });
+  context.closePath();
+  context.stroke();
+  context.setLineDash([]);
+
+  context.restore();
+}
+
+function drawYAxis(series, opts, config, context) {
+  if (opts.yAxis.disabled === true) {
+    return;
+  }
+
+  var _calYAxisData4 = calYAxisData(series, opts, config),
+  rangesFormat = _calYAxisData4.rangesFormat;
+
+  var yAxisTotalWidth = config.yAxisWidth + config.yAxisTitleWidth;
+
+  var spacingValid = opts.height - 2 * config.padding - config.xAxisHeight - config.legendHeight;
+  var eachSpacing = Math.floor(spacingValid / config.yAxisSplit);
+  var startX = config.padding + yAxisTotalWidth;
+  var endX = opts.width - config.padding;
+  var endY = opts.height - config.padding - config.xAxisHeight - config.legendHeight + config.xAxisTextPadding;
+
+  // set YAxis background
+  context.beginPath();
+  context.setFillStyle(opts.background || '#ffffff');
+  if (opts._scrollDistance_ < 0) {
+    context.fillRect(0, 0, startX, endY + config.xAxisHeight);
+  }
+  context.fillRect(endX, 0, opts.width, endY + config.xAxisHeight);
+  context.closePath();
+  context.stroke();
+
+  var points = [];
+  for (var i = 0; i <= config.yAxisSplit; i++) {
+    points.push(config.padding + eachSpacing * i);
+  }
+
+  var yAxisFontSize = opts.yAxis.fontSize || config.fontSize;
+  rangesFormat.forEach(function (item, index) {
+    var pos = points[index] ? points[index] : endY;
+    context.beginPath();
+    context.setFontSize(yAxisFontSize);
+    context.setFillStyle(opts.yAxis.fontColor || '#666666');
+    context.fillText(item, config.padding + config.yAxisTitleWidth, pos + yAxisFontSize / 2);
+    context.closePath();
+    context.stroke();
+  });
+
+
+  if (opts.yAxis.title) {
+    drawYAxisTitle(opts.yAxis.title, opts, config, context);
+  }
+}
+
+function drawLegend(series, opts, config, context) {
+  if (opts.legend === false) {
+    return;
+  }
+  // each legend shape width 15px
+  // the spacing between shape and text in each legend is the `padding`
+  // each legend spacing is the `padding`
+  // legend margin top `config.padding`
+
+  var _calLegendData = calLegendData(series, opts, config),
+  legendList = _calLegendData.legendList;
+
+  var padding = 5 * opts.pixelRatio;
+  var marginTop = 10 * opts.pixelRatio;
+  var shapeWidth = 15 * opts.pixelRatio;
+  legendList.forEach(function (itemList, listIndex) {
+    var width = 0;
+    for (var i = 0; i < itemList.length; i++) {
+      var item = itemList[i];
+      item.name = item.name || 'undefined';
+      width += 3 * padding + measureText(item.name) + shapeWidth;
+    }
+    var startX = (opts.width - width) / 2 + padding;
+    var startY = opts.height - config.padding - config.legendHeight + listIndex * (config.fontSize + marginTop) +
+    padding + marginTop;
+
+    context.setFontSize(config.fontSize);
+    for (var _i9 = 0; _i9 < itemList.length; _i9++) {
+      var _item6 = itemList[_i9];
+      switch (opts.type) {
+        case 'line':
+          context.beginPath();
+          context.setLineWidth(1 * opts.pixelRatio);
+          context.setStrokeStyle(_item6.color);
+          context.setFillStyle(_item6.color);
+          context.moveTo(startX + 7.5 * opts.pixelRatio, startY + 5 * opts.pixelRatio);
+          context.arc(startX + 7.5 * opts.pixelRatio, startY + 5 * opts.pixelRatio, 6 * opts.pixelRatio, 0, 2 * Math.PI);
+          context.closePath();
+          context.fill();
+          context.stroke();
+          break;
+        case 'pie':
+          context.beginPath();
+          context.setLineWidth(1 * opts.pixelRatio);
+          context.setStrokeStyle(_item6.color);
+          context.setFillStyle(_item6.color);
+          context.moveTo(startX + 7.5 * opts.pixelRatio, startY + 5 * opts.pixelRatio);
+          context.arc(startX + 7.5 * opts.pixelRatio, startY + 5 * opts.pixelRatio, 6 * opts.pixelRatio, 0, 2 * Math.PI);
+          context.closePath();
+          context.fill();
+          context.stroke();
+          break;
+        case 'ring':
+        case 'rose':
+          context.beginPath();
+          context.setLineWidth(1 * opts.pixelRatio);
+          context.setStrokeStyle(_item6.color);
+          context.setFillStyle(_item6.color);
+          context.moveTo(startX + 7.5 * opts.pixelRatio, startY + 5 * opts.pixelRatio);
+          context.arc(startX + 7.5 * opts.pixelRatio, startY + 5 * opts.pixelRatio, 6 * opts.pixelRatio, 0, 2 * Math.PI);
+          context.closePath();
+          context.fill();
+          context.stroke();
+          break;
+        //圆弧进度图不显示图例
+        case 'gauge':
+          break;
+        case 'arcbar':
+          break;
+        default:
+          context.beginPath();
+          context.setLineWidth(1 * opts.pixelRatio);
+          context.setStrokeStyle(_item6.color);
+          context.setFillStyle(_item6.color);
+          context.moveTo(startX, startY);
+          context.fillRect(startX, startY, 15 * opts.pixelRatio, 10 * opts.pixelRatio);
+          context.closePath();
+          context.fill();
+          context.stroke();}
+
+      startX += padding + shapeWidth;
+      context.beginPath();
+      context.setFontSize(config.fontSize);
+      context.setFillStyle(opts.extra.legendTextColor || '#333333');
+      context.fillText(_item6.name, startX, startY + 6 * opts.pixelRatio + 3 * opts.pixelRatio);
+      context.closePath();
+      context.stroke();
+      startX += measureText(_item6.name) + 2 * padding;
+    }
+  });
+}
+
+function drawPieDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+
+  var pieOption = opts.extra.pie || {};
+  var centerPosition = {
+    x: opts.width / 2,
+    y: (opts.height - config.legendHeight) / 2 };
+
+  var radius = Math.min(centerPosition.x - config.pieChartLinePadding - config.pieChartTextPadding - config._pieTextMaxLength_,
+  centerPosition.y - config.pieChartLinePadding - config.pieChartTextPadding);
+  if (opts.dataLabel) {
+    radius -= 10;
+  } else {
+    radius -= 2 * config.padding;
+  }
+  series = getPieDataPoints(series, radius, process);
+
+  var activeRadius = config.pieChartLinePadding / 2;
+
+  series = series.map(function (eachSeries) {
+    eachSeries._start_ += (pieOption.offsetAngle || 0) * Math.PI / 180;
+    return eachSeries;
+  });
+  series.forEach(function (eachSeries, seriesIndex) {
+    if (opts.tooltip) {
+      if (opts.tooltip.index == seriesIndex) {
+        context.beginPath();
+        context.setFillStyle(hexToRgb(eachSeries.color, opts.extra.pie.activeOpacity || 0.5));
+        context.moveTo(centerPosition.x, centerPosition.y);
+        context.arc(centerPosition.x, centerPosition.y, eachSeries._radius_ + activeRadius, eachSeries._start_, eachSeries._start_ + 2 *
+        eachSeries._proportion_ * Math.PI);
+        context.closePath();
+        context.fill();
+      }
+    }
+    context.beginPath();
+    context.setLineWidth(2 * opts.pixelRatio);
+    context.lineJoin = "round";
+    context.setStrokeStyle('#ffffff');
+    context.setFillStyle(eachSeries.color);
+    context.moveTo(centerPosition.x, centerPosition.y);
+    context.arc(centerPosition.x, centerPosition.y, eachSeries._radius_, eachSeries._start_, eachSeries._start_ + 2 * eachSeries._proportion_ *
+    Math.PI);
+    context.closePath();
+    context.fill();
+    if (opts.disablePieStroke !== true) {
+      context.stroke();
+    }
+  });
+
+  if (opts.type === 'ring') {
+    var innerPieWidth = radius * 0.6;
+    if (typeof opts.extra.pie.ringWidth === 'number' && opts.extra.pie.ringWidth > 0) {
+      innerPieWidth = Math.max(0, radius - opts.extra.pie.ringWidth);
+    }
+    context.beginPath();
+    context.setFillStyle(opts.background || '#ffffff');
+    context.moveTo(centerPosition.x, centerPosition.y);
+    context.arc(centerPosition.x, centerPosition.y, innerPieWidth, 0, 2 * Math.PI);
+    context.closePath();
+    context.fill();
+  }
+
+  if (opts.dataLabel !== false && process === 1) {
+    var valid = false;
+    for (var i = 0, len = series.length; i < len; i++) {
+      if (series[i].data > 0) {
+        valid = true;
+        break;
+      }
+    }
+
+    if (valid) {
+      drawPieText(series, opts, config, context, radius, centerPosition);
+    }
+  }
+
+  if (process === 1 && opts.type === 'ring') {
+    drawRingTitle(opts, config, context);
+  }
+
+  return {
+    center: centerPosition,
+    radius: radius,
+    series: series };
+
+}
+
+function drawRoseDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+
+  var roseOption = opts.extra.rose || {};
+  roseOption.type = roseOption.type || 'area';
+  var centerPosition = {
+    x: opts.width / 2,
+    y: (opts.height - config.legendHeight) / 2 };
+
+  var radius = Math.min(centerPosition.x - config.pieChartLinePadding - config.pieChartTextPadding - config._pieTextMaxLength_,
+  centerPosition.y - config.pieChartLinePadding - config.pieChartTextPadding);
+  if (opts.dataLabel) {
+    radius -= 10;
+  } else {
+    radius -= 2 * config.padding;
+  }
+  var minRadius = roseOption.minRadius || radius * 0.5;
+
+  series = getRoseDataPoints(series, roseOption.type, minRadius, radius, process);
+
+  var activeRadius = config.pieChartLinePadding / 2;
+
+
+  series = series.map(function (eachSeries) {
+    eachSeries._start_ += (roseOption.offsetAngle || 0) * Math.PI / 180;
+    return eachSeries;
+  });
+
+  series.forEach(function (eachSeries, seriesIndex) {
+    if (opts.tooltip) {
+      if (opts.tooltip.index == seriesIndex) {
+        context.beginPath();
+        context.setFillStyle(hexToRgb(eachSeries.color, roseOption.activeOpacity || 0.5));
+        context.moveTo(centerPosition.x, centerPosition.y);
+        context.arc(centerPosition.x, centerPosition.y, activeRadius + eachSeries._radius_, eachSeries._start_, eachSeries._start_ + 2 * eachSeries._proportion_ * Math.PI);
+        context.closePath();
+        context.fill();
+      }
+    }
+    context.beginPath();
+    context.setLineWidth(2 * opts.pixelRatio);
+    context.lineJoin = "round";
+    context.setStrokeStyle('#ffffff');
+    context.setFillStyle(eachSeries.color);
+    context.moveTo(centerPosition.x, centerPosition.y);
+    context.arc(centerPosition.x, centerPosition.y, eachSeries._radius_, eachSeries._start_, eachSeries._start_ + 2 * eachSeries._proportion_ * Math.PI);
+    context.closePath();
+    context.fill();
+    if (opts.disablePieStroke !== true) {
+      context.stroke();
+    }
+  });
+
+
+  if (opts.dataLabel !== false && process === 1) {
+    // fix https://github.com/xiaolin3303/wx-charts/issues/132
+    var valid = false;
+    for (var i = 0, len = series.length; i < len; i++) {
+      if (series[i].data > 0) {
+        valid = true;
+        break;
+      }
+    }
+
+    if (valid) {
+      drawPieText(series, opts, config, context, radius, centerPosition);
+    }
+  }
+
+  return {
+    center: centerPosition,
+    radius: radius,
+    series: series };
+
+}
+
+function drawArcbarDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+
+  var arcbarOption = opts.extra.arcbar || {};
+  arcbarOption.startAngle = arcbarOption.startAngle ? arcbarOption.startAngle : 0.75;
+  arcbarOption.endAngle = arcbarOption.endAngle ? arcbarOption.endAngle : 0.25;
+  arcbarOption.type = arcbarOption.type ? arcbarOption.type : 'default';
+
+  series = getArcbarDataPoints(series, arcbarOption, process);
+  var centerPosition = {
+    x: opts.width / 2,
+    y: opts.height / 2 };
+
+  var radius = Math.min(centerPosition.x, centerPosition.y);
+
+  if (typeof arcbarOption.width === 'number' && arcbarOption.width > 0) {
+    arcbarOption.width = arcbarOption.width;
+  } else {
+    arcbarOption.width = 12 * opts.pixelRatio;
+  }
+  radius -= config.padding + arcbarOption.width / 2;
+
+  //背景颜色
+  context.setLineWidth(arcbarOption.width); // 设置圆环的宽度
+  context.setStrokeStyle(arcbarOption.backgroundColor || '#E9E9E9'); // 设置圆环的颜色
+  context.setLineCap('round'); // 设置圆环端点的形状
+  context.beginPath(); //开始一个新的路径
+  if (arcbarOption.type == 'default') {
+    context.arc(centerPosition.x, centerPosition.y, radius, arcbarOption.startAngle * Math.PI, arcbarOption.endAngle *
+    Math.PI, false);
+  } else {
+    context.arc(centerPosition.x, centerPosition.y, radius, 0, 2 * Math.PI, false);
+  }
+
+  context.stroke(); //对当前路径进行描边
+
+  for (var i = 0; i < series.length; i++) {
+    var eachSeries = series[i];
+    context.setLineWidth(arcbarOption.width);
+    context.setStrokeStyle(eachSeries.color);
+    context.setLineCap('round');
+    context.beginPath();
+    context.arc(centerPosition.x, centerPosition.y, radius, arcbarOption.startAngle * Math.PI, eachSeries._proportion_ *
+    Math.PI, false);
+    context.stroke();
+  }
+  drawRingTitle(opts, config, context);
+  return {
+    center: centerPosition,
+    radius: radius,
+    series: series };
+
+}
+
+function drawGaugeDataPoints(categories, series, opts, config, context) {
+  var process = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;
+  var gaugeOption = opts.extra.gauge || {};
+  gaugeOption.startAngle = gaugeOption.startAngle ? gaugeOption.startAngle : 0.75;
+  if (gaugeOption.oldAngle == undefined) {
+    gaugeOption.oldAngle = gaugeOption.startAngle;
+  }
+  if (gaugeOption.oldData == undefined) {
+    gaugeOption.oldData = 0;
+  }
+  gaugeOption.endAngle = gaugeOption.endAngle ? gaugeOption.endAngle : 0.25;
+  categories = getGaugeAxisPoints(categories, gaugeOption.startAngle, gaugeOption.endAngle);
+  var centerPosition = {
+    x: opts.width / 2,
+    y: opts.height / 2 };
+
+  var radius = Math.min(centerPosition.x, centerPosition.y);
+  if (typeof gaugeOption.width === 'number' && gaugeOption.width > 0) {
+    gaugeOption.width = gaugeOption.width;
+  } else {
+    gaugeOption.width = 15 * opts.pixelRatio;
+  }
+  radius -= config.padding + gaugeOption.width / 2;
+  var innerRadius = radius - gaugeOption.width;
+
+
+
+  //画背景
+  context.setLineWidth(gaugeOption.width);
+  context.setLineCap('butt');
+  for (var i = 0; i < categories.length; i++) {
+    var eachCategories = categories[i];
+    context.beginPath();
+    context.setStrokeStyle(eachCategories.color);
+    context.arc(centerPosition.x, centerPosition.y, radius, eachCategories._startAngle_ * Math.PI, eachCategories._endAngle_ *
+    Math.PI, false);
+    context.stroke();
+  }
+  context.save();
+
+  //画刻度线
+  var totalAngle = gaugeOption.startAngle - gaugeOption.endAngle + 1;
+  gaugeOption.splitLine.fixRadius = gaugeOption.splitLine.fixRadius ? gaugeOption.splitLine.fixRadius : 0;
+  gaugeOption.splitLine.splitNumber = gaugeOption.splitLine.splitNumber ? gaugeOption.splitLine.splitNumber : 10;
+  gaugeOption.splitLine.width = gaugeOption.splitLine.width ? gaugeOption.splitLine.width : 15 * opts.pixelRatio;
+  gaugeOption.splitLine.color = gaugeOption.splitLine.color ? gaugeOption.splitLine.color : '#FFFFFF';
+  gaugeOption.splitLine.childNumber = gaugeOption.splitLine.childNumber ? gaugeOption.splitLine.childNumber : 5;
+  gaugeOption.splitLine.childWidth = gaugeOption.splitLine.childWidth ? gaugeOption.splitLine.childWidth : 5 * opts.pixelRatio;
+
+  var splitAngle = totalAngle / gaugeOption.splitLine.splitNumber;
+  var childAngle = totalAngle / gaugeOption.splitLine.splitNumber / gaugeOption.splitLine.childNumber;
+  var startX = -radius - gaugeOption.width * 0.5 - gaugeOption.splitLine.fixRadius;
+  var endX = -radius - gaugeOption.width * 0.5 - gaugeOption.splitLine.fixRadius + gaugeOption.splitLine.width;
+  var childendX = -radius - gaugeOption.width * 0.5 - gaugeOption.splitLine.fixRadius + gaugeOption.splitLine.childWidth;
+
+  context.translate(centerPosition.x, centerPosition.y);
+  context.rotate((gaugeOption.startAngle - 1) * Math.PI);
+
+  for (var _i10 = 0; _i10 < gaugeOption.splitLine.splitNumber + 1; _i10++) {
+    context.beginPath();
+    context.setStrokeStyle(gaugeOption.splitLine.color);
+    context.setLineWidth(2 * opts.pixelRatio);
+    context.moveTo(startX, 0);
+    context.lineTo(endX, 0);
+    context.stroke();
+    context.rotate(splitAngle * Math.PI);
+  }
+  context.restore();
+
+  context.save();
+  context.translate(centerPosition.x, centerPosition.y);
+  context.rotate((gaugeOption.startAngle - 1) * Math.PI);
+
+  for (var _i11 = 0; _i11 < gaugeOption.splitLine.splitNumber * gaugeOption.splitLine.childNumber + 1; _i11++) {
+    context.beginPath();
+    context.setStrokeStyle(gaugeOption.splitLine.color);
+    context.setLineWidth(1 * opts.pixelRatio);
+    context.moveTo(startX, 0);
+    context.lineTo(childendX, 0);
+    context.stroke();
+    context.rotate(childAngle * Math.PI);
+  }
+  context.restore();
+
+  //画指针
+  gaugeOption.pointer.width = gaugeOption.pointer.width ? gaugeOption.pointer.width : 15 * opts.pixelRatio;
+  if (gaugeOption.pointer.color == undefined || gaugeOption.pointer.color == 'auto') {
+    gaugeOption.pointer.color == 'auto';
+  } else {
+    gaugeOption.pointer.color == gaugeOption.pointer.color;
+  }
+  series = getGaugeDataPoints(series, categories, gaugeOption, process);
+
+  for (var _i12 = 0; _i12 < series.length; _i12++) {
+    var eachSeries = series[_i12];
+    context.save();
+    context.translate(centerPosition.x, centerPosition.y);
+    context.rotate((eachSeries._proportion_ - 1) * Math.PI);
+    context.beginPath();
+    context.setFillStyle(eachSeries.color);
+    context.moveTo(gaugeOption.pointer.width, 0);
+    context.lineTo(0, -gaugeOption.pointer.width / 2);
+    context.lineTo(-innerRadius, 0);
+    context.lineTo(0, gaugeOption.pointer.width / 2);
+    context.lineTo(gaugeOption.pointer.width, 0);
+    context.closePath();
+    context.fill();
+    context.beginPath();
+    context.setFillStyle('#FFFFFF');
+    context.arc(0, 0, gaugeOption.pointer.width / 6, 0, 2 * Math.PI, false);
+    context.fill();
+    context.restore();
+  }
+
+  if (opts.dataLabel !== false) {
+    drawGaugeLabel(gaugeOption, radius, centerPosition, opts, config, context);
+  }
+
+  drawRingTitle(opts, config, context);
+
+  if (process === 1 && opts.type === 'gauge') {
+    gaugeOption.oldAngle = series[0]._proportion_;
+    gaugeOption.oldData = series[0].data;
+  }
+  return {
+    center: centerPosition,
+    radius: radius,
+    innerRadius: innerRadius,
+    categories: categories,
+    totalAngle: totalAngle };
+
+}
+
+function drawRadarDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+
+  var radarOption = opts.extra.radar || {};
+  var coordinateAngle = getRadarCoordinateSeries(opts.categories.length);
+  var centerPosition = {
+    x: opts.width / 2,
+    y: (opts.height - config.legendHeight) / 2 };
+
+
+  var radius = Math.min(centerPosition.x - (getMaxTextListLength(opts.categories) + config.radarLabelTextMargin),
+  centerPosition.y - config.radarLabelTextMargin);
+
+  radius -= config.padding;
+
+  // draw grid
+  context.beginPath();
+  context.setLineWidth(1 * opts.pixelRatio);
+  context.setStrokeStyle(radarOption.gridColor || "#cccccc");
+  coordinateAngle.forEach(function (angle) {
+    var pos = convertCoordinateOrigin(radius * Math.cos(angle), radius * Math.sin(angle), centerPosition);
+    context.moveTo(centerPosition.x, centerPosition.y);
+    context.lineTo(pos.x, pos.y);
+  });
+  context.stroke();
+  context.closePath();
+
+  // draw split line grid
+
+  var _loop = function _loop(i) {
+    var startPos = {};
+    context.beginPath();
+    context.setLineWidth(1 * opts.pixelRatio);
+    context.setStrokeStyle(radarOption.gridColor || "#cccccc");
+    coordinateAngle.forEach(function (angle, index) {
+      var pos = convertCoordinateOrigin(radius / config.radarGridCount * i * Math.cos(angle), radius / config.radarGridCount * i * Math.sin(angle), centerPosition);
+      if (index === 0) {
+        startPos = pos;
+        context.moveTo(pos.x, pos.y);
+      } else {
+        context.lineTo(pos.x, pos.y);
+      }
+    });
+    context.lineTo(startPos.x, startPos.y);
+    context.stroke();
+    context.closePath();
+  };
+
+  for (var i = 1; i <= config.radarGridCount; i++) {
+    _loop(i);
+  }
+
+  var radarDataPoints = getRadarDataPoints(coordinateAngle, centerPosition, radius, series, opts, process);
+
+  radarDataPoints.forEach(function (eachSeries, seriesIndex) {
+    // 绘制区域数据
+    context.beginPath();
+    context.setFillStyle(eachSeries.color);
+    context.setGlobalAlpha(0.3);
+    eachSeries.data.forEach(function (item, index) {
+      if (index === 0) {
+        context.moveTo(item.position.x, item.position.y);
+      } else {
+        context.lineTo(item.position.x, item.position.y);
+      }
+    });
+    context.closePath();
+    context.fill();
+    context.setGlobalAlpha(1);
+
+    if (opts.dataPointShape !== false) {
+      var shape = config.dataPointShape[seriesIndex % config.dataPointShape.length];
+      var points = eachSeries.data.map(function (item) {
+        return item.position;
+      });
+      drawPointShape(points, eachSeries.color, shape, context, opts);
+    }
+  });
+  // draw label text
+  drawRadarLabel(coordinateAngle, radius, centerPosition, opts, config, context);
+
+  return {
+    center: centerPosition,
+    radius: radius,
+    angleList: coordinateAngle };
+
+}
+
+function drawCanvas(opts, context) {
+  context.draw();
+}
+
+var Timing = {
+  easeIn: function easeIn(pos) {
+    return Math.pow(pos, 3);
+  },
+
+  easeOut: function easeOut(pos) {
+    return Math.pow(pos - 1, 3) + 1;
+  },
+
+  easeInOut: function easeInOut(pos) {
+    if ((pos /= 0.5) < 1) {
+      return 0.5 * Math.pow(pos, 3);
+    } else {
+      return 0.5 * (Math.pow(pos - 2, 3) + 2);
+    }
+  },
+
+  linear: function linear(pos) {
+    return pos;
+  } };
+
+
+function Animation(opts) {
+  this.isStop = false;
+  opts.duration = typeof opts.duration === 'undefined' ? 1000 : opts.duration;
+  opts.timing = opts.timing || 'linear';
+
+  var delay = 17;
+
+  var createAnimationFrame = function createAnimationFrame() {
+
+    if (typeof requestAnimationFrame !== 'undefined') {
+      return requestAnimationFrame;
+    } else if (typeof setTimeout !== 'undefined') {
+
+      return function (step, delay) {
+        setTimeout(function () {
+          var timeStamp = +new Date();
+          step(timeStamp);
+        }, delay);
+      };
+    } else {
+
+      return function (step) {
+        step(null);
+      };
+    }
+  };
+  var animationFrame = createAnimationFrame();
+  var startTimeStamp = null;
+
+  var _step = function step(timestamp) {
+
+    if (timestamp === null || this.isStop === true) {
+      opts.onProcess && opts.onProcess(1);
+      opts.onAnimationFinish && opts.onAnimationFinish();
+      return;
+    }
+    if (startTimeStamp === null) {
+      startTimeStamp = timestamp;
+    }
+    if (timestamp - startTimeStamp < opts.duration) {
+      var process = (timestamp - startTimeStamp) / opts.duration;
+      var timingFunction = Timing[opts.timing];
+      process = timingFunction(process);
+
+      opts.onProcess && opts.onProcess(process);
+      animationFrame(_step, delay);
+    } else {
+      opts.onProcess && opts.onProcess(1);
+      opts.onAnimationFinish && opts.onAnimationFinish();
+    }
+  };
+  _step = _step.bind(this);
+  animationFrame(_step, delay);
+}
+
+// stop animation immediately
+// and tigger onAnimationFinish
+Animation.prototype.stop = function () {
+  this.isStop = true;
+};
+
+function drawCharts(type, opts, config, context) {
+  var _this = this;
+  var series = opts.series;
+  var categories = opts.categories;
+  series = fillSeriesColor(series, config);
+  series = fillSeriesType(series, opts);
+  var seriesMA = null;
+
+  if (type == 'candle') {
+    var average = assign({}, opts.extra.candle.average);
+    if (average.show) {
+      seriesMA = calCandleMA(average.day, average.name, average.color, series[0].data);
+      opts.seriesMA = seriesMA;
+    }
+  }
+
+  var _calLegendData = calLegendData(series, opts, config),
+  legendHeight = _calLegendData.legendHeight;
+
+  config.legendHeight = legendHeight;
+
+  var _calYAxisData = calYAxisData(series, opts, config),
+  yAxisWidth = _calYAxisData.yAxisWidth;
+
+  config.yAxisWidth = yAxisWidth;
+  if (categories && categories.length) {
+    var _calCategoriesData = calCategoriesData(categories, opts, config),
+    xAxisHeight = _calCategoriesData.xAxisHeight,
+    angle = _calCategoriesData.angle;
+
+    config.xAxisHeight = xAxisHeight;
+    config._xAxisTextAngle_ = angle;
+  }
+  if (type === 'pie' || type === 'ring' || type === 'rose') {
+    config._pieTextMaxLength_ = opts.dataLabel === false ? 0 : getPieTextMaxLength(series);
+  }
+
+  var duration = opts.animation ? opts.duration : 0;
+  this.animationInstance && this.animationInstance.stop();
+
+  switch (type) {
+    case 'line':
+      this.animationInstance = new Animation({
+        timing: 'easeIn',
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawYAxisGrid(categories, opts, config, context);
+          drawXAxis(categories, opts, config, context);
+          var _drawLineDataPoints = drawLineDataPoints(series, opts, config, context, process),
+          xAxisPoints = _drawLineDataPoints.xAxisPoints,
+          calPoints = _drawLineDataPoints.calPoints,
+          eachSpacing = _drawLineDataPoints.eachSpacing;
+
+          _this.chartData.xAxisPoints = xAxisPoints;
+          _this.chartData.calPoints = calPoints;
+          _this.chartData.eachSpacing = eachSpacing;
+          drawLegend(opts.series, opts, config, context);
+          drawYAxis(series, opts, config, context);
+          drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints);
+          drawCanvas(opts, context);
+
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.event.trigger('renderComplete');
+        } });
+
+
+      break;
+    case 'mix':
+      this.animationInstance = new Animation({
+        timing: 'easeIn',
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawYAxisGrid(categories, opts, config, context);
+          drawXAxis(categories, opts, config, context);
+          var _drawMixDataPoints = drawMixDataPoints(series, opts, config, context, process),
+          xAxisPoints = _drawMixDataPoints.xAxisPoints,
+          calPoints = _drawMixDataPoints.calPoints,
+          eachSpacing = _drawMixDataPoints.eachSpacing;
+
+          _this.chartData.xAxisPoints = xAxisPoints;
+          _this.chartData.calPoints = calPoints;
+          _this.chartData.eachSpacing = eachSpacing;
+          drawLegend(opts.series, opts, config, context);
+          drawYAxis(series, opts, config, context);
+          drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.event.trigger('renderComplete');
+        } });
+
+
+      break;
+    case 'column':
+      this.animationInstance = new Animation({
+        timing: 'easeIn',
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawYAxisGrid(categories, opts, config, context);
+          drawXAxis(categories, opts, config, context);
+          var _drawColumnDataPoints = drawColumnDataPoints(series, opts, config, context, process),
+          xAxisPoints = _drawColumnDataPoints.xAxisPoints,
+          calPoints = _drawColumnDataPoints.calPoints,
+          eachSpacing = _drawColumnDataPoints.eachSpacing;
+          _this.chartData.xAxisPoints = xAxisPoints;
+          _this.chartData.calPoints = calPoints;
+          _this.chartData.eachSpacing = eachSpacing;
+          drawLegend(opts.series, opts, config, context);
+          drawYAxis(series, opts, config, context);
+          drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.event.trigger('renderComplete');
+        } });
+
+      break;
+    case 'area':
+      this.animationInstance = new Animation({
+        timing: 'easeIn',
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawYAxisGrid(categories, opts, config, context);
+          drawXAxis(categories, opts, config, context);
+          var _drawAreaDataPoints = drawAreaDataPoints(series, opts, config, context, process),
+          xAxisPoints = _drawAreaDataPoints.xAxisPoints,
+          calPoints = _drawAreaDataPoints.calPoints,
+          eachSpacing = _drawAreaDataPoints.eachSpacing;
+
+          _this.chartData.xAxisPoints = xAxisPoints;
+          _this.chartData.calPoints = calPoints;
+          _this.chartData.eachSpacing = eachSpacing;
+          drawLegend(opts.series, opts, config, context);
+          drawYAxis(series, opts, config, context);
+          drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints);
+
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.event.trigger('renderComplete');
+        } });
+
+      break;
+    case 'ring':
+    case 'pie':
+      this.animationInstance = new Animation({
+        timing: 'easeInOut',
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          _this.chartData.pieData = drawPieDataPoints(series, opts, config, context, process);
+          drawLegend(opts.series, opts, config, context);
+          drawToolTipBridge(opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.event.trigger('renderComplete');
+        } });
+
+      break;
+    case 'rose':
+      this.animationInstance = new Animation({
+        timing: 'easeInOut',
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          _this.chartData.pieData = drawRoseDataPoints(series, opts, config, context, process);
+          drawLegend(opts.series, opts, config, context);
+          drawToolTipBridge(opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.event.trigger('renderComplete');
+        } });
+
+      break;
+    case 'radar':
+      this.animationInstance = new Animation({
+        timing: 'easeInOut',
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          _this.chartData.radarData = drawRadarDataPoints(series, opts, config, context, process);
+          drawLegend(opts.series, opts, config, context);
+          drawToolTipBridge(opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.event.trigger('renderComplete');
+        } });
+
+      break;
+    case 'arcbar':
+      this.animationInstance = new Animation({
+        timing: 'easeInOut',
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          _this.chartData.arcbarData = drawArcbarDataPoints(series, opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.event.trigger('renderComplete');
+        } });
+
+      break;
+    case 'gauge':
+      this.animationInstance = new Animation({
+        timing: 'easeInOut',
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          _this.chartData.gaugeData = drawGaugeDataPoints(categories, series, opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.event.trigger('renderComplete');
+        } });
+
+      break;
+    case 'candle':
+      this.animationInstance = new Animation({
+        timing: 'easeIn',
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawYAxisGrid(categories, opts, config, context);
+          drawXAxis(categories, opts, config, context);
+          var _drawCandleDataPoints = drawCandleDataPoints(series, seriesMA, opts, config, context, process),
+          xAxisPoints = _drawCandleDataPoints.xAxisPoints,
+          calPoints = _drawCandleDataPoints.calPoints,
+          eachSpacing = _drawCandleDataPoints.eachSpacing;
+
+          _this.chartData.xAxisPoints = xAxisPoints;
+          _this.chartData.calPoints = calPoints;
+          _this.chartData.eachSpacing = eachSpacing;
+          if (seriesMA) {
+            drawLegend(seriesMA, opts, config, context);
+          } else {
+            drawLegend(opts.series, opts, config, context);
+          }
+          drawYAxis(series, opts, config, context);
+          drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.event.trigger('renderComplete');
+        } });
+
+      break;}
+
+}
+
+// simple event implement
+
+function Event() {
+  this.events = {};
+}
+
+Event.prototype.addEventListener = function (type, listener) {
+  this.events[type] = this.events[type] || [];
+  this.events[type].push(listener);
+};
+
+Event.prototype.trigger = function () {
+  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  var type = args[0];
+  var params = args.slice(1);
+  if (!!this.events[type]) {
+    this.events[type].forEach(function (listener) {
+      try {
+        listener.apply(null, params);
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  }
+};
+
+var Charts = function Charts(opts) {
+  opts.pixelRatio = opts.pixelRatio ? opts.pixelRatio : 1;
+  opts.fontSize = opts.fontSize ? opts.fontSize * opts.pixelRatio : 13 * opts.pixelRatio;
+  opts.title = assign({}, opts.title);
+  opts.subtitle = assign({}, opts.subtitle);
+  opts.yAxis = assign({}, {
+    gridType: 'solid',
+    dashLength: 4 * opts.pixelRatio },
+  opts.yAxis);
+  opts.xAxis = assign({}, {
+    rotateLabel: false,
+    type: 'calibration',
+    gridType: 'solid',
+    dashLength: 4 * opts.pixelRatio,
+    scrollAlign: 'left' },
+  opts.xAxis);
+  opts.extra = assign({}, opts.extra);
+  opts.rotate = opts.rotate ? true : false;
+  opts.animation = opts.animation ? true : false;
+  var config$$1 = assign({}, config);
+  config$$1.yAxisTitleWidth = opts.yAxis.disabled !== true && opts.yAxis.title ? config$$1.yAxisTitleWidth : 0;
+  if (opts.type == 'pie' || opts.type == 'ring') {
+    config$$1.pieChartLinePadding = opts.dataLabel === false ? 0 : opts.extra.pie.labelWidth * opts.pixelRatio || config$$1.pieChartLinePadding * opts.pixelRatio;
+  }
+  if (opts.type == 'rose') {
+    config$$1.pieChartLinePadding = opts.dataLabel === false ? 0 : opts.extra.rose.labelWidth * opts.pixelRatio || config$$1.pieChartLinePadding * opts.pixelRatio;
+  }
+  config$$1.pieChartTextPadding = opts.dataLabel === false ? 0 : config$$1.pieChartTextPadding * opts.pixelRatio;
+  config$$1.yAxisSplit = opts.yAxis.splitNumber ? opts.yAxis.splitNumber : config.yAxisSplit;
+  //屏幕旋转
+  config$$1.rotate = opts.rotate;
+  if (opts.rotate) {
+    var tempWidth = opts.width;
+    var tempHeight = opts.height;
+    opts.width = tempHeight;
+    opts.height = tempWidth;
+  }
+
+  //适配高分屏
+  config$$1.yAxisWidth = config.yAxisWidth * opts.pixelRatio;
+  config$$1.xAxisHeight = config.xAxisHeight * opts.pixelRatio;
+  if (opts.enableScroll && opts.xAxis.scrollShow) {
+    config$$1.xAxisHeight += 6 * opts.pixelRatio;
+  }
+  config$$1.xAxisLineHeight = config.xAxisLineHeight * opts.pixelRatio;
+  config$$1.legendHeight = config.legendHeight * opts.pixelRatio;
+  config$$1.padding = config.padding * opts.pixelRatio;
+  config$$1.fontSize = opts.fontSize;
+  config$$1.titleFontSize = config.titleFontSize * opts.pixelRatio;
+  config$$1.subtitleFontSize = config.subtitleFontSize * opts.pixelRatio;
+  config$$1.toolTipPadding = config.toolTipPadding * opts.pixelRatio;
+  config$$1.toolTipLineHeight = config.toolTipLineHeight * opts.pixelRatio;
+  config$$1.columePadding = config.columePadding * opts.pixelRatio;
+
+  this.opts = opts;
+  this.config = config$$1;
+  opts.$this = opts.$this ? opts.$this : this;
+  this.context = uni.createCanvasContext(opts.canvasId, opts.$this);
+  /* 兼容原生H5
+                                                                     this.context = document.getElementById(opts.canvasId).getContext("2d");
+                                                                     this.context.setStrokeStyle = function(e){ return this.strokeStyle=e; }
+                                                                     this.context.setLineWidth = function(e){ return this.lineWidth=e; }
+                                                                     this.context.setLineCap = function(e){ return this.lineCap=e; }
+                                                                     this.context.setFontSize = function(e){ return this.font=e+"px sans-serif"; }
+                                                                     this.context.setFillStyle = function(e){ return this.fillStyle=e; }
+                                                                     this.context.draw = function(){ }
+                                                                     */
+  this.chartData = {};
+  this.event = new Event();
+
+  this.scrollOption = {
+    currentOffset: 0,
+    startTouchX: 0,
+    distance: 0,
+    lastMoveTime: 0 };
+
+
+  //计算右对齐偏移距离
+  if (opts.enableScroll && opts.xAxis.scrollAlign == 'right') {
+    var _calYAxisData = calYAxisData(opts.series, opts, config$$1),
+    yAxisWidth = _calYAxisData.yAxisWidth;
+    config$$1.yAxisWidth = yAxisWidth;
+    var offsetLeft = 0;
+    var _getXAxisPoints0 = getXAxisPoints(opts.categories, opts, config$$1),
+    xAxisPoints = _getXAxisPoints0.xAxisPoints,
+    startX = _getXAxisPoints0.startX,
+    endX = _getXAxisPoints0.endX,
+    eachSpacing = _getXAxisPoints0.eachSpacing;
+    var totalWidth = eachSpacing * (xAxisPoints.length - 1);
+    var screenWidth = endX - startX;
+    offsetLeft = screenWidth - totalWidth;
+    this.scrollOption = {
+      currentOffset: offsetLeft,
+      startTouchX: offsetLeft,
+      distance: 0,
+      lastMoveTime: 0 };
+
+    opts._scrollDistance_ = offsetLeft;
+  }
+
+  drawCharts.call(this, opts.type, opts, config$$1, this.context);
+};
+
+Charts.prototype.updateData = function () {
+  var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  this.opts = assign({}, this.opts, data);
+  var scrollPosition = data.scrollPosition || 'current';
+  switch (scrollPosition) {
+    case 'current':
+      this.opts._scrollDistance_ = this.scrollOption.currentOffset;
+      break;
+    case 'left':
+      this.opts._scrollDistance_ = 0;
+      this.scrollOption = {
+        currentOffset: 0,
+        startTouchX: 0,
+        distance: 0,
+        lastMoveTime: 0 };
+
+      break;
+    case 'right':
+      var _calYAxisData = calYAxisData(this.opts.series, this.opts, this.config),
+      yAxisWidth = _calYAxisData.yAxisWidth;
+      this.config.yAxisWidth = yAxisWidth;
+      var offsetLeft = 0;
+      var _getXAxisPoints0 = getXAxisPoints(this.opts.categories, this.opts, this.config),
+      xAxisPoints = _getXAxisPoints0.xAxisPoints,
+      startX = _getXAxisPoints0.startX,
+      endX = _getXAxisPoints0.endX,
+      eachSpacing = _getXAxisPoints0.eachSpacing;
+      var totalWidth = eachSpacing * (xAxisPoints.length - 1);
+      var screenWidth = endX - startX;
+      offsetLeft = screenWidth - totalWidth;
+      this.scrollOption = {
+        currentOffset: offsetLeft,
+        startTouchX: offsetLeft,
+        distance: 0,
+        lastMoveTime: 0 };
+
+      this.opts._scrollDistance_ = offsetLeft;
+      break;}
+
+  drawCharts.call(this, this.opts.type, this.opts, this.config, this.context);
+};
+
+Charts.prototype.zoom = function () {
+  var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.opts.xAxis.itemCount;
+  if (this.opts.enableScroll !== true) {
+    console.log('请启用滚动条后使用！');
+    return;
+  }
+  //当前屏幕中间点
+  var centerPoint = Math.round(Math.abs(this.scrollOption.currentOffset) / this.chartData.eachSpacing) + Math.round(
+  this.opts.xAxis.itemCount / 2);
+  this.opts.animation = false;
+  this.opts.xAxis.itemCount = val.itemCount;
+  //重新计算x轴偏移距离
+  var _calYAxisData = calYAxisData(this.opts.series, this.opts, this.config),
+  yAxisWidth = _calYAxisData.yAxisWidth;
+  this.config.yAxisWidth = yAxisWidth;
+  var offsetLeft = 0;
+  var _getXAxisPoints0 = getXAxisPoints(this.opts.categories, this.opts, this.config),
+  xAxisPoints = _getXAxisPoints0.xAxisPoints,
+  startX = _getXAxisPoints0.startX,
+  endX = _getXAxisPoints0.endX,
+  eachSpacing = _getXAxisPoints0.eachSpacing;
+  var centerLeft = eachSpacing * centerPoint;
+  var screenWidth = endX - startX;
+  var MaxLeft = screenWidth - eachSpacing * (xAxisPoints.length - 1);
+  offsetLeft = screenWidth / 2 - centerLeft;
+  if (offsetLeft > 0) {
+    offsetLeft = 0;
+  }
+  if (offsetLeft < MaxLeft) {
+    offsetLeft = MaxLeft;
+  }
+  this.scrollOption = {
+    currentOffset: offsetLeft,
+    startTouchX: offsetLeft,
+    distance: 0,
+    lastMoveTime: 0 };
+
+  this.opts._scrollDistance_ = offsetLeft;
+
+  drawCharts.call(this, this.opts.type, this.opts, this.config, this.context);
+};
+
+Charts.prototype.stopAnimation = function () {
+  this.animationInstance && this.animationInstance.stop();
+};
+
+Charts.prototype.addEventListener = function (type, listener) {
+  this.event.addEventListener(type, listener);
+};
+
+Charts.prototype.getCurrentDataIndex = function (e) {
+  var touches = null;
+  if (e.changedTouches) {
+    touches = e.changedTouches[0];
+  } else {
+    touches = e.mp.changedTouches[0];
+  }
+  if (touches) {
+    var _touches$ = getTouches(touches, this.opts, e);
+    if (this.opts.type === 'pie' || this.opts.type === 'ring' || this.opts.type === 'rose') {
+      return findPieChartCurrentIndex({
+        x: _touches$.x,
+        y: _touches$.y },
+      this.chartData.pieData);
+    } else if (this.opts.type === 'radar') {
+      return findRadarChartCurrentIndex({
+        x: _touches$.x,
+        y: _touches$.y },
+      this.chartData.radarData, this.opts.categories.length);
+    } else {
+      return findCurrentIndex({
+        x: _touches$.x,
+        y: _touches$.y },
+      this.chartData.xAxisPoints, this.opts, this.config, Math.abs(this.scrollOption.currentOffset));
+    }
+  }
+  return -1;
+};
+
+Charts.prototype.showToolTip = function (e) {
+  var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var touches = null;
+  if (e.changedTouches) {
+    touches = e.changedTouches[0];
+  } else {
+    touches = e.mp.changedTouches[0];
+  }
+  if (!touches) {
+    console.log("touchError");
+    return;
+  }
+  var _touches$ = getTouches(touches, this.opts, e);
+
+  if (this.opts.type === 'line' || this.opts.type === 'area' || this.opts.type === 'column') {
+    var index = this.getCurrentDataIndex(e);
+    var currentOffset = this.scrollOption.currentOffset;
+
+    var opts = assign({}, this.opts, {
+      _scrollDistance_: currentOffset,
+      animation: false });
+
+    if (index > -1) {
+
+      var seriesData = getSeriesDataItem(this.opts.series, index);
+      if (seriesData.length !== 0) {
+        var _getToolTipData = getToolTipData(seriesData, this.chartData.calPoints, index, this.opts.categories, option),
+        textList = _getToolTipData.textList,
+        offset = _getToolTipData.offset;
+        offset.y = _touches$.y;
+        opts.tooltip = {
+          textList: textList,
+          offset: offset,
+          option: option,
+          index: index };
+
+      }
+    }
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+  if (this.opts.type === 'mix') {
+
+    var index = this.getCurrentDataIndex(e);
+    var currentOffset = this.scrollOption.currentOffset;
+
+    var opts = assign({}, this.opts, {
+      _scrollDistance_: currentOffset,
+      animation: false });
+
+    if (index > -1) {
+      var seriesData = getSeriesDataItem(this.opts.series, index);
+      if (seriesData.length !== 0) {
+        var _getMixToolTipData = getMixToolTipData(seriesData, this.chartData.calPoints, index, this.opts.categories, option),
+        textList = _getMixToolTipData.textList,
+        offset = _getMixToolTipData.offset;
+        offset.y = _touches$.y;
+        opts.tooltip = {
+          textList: textList,
+          offset: offset,
+          option: option,
+          index: index };
+
+      }
+    }
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+  if (this.opts.type === 'candle') {
+
+    var index = this.getCurrentDataIndex(e);
+    var currentOffset = this.scrollOption.currentOffset;
+
+    var opts = assign({}, this.opts, {
+      _scrollDistance_: currentOffset,
+      animation: false });
+
+    if (index > -1) {
+      var seriesData = getSeriesDataItem(this.opts.series, index);
+      if (seriesData.length !== 0) {
+        var _getToolTipData = getCandleToolTipData(this.opts.series[0].data, seriesData, this.chartData.calPoints, index, this.opts.categories, this.opts.extra.candle, option),
+        textList = _getToolTipData.textList,
+        offset = _getToolTipData.offset;
+        offset.y = _touches$.y;
+        opts.tooltip = {
+          textList: textList,
+          offset: offset,
+          option: option,
+          index: index };
+
+      }
+    }
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+  if (this.opts.type === 'pie' || this.opts.type === 'ring' || this.opts.type === 'rose') {
+    var index = this.getCurrentDataIndex(e);
+    var currentOffset = this.scrollOption.currentOffset;
+
+    var opts = assign({}, this.opts, {
+      _scrollDistance_: currentOffset,
+      animation: false });
+
+    if (index > -1) {
+
+      var seriesData = this.opts.series[index];
+      var textList = [{
+        text: option.format ? option.format(seriesData) : seriesData.name + ': ' + seriesData.data,
+        color: seriesData.color }];
+
+      var offset = {
+        x: _touches$.x,
+        y: _touches$.y };
+
+
+      opts.tooltip = {
+        textList: textList,
+        offset: offset,
+        option: option,
+        index: index };
+
+    }
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+  if (this.opts.type === 'radar') {
+    var index = this.getCurrentDataIndex(e);
+    var currentOffset = this.scrollOption.currentOffset;
+
+    var opts = assign({}, this.opts, {
+      _scrollDistance_: currentOffset,
+      animation: false });
+
+    if (index > -1) {
+
+      var seriesData = getSeriesDataItem(this.opts.series, index);
+      if (seriesData.length !== 0) {
+        var textList = seriesData.map(function (item) {
+          return {
+            text: option.format ? option.format(item) : item.name + ': ' + item.data,
+            color: item.color };
+
+        });
+        var offset = {
+          x: _touches$.x,
+          y: _touches$.y };
+
+        opts.tooltip = {
+          textList: textList,
+          offset: offset,
+          option: option,
+          index: index };
+
+      }
+    }
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+};
+
+Charts.prototype.translate = function (distance) {
+  this.scrollOption = {
+    currentOffset: distance,
+    startTouchX: distance,
+    distance: 0,
+    lastMoveTime: 0 };
+
+  var opts = assign({}, this.opts, {
+    _scrollDistance_: distance,
+    animation: false });
+
+  drawCharts.call(this, this.opts.type, opts, this.config, this.context);
+};
+
+Charts.prototype.scrollStart = function (e) {
+  var touches = null;
+  if (e.changedTouches) {
+    touches = e.changedTouches[0];
+  } else {
+    touches = e.mp.changedTouches[0];
+  }
+  var _touches$ = getTouches(touches, this.opts, e);
+  if (touches && this.opts.enableScroll === true) {
+    this.scrollOption.startTouchX = _touches$.x;
+  }
+};
+
+Charts.prototype.scroll = function (e) {
+  if (this.scrollOption.lastMoveTime === 0) {
+    this.scrollOption.lastMoveTime = Date.now();
+  }
+  var Limit = this.opts.extra.touchMoveLimit || 20;
+  var currMoveTime = Date.now();
+  var duration = currMoveTime - this.scrollOption.lastMoveTime;
+  if (duration < Math.floor(1000 / Limit)) return;
+
+  this.scrollOption.lastMoveTime = currMoveTime;
+
+  var touches = null;
+  if (e.changedTouches) {
+    touches = e.changedTouches[0];
+  } else {
+    touches = e.mp.changedTouches[0];
+  }
+  var _touches$ = getTouches(touches, this.opts, e);
+  if (touches && this.opts.enableScroll === true) {
+    var _distance;
+    _distance = _touches$.x - this.scrollOption.startTouchX;
+    var currentOffset = this.scrollOption.currentOffset;
+
+    var validDistance = calValidDistance(currentOffset + _distance, this.chartData, this.config, this.opts);
+
+    this.scrollOption.distance = _distance = validDistance - currentOffset;
+    var opts = assign({}, this.opts, {
+      _scrollDistance_: currentOffset + _distance,
+      animation: false });
+
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+    return currentOffset + _distance;
+  }
+};
+
+Charts.prototype.scrollEnd = function (e) {
+  if (this.opts.enableScroll === true) {
+    var _scrollOption = this.scrollOption,
+    currentOffset = _scrollOption.currentOffset,
+    distance = _scrollOption.distance;
+
+    this.scrollOption.currentOffset = currentOffset + distance;
+    this.scrollOption.distance = 0;
+  }
+};
+if ( true && typeof module.exports === "object") {
+  module.exports = Charts;
+  //export default Charts;//建议使用nodejs的module导出方式，如报错请使用export方式导出
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 158:
+/*!******************************************************************!*\
+  !*** E:/code/agile-front/agile/components/QS-WavesButton/app.js ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -284,10 +6091,1708 @@ var _default = {
 
 /***/ }),
 
-/***/ "../../../../../个人信息/agile/components/w-picker/city-data/area.js":
+/***/ 175:
 /*!***********************************************************!*\
-  !*** F:/个人信息/agile/components/w-picker/city-data/area.js ***!
+  !*** E:/code/agile-front/agile/static/dist/card/index.js ***!
   \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Component({
+  externalClasses: ['i-class'],
+
+  options: {
+    multipleSlots: true },
+
+
+  properties: {
+    full: {
+      type: Boolean,
+      value: false },
+
+    thumb: {
+      type: String,
+      value: '' },
+
+    title: {
+      type: String,
+      value: '' },
+
+    extra: {
+      type: String,
+      value: '' } } });
+
+/***/ }),
+
+/***/ 188:
+/*!***************************************************************************!*\
+  !*** E:/code/agile-front/agile/components/w-picker/city-data/province.js ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /* eslint-disable */
+var provinceData = [{
+  "label": "北京市",
+  "value": "11" },
+
+{
+  "label": "天津市",
+  "value": "12" },
+
+{
+  "label": "河北省",
+  "value": "13" },
+
+{
+  "label": "山西省",
+  "value": "14" },
+
+{
+  "label": "内蒙古自治区",
+  "value": "15" },
+
+{
+  "label": "辽宁省",
+  "value": "21" },
+
+{
+  "label": "吉林省",
+  "value": "22" },
+
+{
+  "label": "黑龙江省",
+  "value": "23" },
+
+{
+  "label": "上海市",
+  "value": "31" },
+
+{
+  "label": "江苏省",
+  "value": "32" },
+
+{
+  "label": "浙江省",
+  "value": "33" },
+
+{
+  "label": "安徽省",
+  "value": "34" },
+
+{
+  "label": "福建省",
+  "value": "35" },
+
+{
+  "label": "江西省",
+  "value": "36" },
+
+{
+  "label": "山东省",
+  "value": "37" },
+
+{
+  "label": "河南省",
+  "value": "41" },
+
+{
+  "label": "湖北省",
+  "value": "42" },
+
+{
+  "label": "湖南省",
+  "value": "43" },
+
+{
+  "label": "广东省",
+  "value": "44" },
+
+{
+  "label": "广西壮族自治区",
+  "value": "45" },
+
+{
+  "label": "海南省",
+  "value": "46" },
+
+{
+  "label": "重庆市",
+  "value": "50" },
+
+{
+  "label": "四川省",
+  "value": "51" },
+
+{
+  "label": "贵州省",
+  "value": "52" },
+
+{
+  "label": "云南省",
+  "value": "53" },
+
+{
+  "label": "西藏自治区",
+  "value": "54" },
+
+{
+  "label": "陕西省",
+  "value": "61" },
+
+{
+  "label": "甘肃省",
+  "value": "62" },
+
+{
+  "label": "青海省",
+  "value": "63" },
+
+{
+  "label": "宁夏回族自治区",
+  "value": "64" },
+
+{
+  "label": "新疆维吾尔自治区",
+  "value": "65" },
+
+{
+  "label": "台湾",
+  "value": "66" },
+
+{
+  "label": "香港",
+  "value": "67" },
+
+{
+  "label": "澳门",
+  "value": "68" }];var _default =
+
+
+provinceData;exports.default = _default;
+
+/***/ }),
+
+/***/ 189:
+/*!***********************************************************************!*\
+  !*** E:/code/agile-front/agile/components/w-picker/city-data/city.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /* eslint-disable */
+var cityData = [
+[{
+  "label": "市辖区",
+  "value": "1101" }],
+
+[{
+  "label": "市辖区",
+  "value": "1201" }],
+
+[{
+  "label": "石家庄市",
+  "value": "1301" },
+
+{
+  "label": "唐山市",
+  "value": "1302" },
+
+{
+  "label": "秦皇岛市",
+  "value": "1303" },
+
+{
+  "label": "邯郸市",
+  "value": "1304" },
+
+{
+  "label": "邢台市",
+  "value": "1305" },
+
+{
+  "label": "保定市",
+  "value": "1306" },
+
+{
+  "label": "张家口市",
+  "value": "1307" },
+
+{
+  "label": "承德市",
+  "value": "1308" },
+
+{
+  "label": "沧州市",
+  "value": "1309" },
+
+{
+  "label": "廊坊市",
+  "value": "1310" },
+
+{
+  "label": "衡水市",
+  "value": "1311" }],
+
+
+[{
+  "label": "太原市",
+  "value": "1401" },
+
+{
+  "label": "大同市",
+  "value": "1402" },
+
+{
+  "label": "阳泉市",
+  "value": "1403" },
+
+{
+  "label": "长治市",
+  "value": "1404" },
+
+{
+  "label": "晋城市",
+  "value": "1405" },
+
+{
+  "label": "朔州市",
+  "value": "1406" },
+
+{
+  "label": "晋中市",
+  "value": "1407" },
+
+{
+  "label": "运城市",
+  "value": "1408" },
+
+{
+  "label": "忻州市",
+  "value": "1409" },
+
+{
+  "label": "临汾市",
+  "value": "1410" },
+
+{
+  "label": "吕梁市",
+  "value": "1411" }],
+
+
+[{
+  "label": "呼和浩特市",
+  "value": "1501" },
+
+{
+  "label": "包头市",
+  "value": "1502" },
+
+{
+  "label": "乌海市",
+  "value": "1503" },
+
+{
+  "label": "赤峰市",
+  "value": "1504" },
+
+{
+  "label": "通辽市",
+  "value": "1505" },
+
+{
+  "label": "鄂尔多斯市",
+  "value": "1506" },
+
+{
+  "label": "呼伦贝尔市",
+  "value": "1507" },
+
+{
+  "label": "巴彦淖尔市",
+  "value": "1508" },
+
+{
+  "label": "乌兰察布市",
+  "value": "1509" },
+
+{
+  "label": "兴安盟",
+  "value": "1522" },
+
+{
+  "label": "锡林郭勒盟",
+  "value": "1525" },
+
+{
+  "label": "阿拉善盟",
+  "value": "1529" }],
+
+
+[{
+  "label": "沈阳市",
+  "value": "2101" },
+
+{
+  "label": "大连市",
+  "value": "2102" },
+
+{
+  "label": "鞍山市",
+  "value": "2103" },
+
+{
+  "label": "抚顺市",
+  "value": "2104" },
+
+{
+  "label": "本溪市",
+  "value": "2105" },
+
+{
+  "label": "丹东市",
+  "value": "2106" },
+
+{
+  "label": "锦州市",
+  "value": "2107" },
+
+{
+  "label": "营口市",
+  "value": "2108" },
+
+{
+  "label": "阜新市",
+  "value": "2109" },
+
+{
+  "label": "辽阳市",
+  "value": "2110" },
+
+{
+  "label": "盘锦市",
+  "value": "2111" },
+
+{
+  "label": "铁岭市",
+  "value": "2112" },
+
+{
+  "label": "朝阳市",
+  "value": "2113" },
+
+{
+  "label": "葫芦岛市",
+  "value": "2114" }],
+
+
+[{
+  "label": "长春市",
+  "value": "2201" },
+
+{
+  "label": "吉林市",
+  "value": "2202" },
+
+{
+  "label": "四平市",
+  "value": "2203" },
+
+{
+  "label": "辽源市",
+  "value": "2204" },
+
+{
+  "label": "通化市",
+  "value": "2205" },
+
+{
+  "label": "白山市",
+  "value": "2206" },
+
+{
+  "label": "松原市",
+  "value": "2207" },
+
+{
+  "label": "白城市",
+  "value": "2208" },
+
+{
+  "label": "延边朝鲜族自治州",
+  "value": "2224" }],
+
+
+[{
+  "label": "哈尔滨市",
+  "value": "2301" },
+
+{
+  "label": "齐齐哈尔市",
+  "value": "2302" },
+
+{
+  "label": "鸡西市",
+  "value": "2303" },
+
+{
+  "label": "鹤岗市",
+  "value": "2304" },
+
+{
+  "label": "双鸭山市",
+  "value": "2305" },
+
+{
+  "label": "大庆市",
+  "value": "2306" },
+
+{
+  "label": "伊春市",
+  "value": "2307" },
+
+{
+  "label": "佳木斯市",
+  "value": "2308" },
+
+{
+  "label": "七台河市",
+  "value": "2309" },
+
+{
+  "label": "牡丹江市",
+  "value": "2310" },
+
+{
+  "label": "黑河市",
+  "value": "2311" },
+
+{
+  "label": "绥化市",
+  "value": "2312" },
+
+{
+  "label": "大兴安岭地区",
+  "value": "2327" }],
+
+
+[{
+  "label": "市辖区",
+  "value": "3101" }],
+
+[{
+  "label": "南京市",
+  "value": "3201" },
+
+{
+  "label": "无锡市",
+  "value": "3202" },
+
+{
+  "label": "徐州市",
+  "value": "3203" },
+
+{
+  "label": "常州市",
+  "value": "3204" },
+
+{
+  "label": "苏州市",
+  "value": "3205" },
+
+{
+  "label": "南通市",
+  "value": "3206" },
+
+{
+  "label": "连云港市",
+  "value": "3207" },
+
+{
+  "label": "淮安市",
+  "value": "3208" },
+
+{
+  "label": "盐城市",
+  "value": "3209" },
+
+{
+  "label": "扬州市",
+  "value": "3210" },
+
+{
+  "label": "镇江市",
+  "value": "3211" },
+
+{
+  "label": "泰州市",
+  "value": "3212" },
+
+{
+  "label": "宿迁市",
+  "value": "3213" }],
+
+
+[{
+  "label": "杭州市",
+  "value": "3301" },
+
+{
+  "label": "宁波市",
+  "value": "3302" },
+
+{
+  "label": "温州市",
+  "value": "3303" },
+
+{
+  "label": "嘉兴市",
+  "value": "3304" },
+
+{
+  "label": "湖州市",
+  "value": "3305" },
+
+{
+  "label": "绍兴市",
+  "value": "3306" },
+
+{
+  "label": "金华市",
+  "value": "3307" },
+
+{
+  "label": "衢州市",
+  "value": "3308" },
+
+{
+  "label": "舟山市",
+  "value": "3309" },
+
+{
+  "label": "台州市",
+  "value": "3310" },
+
+{
+  "label": "丽水市",
+  "value": "3311" }],
+
+
+[{
+  "label": "合肥市",
+  "value": "3401" },
+
+{
+  "label": "芜湖市",
+  "value": "3402" },
+
+{
+  "label": "蚌埠市",
+  "value": "3403" },
+
+{
+  "label": "淮南市",
+  "value": "3404" },
+
+{
+  "label": "马鞍山市",
+  "value": "3405" },
+
+{
+  "label": "淮北市",
+  "value": "3406" },
+
+{
+  "label": "铜陵市",
+  "value": "3407" },
+
+{
+  "label": "安庆市",
+  "value": "3408" },
+
+{
+  "label": "黄山市",
+  "value": "3410" },
+
+{
+  "label": "滁州市",
+  "value": "3411" },
+
+{
+  "label": "阜阳市",
+  "value": "3412" },
+
+{
+  "label": "宿州市",
+  "value": "3413" },
+
+{
+  "label": "六安市",
+  "value": "3415" },
+
+{
+  "label": "亳州市",
+  "value": "3416" },
+
+{
+  "label": "池州市",
+  "value": "3417" },
+
+{
+  "label": "宣城市",
+  "value": "3418" }],
+
+
+[{
+  "label": "福州市",
+  "value": "3501" },
+
+{
+  "label": "厦门市",
+  "value": "3502" },
+
+{
+  "label": "莆田市",
+  "value": "3503" },
+
+{
+  "label": "三明市",
+  "value": "3504" },
+
+{
+  "label": "泉州市",
+  "value": "3505" },
+
+{
+  "label": "漳州市",
+  "value": "3506" },
+
+{
+  "label": "南平市",
+  "value": "3507" },
+
+{
+  "label": "龙岩市",
+  "value": "3508" },
+
+{
+  "label": "宁德市",
+  "value": "3509" }],
+
+
+[{
+  "label": "南昌市",
+  "value": "3601" },
+
+{
+  "label": "景德镇市",
+  "value": "3602" },
+
+{
+  "label": "萍乡市",
+  "value": "3603" },
+
+{
+  "label": "九江市",
+  "value": "3604" },
+
+{
+  "label": "新余市",
+  "value": "3605" },
+
+{
+  "label": "鹰潭市",
+  "value": "3606" },
+
+{
+  "label": "赣州市",
+  "value": "3607" },
+
+{
+  "label": "吉安市",
+  "value": "3608" },
+
+{
+  "label": "宜春市",
+  "value": "3609" },
+
+{
+  "label": "抚州市",
+  "value": "3610" },
+
+{
+  "label": "上饶市",
+  "value": "3611" }],
+
+
+[{
+  "label": "济南市",
+  "value": "3701" },
+
+{
+  "label": "青岛市",
+  "value": "3702" },
+
+{
+  "label": "淄博市",
+  "value": "3703" },
+
+{
+  "label": "枣庄市",
+  "value": "3704" },
+
+{
+  "label": "东营市",
+  "value": "3705" },
+
+{
+  "label": "烟台市",
+  "value": "3706" },
+
+{
+  "label": "潍坊市",
+  "value": "3707" },
+
+{
+  "label": "济宁市",
+  "value": "3708" },
+
+{
+  "label": "泰安市",
+  "value": "3709" },
+
+{
+  "label": "威海市",
+  "value": "3710" },
+
+{
+  "label": "日照市",
+  "value": "3711" },
+
+{
+  "label": "莱芜市",
+  "value": "3712" },
+
+{
+  "label": "临沂市",
+  "value": "3713" },
+
+{
+  "label": "德州市",
+  "value": "3714" },
+
+{
+  "label": "聊城市",
+  "value": "3715" },
+
+{
+  "label": "滨州市",
+  "value": "3716" },
+
+{
+  "label": "菏泽市",
+  "value": "3717" }],
+
+
+[{
+  "label": "郑州市",
+  "value": "4101" },
+
+{
+  "label": "开封市",
+  "value": "4102" },
+
+{
+  "label": "洛阳市",
+  "value": "4103" },
+
+{
+  "label": "平顶山市",
+  "value": "4104" },
+
+{
+  "label": "安阳市",
+  "value": "4105" },
+
+{
+  "label": "鹤壁市",
+  "value": "4106" },
+
+{
+  "label": "新乡市",
+  "value": "4107" },
+
+{
+  "label": "焦作市",
+  "value": "4108" },
+
+{
+  "label": "濮阳市",
+  "value": "4109" },
+
+{
+  "label": "许昌市",
+  "value": "4110" },
+
+{
+  "label": "漯河市",
+  "value": "4111" },
+
+{
+  "label": "三门峡市",
+  "value": "4112" },
+
+{
+  "label": "南阳市",
+  "value": "4113" },
+
+{
+  "label": "商丘市",
+  "value": "4114" },
+
+{
+  "label": "信阳市",
+  "value": "4115" },
+
+{
+  "label": "周口市",
+  "value": "4116" },
+
+{
+  "label": "驻马店市",
+  "value": "4117" },
+
+{
+  "label": "省直辖县级行政区划",
+  "value": "4190" }],
+
+
+[{
+  "label": "武汉市",
+  "value": "4201" },
+
+{
+  "label": "黄石市",
+  "value": "4202" },
+
+{
+  "label": "十堰市",
+  "value": "4203" },
+
+{
+  "label": "宜昌市",
+  "value": "4205" },
+
+{
+  "label": "襄阳市",
+  "value": "4206" },
+
+{
+  "label": "鄂州市",
+  "value": "4207" },
+
+{
+  "label": "荆门市",
+  "value": "4208" },
+
+{
+  "label": "孝感市",
+  "value": "4209" },
+
+{
+  "label": "荆州市",
+  "value": "4210" },
+
+{
+  "label": "黄冈市",
+  "value": "4211" },
+
+{
+  "label": "咸宁市",
+  "value": "4212" },
+
+{
+  "label": "随州市",
+  "value": "4213" },
+
+{
+  "label": "恩施土家族苗族自治州",
+  "value": "4228" },
+
+{
+  "label": "省直辖县级行政区划",
+  "value": "4290" }],
+
+
+[{
+  "label": "长沙市",
+  "value": "4301" },
+
+{
+  "label": "株洲市",
+  "value": "4302" },
+
+{
+  "label": "湘潭市",
+  "value": "4303" },
+
+{
+  "label": "衡阳市",
+  "value": "4304" },
+
+{
+  "label": "邵阳市",
+  "value": "4305" },
+
+{
+  "label": "岳阳市",
+  "value": "4306" },
+
+{
+  "label": "常德市",
+  "value": "4307" },
+
+{
+  "label": "张家界市",
+  "value": "4308" },
+
+{
+  "label": "益阳市",
+  "value": "4309" },
+
+{
+  "label": "郴州市",
+  "value": "4310" },
+
+{
+  "label": "永州市",
+  "value": "4311" },
+
+{
+  "label": "怀化市",
+  "value": "4312" },
+
+{
+  "label": "娄底市",
+  "value": "4313" },
+
+{
+  "label": "湘西土家族苗族自治州",
+  "value": "4331" }],
+
+
+[{
+  "label": "广州市",
+  "value": "4401" },
+
+{
+  "label": "韶关市",
+  "value": "4402" },
+
+{
+  "label": "深圳市",
+  "value": "4403" },
+
+{
+  "label": "珠海市",
+  "value": "4404" },
+
+{
+  "label": "汕头市",
+  "value": "4405" },
+
+{
+  "label": "佛山市",
+  "value": "4406" },
+
+{
+  "label": "江门市",
+  "value": "4407" },
+
+{
+  "label": "湛江市",
+  "value": "4408" },
+
+{
+  "label": "茂名市",
+  "value": "4409" },
+
+{
+  "label": "肇庆市",
+  "value": "4412" },
+
+{
+  "label": "惠州市",
+  "value": "4413" },
+
+{
+  "label": "梅州市",
+  "value": "4414" },
+
+{
+  "label": "汕尾市",
+  "value": "4415" },
+
+{
+  "label": "河源市",
+  "value": "4416" },
+
+{
+  "label": "阳江市",
+  "value": "4417" },
+
+{
+  "label": "清远市",
+  "value": "4418" },
+
+{
+  "label": "东莞市",
+  "value": "4419" },
+
+{
+  "label": "中山市",
+  "value": "4420" },
+
+{
+  "label": "潮州市",
+  "value": "4451" },
+
+{
+  "label": "揭阳市",
+  "value": "4452" },
+
+{
+  "label": "云浮市",
+  "value": "4453" }],
+
+
+[{
+  "label": "南宁市",
+  "value": "4501" },
+
+{
+  "label": "柳州市",
+  "value": "4502" },
+
+{
+  "label": "桂林市",
+  "value": "4503" },
+
+{
+  "label": "梧州市",
+  "value": "4504" },
+
+{
+  "label": "北海市",
+  "value": "4505" },
+
+{
+  "label": "防城港市",
+  "value": "4506" },
+
+{
+  "label": "钦州市",
+  "value": "4507" },
+
+{
+  "label": "贵港市",
+  "value": "4508" },
+
+{
+  "label": "玉林市",
+  "value": "4509" },
+
+{
+  "label": "百色市",
+  "value": "4510" },
+
+{
+  "label": "贺州市",
+  "value": "4511" },
+
+{
+  "label": "河池市",
+  "value": "4512" },
+
+{
+  "label": "来宾市",
+  "value": "4513" },
+
+{
+  "label": "崇左市",
+  "value": "4514" }],
+
+
+[{
+  "label": "海口市",
+  "value": "4601" },
+
+{
+  "label": "三亚市",
+  "value": "4602" },
+
+{
+  "label": "三沙市",
+  "value": "4603" },
+
+{
+  "label": "儋州市",
+  "value": "4604" },
+
+{
+  "label": "省直辖县级行政区划",
+  "value": "4690" }],
+
+
+[{
+  "label": "市辖区",
+  "value": "5001" },
+
+{
+  "label": "县",
+  "value": "5002" }],
+
+
+[{
+  "label": "成都市",
+  "value": "5101" },
+
+{
+  "label": "自贡市",
+  "value": "5103" },
+
+{
+  "label": "攀枝花市",
+  "value": "5104" },
+
+{
+  "label": "泸州市",
+  "value": "5105" },
+
+{
+  "label": "德阳市",
+  "value": "5106" },
+
+{
+  "label": "绵阳市",
+  "value": "5107" },
+
+{
+  "label": "广元市",
+  "value": "5108" },
+
+{
+  "label": "遂宁市",
+  "value": "5109" },
+
+{
+  "label": "内江市",
+  "value": "5110" },
+
+{
+  "label": "乐山市",
+  "value": "5111" },
+
+{
+  "label": "南充市",
+  "value": "5113" },
+
+{
+  "label": "眉山市",
+  "value": "5114" },
+
+{
+  "label": "宜宾市",
+  "value": "5115" },
+
+{
+  "label": "广安市",
+  "value": "5116" },
+
+{
+  "label": "达州市",
+  "value": "5117" },
+
+{
+  "label": "雅安市",
+  "value": "5118" },
+
+{
+  "label": "巴中市",
+  "value": "5119" },
+
+{
+  "label": "资阳市",
+  "value": "5120" },
+
+{
+  "label": "阿坝藏族羌族自治州",
+  "value": "5132" },
+
+{
+  "label": "甘孜藏族自治州",
+  "value": "5133" },
+
+{
+  "label": "凉山彝族自治州",
+  "value": "5134" }],
+
+
+[{
+  "label": "贵阳市",
+  "value": "5201" },
+
+{
+  "label": "六盘水市",
+  "value": "5202" },
+
+{
+  "label": "遵义市",
+  "value": "5203" },
+
+{
+  "label": "安顺市",
+  "value": "5204" },
+
+{
+  "label": "毕节市",
+  "value": "5205" },
+
+{
+  "label": "铜仁市",
+  "value": "5206" },
+
+{
+  "label": "黔西南布依族苗族自治州",
+  "value": "5223" },
+
+{
+  "label": "黔东南苗族侗族自治州",
+  "value": "5226" },
+
+{
+  "label": "黔南布依族苗族自治州",
+  "value": "5227" }],
+
+
+[{
+  "label": "昆明市",
+  "value": "5301" },
+
+{
+  "label": "曲靖市",
+  "value": "5303" },
+
+{
+  "label": "玉溪市",
+  "value": "5304" },
+
+{
+  "label": "保山市",
+  "value": "5305" },
+
+{
+  "label": "昭通市",
+  "value": "5306" },
+
+{
+  "label": "丽江市",
+  "value": "5307" },
+
+{
+  "label": "普洱市",
+  "value": "5308" },
+
+{
+  "label": "临沧市",
+  "value": "5309" },
+
+{
+  "label": "楚雄彝族自治州",
+  "value": "5323" },
+
+{
+  "label": "红河哈尼族彝族自治州",
+  "value": "5325" },
+
+{
+  "label": "文山壮族苗族自治州",
+  "value": "5326" },
+
+{
+  "label": "西双版纳傣族自治州",
+  "value": "5328" },
+
+{
+  "label": "大理白族自治州",
+  "value": "5329" },
+
+{
+  "label": "德宏傣族景颇族自治州",
+  "value": "5331" },
+
+{
+  "label": "怒江傈僳族自治州",
+  "value": "5333" },
+
+{
+  "label": "迪庆藏族自治州",
+  "value": "5334" }],
+
+
+[{
+  "label": "拉萨市",
+  "value": "5401" },
+
+{
+  "label": "日喀则市",
+  "value": "5402" },
+
+{
+  "label": "昌都市",
+  "value": "5403" },
+
+{
+  "label": "林芝市",
+  "value": "5404" },
+
+{
+  "label": "山南市",
+  "value": "5405" },
+
+{
+  "label": "那曲地区",
+  "value": "5424" },
+
+{
+  "label": "阿里地区",
+  "value": "5425" }],
+
+
+[{
+  "label": "西安市",
+  "value": "6101" },
+
+{
+  "label": "铜川市",
+  "value": "6102" },
+
+{
+  "label": "宝鸡市",
+  "value": "6103" },
+
+{
+  "label": "咸阳市",
+  "value": "6104" },
+
+{
+  "label": "渭南市",
+  "value": "6105" },
+
+{
+  "label": "延安市",
+  "value": "6106" },
+
+{
+  "label": "汉中市",
+  "value": "6107" },
+
+{
+  "label": "榆林市",
+  "value": "6108" },
+
+{
+  "label": "安康市",
+  "value": "6109" },
+
+{
+  "label": "商洛市",
+  "value": "6110" }],
+
+
+[{
+  "label": "兰州市",
+  "value": "6201" },
+
+{
+  "label": "嘉峪关市",
+  "value": "6202" },
+
+{
+  "label": "金昌市",
+  "value": "6203" },
+
+{
+  "label": "白银市",
+  "value": "6204" },
+
+{
+  "label": "天水市",
+  "value": "6205" },
+
+{
+  "label": "武威市",
+  "value": "6206" },
+
+{
+  "label": "张掖市",
+  "value": "6207" },
+
+{
+  "label": "平凉市",
+  "value": "6208" },
+
+{
+  "label": "酒泉市",
+  "value": "6209" },
+
+{
+  "label": "庆阳市",
+  "value": "6210" },
+
+{
+  "label": "定西市",
+  "value": "6211" },
+
+{
+  "label": "陇南市",
+  "value": "6212" },
+
+{
+  "label": "临夏回族自治州",
+  "value": "6229" },
+
+{
+  "label": "甘南藏族自治州",
+  "value": "6230" }],
+
+
+[{
+  "label": "西宁市",
+  "value": "6301" },
+
+{
+  "label": "海东市",
+  "value": "6302" },
+
+{
+  "label": "海北藏族自治州",
+  "value": "6322" },
+
+{
+  "label": "黄南藏族自治州",
+  "value": "6323" },
+
+{
+  "label": "海南藏族自治州",
+  "value": "6325" },
+
+{
+  "label": "果洛藏族自治州",
+  "value": "6326" },
+
+{
+  "label": "玉树藏族自治州",
+  "value": "6327" },
+
+{
+  "label": "海西蒙古族藏族自治州",
+  "value": "6328" }],
+
+
+[{
+  "label": "银川市",
+  "value": "6401" },
+
+{
+  "label": "石嘴山市",
+  "value": "6402" },
+
+{
+  "label": "吴忠市",
+  "value": "6403" },
+
+{
+  "label": "固原市",
+  "value": "6404" },
+
+{
+  "label": "中卫市",
+  "value": "6405" }],
+
+
+[{
+  "label": "乌鲁木齐市",
+  "value": "6501" },
+
+{
+  "label": "克拉玛依市",
+  "value": "6502" },
+
+{
+  "label": "吐鲁番市",
+  "value": "6504" },
+
+{
+  "label": "哈密市",
+  "value": "6505" },
+
+{
+  "label": "昌吉回族自治州",
+  "value": "6523" },
+
+{
+  "label": "博尔塔拉蒙古自治州",
+  "value": "6527" },
+
+{
+  "label": "巴音郭楞蒙古自治州",
+  "value": "6528" },
+
+{
+  "label": "阿克苏地区",
+  "value": "6529" },
+
+{
+  "label": "克孜勒苏柯尔克孜自治州",
+  "value": "6530" },
+
+{
+  "label": "喀什地区",
+  "value": "6531" },
+
+{
+  "label": "和田地区",
+  "value": "6532" },
+
+{
+  "label": "伊犁哈萨克自治州",
+  "value": "6540" },
+
+{
+  "label": "塔城地区",
+  "value": "6542" },
+
+{
+  "label": "阿勒泰地区",
+  "value": "6543" },
+
+{
+  "label": "自治区直辖县级行政区划",
+  "value": "6590" }],
+
+
+[{
+  "label": "台北",
+  "value": "6601" },
+
+{
+  "label": "高雄",
+  "value": "6602" },
+
+{
+  "label": "基隆",
+  "value": "6603" },
+
+{
+  "label": "台中",
+  "value": "6604" },
+
+{
+  "label": "台南",
+  "value": "6605" },
+
+{
+  "label": "新竹",
+  "value": "6606" },
+
+{
+  "label": "嘉义",
+  "value": "6607" },
+
+{
+  "label": "宜兰",
+  "value": "6608" },
+
+{
+  "label": "桃园",
+  "value": "6609" },
+
+{
+  "label": "苗栗",
+  "value": "6610" },
+
+{
+  "label": "彰化",
+  "value": "6611" },
+
+{
+  "label": "南投",
+  "value": "6612" },
+
+{
+  "label": "云林",
+  "value": "6613" },
+
+{
+  "label": "屏东",
+  "value": "6614" },
+
+{
+  "label": "台东",
+  "value": "6615" },
+
+{
+  "label": "花莲",
+  "value": "6616" },
+
+{
+  "label": "澎湖",
+  "value": "6617" }],
+
+
+[{
+  "label": "香港岛",
+  "value": "6701" },
+
+{
+  "label": "九龙",
+  "value": "6702" },
+
+{
+  "label": "新界",
+  "value": "6703" }],
+
+
+[{
+  "label": "澳门半岛",
+  "value": "6801" },
+
+{
+  "label": "氹仔岛",
+  "value": "6802" },
+
+{
+  "label": "路环岛",
+  "value": "6803" },
+
+{
+  "label": "路氹城",
+  "value": "6804" }]];var _default =
+
+
+
+cityData;exports.default = _default;
+
+/***/ }),
+
+/***/ 190:
+/*!***********************************************************************!*\
+  !*** E:/code/agile-front/agile/components/w-picker/city-data/area.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12837,3705 +20342,272 @@ areaData;exports.default = _default;
 
 /***/ }),
 
-/***/ "../../../../../个人信息/agile/components/w-picker/city-data/city.js":
-/*!***********************************************************!*\
-  !*** F:/个人信息/agile/components/w-picker/city-data/city.js ***!
-  \***********************************************************/
+/***/ 191:
+/*!****************************************************!*\
+  !*** E:/code/agile-front/agile/common/w-picker.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /* eslint-disable */
-var cityData = [
-[{
-  "label": "市辖区",
-  "value": "1101" }],
-
-[{
-  "label": "市辖区",
-  "value": "1201" }],
-
-[{
-  "label": "石家庄市",
-  "value": "1301" },
-
-{
-  "label": "唐山市",
-  "value": "1302" },
-
-{
-  "label": "秦皇岛市",
-  "value": "1303" },
-
-{
-  "label": "邯郸市",
-  "value": "1304" },
-
-{
-  "label": "邢台市",
-  "value": "1305" },
-
-{
-  "label": "保定市",
-  "value": "1306" },
-
-{
-  "label": "张家口市",
-  "value": "1307" },
-
-{
-  "label": "承德市",
-  "value": "1308" },
-
-{
-  "label": "沧州市",
-  "value": "1309" },
-
-{
-  "label": "廊坊市",
-  "value": "1310" },
-
-{
-  "label": "衡水市",
-  "value": "1311" }],
-
-
-[{
-  "label": "太原市",
-  "value": "1401" },
-
-{
-  "label": "大同市",
-  "value": "1402" },
-
-{
-  "label": "阳泉市",
-  "value": "1403" },
-
-{
-  "label": "长治市",
-  "value": "1404" },
-
-{
-  "label": "晋城市",
-  "value": "1405" },
-
-{
-  "label": "朔州市",
-  "value": "1406" },
-
-{
-  "label": "晋中市",
-  "value": "1407" },
-
-{
-  "label": "运城市",
-  "value": "1408" },
-
-{
-  "label": "忻州市",
-  "value": "1409" },
-
-{
-  "label": "临汾市",
-  "value": "1410" },
-
-{
-  "label": "吕梁市",
-  "value": "1411" }],
-
-
-[{
-  "label": "呼和浩特市",
-  "value": "1501" },
-
-{
-  "label": "包头市",
-  "value": "1502" },
-
-{
-  "label": "乌海市",
-  "value": "1503" },
-
-{
-  "label": "赤峰市",
-  "value": "1504" },
-
-{
-  "label": "通辽市",
-  "value": "1505" },
-
-{
-  "label": "鄂尔多斯市",
-  "value": "1506" },
-
-{
-  "label": "呼伦贝尔市",
-  "value": "1507" },
-
-{
-  "label": "巴彦淖尔市",
-  "value": "1508" },
-
-{
-  "label": "乌兰察布市",
-  "value": "1509" },
-
-{
-  "label": "兴安盟",
-  "value": "1522" },
-
-{
-  "label": "锡林郭勒盟",
-  "value": "1525" },
-
-{
-  "label": "阿拉善盟",
-  "value": "1529" }],
-
-
-[{
-  "label": "沈阳市",
-  "value": "2101" },
-
-{
-  "label": "大连市",
-  "value": "2102" },
-
-{
-  "label": "鞍山市",
-  "value": "2103" },
-
-{
-  "label": "抚顺市",
-  "value": "2104" },
-
-{
-  "label": "本溪市",
-  "value": "2105" },
-
-{
-  "label": "丹东市",
-  "value": "2106" },
-
-{
-  "label": "锦州市",
-  "value": "2107" },
-
-{
-  "label": "营口市",
-  "value": "2108" },
-
-{
-  "label": "阜新市",
-  "value": "2109" },
-
-{
-  "label": "辽阳市",
-  "value": "2110" },
-
-{
-  "label": "盘锦市",
-  "value": "2111" },
-
-{
-  "label": "铁岭市",
-  "value": "2112" },
-
-{
-  "label": "朝阳市",
-  "value": "2113" },
-
-{
-  "label": "葫芦岛市",
-  "value": "2114" }],
-
-
-[{
-  "label": "长春市",
-  "value": "2201" },
-
-{
-  "label": "吉林市",
-  "value": "2202" },
-
-{
-  "label": "四平市",
-  "value": "2203" },
-
-{
-  "label": "辽源市",
-  "value": "2204" },
-
-{
-  "label": "通化市",
-  "value": "2205" },
-
-{
-  "label": "白山市",
-  "value": "2206" },
-
-{
-  "label": "松原市",
-  "value": "2207" },
-
-{
-  "label": "白城市",
-  "value": "2208" },
-
-{
-  "label": "延边朝鲜族自治州",
-  "value": "2224" }],
-
-
-[{
-  "label": "哈尔滨市",
-  "value": "2301" },
-
-{
-  "label": "齐齐哈尔市",
-  "value": "2302" },
-
-{
-  "label": "鸡西市",
-  "value": "2303" },
-
-{
-  "label": "鹤岗市",
-  "value": "2304" },
-
-{
-  "label": "双鸭山市",
-  "value": "2305" },
-
-{
-  "label": "大庆市",
-  "value": "2306" },
-
-{
-  "label": "伊春市",
-  "value": "2307" },
-
-{
-  "label": "佳木斯市",
-  "value": "2308" },
-
-{
-  "label": "七台河市",
-  "value": "2309" },
-
-{
-  "label": "牡丹江市",
-  "value": "2310" },
-
-{
-  "label": "黑河市",
-  "value": "2311" },
-
-{
-  "label": "绥化市",
-  "value": "2312" },
-
-{
-  "label": "大兴安岭地区",
-  "value": "2327" }],
-
-
-[{
-  "label": "市辖区",
-  "value": "3101" }],
-
-[{
-  "label": "南京市",
-  "value": "3201" },
-
-{
-  "label": "无锡市",
-  "value": "3202" },
-
-{
-  "label": "徐州市",
-  "value": "3203" },
-
-{
-  "label": "常州市",
-  "value": "3204" },
-
-{
-  "label": "苏州市",
-  "value": "3205" },
-
-{
-  "label": "南通市",
-  "value": "3206" },
-
-{
-  "label": "连云港市",
-  "value": "3207" },
-
-{
-  "label": "淮安市",
-  "value": "3208" },
-
-{
-  "label": "盐城市",
-  "value": "3209" },
-
-{
-  "label": "扬州市",
-  "value": "3210" },
-
-{
-  "label": "镇江市",
-  "value": "3211" },
-
-{
-  "label": "泰州市",
-  "value": "3212" },
-
-{
-  "label": "宿迁市",
-  "value": "3213" }],
-
-
-[{
-  "label": "杭州市",
-  "value": "3301" },
-
-{
-  "label": "宁波市",
-  "value": "3302" },
-
-{
-  "label": "温州市",
-  "value": "3303" },
-
-{
-  "label": "嘉兴市",
-  "value": "3304" },
-
-{
-  "label": "湖州市",
-  "value": "3305" },
-
-{
-  "label": "绍兴市",
-  "value": "3306" },
-
-{
-  "label": "金华市",
-  "value": "3307" },
-
-{
-  "label": "衢州市",
-  "value": "3308" },
-
-{
-  "label": "舟山市",
-  "value": "3309" },
-
-{
-  "label": "台州市",
-  "value": "3310" },
-
-{
-  "label": "丽水市",
-  "value": "3311" }],
-
-
-[{
-  "label": "合肥市",
-  "value": "3401" },
-
-{
-  "label": "芜湖市",
-  "value": "3402" },
-
-{
-  "label": "蚌埠市",
-  "value": "3403" },
-
-{
-  "label": "淮南市",
-  "value": "3404" },
-
-{
-  "label": "马鞍山市",
-  "value": "3405" },
-
-{
-  "label": "淮北市",
-  "value": "3406" },
-
-{
-  "label": "铜陵市",
-  "value": "3407" },
-
-{
-  "label": "安庆市",
-  "value": "3408" },
-
-{
-  "label": "黄山市",
-  "value": "3410" },
-
-{
-  "label": "滁州市",
-  "value": "3411" },
-
-{
-  "label": "阜阳市",
-  "value": "3412" },
-
-{
-  "label": "宿州市",
-  "value": "3413" },
-
-{
-  "label": "六安市",
-  "value": "3415" },
-
-{
-  "label": "亳州市",
-  "value": "3416" },
-
-{
-  "label": "池州市",
-  "value": "3417" },
-
-{
-  "label": "宣城市",
-  "value": "3418" }],
-
-
-[{
-  "label": "福州市",
-  "value": "3501" },
-
-{
-  "label": "厦门市",
-  "value": "3502" },
-
-{
-  "label": "莆田市",
-  "value": "3503" },
-
-{
-  "label": "三明市",
-  "value": "3504" },
-
-{
-  "label": "泉州市",
-  "value": "3505" },
-
-{
-  "label": "漳州市",
-  "value": "3506" },
-
-{
-  "label": "南平市",
-  "value": "3507" },
-
-{
-  "label": "龙岩市",
-  "value": "3508" },
-
-{
-  "label": "宁德市",
-  "value": "3509" }],
-
-
-[{
-  "label": "南昌市",
-  "value": "3601" },
-
-{
-  "label": "景德镇市",
-  "value": "3602" },
-
-{
-  "label": "萍乡市",
-  "value": "3603" },
-
-{
-  "label": "九江市",
-  "value": "3604" },
-
-{
-  "label": "新余市",
-  "value": "3605" },
-
-{
-  "label": "鹰潭市",
-  "value": "3606" },
-
-{
-  "label": "赣州市",
-  "value": "3607" },
-
-{
-  "label": "吉安市",
-  "value": "3608" },
-
-{
-  "label": "宜春市",
-  "value": "3609" },
-
-{
-  "label": "抚州市",
-  "value": "3610" },
-
-{
-  "label": "上饶市",
-  "value": "3611" }],
-
-
-[{
-  "label": "济南市",
-  "value": "3701" },
-
-{
-  "label": "青岛市",
-  "value": "3702" },
-
-{
-  "label": "淄博市",
-  "value": "3703" },
-
-{
-  "label": "枣庄市",
-  "value": "3704" },
-
-{
-  "label": "东营市",
-  "value": "3705" },
-
-{
-  "label": "烟台市",
-  "value": "3706" },
-
-{
-  "label": "潍坊市",
-  "value": "3707" },
-
-{
-  "label": "济宁市",
-  "value": "3708" },
-
-{
-  "label": "泰安市",
-  "value": "3709" },
-
-{
-  "label": "威海市",
-  "value": "3710" },
-
-{
-  "label": "日照市",
-  "value": "3711" },
-
-{
-  "label": "莱芜市",
-  "value": "3712" },
-
-{
-  "label": "临沂市",
-  "value": "3713" },
-
-{
-  "label": "德州市",
-  "value": "3714" },
-
-{
-  "label": "聊城市",
-  "value": "3715" },
-
-{
-  "label": "滨州市",
-  "value": "3716" },
-
-{
-  "label": "菏泽市",
-  "value": "3717" }],
-
-
-[{
-  "label": "郑州市",
-  "value": "4101" },
-
-{
-  "label": "开封市",
-  "value": "4102" },
-
-{
-  "label": "洛阳市",
-  "value": "4103" },
-
-{
-  "label": "平顶山市",
-  "value": "4104" },
-
-{
-  "label": "安阳市",
-  "value": "4105" },
-
-{
-  "label": "鹤壁市",
-  "value": "4106" },
-
-{
-  "label": "新乡市",
-  "value": "4107" },
-
-{
-  "label": "焦作市",
-  "value": "4108" },
-
-{
-  "label": "濮阳市",
-  "value": "4109" },
-
-{
-  "label": "许昌市",
-  "value": "4110" },
-
-{
-  "label": "漯河市",
-  "value": "4111" },
-
-{
-  "label": "三门峡市",
-  "value": "4112" },
-
-{
-  "label": "南阳市",
-  "value": "4113" },
-
-{
-  "label": "商丘市",
-  "value": "4114" },
-
-{
-  "label": "信阳市",
-  "value": "4115" },
-
-{
-  "label": "周口市",
-  "value": "4116" },
-
-{
-  "label": "驻马店市",
-  "value": "4117" },
-
-{
-  "label": "省直辖县级行政区划",
-  "value": "4190" }],
-
-
-[{
-  "label": "武汉市",
-  "value": "4201" },
-
-{
-  "label": "黄石市",
-  "value": "4202" },
-
-{
-  "label": "十堰市",
-  "value": "4203" },
-
-{
-  "label": "宜昌市",
-  "value": "4205" },
-
-{
-  "label": "襄阳市",
-  "value": "4206" },
-
-{
-  "label": "鄂州市",
-  "value": "4207" },
-
-{
-  "label": "荆门市",
-  "value": "4208" },
-
-{
-  "label": "孝感市",
-  "value": "4209" },
-
-{
-  "label": "荆州市",
-  "value": "4210" },
-
-{
-  "label": "黄冈市",
-  "value": "4211" },
-
-{
-  "label": "咸宁市",
-  "value": "4212" },
-
-{
-  "label": "随州市",
-  "value": "4213" },
-
-{
-  "label": "恩施土家族苗族自治州",
-  "value": "4228" },
-
-{
-  "label": "省直辖县级行政区划",
-  "value": "4290" }],
-
-
-[{
-  "label": "长沙市",
-  "value": "4301" },
-
-{
-  "label": "株洲市",
-  "value": "4302" },
-
-{
-  "label": "湘潭市",
-  "value": "4303" },
-
-{
-  "label": "衡阳市",
-  "value": "4304" },
-
-{
-  "label": "邵阳市",
-  "value": "4305" },
-
-{
-  "label": "岳阳市",
-  "value": "4306" },
-
-{
-  "label": "常德市",
-  "value": "4307" },
-
-{
-  "label": "张家界市",
-  "value": "4308" },
-
-{
-  "label": "益阳市",
-  "value": "4309" },
-
-{
-  "label": "郴州市",
-  "value": "4310" },
-
-{
-  "label": "永州市",
-  "value": "4311" },
-
-{
-  "label": "怀化市",
-  "value": "4312" },
-
-{
-  "label": "娄底市",
-  "value": "4313" },
-
-{
-  "label": "湘西土家族苗族自治州",
-  "value": "4331" }],
-
-
-[{
-  "label": "广州市",
-  "value": "4401" },
-
-{
-  "label": "韶关市",
-  "value": "4402" },
-
-{
-  "label": "深圳市",
-  "value": "4403" },
-
-{
-  "label": "珠海市",
-  "value": "4404" },
-
-{
-  "label": "汕头市",
-  "value": "4405" },
-
-{
-  "label": "佛山市",
-  "value": "4406" },
-
-{
-  "label": "江门市",
-  "value": "4407" },
-
-{
-  "label": "湛江市",
-  "value": "4408" },
-
-{
-  "label": "茂名市",
-  "value": "4409" },
-
-{
-  "label": "肇庆市",
-  "value": "4412" },
-
-{
-  "label": "惠州市",
-  "value": "4413" },
-
-{
-  "label": "梅州市",
-  "value": "4414" },
-
-{
-  "label": "汕尾市",
-  "value": "4415" },
-
-{
-  "label": "河源市",
-  "value": "4416" },
-
-{
-  "label": "阳江市",
-  "value": "4417" },
-
-{
-  "label": "清远市",
-  "value": "4418" },
-
-{
-  "label": "东莞市",
-  "value": "4419" },
-
-{
-  "label": "中山市",
-  "value": "4420" },
-
-{
-  "label": "潮州市",
-  "value": "4451" },
-
-{
-  "label": "揭阳市",
-  "value": "4452" },
-
-{
-  "label": "云浮市",
-  "value": "4453" }],
-
-
-[{
-  "label": "南宁市",
-  "value": "4501" },
-
-{
-  "label": "柳州市",
-  "value": "4502" },
-
-{
-  "label": "桂林市",
-  "value": "4503" },
-
-{
-  "label": "梧州市",
-  "value": "4504" },
-
-{
-  "label": "北海市",
-  "value": "4505" },
-
-{
-  "label": "防城港市",
-  "value": "4506" },
-
-{
-  "label": "钦州市",
-  "value": "4507" },
-
-{
-  "label": "贵港市",
-  "value": "4508" },
-
-{
-  "label": "玉林市",
-  "value": "4509" },
-
-{
-  "label": "百色市",
-  "value": "4510" },
-
-{
-  "label": "贺州市",
-  "value": "4511" },
-
-{
-  "label": "河池市",
-  "value": "4512" },
-
-{
-  "label": "来宾市",
-  "value": "4513" },
-
-{
-  "label": "崇左市",
-  "value": "4514" }],
-
-
-[{
-  "label": "海口市",
-  "value": "4601" },
-
-{
-  "label": "三亚市",
-  "value": "4602" },
-
-{
-  "label": "三沙市",
-  "value": "4603" },
-
-{
-  "label": "儋州市",
-  "value": "4604" },
-
-{
-  "label": "省直辖县级行政区划",
-  "value": "4690" }],
-
-
-[{
-  "label": "市辖区",
-  "value": "5001" },
-
-{
-  "label": "县",
-  "value": "5002" }],
-
-
-[{
-  "label": "成都市",
-  "value": "5101" },
-
-{
-  "label": "自贡市",
-  "value": "5103" },
-
-{
-  "label": "攀枝花市",
-  "value": "5104" },
-
-{
-  "label": "泸州市",
-  "value": "5105" },
-
-{
-  "label": "德阳市",
-  "value": "5106" },
-
-{
-  "label": "绵阳市",
-  "value": "5107" },
-
-{
-  "label": "广元市",
-  "value": "5108" },
-
-{
-  "label": "遂宁市",
-  "value": "5109" },
-
-{
-  "label": "内江市",
-  "value": "5110" },
-
-{
-  "label": "乐山市",
-  "value": "5111" },
-
-{
-  "label": "南充市",
-  "value": "5113" },
-
-{
-  "label": "眉山市",
-  "value": "5114" },
-
-{
-  "label": "宜宾市",
-  "value": "5115" },
-
-{
-  "label": "广安市",
-  "value": "5116" },
-
-{
-  "label": "达州市",
-  "value": "5117" },
-
-{
-  "label": "雅安市",
-  "value": "5118" },
-
-{
-  "label": "巴中市",
-  "value": "5119" },
-
-{
-  "label": "资阳市",
-  "value": "5120" },
-
-{
-  "label": "阿坝藏族羌族自治州",
-  "value": "5132" },
-
-{
-  "label": "甘孜藏族自治州",
-  "value": "5133" },
-
-{
-  "label": "凉山彝族自治州",
-  "value": "5134" }],
-
-
-[{
-  "label": "贵阳市",
-  "value": "5201" },
-
-{
-  "label": "六盘水市",
-  "value": "5202" },
-
-{
-  "label": "遵义市",
-  "value": "5203" },
-
-{
-  "label": "安顺市",
-  "value": "5204" },
-
-{
-  "label": "毕节市",
-  "value": "5205" },
-
-{
-  "label": "铜仁市",
-  "value": "5206" },
-
-{
-  "label": "黔西南布依族苗族自治州",
-  "value": "5223" },
-
-{
-  "label": "黔东南苗族侗族自治州",
-  "value": "5226" },
-
-{
-  "label": "黔南布依族苗族自治州",
-  "value": "5227" }],
-
-
-[{
-  "label": "昆明市",
-  "value": "5301" },
-
-{
-  "label": "曲靖市",
-  "value": "5303" },
-
-{
-  "label": "玉溪市",
-  "value": "5304" },
-
-{
-  "label": "保山市",
-  "value": "5305" },
-
-{
-  "label": "昭通市",
-  "value": "5306" },
-
-{
-  "label": "丽江市",
-  "value": "5307" },
-
-{
-  "label": "普洱市",
-  "value": "5308" },
-
-{
-  "label": "临沧市",
-  "value": "5309" },
-
-{
-  "label": "楚雄彝族自治州",
-  "value": "5323" },
-
-{
-  "label": "红河哈尼族彝族自治州",
-  "value": "5325" },
-
-{
-  "label": "文山壮族苗族自治州",
-  "value": "5326" },
-
-{
-  "label": "西双版纳傣族自治州",
-  "value": "5328" },
-
-{
-  "label": "大理白族自治州",
-  "value": "5329" },
-
-{
-  "label": "德宏傣族景颇族自治州",
-  "value": "5331" },
-
-{
-  "label": "怒江傈僳族自治州",
-  "value": "5333" },
-
-{
-  "label": "迪庆藏族自治州",
-  "value": "5334" }],
-
-
-[{
-  "label": "拉萨市",
-  "value": "5401" },
-
-{
-  "label": "日喀则市",
-  "value": "5402" },
-
-{
-  "label": "昌都市",
-  "value": "5403" },
-
-{
-  "label": "林芝市",
-  "value": "5404" },
-
-{
-  "label": "山南市",
-  "value": "5405" },
-
-{
-  "label": "那曲地区",
-  "value": "5424" },
-
-{
-  "label": "阿里地区",
-  "value": "5425" }],
-
-
-[{
-  "label": "西安市",
-  "value": "6101" },
-
-{
-  "label": "铜川市",
-  "value": "6102" },
-
-{
-  "label": "宝鸡市",
-  "value": "6103" },
-
-{
-  "label": "咸阳市",
-  "value": "6104" },
-
-{
-  "label": "渭南市",
-  "value": "6105" },
-
-{
-  "label": "延安市",
-  "value": "6106" },
-
-{
-  "label": "汉中市",
-  "value": "6107" },
-
-{
-  "label": "榆林市",
-  "value": "6108" },
-
-{
-  "label": "安康市",
-  "value": "6109" },
-
-{
-  "label": "商洛市",
-  "value": "6110" }],
-
-
-[{
-  "label": "兰州市",
-  "value": "6201" },
-
-{
-  "label": "嘉峪关市",
-  "value": "6202" },
-
-{
-  "label": "金昌市",
-  "value": "6203" },
-
-{
-  "label": "白银市",
-  "value": "6204" },
-
-{
-  "label": "天水市",
-  "value": "6205" },
-
-{
-  "label": "武威市",
-  "value": "6206" },
-
-{
-  "label": "张掖市",
-  "value": "6207" },
-
-{
-  "label": "平凉市",
-  "value": "6208" },
-
-{
-  "label": "酒泉市",
-  "value": "6209" },
-
-{
-  "label": "庆阳市",
-  "value": "6210" },
-
-{
-  "label": "定西市",
-  "value": "6211" },
-
-{
-  "label": "陇南市",
-  "value": "6212" },
-
-{
-  "label": "临夏回族自治州",
-  "value": "6229" },
-
-{
-  "label": "甘南藏族自治州",
-  "value": "6230" }],
-
-
-[{
-  "label": "西宁市",
-  "value": "6301" },
-
-{
-  "label": "海东市",
-  "value": "6302" },
-
-{
-  "label": "海北藏族自治州",
-  "value": "6322" },
-
-{
-  "label": "黄南藏族自治州",
-  "value": "6323" },
-
-{
-  "label": "海南藏族自治州",
-  "value": "6325" },
-
-{
-  "label": "果洛藏族自治州",
-  "value": "6326" },
-
-{
-  "label": "玉树藏族自治州",
-  "value": "6327" },
-
-{
-  "label": "海西蒙古族藏族自治州",
-  "value": "6328" }],
-
-
-[{
-  "label": "银川市",
-  "value": "6401" },
-
-{
-  "label": "石嘴山市",
-  "value": "6402" },
-
-{
-  "label": "吴忠市",
-  "value": "6403" },
-
-{
-  "label": "固原市",
-  "value": "6404" },
-
-{
-  "label": "中卫市",
-  "value": "6405" }],
-
-
-[{
-  "label": "乌鲁木齐市",
-  "value": "6501" },
-
-{
-  "label": "克拉玛依市",
-  "value": "6502" },
-
-{
-  "label": "吐鲁番市",
-  "value": "6504" },
-
-{
-  "label": "哈密市",
-  "value": "6505" },
-
-{
-  "label": "昌吉回族自治州",
-  "value": "6523" },
-
-{
-  "label": "博尔塔拉蒙古自治州",
-  "value": "6527" },
-
-{
-  "label": "巴音郭楞蒙古自治州",
-  "value": "6528" },
-
-{
-  "label": "阿克苏地区",
-  "value": "6529" },
-
-{
-  "label": "克孜勒苏柯尔克孜自治州",
-  "value": "6530" },
-
-{
-  "label": "喀什地区",
-  "value": "6531" },
-
-{
-  "label": "和田地区",
-  "value": "6532" },
-
-{
-  "label": "伊犁哈萨克自治州",
-  "value": "6540" },
-
-{
-  "label": "塔城地区",
-  "value": "6542" },
-
-{
-  "label": "阿勒泰地区",
-  "value": "6543" },
-
-{
-  "label": "自治区直辖县级行政区划",
-  "value": "6590" }],
-
-
-[{
-  "label": "台北",
-  "value": "6601" },
-
-{
-  "label": "高雄",
-  "value": "6602" },
-
-{
-  "label": "基隆",
-  "value": "6603" },
-
-{
-  "label": "台中",
-  "value": "6604" },
-
-{
-  "label": "台南",
-  "value": "6605" },
-
-{
-  "label": "新竹",
-  "value": "6606" },
-
-{
-  "label": "嘉义",
-  "value": "6607" },
-
-{
-  "label": "宜兰",
-  "value": "6608" },
-
-{
-  "label": "桃园",
-  "value": "6609" },
-
-{
-  "label": "苗栗",
-  "value": "6610" },
-
-{
-  "label": "彰化",
-  "value": "6611" },
-
-{
-  "label": "南投",
-  "value": "6612" },
-
-{
-  "label": "云林",
-  "value": "6613" },
-
-{
-  "label": "屏东",
-  "value": "6614" },
-
-{
-  "label": "台东",
-  "value": "6615" },
-
-{
-  "label": "花莲",
-  "value": "6616" },
-
-{
-  "label": "澎湖",
-  "value": "6617" }],
-
-
-[{
-  "label": "香港岛",
-  "value": "6701" },
-
-{
-  "label": "九龙",
-  "value": "6702" },
-
-{
-  "label": "新界",
-  "value": "6703" }],
-
-
-[{
-  "label": "澳门半岛",
-  "value": "6801" },
-
-{
-  "label": "氹仔岛",
-  "value": "6802" },
-
-{
-  "label": "路环岛",
-  "value": "6803" },
-
-{
-  "label": "路氹城",
-  "value": "6804" }]];var _default =
-
-
-
-cityData;exports.default = _default;
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/components/w-picker/city-data/province.js":
-/*!***************************************************************!*\
-  !*** F:/个人信息/agile/components/w-picker/city-data/province.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /* eslint-disable */
-var provinceData = [{
-  "label": "北京市",
-  "value": "11" },
-
-{
-  "label": "天津市",
-  "value": "12" },
-
-{
-  "label": "河北省",
-  "value": "13" },
-
-{
-  "label": "山西省",
-  "value": "14" },
-
-{
-  "label": "内蒙古自治区",
-  "value": "15" },
-
-{
-  "label": "辽宁省",
-  "value": "21" },
-
-{
-  "label": "吉林省",
-  "value": "22" },
-
-{
-  "label": "黑龙江省",
-  "value": "23" },
-
-{
-  "label": "上海市",
-  "value": "31" },
-
-{
-  "label": "江苏省",
-  "value": "32" },
-
-{
-  "label": "浙江省",
-  "value": "33" },
-
-{
-  "label": "安徽省",
-  "value": "34" },
-
-{
-  "label": "福建省",
-  "value": "35" },
-
-{
-  "label": "江西省",
-  "value": "36" },
-
-{
-  "label": "山东省",
-  "value": "37" },
-
-{
-  "label": "河南省",
-  "value": "41" },
-
-{
-  "label": "湖北省",
-  "value": "42" },
-
-{
-  "label": "湖南省",
-  "value": "43" },
-
-{
-  "label": "广东省",
-  "value": "44" },
-
-{
-  "label": "广西壮族自治区",
-  "value": "45" },
-
-{
-  "label": "海南省",
-  "value": "46" },
-
-{
-  "label": "重庆市",
-  "value": "50" },
-
-{
-  "label": "四川省",
-  "value": "51" },
-
-{
-  "label": "贵州省",
-  "value": "52" },
-
-{
-  "label": "云南省",
-  "value": "53" },
-
-{
-  "label": "西藏自治区",
-  "value": "54" },
-
-{
-  "label": "陕西省",
-  "value": "61" },
-
-{
-  "label": "甘肃省",
-  "value": "62" },
-
-{
-  "label": "青海省",
-  "value": "63" },
-
-{
-  "label": "宁夏回族自治区",
-  "value": "64" },
-
-{
-  "label": "新疆维吾尔自治区",
-  "value": "65" },
-
-{
-  "label": "台湾",
-  "value": "66" },
-
-{
-  "label": "香港",
-  "value": "67" },
-
-{
-  "label": "澳门",
-  "value": "68" }];var _default =
-
-
-provinceData;exports.default = _default;
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js":
-/*!*****************************!*\
-  !*** F:/个人信息/agile/main.js ***!
-  \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createApp) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ "../../../../../个人信息/agile/App.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-
-_vue.default.config.productionTip = false;
-
-_App.default.mpType = 'app';
-
-var app = new _vue.default(_objectSpread({},
-_App.default));
-
-createApp(app).$mount();
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createApp"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FaddSprint%2FaddSprint\"}":
-/*!**********************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2FaddSprint%2FaddSprint"} ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _addSprint = _interopRequireDefault(__webpack_require__(/*! ./pages/addSprint/addSprint.vue */ "../../../../../个人信息/agile/pages/addSprint/addSprint.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_addSprint.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FaddTask%2FaddTask\"}":
-/*!******************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2FaddTask%2FaddTask"} ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _addTask = _interopRequireDefault(__webpack_require__(/*! ./pages/addTask/addTask.vue */ "../../../../../个人信息/agile/pages/addTask/addTask.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_addTask.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fadmin%2Fadmin\"}":
-/*!**************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fadmin%2Fadmin"} ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _admin = _interopRequireDefault(__webpack_require__(/*! ./pages/admin/admin.vue */ "../../../../../个人信息/agile/pages/admin/admin.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_admin.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fapply%2Fapply\"}":
-/*!**************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fapply%2Fapply"} ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _apply = _interopRequireDefault(__webpack_require__(/*! ./pages/apply/apply.vue */ "../../../../../个人信息/agile/pages/apply/apply.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_apply.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FauditedRoleApply%2FauditedRoleApply\"}":
-/*!************************************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2FauditedRoleApply%2FauditedRoleApply"} ***!
-  \************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _auditedRoleApply = _interopRequireDefault(__webpack_require__(/*! ./pages/auditedRoleApply/auditedRoleApply.vue */ "../../../../../个人信息/agile/pages/auditedRoleApply/auditedRoleApply.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_auditedRoleApply.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FchangeUserRole%2FchangeUserRole\"}":
-/*!********************************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2FchangeUserRole%2FchangeUserRole"} ***!
-  \********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _changeUserRole = _interopRequireDefault(__webpack_require__(/*! ./pages/changeUserRole/changeUserRole.vue */ "../../../../../个人信息/agile/pages/changeUserRole/changeUserRole.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_changeUserRole.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fcomment%2Fcomment\"}":
-/*!******************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fcomment%2Fcomment"} ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _comment = _interopRequireDefault(__webpack_require__(/*! ./pages/comment/comment.vue */ "../../../../../个人信息/agile/pages/comment/comment.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_comment.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Findex%2Findex\"}":
-/*!**************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2Findex%2Findex"} ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _index = _interopRequireDefault(__webpack_require__(/*! ./pages/index/index.vue */ "../../../../../个人信息/agile/pages/index/index.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_index.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Flogin%2Flogin\"}":
-/*!**************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2Flogin%2Flogin"} ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _login = _interopRequireDefault(__webpack_require__(/*! ./pages/login/login.vue */ "../../../../../个人信息/agile/pages/login/login.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_login.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fmessage%2Fmessage\"}":
-/*!******************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fmessage%2Fmessage"} ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _message = _interopRequireDefault(__webpack_require__(/*! ./pages/message/message.vue */ "../../../../../个人信息/agile/pages/message/message.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_message.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fpeople%2Fpeople\"}":
-/*!****************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fpeople%2Fpeople"} ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _people = _interopRequireDefault(__webpack_require__(/*! ./pages/people/people.vue */ "../../../../../个人信息/agile/pages/people/people.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_people.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fpicture%2Fpicture\"}":
-/*!******************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fpicture%2Fpicture"} ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _picture = _interopRequireDefault(__webpack_require__(/*! ./pages/picture/picture.vue */ "../../../../../个人信息/agile/pages/picture/picture.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_picture.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2Fplain%2Fplain\"}":
-/*!**************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2Fplain%2Fplain"} ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _plain = _interopRequireDefault(__webpack_require__(/*! ./pages/plain/plain.vue */ "../../../../../个人信息/agile/pages/plain/plain.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_plain.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FreviewProject%2FreviewProject\"}":
-/*!******************************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2FreviewProject%2FreviewProject"} ***!
-  \******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _reviewProject = _interopRequireDefault(__webpack_require__(/*! ./pages/reviewProject/reviewProject.vue */ "../../../../../个人信息/agile/pages/reviewProject/reviewProject.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_reviewProject.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FreviewTask%2FreviewTask\"}":
-/*!************************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2FreviewTask%2FreviewTask"} ***!
-  \************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _reviewTask = _interopRequireDefault(__webpack_require__(/*! ./pages/reviewTask/reviewTask.vue */ "../../../../../个人信息/agile/pages/reviewTask/reviewTask.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_reviewTask.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FupdateTask%2FupdateTask\"}":
-/*!************************************************************************!*\
-  !*** F:/个人信息/agile/main.js?{"page":"pages%2FupdateTask%2FupdateTask"} ***!
-  \************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _updateTask = _interopRequireDefault(__webpack_require__(/*! ./pages/updateTask/updateTask.vue */ "../../../../../个人信息/agile/pages/updateTask/updateTask.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_updateTask.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/pages.json":
-/*!********************************!*\
-  !*** F:/个人信息/agile/pages.json ***!
-  \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/static/dist/card/index.js":
-/*!***********************************************!*\
-  !*** F:/个人信息/agile/static/dist/card/index.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Component({
-  externalClasses: ['i-class'],
-
-  options: {
-    multipleSlots: true },
-
-
-  properties: {
-    full: {
-      type: Boolean,
-      value: false },
-
-    thumb: {
-      type: String,
-      value: '' },
-
-    title: {
-      type: String,
-      value: '' },
-
-    extra: {
-      type: String,
-      value: '' } } });
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/static/utils/api.js":
-/*!*****************************************!*\
-  !*** F:/个人信息/agile/static/utils/api.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
- //注册的api
-var register = "http://120.79.49.245:7377/user/registerByWeChat";
-
-//查找该用户
-var queryUser = "http://120.79.49.245:7377/user/query";
-
-//查找用户权限项目关系，可以根据userId、roleId、projectId单独和两两和三去查
-var userProjectRoleQuery = "http://120.79.49.245:7377/userProjectRole/query";
-
-//查找项目，库查找所有的项目，也可以单个查询
-var projectQuery = "http://120.79.49.245:7377/project/query";
-
-//添加申请
-var roleApplyAdd = "http://120.79.49.245:7377/roleApply/add";
-
-//添加评论
-var commentAdd = "http://120.79.49.245:7377/comment/add";
-
-//查找评论
-var commnetQuery = "http://120.79.49.245:7377/comment/add";
-
-//增加冲刺的信息
-var sprintAdd = "http://120.79.49.245:7377/sprint/add";
-
-//进行项目的更新（可以单个，也可以多个）
-var projectUpdate = "http://120.79.49.245:7377/project/updateBatch";
-
-//获取所有权限
-var getAllRole = "http://120.79.49.245:7377/other/getAllRole";
-
-//在t_user_project_role中增加信息
-var userProjectRoleAdd = "http://120.79.49.245:7377/userProjectRole/add";
-
-//在t_user_project_role中更新权限信息
-var userProjectRoleUpdateBatch = "http://120.79.49.245:7377/userProjectRole/updateBatch";
-
-//获取所有专业
-var getAllDepartment = "http://120.79.49.245:7377/other/getAllDepartment";
-
-//获取申请记录
-var roleApplyQuery = "http://120.79.49.245:7377/roleApply/query";
-
-//增加用户项目专业记录
-var userProjectDepartmentAdd = "http://120.79.49.245:7377/userprojectdepartment/add";
-
-//查找用户项目专业记录
-var userProjectDepartmentQuery = "http://120.79.49.245:7377/userprojectdepartment/query";
-
-//修改t_user_project_department中的数据
-var updateUserProjectDepartment = "http://120.79.49.245:7377/userprojectdepartment/updateBatch";
-
-//审核的时候更新申请记录
-var updateRoleApply = "http://120.79.49.245:7377/roleApply/updateBatch";
-
-//新增专业的api
-var departmentAdd = "http://120.79.49.245:7377/department/add";
-
-//新增任务的api
-var taskAdd = "http://120.79.49.245:7377/task/add";
-
-//查找专业
-var departmentQuery = "http://120.79.49.245:7377/department/query";
-
-//查找任务
-var taskQuery = "http://120.79.49.245:7377/task/query";
-
-//查找冲刺
-var sprintQuery = "http://120.79.49.245:7377/sprint/query";
-
-//任务的更新
-var taskUpdateBatch = "http://120.79.49.245:7377/task/updateBatch";
-
-//增加消息
-var messageAdd = "http://120.79.49.245:7377/message/add";
-
-//删除任务 /task/deleteBatch
-var deleteTask = "http://120.79.49.245:7377/task/deleteBatch";
-
-
-
-module.exports = {
-  register: register,
-  queryUser: queryUser,
-  projectQuery: projectQuery,
-  commentAdd: commentAdd,
-  commnetQuery: commnetQuery,
-  userProjectRoleQuery: userProjectRoleQuery,
-  roleApplyAdd: roleApplyAdd,
-  sprintAdd: sprintAdd,
-  projectUpdate: projectUpdate,
-  getAllRole: getAllRole,
-  userProjectRoleAdd: userProjectRoleAdd,
-  getAllDepartment: getAllDepartment,
-  roleApplyQuery: roleApplyQuery,
-  userProjectDepartmentAdd: userProjectDepartmentAdd,
-  userProjectDepartmentQuery: userProjectDepartmentQuery,
-  userProjectRoleUpdateBatch: userProjectRoleUpdateBatch,
-  updateUserProjectDepartment: updateUserProjectDepartment,
-  updateRoleApply: updateRoleApply,
-  departmentAdd: departmentAdd,
-  taskAdd: taskAdd,
-  departmentQuery: departmentQuery,
-  sprintQuery: sprintQuery,
-  taskQuery: taskQuery,
-  taskUpdateBatch: taskUpdateBatch,
-  messageAdd: messageAdd,
-  deleteTask: deleteTask };
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/static/utils/time.js":
-/*!******************************************!*\
-  !*** F:/个人信息/agile/static/utils/time.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var formatDate = function formatDate(date) {
-  var year = date.getFullYear();
-  var month = date.getMonth() + 1;
-  var day = date.getDate();
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-  return [year, month, day].map(formatNumber).join('-') + " " + [hours, minutes, seconds].map(formatNumber).join(':');
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var forMatNum = function forMatNum(num) {
+  return num < 10 ? '0' + num : num + '';
 };
-var formatNumber = function formatNumber(n) {
-  n = n.toString();
-  return n[1] ? n : '0' + n; //表示字符串第一个数是否存在
-};
-module.exports = {
-  formatDate: formatDate };
-
-/***/ }),
-
-/***/ "../../../../../个人信息/agile/static/utils/utils.js":
-/*!*******************************************!*\
-  !*** F:/个人信息/agile/static/utils/utils.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {
-var _api = __webpack_require__(/*! ./api */ "../../../../../个人信息/agile/static/utils/api.js");function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}
-
-
-
-
-
-
-//登录模块
-var Login = /*#__PURE__*/function () {
-  function Login(arg) {_classCallCheck(this, Login);
-
-  }
-  //得到code
-  _createClass(Login, [{ key: "getCode", value: function getCode() {
-      return new Promise(function (resolve, reject) {
-        uni.login({
-          success: function success(res) {
-            resolve(res.code);
-          },
-          fail: function fail(error) {
-            reject(error);
-          } });
-
-      });
+var initPicker = {
+  initDays: function initDays(year, month) {
+    var totalDays = new Date(year, month, 0).getDate();
+    var dates = [];
+    for (var d = 1; d <= totalDays; d++) {
+      dates.push(forMatNum(d));
+    };
+    return dates;
+  },
+  //日期初始化
+  date: function date(start, end) {var mode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "date";var step = arguments.length > 3 ? arguments[3] : undefined;var value = arguments.length > 4 ? arguments[4] : undefined;var flag = arguments.length > 5 ? arguments[5] : undefined;
+    var aToday = new Date();
+    var tYear,tMonth,tDay,tHours,tMinutes,tSeconds,defaultVal = [];
+    var initstartDate = new Date(start);
+    var endDate = new Date(end);
+    if (start > end) {
+      initstartDate = new Date(end);
+      endDate = new Date(start);
+    };
+    var startYear = initstartDate.getFullYear();
+    var startMonth = initstartDate.getMonth() + 1;
+    var endYear = endDate.getFullYear();
+    var years = [],months = [],days = [],hours = [],minutes = [],seconds = [],returnArr = [];
+    var curMonth = flag ? value[1] * 1 : value[1] + 1;
+    var totalDays = new Date(startYear, curMonth, 0).getDate();
+    for (var s = startYear; s <= endYear; s++) {
+      years.push(s + '');
+    };
+    for (var m = 1; m <= 12; m++) {
+      months.push(forMatNum(m));
+    };
+    for (var d = 1; d <= totalDays; d++) {
+      days.push(forMatNum(d));
     }
-
-    //得到UserInfo
-  }, { key: "getUserInfo", value: function getUserInfo() {
-      return new Promise(function (resolve, reject) {
-        uni.getUserInfo({
-          success: function success(res) {
-            resolve(res);
-          },
-          fail: function fail(error) {
-            reject(error);
-          } });
-
-      });
+    for (var h = 0; h < 24; h++) {
+      hours.push(forMatNum(h));
     }
-
-    //得到OpenId
-  }, { key: "getOpenId", value: function getOpenId(code) {
-      return new Promise(function (resolve, reject) {
-        var appId = "wxd763acfcb06de61a";
-        var appSecret = "e8e7ea381fff59c2081d115cb312b22e";
-        uni.request({
-          url: "https://api.weixin.qq.com/sns/jscode2session?appid=".concat(appId, "&secret=").concat(appSecret, "&js_code=").concat(code, "&grant_type=authorization_code"),
-          method: "GET",
-          data: {},
-          success: function success(res) {
-            resolve(res);
-          },
-          fail: function fail(error) {
-            reject(error);
-          } });
-
-      });
+    for (var _m = 0; _m < 60; _m += step * 1) {
+      minutes.push(forMatNum(_m));
     }
-
-    //发送整理好的用户的信息到服务器
-  }, { key: "insertUser", value: function insertUser(userInfo, api, method) {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: api,
-          method: method,
-          data: userInfo,
-          success: function success(res) {
-            resolve(res.data);
-          },
-          fail: function fail(error) {
-            reject(error);
-          } });
-
-      });
-    } }]);return Login;}();
-
-
-
-
-//查询的模块
-var Query = /*#__PURE__*/function () {
-  function Query(arg) {_classCallCheck(this, Query);
-
-  }
-  //查询数据库中的用户
-  _createClass(Query, [{ key: "findUser", value: function findUser(id) {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: _api.queryUser,
-          method: "POST",
-          data: id,
-          dataType: 'json',
-          success: function success(res) {
-            resolve(res.data);
-          },
-          fail: function fail(error) {
-            reject(error);
-          } });
-
-      });
+    for (var _s = 0; _s < 60; _s++) {
+      seconds.push(forMatNum(_s));
     }
+    if (flag) {
+      returnArr = [
+      years.indexOf(value[0]),
+      months.indexOf(value[1]),
+      days.indexOf(value[2]),
+      hours.indexOf(value[3]),
+      minutes.indexOf(value[4]) == -1 ? 0 : minutes.indexOf(value[4]),
+      seconds.indexOf(value[5])];
 
-    //查询用户的项目权限关系
-  }, { key: "findUserProjectRole", value: function findUserProjectRole(userId, projectId) {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: _api.userProjectRoleQuery,
-          data: {
-            userId: userId,
-            projectId: projectId },
+    };
+    switch (mode) {
+      case "range":
+        if (flag) {
+          defaultVal = [returnArr[0], returnArr[1], returnArr[2], 0, returnArr[0], returnArr[1], returnArr[2]];
+          return { years: years, months: months, days: days, defaultVal: defaultVal };
+        } else {
+          return { years: years, months: months, days: days };
+        }
+        break;
+      case "date":
+        if (flag) {
+          defaultVal = [returnArr[0], returnArr[1], returnArr[2]];
+          return { years: years, months: months, days: days, defaultVal: defaultVal };
+        } else {
+          return { years: years, months: months, days: days };
+        }
+        break;
+      case "yearMonth":
+        if (flag) {
+          defaultVal = [returnArr[0], returnArr[1]];
+          return { years: years, months: months, defaultVal: defaultVal };
+        } else {
+          return { years: years, months: months };
+        }
+        break;
+      case "dateTime":
+        if (flag) {
+          defaultVal = returnArr;
+          return { years: years, months: months, days: days, hours: hours, minutes: minutes, seconds: seconds, defaultVal: defaultVal };
+        } else {
+          return { years: years, months: months, days: days, hours: hours, minutes: minutes, seconds: seconds };
+        }
+        break;
+      case "time":
+        if (flag) {
+          defaultVal = [returnArr[3], returnArr[4], returnArr[5]];
+          return { hours: hours, minutes: minutes, seconds: seconds, defaultVal: defaultVal };
+        } else {
+          return { hours: hours, minutes: minutes, seconds: seconds };
+        }
+        break;}
 
-          dataType: 'json',
-          method: 'POST',
-          success: function success(res) {
-            resolve(res.data);
-          },
-          fail: function fail(error) {
-            reject(error);
-          } });
+  },
+  //短期时间初始化小时
+  initLimitHours: function initLimitHours(startHour, endHour) {
+    var hours = [];
+    for (var k = startHour * 1; k <= endHour * 1; k++) {
+      hours.push({
+        label: forMatNum(k),
+        value: forMatNum(k),
+        flag: false });
 
-      });
     }
+    return hours;
+  },
+  //短期时间初始化分钟
+  initLimitMinutes: function initLimitMinutes(minuteStep) {
+    var minutes = [];
+    for (var j = 0; j < 60; j += minuteStep * 1) {
+      minutes.push({
+        label: forMatNum(j),
+        value: forMatNum(j) });
 
-    //根据用户的id对t_user_project_role表进行查询
-  }, { key: "findUserProjectRoleByUserId", value: function findUserProjectRoleByUserId(userId) {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: _api.userProjectRoleQuery,
-          data: {
-            userId: userId },
-
-          method: "POST",
-          dataType: 'json',
-          success: function success(res) {
-            resolve(res.data);
-          },
-          fail: function fail(error) {
-            reject(error);
-          } });
-
-      });
     }
+    return minutes;
+  },
+  //短期时间初始化
+  limit: function limit() {var dayStep = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 7;var startHour = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 8;var endHour = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;var minuteStep = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;var afterStep = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 30;
+    var startDate = new Date();
+    var bsDate = new Date(new Date().getTime() + afterStep * 60 * 1000);
+    var date = [];
+    var hours = [];
+    var minutes = [];
+    var hour = bsDate.getHours();
+    var minute = Math.floor(bsDate.getMinutes() / minuteStep) * minuteStep;
+    var weeks = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+    for (var i = 0; i < dayStep; i++) {
+      var year = void 0,month = void 0,day = void 0,weekday = void 0;
+      year = startDate.getFullYear();
+      month = forMatNum(startDate.getMonth() + 1);
+      day = forMatNum(startDate.getDate());
+      weekday = weeks[startDate.getDay()];
+      var label = "";
+      switch (i) {
+        case 0:
+          label = "今天";
+          break;
+        case 1:
+          label = "明天";
+          break;
+        case 2:
+          label = "后天";
+          break;
+        default:
+          label = month + "月" + day + "日" + " " + weekday;
+          break;}
 
-    //通过项目的projectId去查询t_user_project_role
-  }, { key: "findUserProjectRoleByProjectId", value: function findUserProjectRoleByProjectId(projectId) {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: _api.userProjectRoleQuery,
-          data: {
-            projectId: projectId },
+      date.push({
+        label: label,
+        value: year + "-" + month + "-" + day,
+        flag: i == 0 ? true : false });
 
-          method: "POST",
-          dataType: 'json',
-          success: function success(res) {
-            resolve(res.data);
-          },
-          fail: function fail(Error) {
-            reject(Error);
-          } });
-
-      });
+      startDate.setDate(startDate.getDate() + 1);
     }
+    if (hour > endHour) {
+      hour = endHour;
+    };
+    for (var k = hour * 1; k <= endHour * 1; k++) {
+      hours.push({
+        label: forMatNum(k),
+        value: forMatNum(k),
+        flag: k == hour ? true : false });
 
-    //不用根据任何条件，直接查询所有的t_user_project_role中的所有的数据
-  }, { key: "findAllUserProjectRole", value: function findAllUserProjectRole() {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: _api.userProjectRoleQuery,
-          data: {
-            userId: "",
-            roleId: "",
-            projectId: "" },
+    };
+    for (var j = minute; j < 60; j += minuteStep * 1) {
+      minutes.push({
+        label: forMatNum(j),
+        value: forMatNum(j) });
 
-          dataType: 'json',
-          success: function success(data) {
-            resolve(res.data);
-          },
-          fail: function fail(error) {
-            reject(error);
-          } });
-
-      });
     }
+    return { date: date, hours: hours, minutes: minutes };
+  },
+  //选择区间初始化日期
+  initRangeDays: function initRangeDays(year, month) {
+    var totalDays = new Date(year, month, 0).getDate();
+    var dates = [];
+    for (var d = 1; d <= totalDays; d++) {
+      dates.push(forMatNum(d));
+    };
+    return dates;
+  },
+  //选择区间初始化
+  range: function range(start, end, value, flag) {
+    var aToday = new Date();
+    var tYear,tMonth,tDay,tHours,tMinutes,tSeconds,defaultVal = [];
+    var initstartDate = new Date(start);
+    var endDate = new Date(end);
+    if (start > end) {
+      initstartDate = new Date(end);
+      endDate = new Date(start);
+    };
+    var startYear = initstartDate.getFullYear();
+    var startMonth = initstartDate.getMonth() + 1;
+    var endYear = endDate.getFullYear();
+    var fyears = [],fmonths = [],fdays = [],tyears = [],tmonths = [],tdays = [],returnArr = [];
+    var curMonth = flag ? value[1] * 1 : value[1] + 1;
+    var totalDays = new Date(startYear, curMonth, 0).getDate();
+    for (var s = startYear; s <= endYear; s++) {
+      fyears.push(s + '');
+    };
+    for (var m = 1; m <= 12; m++) {
+      fmonths.push(forMatNum(m));
+    };
+    for (var d = 1; d <= totalDays; d++) {
+      fdays.push(forMatNum(d));
+    };
+    for (var _s2 = startYear; _s2 <= endYear; _s2++) {
+      tyears.push(_s2 + '');
+    };
+    for (var _m2 = 1; _m2 <= 12; _m2++) {
+      tmonths.push(forMatNum(_m2));
+    };
+    for (var _d = 1; _d <= totalDays; _d++) {
+      tdays.push(forMatNum(_d));
+    };
+    if (flag) {
+      defaultVal = [
+      fyears.indexOf(value[0]),
+      fmonths.indexOf(value[1]),
+      fdays.indexOf(value[2]),
+      0,
+      tyears.indexOf(value[0]),
+      tmonths.indexOf(value[1]),
+      tdays.indexOf(value[2])];
 
-    //根据项目的roleId和projectId去查询
-  }, { key: "findUserProjectRoleByRoleAndProject", value: function findUserProjectRoleByRoleAndProject(roleId, projectId) {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: _api.userProjectRoleQuery,
-          data: {
-            roleId: roleId,
-            projectId: projectId },
-
-          method: "POST",
-          dataType: 'json',
-          success: function success(res) {
-            resolve(res.data);
-          },
-          fail: function fail(Error) {
-            reject(Error);
-          } });
-
-      });
-    }
-
-    //根据projectId和useId查询用户所在的departmentId
-  }, { key: "findUserProjectDepartmentByUserIdAndProjectId", value: function findUserProjectDepartmentByUserIdAndProjectId(userId, projectId) {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: _api.userProjectDepartmentQuery,
-          data: {
-            userId: userId,
-            projectId: projectId },
-
-          dataType: 'json',
-          method: "POST",
-          success: function success(res) {
-            resolve(res.data);
-          },
-          fail: function fail(Error) {
-            reject(Error);
-          } });
-
-      });
-    }
-
-    //根据专业的id去查询专业的名称
-  }, { key: "findUserDepartmentNameByDepartment", value: function findUserDepartmentNameByDepartment(departmentId) {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: _api.departmentQuery,
-          data: {
-            departmentId: departmentId },
-
-          dataType: 'json',
-          method: 'POST',
-          success: function success(res) {
-            resolve(res.data);
-          },
-          fail: function fail(Error) {
-            reject(Error);
-          } });
-
-      });
-    }
-
-    //查询所有的项项目信息
-  }, { key: "findAllProjectInfo", value: function findAllProjectInfo() {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: _api.projectQuery,
-          method: "POST",
-          data: {},
-
-
-          dataType: 'json',
-          success: function success(res) {
-            resolve(res.data);
-          },
-          fail: function fail(Error) {
-            reject(Error);
-          } });
-
-      });
-    } }]);return Query;}();
-
-
-
-module.exports = {
-  Login: Login,
-  Query: Query };
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
-
-/***/ }),
-
-/***/ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js":
-/*!************************************************************!*\
-  !*** ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.createApp = createApp;exports.createPage = createPage;exports.createComponent = createComponent;exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-
-var _toString = Object.prototype.toString;
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-function isFn(fn) {
-  return typeof fn === 'function';
-}
-
-function isStr(str) {
-  return typeof str === 'string';
-}
-
-function isPlainObject(obj) {
-  return _toString.call(obj) === '[object Object]';
-}
-
-function hasOwn(obj, key) {
-  return hasOwnProperty.call(obj, key);
-}
-
-function noop() {}
-
-/**
-                    * Create a cached version of a pure function.
-                    */
-function cached(fn) {
-  var cache = Object.create(null);
-  return function cachedFn(str) {
-    var hit = cache[str];
-    return hit || (cache[str] = fn(str));
-  };
-}
-
-/**
-   * Camelize a hyphen-delimited string.
-   */
-var camelizeRE = /-(\w)/g;
-var camelize = cached(function (str) {
-  return str.replace(camelizeRE, function (_, c) {return c ? c.toUpperCase() : '';});
-});
-
-var SYNC_API_RE = /^\$|getSubNVueById|requireNativePlugin|upx2px|hideKeyboard|canIUse|^create|Sync$|Manager$|base64ToArrayBuffer|arrayBufferToBase64/;
-
-var CONTEXT_API_RE = /^create|Manager$/;
-
-var CALLBACK_API_RE = /^on/;
-
-function isContextApi(name) {
-  return CONTEXT_API_RE.test(name);
-}
-function isSyncApi(name) {
-  return SYNC_API_RE.test(name);
-}
-
-function isCallbackApi(name) {
-  return CALLBACK_API_RE.test(name);
-}
-
-function handlePromise(promise) {
-  return promise.then(function (data) {
-    return [null, data];
-  }).
-  catch(function (err) {return [err];});
-}
-
-function shouldPromise(name) {
-  if (
-  isContextApi(name) ||
-  isSyncApi(name) ||
-  isCallbackApi(name))
-  {
-    return false;
-  }
-  return true;
-}
-
-function promisify(name, api) {
-  if (!shouldPromise(name)) {
-    return api;
-  }
-  return function promiseApi() {var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {params[_key - 1] = arguments[_key];}
-    if (isFn(options.success) || isFn(options.fail) || isFn(options.complete)) {
-      return api.apply(void 0, [options].concat(params));
-    }
-    return handlePromise(new Promise(function (resolve, reject) {
-      api.apply(void 0, [Object.assign({}, options, {
-        success: resolve,
-        fail: reject })].concat(
-      params));
-      /* eslint-disable no-extend-native */
-      if (!Promise.prototype.finally) {
-        Promise.prototype.finally = function (callback) {
-          var promise = this.constructor;
-          return this.then(
-          function (value) {return promise.resolve(callback()).then(function () {return value;});},
-          function (reason) {return promise.resolve(callback()).then(function () {
-              throw reason;
-            });});
-
-        };
-      }
-    }));
-  };
-}
-
-var EPS = 1e-4;
-var BASE_DEVICE_WIDTH = 750;
-var isIOS = false;
-var deviceWidth = 0;
-var deviceDPR = 0;
-
-function checkDeviceWidth() {var _wx$getSystemInfoSync =
-
-
-
-
-  wx.getSystemInfoSync(),platform = _wx$getSystemInfoSync.platform,pixelRatio = _wx$getSystemInfoSync.pixelRatio,windowWidth = _wx$getSystemInfoSync.windowWidth; // uni=>wx runtime 编译目标是 uni 对象，内部不允许直接使用 uni
-
-  deviceWidth = windowWidth;
-  deviceDPR = pixelRatio;
-  isIOS = platform === 'ios';
-}
-
-function upx2px(number, newDeviceWidth) {
-  if (deviceWidth === 0) {
-    checkDeviceWidth();
-  }
-
-  number = Number(number);
-  if (number === 0) {
-    return 0;
-  }
-  var result = number / BASE_DEVICE_WIDTH * (newDeviceWidth || deviceWidth);
-  if (result < 0) {
-    result = -result;
-  }
-  result = Math.floor(result + EPS);
-  if (result === 0) {
-    if (deviceDPR === 1 || !isIOS) {
-      return 1;
-    } else {
-      return 0.5;
-    }
-  }
-  return number < 0 ? -result : result;
-}
-
-var previewImage = {
-  args: function args(fromArgs) {
-    var currentIndex = parseInt(fromArgs.current);
-    if (isNaN(currentIndex)) {
-      return;
-    }
-    var urls = fromArgs.urls;
-    if (!Array.isArray(urls)) {
-      return;
-    }
-    var len = urls.length;
-    if (!len) {
-      return;
-    }
-    if (currentIndex < 0) {
-      currentIndex = 0;
-    } else if (currentIndex >= len) {
-      currentIndex = len - 1;
-    }
-    if (currentIndex > 0) {
-      fromArgs.current = urls[currentIndex];
-      fromArgs.urls = urls.filter(
-      function (item, index) {return index < currentIndex ? item !== urls[currentIndex] : true;});
+      return {
+        fyears: fyears,
+        fmonths: fmonths,
+        fdays: fdays,
+        tyears: tyears,
+        tmonths: tmonths,
+        tdays: tdays,
+        defaultVal: defaultVal };
 
     } else {
-      fromArgs.current = urls[0];
+      return {
+        fyears: fyears,
+        fmonths: fmonths,
+        fdays: fdays,
+        tyears: tyears,
+        tmonths: tmonths,
+        tdays: tdays };
+
     }
-    return {
-      indicator: false,
-      loop: false };
+  } };var _default =
 
-  } };
 
-
-var protocols = {
-  previewImage: previewImage };
-
-var todos = [];
-var canIUses = [];
-
-var CALLBACKS = ['success', 'fail', 'cancel', 'complete'];
-
-function processCallback(methodName, method, returnValue) {
-  return function (res) {
-    return method(processReturnValue(methodName, res, returnValue));
-  };
-}
-
-function processArgs(methodName, fromArgs) {var argsOption = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};var returnValue = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};var keepFromArgs = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-  if (isPlainObject(fromArgs)) {// 一般 api 的参数解析
-    var toArgs = keepFromArgs === true ? fromArgs : {}; // returnValue 为 false 时，说明是格式化返回值，直接在返回值对象上修改赋值
-    if (isFn(argsOption)) {
-      argsOption = argsOption(fromArgs, toArgs) || {};
-    }
-    for (var key in fromArgs) {
-      if (hasOwn(argsOption, key)) {
-        var keyOption = argsOption[key];
-        if (isFn(keyOption)) {
-          keyOption = keyOption(fromArgs[key], fromArgs, toArgs);
-        }
-        if (!keyOption) {// 不支持的参数
-          console.warn("\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F ".concat(methodName, "\u6682\u4E0D\u652F\u6301").concat(key));
-        } else if (isStr(keyOption)) {// 重写参数 key
-          toArgs[keyOption] = fromArgs[key];
-        } else if (isPlainObject(keyOption)) {// {name:newName,value:value}可重新指定参数 key:value
-          toArgs[keyOption.name ? keyOption.name : key] = keyOption.value;
-        }
-      } else if (CALLBACKS.indexOf(key) !== -1) {
-        toArgs[key] = processCallback(methodName, fromArgs[key], returnValue);
-      } else {
-        if (!keepFromArgs) {
-          toArgs[key] = fromArgs[key];
-        }
-      }
-    }
-    return toArgs;
-  } else if (isFn(fromArgs)) {
-    fromArgs = processCallback(methodName, fromArgs, returnValue);
-  }
-  return fromArgs;
-}
-
-function processReturnValue(methodName, res, returnValue) {var keepReturnValue = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  if (isFn(protocols.returnValue)) {// 处理通用 returnValue
-    res = protocols.returnValue(methodName, res);
-  }
-  return processArgs(methodName, res, returnValue, {}, keepReturnValue);
-}
-
-function wrapper(methodName, method) {
-  if (hasOwn(protocols, methodName)) {
-    var protocol = protocols[methodName];
-    if (!protocol) {// 暂不支持的 api
-      return function () {
-        console.error("\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F \u6682\u4E0D\u652F\u6301".concat(methodName));
-      };
-    }
-    return function (arg1, arg2) {// 目前 api 最多两个参数
-      var options = protocol;
-      if (isFn(protocol)) {
-        options = protocol(arg1);
-      }
-
-      arg1 = processArgs(methodName, arg1, options.args, options.returnValue);
-
-      var args = [arg1];
-      if (typeof arg2 !== 'undefined') {
-        args.push(arg2);
-      }
-      var returnValue = wx[options.name || methodName].apply(wx, args);
-      if (isSyncApi(methodName)) {// 同步 api
-        return processReturnValue(methodName, returnValue, options.returnValue, isContextApi(methodName));
-      }
-      return returnValue;
-    };
-  }
-  return method;
-}
-
-var todoApis = Object.create(null);
-
-var TODOS = [
-'subscribePush',
-'unsubscribePush',
-'onPush',
-'offPush',
-'share'];
-
-
-function createTodoApi(name) {
-  return function todoApi(_ref)
-
-
-  {var fail = _ref.fail,complete = _ref.complete;
-    var res = {
-      errMsg: "".concat(name, ":fail:\u6682\u4E0D\u652F\u6301 ").concat(name, " \u65B9\u6CD5") };
-
-    isFn(fail) && fail(res);
-    isFn(complete) && complete(res);
-  };
-}
-
-TODOS.forEach(function (name) {
-  todoApis[name] = createTodoApi(name);
-});
-
-var providers = {
-  oauth: ['weixin'],
-  share: ['weixin'],
-  payment: ['wxpay'],
-  push: ['weixin'] };
-
-
-function getProvider(_ref2)
-
-
-
-
-{var service = _ref2.service,success = _ref2.success,fail = _ref2.fail,complete = _ref2.complete;
-  var res = false;
-  if (providers[service]) {
-    res = {
-      errMsg: 'getProvider:ok',
-      service: service,
-      provider: providers[service] };
-
-    isFn(success) && success(res);
-  } else {
-    res = {
-      errMsg: 'getProvider:fail:服务[' + service + ']不存在' };
-
-    isFn(fail) && fail(res);
-  }
-  isFn(complete) && complete(res);
-}
-
-var extraApi = /*#__PURE__*/Object.freeze({
-  getProvider: getProvider });
-
-
-var getEmitter = function () {
-  if (typeof getUniEmitter === 'function') {
-    /* eslint-disable no-undef */
-    return getUniEmitter;
-  }
-  var Emitter;
-  return function getUniEmitter() {
-    if (!Emitter) {
-      Emitter = new _vue.default();
-    }
-    return Emitter;
-  };
-}();
-
-function apply(ctx, method, args) {
-  return ctx[method].apply(ctx, args);
-}
-
-function $on() {
-  return apply(getEmitter(), '$on', Array.prototype.slice.call(arguments));
-}
-function $off() {
-  return apply(getEmitter(), '$off', Array.prototype.slice.call(arguments));
-}
-function $once() {
-  return apply(getEmitter(), '$once', Array.prototype.slice.call(arguments));
-}
-function $emit() {
-  return apply(getEmitter(), '$emit', Array.prototype.slice.call(arguments));
-}
-
-
-
-var eventApi = /*#__PURE__*/Object.freeze({
-  $on: $on,
-  $off: $off,
-  $once: $once,
-  $emit: $emit });
-
-
-
-
-var api = /*#__PURE__*/Object.freeze({});
-
-
-
-var MPPage = Page;
-var MPComponent = Component;
-
-var customizeRE = /:/g;
-
-var customize = cached(function (str) {
-  return camelize(str.replace(customizeRE, '-'));
-});
-
-function initTriggerEvent(mpInstance) {
-  {
-    if (!wx.canIUse('nextTick')) {
-      return;
-    }
-  }
-  var oldTriggerEvent = mpInstance.triggerEvent;
-  mpInstance.triggerEvent = function (event) {for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {args[_key2 - 1] = arguments[_key2];}
-    return oldTriggerEvent.apply(mpInstance, [customize(event)].concat(args));
-  };
-}
-
-function initHook(name, options) {
-  var oldHook = options[name];
-  if (!oldHook) {
-    options[name] = function () {
-      initTriggerEvent(this);
-    };
-  } else {
-    options[name] = function () {
-      initTriggerEvent(this);for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {args[_key3] = arguments[_key3];}
-      return oldHook.apply(this, args);
-    };
-  }
-}
-
-Page = function Page() {var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  initHook('onLoad', options);
-  return MPPage(options);
-};
-
-Component = function Component() {var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  initHook('created', options);
-  return MPComponent(options);
-};
-
-var PAGE_EVENT_HOOKS = [
-'onPullDownRefresh',
-'onReachBottom',
-'onShareAppMessage',
-'onPageScroll',
-'onResize',
-'onTabItemTap'];
-
-
-function initMocks(vm, mocks) {
-  var mpInstance = vm.$mp[vm.mpType];
-  mocks.forEach(function (mock) {
-    if (hasOwn(mpInstance, mock)) {
-      vm[mock] = mpInstance[mock];
-    }
-  });
-}
-
-function hasHook(hook, vueOptions) {
-  if (!vueOptions) {
-    return true;
-  }
-
-  if (_vue.default.options && Array.isArray(_vue.default.options[hook])) {
-    return true;
-  }
-
-  vueOptions = vueOptions.default || vueOptions;
-
-  if (isFn(vueOptions)) {
-    if (isFn(vueOptions.extendOptions[hook])) {
-      return true;
-    }
-    if (vueOptions.super &&
-    vueOptions.super.options &&
-    Array.isArray(vueOptions.super.options[hook])) {
-      return true;
-    }
-    return false;
-  }
-
-  if (isFn(vueOptions[hook])) {
-    return true;
-  }
-  var mixins = vueOptions.mixins;
-  if (Array.isArray(mixins)) {
-    return !!mixins.find(function (mixin) {return hasHook(hook, mixin);});
-  }
-}
-
-function initHooks(mpOptions, hooks, vueOptions) {
-  hooks.forEach(function (hook) {
-    if (hasHook(hook, vueOptions)) {
-      mpOptions[hook] = function (args) {
-        return this.$vm && this.$vm.__call_hook(hook, args);
-      };
-    }
-  });
-}
-
-function initVueComponent(Vue$$1, vueOptions) {
-  vueOptions = vueOptions.default || vueOptions;
-  var VueComponent;
-  if (isFn(vueOptions)) {
-    VueComponent = vueOptions;
-    vueOptions = VueComponent.extendOptions;
-  } else {
-    VueComponent = Vue$$1.extend(vueOptions);
-  }
-  return [VueComponent, vueOptions];
-}
-
-function initSlots(vm, vueSlots) {
-  if (Array.isArray(vueSlots) && vueSlots.length) {
-    var $slots = Object.create(null);
-    vueSlots.forEach(function (slotName) {
-      $slots[slotName] = true;
-    });
-    vm.$scopedSlots = vm.$slots = $slots;
-  }
-}
-
-function initVueIds(vueIds, mpInstance) {
-  vueIds = (vueIds || '').split(',');
-  var len = vueIds.length;
-
-  if (len === 1) {
-    mpInstance._$vueId = vueIds[0];
-  } else if (len === 2) {
-    mpInstance._$vueId = vueIds[0];
-    mpInstance._$vuePid = vueIds[1];
-  }
-}
-
-function initData(vueOptions, context) {
-  var data = vueOptions.data || {};
-  var methods = vueOptions.methods || {};
-
-  if (typeof data === 'function') {
-    try {
-      data = data.call(context); // 支持 Vue.prototype 上挂的数据
-    } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
-        console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
-      }
-    }
-  } else {
-    try {
-      // 对 data 格式化
-      data = JSON.parse(JSON.stringify(data));
-    } catch (e) {}
-  }
-
-  if (!isPlainObject(data)) {
-    data = {};
-  }
-
-  Object.keys(methods).forEach(function (methodName) {
-    if (context.__lifecycle_hooks__.indexOf(methodName) === -1 && !hasOwn(data, methodName)) {
-      data[methodName] = methods[methodName];
-    }
-  });
-
-  return data;
-}
-
-var PROP_TYPES = [String, Number, Boolean, Object, Array, null];
-
-function createObserver(name) {
-  return function observer(newVal, oldVal) {
-    if (this.$vm) {
-      this.$vm[name] = newVal; // 为了触发其他非 render watcher
-    }
-  };
-}
-
-function initBehaviors(vueOptions, initBehavior) {
-  var vueBehaviors = vueOptions['behaviors'];
-  var vueExtends = vueOptions['extends'];
-  var vueMixins = vueOptions['mixins'];
-
-  var vueProps = vueOptions['props'];
-
-  if (!vueProps) {
-    vueOptions['props'] = vueProps = [];
-  }
-
-  var behaviors = [];
-  if (Array.isArray(vueBehaviors)) {
-    vueBehaviors.forEach(function (behavior) {
-      behaviors.push(behavior.replace('uni://', "wx".concat("://")));
-      if (behavior === 'uni://form-field') {
-        if (Array.isArray(vueProps)) {
-          vueProps.push('name');
-          vueProps.push('value');
-        } else {
-          vueProps['name'] = {
-            type: String,
-            default: '' };
-
-          vueProps['value'] = {
-            type: [String, Number, Boolean, Array, Object, Date],
-            default: '' };
-
-        }
-      }
-    });
-  }
-  if (isPlainObject(vueExtends) && vueExtends.props) {
-    behaviors.push(
-    initBehavior({
-      properties: initProperties(vueExtends.props, true) }));
-
-
-  }
-  if (Array.isArray(vueMixins)) {
-    vueMixins.forEach(function (vueMixin) {
-      if (isPlainObject(vueMixin) && vueMixin.props) {
-        behaviors.push(
-        initBehavior({
-          properties: initProperties(vueMixin.props, true) }));
-
-
-      }
-    });
-  }
-  return behaviors;
-}
-
-function parsePropType(key, type, defaultValue, file) {
-  // [String]=>String
-  if (Array.isArray(type) && type.length === 1) {
-    return type[0];
-  }
-  return type;
-}
-
-function initProperties(props) {var isBehavior = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;var file = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
-  var properties = {};
-  if (!isBehavior) {
-    properties.vueId = {
-      type: String,
-      value: '' };
-
-    properties.vueSlots = { // 小程序不能直接定义 $slots 的 props，所以通过 vueSlots 转换到 $slots
-      type: null,
-      value: [],
-      observer: function observer(newVal, oldVal) {
-        var $slots = Object.create(null);
-        newVal.forEach(function (slotName) {
-          $slots[slotName] = true;
-        });
-        this.setData({
-          $slots: $slots });
-
-      } };
-
-  }
-  if (Array.isArray(props)) {// ['title']
-    props.forEach(function (key) {
-      properties[key] = {
-        type: null,
-        observer: createObserver(key) };
-
-    });
-  } else if (isPlainObject(props)) {// {title:{type:String,default:''},content:String}
-    Object.keys(props).forEach(function (key) {
-      var opts = props[key];
-      if (isPlainObject(opts)) {// title:{type:String,default:''}
-        var value = opts['default'];
-        if (isFn(value)) {
-          value = value();
-        }
-
-        opts.type = parsePropType(key, opts.type, value, file);
-
-        properties[key] = {
-          type: PROP_TYPES.indexOf(opts.type) !== -1 ? opts.type : null,
-          value: value,
-          observer: createObserver(key) };
-
-      } else {// content:String
-        var type = parsePropType(key, opts, null, file);
-        properties[key] = {
-          type: PROP_TYPES.indexOf(type) !== -1 ? type : null,
-          observer: createObserver(key) };
-
-      }
-    });
-  }
-  return properties;
-}
-
-function wrapper$1(event) {
-  // TODO 又得兼容 mpvue 的 mp 对象
-  try {
-    event.mp = JSON.parse(JSON.stringify(event));
-  } catch (e) {}
-
-  event.stopPropagation = noop;
-  event.preventDefault = noop;
-
-  event.target = event.target || {};
-
-  if (!hasOwn(event, 'detail')) {
-    event.detail = {};
-  }
-
-  if (isPlainObject(event.detail)) {
-    event.target = Object.assign({}, event.target, event.detail);
-  }
-
-  return event;
-}
-
-function getExtraValue(vm, dataPathsArray) {
-  var context = vm;
-  dataPathsArray.forEach(function (dataPathArray) {
-    var dataPath = dataPathArray[0];
-    var value = dataPathArray[2];
-    if (dataPath || typeof value !== 'undefined') {// ['','',index,'disable']
-      var propPath = dataPathArray[1];
-      var valuePath = dataPathArray[3];
-
-      var vFor = dataPath ? vm.__get_value(dataPath, context) : context;
-
-      if (Number.isInteger(vFor)) {
-        context = value;
-      } else if (!propPath) {
-        context = vFor[value];
-      } else {
-        if (Array.isArray(vFor)) {
-          context = vFor.find(function (vForItem) {
-            return vm.__get_value(propPath, vForItem) === value;
-          });
-        } else if (isPlainObject(vFor)) {
-          context = Object.keys(vFor).find(function (vForKey) {
-            return vm.__get_value(propPath, vFor[vForKey]) === value;
-          });
-        } else {
-          console.error('v-for 暂不支持循环数据：', vFor);
-        }
-      }
-
-      if (valuePath) {
-        context = vm.__get_value(valuePath, context);
-      }
-    }
-  });
-  return context;
-}
-
-function processEventExtra(vm, extra, event) {
-  var extraObj = {};
-
-  if (Array.isArray(extra) && extra.length) {
-    /**
-                                                  *[
-                                                  *    ['data.items', 'data.id', item.data.id],
-                                                  *    ['metas', 'id', meta.id]
-                                                  *],
-                                                  *[
-                                                  *    ['data.items', 'data.id', item.data.id],
-                                                  *    ['metas', 'id', meta.id]
-                                                  *],
-                                                  *'test'
-                                                  */
-    extra.forEach(function (dataPath, index) {
-      if (typeof dataPath === 'string') {
-        if (!dataPath) {// model,prop.sync
-          extraObj['$' + index] = vm;
-        } else {
-          if (dataPath === '$event') {// $event
-            extraObj['$' + index] = event;
-          } else if (dataPath.indexOf('$event.') === 0) {// $event.target.value
-            extraObj['$' + index] = vm.__get_value(dataPath.replace('$event.', ''), event);
-          } else {
-            extraObj['$' + index] = vm.__get_value(dataPath);
-          }
-        }
-      } else {
-        extraObj['$' + index] = getExtraValue(vm, dataPath);
-      }
-    });
-  }
-
-  return extraObj;
-}
-
-function getObjByArray(arr) {
-  var obj = {};
-  for (var i = 1; i < arr.length; i++) {
-    var element = arr[i];
-    obj[element[0]] = element[1];
-  }
-  return obj;
-}
-
-function processEventArgs(vm, event) {var args = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];var extra = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];var isCustom = arguments.length > 4 ? arguments[4] : undefined;var methodName = arguments.length > 5 ? arguments[5] : undefined;
-  var isCustomMPEvent = false; // wxcomponent 组件，传递原始 event 对象
-  if (isCustom) {// 自定义事件
-    isCustomMPEvent = event.currentTarget &&
-    event.currentTarget.dataset &&
-    event.currentTarget.dataset.comType === 'wx';
-    if (!args.length) {// 无参数，直接传入 event 或 detail 数组
-      if (isCustomMPEvent) {
-        return [event];
-      }
-      return event.detail.__args__ || event.detail;
-    }
-  }
-
-  var extraObj = processEventExtra(vm, extra, event);
-
-  var ret = [];
-  args.forEach(function (arg) {
-    if (arg === '$event') {
-      if (methodName === '__set_model' && !isCustom) {// input v-model value
-        ret.push(event.target.value);
-      } else {
-        if (isCustom && !isCustomMPEvent) {
-          ret.push(event.detail.__args__[0]);
-        } else {// wxcomponent 组件或内置组件
-          ret.push(event);
-        }
-      }
-    } else {
-      if (Array.isArray(arg) && arg[0] === 'o') {
-        ret.push(getObjByArray(arg));
-      } else if (typeof arg === 'string' && hasOwn(extraObj, arg)) {
-        ret.push(extraObj[arg]);
-      } else {
-        ret.push(arg);
-      }
-    }
-  });
-
-  return ret;
-}
-
-var ONCE = '~';
-var CUSTOM = '^';
-
-function isMatchEventType(eventType, optType) {
-  return eventType === optType ||
-
-  optType === 'regionchange' && (
-
-  eventType === 'begin' ||
-  eventType === 'end');
-
-
-}
-
-function handleEvent(event) {var _this = this;
-  event = wrapper$1(event);
-
-  // [['tap',[['handle',[1,2,a]],['handle1',[1,2,a]]]]]
-  var dataset = (event.currentTarget || event.target).dataset;
-  if (!dataset) {
-    return console.warn("\u4E8B\u4EF6\u4FE1\u606F\u4E0D\u5B58\u5728");
-  }
-  var eventOpts = dataset.eventOpts || dataset['event-opts']; // 支付宝 web-view 组件 dataset 非驼峰
-  if (!eventOpts) {
-    return console.warn("\u4E8B\u4EF6\u4FE1\u606F\u4E0D\u5B58\u5728");
-  }
-
-  // [['handle',[1,2,a]],['handle1',[1,2,a]]]
-  var eventType = event.type;
-  eventOpts.forEach(function (eventOpt) {
-    var type = eventOpt[0];
-    var eventsArray = eventOpt[1];
-
-    var isCustom = type.charAt(0) === CUSTOM;
-    type = isCustom ? type.slice(1) : type;
-    var isOnce = type.charAt(0) === ONCE;
-    type = isOnce ? type.slice(1) : type;
-
-    if (eventsArray && isMatchEventType(eventType, type)) {
-      eventsArray.forEach(function (eventArray) {
-        var methodName = eventArray[0];
-        if (methodName) {
-          var handlerCtx = _this.$vm;
-          if (
-          handlerCtx.$options.generic &&
-          handlerCtx.$parent &&
-          handlerCtx.$parent.$parent)
-          {// mp-weixin,mp-toutiao 抽象节点模拟 scoped slots
-            handlerCtx = handlerCtx.$parent.$parent;
-          }
-          var handler = handlerCtx[methodName];
-          if (!isFn(handler)) {
-            throw new Error(" _vm.".concat(methodName, " is not a function"));
-          }
-          if (isOnce) {
-            if (handler.once) {
-              return;
-            }
-            handler.once = true;
-          }
-          handler.apply(handlerCtx, processEventArgs(
-          _this.$vm,
-          event,
-          eventArray[1],
-          eventArray[2],
-          isCustom,
-          methodName));
-
-        }
-      });
-    }
-  });
-}
-
-var hooks = [
-'onShow',
-'onHide',
-'onError',
-'onPageNotFound'];
-
-
-function parseBaseApp(vm, _ref3)
-
-
-{var mocks = _ref3.mocks,initRefs = _ref3.initRefs;
-  _vue.default.prototype.mpHost = "mp-weixin";
-
-  _vue.default.mixin({
-    beforeCreate: function beforeCreate() {
-      if (!this.$options.mpType) {
-        return;
-      }
-
-      this.mpType = this.$options.mpType;
-
-      this.$mp = _defineProperty({
-        data: {} },
-      this.mpType, this.$options.mpInstance);
-
-
-      this.$scope = this.$options.mpInstance;
-
-      delete this.$options.mpType;
-      delete this.$options.mpInstance;
-
-      if (this.mpType !== 'app') {
-        initRefs(this);
-        initMocks(this, mocks);
-      }
-    } });
-
-
-  var appOptions = {
-    onLaunch: function onLaunch(args) {
-      if (this.$vm) {// 已经初始化过了，主要是为了百度，百度 onShow 在 onLaunch 之前
-        return;
-      }
-      {
-        if (!wx.canIUse('nextTick')) {// 事实 上2.2.3 即可，简单使用 2.3.0 的 nextTick 判断
-          console.error('当前微信基础库版本过低，请将 微信开发者工具-详情-项目设置-调试基础库版本 更换为`2.3.0`以上');
-        }
-      }
-
-      this.$vm = vm;
-
-      this.$vm.$mp = {
-        app: this };
-
-
-      this.$vm.$scope = this;
-
-      this.$vm._isMounted = true;
-      this.$vm.__call_hook('mounted', args);
-
-      this.$vm.__call_hook('onLaunch', args);
-    } };
-
-
-  // 兼容旧版本 globalData
-  appOptions.globalData = vm.$options.globalData || {};
-
-  initHooks(appOptions, hooks);
-
-  return appOptions;
-}
-
-var mocks = ['__route__', '__wxExparserNodeId__', '__wxWebviewId__'];
-
-function findVmByVueId(vm, vuePid) {
-  var $children = vm.$children;
-  // 优先查找直属
-  var parentVm = $children.find(function (childVm) {return childVm.$scope._$vueId === vuePid;});
-  if (parentVm) {
-    return parentVm;
-  }
-  // 反向递归查找
-  for (var i = $children.length - 1; i >= 0; i--) {
-    parentVm = findVmByVueId($children[i], vuePid);
-    if (parentVm) {
-      return parentVm;
-    }
-  }
-}
-
-function initBehavior(options) {
-  return Behavior(options);
-}
-
-function isPage() {
-  return !!this.route;
-}
-
-function initRelation(detail) {
-  this.triggerEvent('__l', detail);
-}
-
-function initRefs(vm) {
-  var mpInstance = vm.$scope;
-  Object.defineProperty(vm, '$refs', {
-    get: function get() {
-      var $refs = {};
-      var components = mpInstance.selectAllComponents('.vue-ref');
-      components.forEach(function (component) {
-        var ref = component.dataset.ref;
-        $refs[ref] = component.$vm || component;
-      });
-      var forComponents = mpInstance.selectAllComponents('.vue-ref-in-for');
-      forComponents.forEach(function (component) {
-        var ref = component.dataset.ref;
-        if (!$refs[ref]) {
-          $refs[ref] = [];
-        }
-        $refs[ref].push(component.$vm || component);
-      });
-      return $refs;
-    } });
-
-}
-
-function handleLink(event) {var _ref4 =
-
-
-
-  event.detail || event.value,vuePid = _ref4.vuePid,vueOptions = _ref4.vueOptions; // detail 是微信,value 是百度(dipatch)
-
-  var parentVm;
-
-  if (vuePid) {
-    parentVm = findVmByVueId(this.$vm, vuePid);
-  }
-
-  if (!parentVm) {
-    parentVm = this.$vm;
-  }
-
-  vueOptions.parent = parentVm;
-}
-
-function parseApp(vm) {
-  return parseBaseApp(vm, {
-    mocks: mocks,
-    initRefs: initRefs });
-
-}
-
-function createApp(vm) {
-  App(parseApp(vm));
-  return vm;
-}
-
-function parseBaseComponent(vueComponentOptions)
-
-
-{var _ref5 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},isPage$$1 = _ref5.isPage,initRelation$$1 = _ref5.initRelation;var _initVueComponent =
-  initVueComponent(_vue.default, vueComponentOptions),_initVueComponent2 = _slicedToArray(_initVueComponent, 2),VueComponent = _initVueComponent2[0],vueOptions = _initVueComponent2[1];
-
-  var componentOptions = {
-    options: {
-      multipleSlots: true,
-      addGlobalClass: true },
-
-    data: initData(vueOptions, _vue.default.prototype),
-    behaviors: initBehaviors(vueOptions, initBehavior),
-    properties: initProperties(vueOptions.props, false, vueOptions.__file),
-    lifetimes: {
-      attached: function attached() {
-        var properties = this.properties;
-
-        var options = {
-          mpType: isPage$$1.call(this) ? 'page' : 'component',
-          mpInstance: this,
-          propsData: properties };
-
-
-        initVueIds(properties.vueId, this);
-
-        // 处理父子关系
-        initRelation$$1.call(this, {
-          vuePid: this._$vuePid,
-          vueOptions: options });
-
-
-        // 初始化 vue 实例
-        this.$vm = new VueComponent(options);
-
-        // 处理$slots,$scopedSlots（暂不支持动态变化$slots）
-        initSlots(this.$vm, properties.vueSlots);
-
-        // 触发首次 setData
-        this.$vm.$mount();
-      },
-      ready: function ready() {
-        // 当组件 props 默认值为 true，初始化时传入 false 会导致 created,ready 触发, 但 attached 不触发
-        // https://developers.weixin.qq.com/community/develop/doc/00066ae2844cc0f8eb883e2a557800
-        if (this.$vm) {
-          this.$vm._isMounted = true;
-          this.$vm.__call_hook('mounted');
-          this.$vm.__call_hook('onReady');
-        }
-      },
-      detached: function detached() {
-        this.$vm.$destroy();
-      } },
-
-    pageLifetimes: {
-      show: function show(args) {
-        this.$vm && this.$vm.__call_hook('onPageShow', args);
-      },
-      hide: function hide() {
-        this.$vm && this.$vm.__call_hook('onPageHide');
-      },
-      resize: function resize(size) {
-        this.$vm && this.$vm.__call_hook('onPageResize', size);
-      } },
-
-    methods: {
-      __l: handleLink,
-      __e: handleEvent } };
-
-
-
-  if (isPage$$1) {
-    return componentOptions;
-  }
-  return [componentOptions, VueComponent];
-}
-
-function parseComponent(vueComponentOptions) {
-  return parseBaseComponent(vueComponentOptions, {
-    isPage: isPage,
-    initRelation: initRelation });
-
-}
-
-var hooks$1 = [
-'onShow',
-'onHide',
-'onUnload'];
-
-
-hooks$1.push.apply(hooks$1, PAGE_EVENT_HOOKS);
-
-function parseBasePage(vuePageOptions, _ref6)
-
-
-{var isPage = _ref6.isPage,initRelation = _ref6.initRelation;
-  var pageOptions = parseComponent(vuePageOptions, {
-    isPage: isPage,
-    initRelation: initRelation });
-
-
-  initHooks(pageOptions.methods, hooks$1, vuePageOptions);
-
-  pageOptions.methods.onLoad = function (args) {
-    this.$vm.$mp.query = args; // 兼容 mpvue
-    this.$vm.__call_hook('onLoad', args);
-  };
-
-  return pageOptions;
-}
-
-function parsePage(vuePageOptions) {
-  return parseBasePage(vuePageOptions, {
-    isPage: isPage,
-    initRelation: initRelation });
-
-}
-
-function createPage(vuePageOptions) {
-  {
-    return Component(parsePage(vuePageOptions));
-  }
-}
-
-function createComponent(vueOptions) {
-  {
-    return Component(parseComponent(vueOptions));
-  }
-}
-
-todos.forEach(function (todoApi) {
-  protocols[todoApi] = false;
-});
-
-canIUses.forEach(function (canIUseApi) {
-  var apiName = protocols[canIUseApi] && protocols[canIUseApi].name ? protocols[canIUseApi].name :
-  canIUseApi;
-  if (!wx.canIUse(apiName)) {
-    protocols[canIUseApi] = false;
-  }
-});
-
-var uni = {};
-
-if (typeof Proxy !== 'undefined' && "mp-weixin" !== 'app-plus') {
-  uni = new Proxy({}, {
-    get: function get(target, name) {
-      if (name === 'upx2px') {
-        return upx2px;
-      }
-      if (api[name]) {
-        return promisify(name, api[name]);
-      }
-      {
-        if (extraApi[name]) {
-          return promisify(name, extraApi[name]);
-        }
-        if (todoApis[name]) {
-          return promisify(name, todoApis[name]);
-        }
-      }
-      if (eventApi[name]) {
-        return eventApi[name];
-      }
-      if (!hasOwn(wx, name) && !hasOwn(protocols, name)) {
-        return;
-      }
-      return promisify(name, wrapper(name, wx[name]));
-    } });
-
-} else {
-  uni.upx2px = upx2px;
-
-  {
-    Object.keys(todoApis).forEach(function (name) {
-      uni[name] = promisify(name, todoApis[name]);
-    });
-    Object.keys(extraApi).forEach(function (name) {
-      uni[name] = promisify(name, todoApis[name]);
-    });
-  }
-
-  Object.keys(eventApi).forEach(function (name) {
-    uni[name] = eventApi[name];
-  });
-
-  Object.keys(api).forEach(function (name) {
-    uni[name] = promisify(name, api[name]);
-  });
-
-  Object.keys(wx).forEach(function (name) {
-    if (hasOwn(wx, name) || hasOwn(protocols, name)) {
-      uni[name] = promisify(name, wrapper(name, wx[name]));
-    }
-  });
-}
-
-wx.createApp = createApp;
-wx.createPage = createPage;
-wx.createComponent = createComponent;
-
-var uni$1 = uni;var _default =
-
-uni$1;exports.default = _default;
+initPicker;exports.default = _default;
 
 /***/ }),
 
-/***/ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js":
+/***/ 2:
 /*!******************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js ***!
   \******************************************************************************************/
@@ -22480,118 +26552,28 @@ internalMixin(Vue);
 
 /* harmony default export */ __webpack_exports__["default"] = (Vue);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 22:
+/*!**************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2Fapply%2Fapply"} ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
 
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _apply = _interopRequireDefault(__webpack_require__(/*! ./pages/apply/apply.vue */ 23));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_apply.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
 
 /***/ }),
 
-/***/ "./node_modules/webpack/buildin/global.js":
+/***/ 3:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
@@ -22619,6 +26601,321 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+
+/***/ 30:
+/*!**************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2Fplain%2Fplain"} ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _plain = _interopRequireDefault(__webpack_require__(/*! ./pages/plain/plain.vue */ 31));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_plain.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 38:
+/*!**************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2Flogin%2Flogin"} ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _login = _interopRequireDefault(__webpack_require__(/*! ./pages/login/login.vue */ 39));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_login.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 4:
+/*!********************************************!*\
+  !*** E:/code/agile-front/agile/pages.json ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/***/ }),
+
+/***/ 46:
+/*!****************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2Fpeople%2Fpeople"} ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _people = _interopRequireDefault(__webpack_require__(/*! ./pages/people/people.vue */ 47));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_people.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 54:
+/*!******************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2Fcomment%2Fcomment"} ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _comment = _interopRequireDefault(__webpack_require__(/*! ./pages/comment/comment.vue */ 55));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_comment.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 62:
+/*!************************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2FupdateTask%2FupdateTask"} ***!
+  \************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _updateTask = _interopRequireDefault(__webpack_require__(/*! ./pages/updateTask/updateTask.vue */ 63));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_updateTask.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 68:
+/*!******************************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2FreviewProject%2FreviewProject"} ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _reviewProject = _interopRequireDefault(__webpack_require__(/*! ./pages/reviewProject/reviewProject.vue */ 69));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_reviewProject.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 74:
+/*!**************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2Fadmin%2Fadmin"} ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _admin = _interopRequireDefault(__webpack_require__(/*! ./pages/admin/admin.vue */ 75));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_admin.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 8:
+/*!*****************************************************!*\
+  !*** E:/code/agile-front/agile/static/utils/api.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+ //注册的api
+var register = "http://120.79.49.245:7377/user/registerByWeChat";
+
+//查找该用户
+var queryUser = "http://120.79.49.245:7377/user/query";
+
+//查找用户权限项目关系，可以根据userId、roleId、projectId单独和两两和三去查
+var userProjectRoleQuery = "http://120.79.49.245:7377/userProjectRole/query";
+
+//查找项目，库查找所有的项目，也可以单个查询
+var projectQuery = "http://120.79.49.245:7377/project/query";
+
+//添加申请
+var roleApplyAdd = "http://120.79.49.245:7377/roleApply/add";
+
+//添加评论
+var commentAdd = "http://120.79.49.245:7377/comment/add";
+
+//查找评论
+var commnetQuery = "http://120.79.49.245:7377/comment/add";
+
+//增加冲刺的信息
+var sprintAdd = "http://120.79.49.245:7377/sprint/add";
+
+//进行项目的更新（可以单个，也可以多个）
+var projectUpdate = "http://120.79.49.245:7377/project/updateBatch";
+
+//获取所有权限
+var getAllRole = "http://120.79.49.245:7377/other/getAllRole";
+
+//在t_user_project_role中增加信息
+var userProjectRoleAdd = "http://120.79.49.245:7377/userProjectRole/add";
+
+//在t_user_project_role中更新权限信息
+var userProjectRoleUpdateBatch = "http://120.79.49.245:7377/userProjectRole/updateBatch";
+
+//获取所有专业
+var getAllDepartment = "http://120.79.49.245:7377/other/getAllDepartment";
+
+//获取申请记录
+var roleApplyQuery = "http://120.79.49.245:7377/roleApply/query";
+
+//增加用户项目专业记录
+var userProjectDepartmentAdd = "http://120.79.49.245:7377/userprojectdepartment/add";
+
+//查找用户项目专业记录
+var userProjectDepartmentQuery = "http://120.79.49.245:7377/userprojectdepartment/query";
+
+//修改t_user_project_department中的数据
+var updateUserProjectDepartment = "http://120.79.49.245:7377/userprojectdepartment/updateBatch";
+
+//审核的时候更新申请记录
+var updateRoleApply = "http://120.79.49.245:7377/roleApply/updateBatch";
+
+//新增专业的api
+var departmentAdd = "http://120.79.49.245:7377/department/add";
+
+//新增任务的api
+var taskAdd = "http://120.79.49.245:7377/task/add";
+
+//查找专业
+var departmentQuery = "http://120.79.49.245:7377/department/query";
+
+//查找所有专业
+var departmentQueryAll = "http://120.79.49.245:7377/department/queryAll";
+
+//查找任务
+var taskQuery = "http://120.79.49.245:7377/task/query";
+
+//查找冲刺
+var sprintQuery = "http://120.79.49.245:7377/sprint/query";
+
+//任务的更新
+var taskUpdateBatch = "http://120.79.49.245:7377/task/updateBatch";
+
+//增加消息
+var messageAdd = "http://120.79.49.245:7377/message/add";
+
+//删除任务 /task/deleteBatch
+var deleteTask = "http://120.79.49.245:7377/task/deleteBatch";
+
+//获取折线图数据
+var getLineData = "http://120.79.49.245:7377/picture/getLineData";
+
+
+module.exports = {
+  departmentQueryAll: departmentQueryAll,
+  register: register,
+  queryUser: queryUser,
+  projectQuery: projectQuery,
+  commentAdd: commentAdd,
+  commnetQuery: commnetQuery,
+  userProjectRoleQuery: userProjectRoleQuery,
+  roleApplyAdd: roleApplyAdd,
+  sprintAdd: sprintAdd,
+  projectUpdate: projectUpdate,
+  getAllRole: getAllRole,
+  userProjectRoleAdd: userProjectRoleAdd,
+  getAllDepartment: getAllDepartment,
+  roleApplyQuery: roleApplyQuery,
+  userProjectDepartmentAdd: userProjectDepartmentAdd,
+  userProjectDepartmentQuery: userProjectDepartmentQuery,
+  userProjectRoleUpdateBatch: userProjectRoleUpdateBatch,
+  updateUserProjectDepartment: updateUserProjectDepartment,
+  updateRoleApply: updateRoleApply,
+  departmentAdd: departmentAdd,
+  taskAdd: taskAdd,
+  departmentQuery: departmentQuery,
+  sprintQuery: sprintQuery,
+  taskQuery: taskQuery,
+  taskUpdateBatch: taskUpdateBatch,
+  messageAdd: messageAdd,
+  deleteTask: deleteTask };
+
+/***/ }),
+
+/***/ 82:
+/*!******************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2Fmessage%2Fmessage"} ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _message = _interopRequireDefault(__webpack_require__(/*! ./pages/message/message.vue */ 83));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_message.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 9:
+/*!******************************************************!*\
+  !*** E:/code/agile-front/agile/static/utils/time.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var formatDate = function formatDate(date) {
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+  return [year, month, day].map(formatNumber).join('-') + " " + [hours, minutes, seconds].map(formatNumber).join(':');
+};
+var formatNumber = function formatNumber(n) {
+  n = n.toString();
+  return n[1] ? n : '0' + n; //表示字符串第一个数是否存在
+};
+module.exports = {
+  formatDate: formatDate };
+
+/***/ }),
+
+/***/ 97:
+/*!************************************************************************************!*\
+  !*** E:/code/agile-front/agile/main.js?{"page":"pages%2FreviewTask%2FreviewTask"} ***!
+  \************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _reviewTask = _interopRequireDefault(__webpack_require__(/*! ./pages/reviewTask/reviewTask.vue */ 98));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_reviewTask.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
 
 /***/ })
 
