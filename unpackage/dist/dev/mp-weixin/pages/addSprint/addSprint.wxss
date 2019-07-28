@@ -34,6 +34,7 @@
 	font-size: 35rpx;
 	font-weight: 500;
 	text-align: left!important;
+	color: #111A34!important;
 }
 .sprintNum{
 	display: -webkit-box;
@@ -73,6 +74,7 @@
 	margin-top: 15rpx;
 	margin-left: 6rpx;
 	font-size: 30rpx;
+	width: 100%;
 }
 /*
 #target{
@@ -143,6 +145,7 @@
 .submitButton{
 	width: 60%;
 	height: 80rpx;
+	line-height: 80rpx;
 	border-radius:2%;
 	margin-top: 10rpx;
 	background-color: #6AA2D4;

@@ -192,7 +192,8 @@ var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       chooseTime: "", //设置的时间
       chooseItem: "" //选中的审核的项目
     };}, onLoad: function onLoad(e) {this.getSystem();this.chooseItem = JSON.parse(e.chooseItem);}, onShow: function onShow() {_this = this;uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data.records[0];});}, fail: function fail() {uni.redirectTo({ url: "../login/login" });} });}, methods: { //获取系统信息
-    getSystem: function getSystem() {_this = this;uni.getSystemInfo({
+    getSystem: function getSystem() {_this = this;
+      uni.getSystemInfo({
         success: function success(res) {
           _this.width = parseInt(res.windowWidth) - 70;
         } });
@@ -212,6 +213,7 @@ var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     //进行审核
     examine: function examine(e) {//通过和不同过监听同一个函数根据id去判断进而实现通过和不通过
       _this = this;
+      var nowTime = new Date(Date.parse((0, _time.formatDate)(new Date())));
       console.log(e);
       (0, _utils.addFormId)(_this.userInfo.openId, e.detail.formId);
       console.log(e.currentTarget.id);
@@ -220,7 +222,7 @@ var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       var roleId;
       if (state === 1) {
         var _roleId = 3;
-        if (_this.chooseTime != "") {
+        if (_this.chooseTime && new Data(Date.parse(_this.chooseTime)) > nowTime) {
           console.log("提交的消息", {
             id: _this.chooseItem.id,
             effectiveTime: _this.chooseTime,

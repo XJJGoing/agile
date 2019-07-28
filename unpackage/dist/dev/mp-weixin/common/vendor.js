@@ -14814,6 +14814,23 @@ createPage(_reviewTask.default);
 
 /***/ }),
 
+/***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FupdateRedictTime%2FupdateRedictTime\"}":
+/*!************************************************************************************!*\
+  !*** F:/个人信息/agile/main.js?{"page":"pages%2FupdateRedictTime%2FupdateRedictTime"} ***!
+  \************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "../../../../../个人信息/agile/pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _updateRedictTime = _interopRequireDefault(__webpack_require__(/*! ./pages/updateRedictTime/updateRedictTime.vue */ "../../../../../个人信息/agile/pages/updateRedictTime/updateRedictTime.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_updateRedictTime.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
 /***/ "../../../../../个人信息/agile/main.js?{\"page\":\"pages%2FupdateTask%2FupdateTask\"}":
 /*!************************************************************************!*\
   !*** F:/个人信息/agile/main.js?{"page":"pages%2FupdateTask%2FupdateTask"} ***!
@@ -14993,6 +15010,9 @@ var dateWorkAdd = "".concat(host, "/datework/add");
 //查找dateWork
 var dateWorkQuery = "".concat(host, "/datework/query");
 
+//更新dateWork
+var dateWorkUpdateBatch = "".concat(host, "/dateWork/updateBatch");
+
 //微信消息推送
 var messageSend = "".concat(host, "/message/send");
 
@@ -15044,7 +15064,8 @@ module.exports = {
   messageSend: messageSend,
   messageSet: messageSet,
   roleApplyDeleteBatch: roleApplyDeleteBatch,
-  userProjectDepartmentDeleteBatch: userProjectDepartmentDeleteBatch };
+  userProjectDepartmentDeleteBatch: userProjectDepartmentDeleteBatch,
+  dateWorkUpdateBatch: dateWorkUpdateBatch };
 
 /***/ }),
 
@@ -15396,10 +15417,10 @@ var Query = /*#__PURE__*/function () {
 
 //向redis中根据openId去插入formId 没有就新建
 var addFormId = function addFormId(openId, formId) {
-  var reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]$/g;
+  var reg = /\s/g;
   console.log("formId和openId", openId, formId);
-  if (formId) {
-    console.log("进来");
+  console.log(reg.test(formId));
+  if (formId && !reg.test(formId)) {
     uni.request({
       url: "".concat(_api.messageSet, "?&openId=").concat(openId, "&formId=").concat(formId),
       method: "POST",

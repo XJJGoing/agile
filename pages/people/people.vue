@@ -300,11 +300,11 @@
 }
 .submitBtn{
 	width: 100%;
-	height: 80upx;
-	line-height: 80upx;
+	height: 75upx;
+	line-height: 75upx;
 	margin-top:5upx;
 	background-color: none;
-	border-radius: 2%;
+	border-radius: 2%;  
 	text-align: left;
 	font-size:28upx;
 }

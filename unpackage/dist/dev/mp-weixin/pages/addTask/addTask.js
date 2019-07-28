@@ -536,7 +536,8 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
                 "taskPlainId": "",
                 "taskPredictTime": _this.taskPredictTime,
                 "taskPriority": _this.taskPriority,
-                "taskState": 0 },
+                "taskState": 0,
+                "lastChangeStr": _this.taskPredictTime },
 
               dataType: 'json' }).
 

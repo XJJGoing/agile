@@ -9,15 +9,15 @@
    <block v-else>
 	<view class="chooseItem">
 			 <picker @change="bindPickerMyProject" :value="index" :range="myProject">
-				 <text>切换首页项目</text>
+				 切换首页项目
 			 </picker>
 			<picker @change="bindPickerLookProject" :value="index" :range="myLookProject">
-			    <text>切换可看项目</text>
+			     切换可看项目
 			</picker>
 	</view>
 	
 	<view class="titleView">
-	   <text class="title">项目信息:</text>
+	   <text class="title">项目信息</text>
 	</view>
 	<view class="projectInfo">
 		 <view>
@@ -577,6 +577,8 @@
 	border-radius: 4%;
 	text-align: center;
 	background-color:rgba(171,159,174,0.93);
+	font-size: 28upx;
+	line-height: 60upx;
 }
 .chooseItem picker text{
 	height: 60upx;
@@ -589,7 +591,8 @@
 .titleView{
   width: 100%;
   height: 70upx;
-  background-color:#94B6CB ;
+  text-align: center;
+  background-color: #6CA0D9;
   margin-left: 0upx;
 }
 
@@ -599,6 +602,7 @@
 	line-height: 70upx;
 	font-size: 35upx;
 	font-family: webfont;
+	color: #F0F8FF;
 }  
 
 .projectInfo{

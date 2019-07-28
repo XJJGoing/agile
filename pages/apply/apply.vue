@@ -5,6 +5,7 @@
 			        class="ibutton" 
 					plain="true" 
 					style="color:#fbf3f5; border:1px solid #fbf3f5;"
+					:style="{width:submitInput+'%'}"
 			>查看项目</button>
 			
 			<block v-if="isLookApply">
@@ -66,7 +67,8 @@
 					<button form-type="submit"
 					        class="submitApply" 
 							plain="true" 
-							style="color:#fbf3f5; border:1px solid #fbf3f5;"
+							:style="{width:submitInput+'%'}"
+							style="color:#fbf3f5;border:1px solid #fbf3f5"
 					>提交申请</button>
 				</view>
 				</form>
@@ -131,6 +133,7 @@
 		data() {
 			return {
 				width:"",                 //设置输入框的长度
+				submitInput:"",
 				userInfo:{},              //用户的个人信息，
 			
 				isLookApply:false,
@@ -150,7 +153,7 @@
 				chargeProject:[],       //负责的项目
 				joinProject:[],         //参与的项目
 				
-				allUserProjectInfo:[]    //存放着所有项目的信息
+				allUserProjectInfo:[],    //存放着所有项目的信息
 			}
 		},
 		
@@ -198,7 +201,9 @@
 			getSystem:function(){
 			 	uni.getSystemInfo({
 			 		success:(res)=> {
-			 			_this.width = (parseInt(res.windowWidth)-80);     //50px是text的upx转成px的长度
+						let textWidth = parseInt(res.windowWidth*0.2);
+						let submitInput = parseInt(200/res.windowWidth)*100;
+			 			_this.width = parseInt(res.windowWidth)-textWidth;    
 			 		},
 			 		fail:()=> {
 			 			uni.showToast({
@@ -772,6 +777,9 @@
 </script>
 
 <style>
+page{
+	
+}
 .all{
 	width: 100%;
 	overflow: scroll;
@@ -781,7 +789,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	color:#FEFEFE;
+	color:#F0F8FF;
 }
 ::-webkit-scrollbar{
 	width: 4upx;
@@ -790,7 +798,7 @@
 .ibutton{
 	width: 40%;
 	height: 100upx;
-	color: #19BE6B;
+	color:#F0F8FF;
 	border-radius: 4%;
 	font-size: 35upx;
 	font-weight: 300;
@@ -815,8 +823,8 @@
 	width: 100%;
 }
 .applyList view text{
-	width:120upx;
-	margin-left: 10upx;
+	width:20%;
+	margin-left: 2%;
 	line-height: 80upx;
 	height: 80upx;
 }
@@ -845,13 +853,14 @@
 
 /*提交申请表的按钮*/
 .submitApply{
-	width: 200upx;
 	height: 100upx;
 	border-radius: 2%;
 	margin-top: 15upx;
 	margin-bottom: 20upx;
 	font-size: 30upx;
 	line-height: 100upx;
+	color: #333333;
+	border: 1px solid #FCFBFF;
 }
 
 
@@ -869,7 +878,7 @@
 	width: 100%;
 	font-size: 30upx;
 	margin-bottom: 15upx;
-	color: #C0C0C0;
+	color:#F0F8FF;
 	font-weight: 800;
 }
 .titleInfo text{

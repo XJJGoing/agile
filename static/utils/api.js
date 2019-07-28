@@ -106,6 +106,9 @@ const dateWorkAdd = `${host}/datework/add`;
 //查找dateWork
 const dateWorkQuery = `${host}/datework/query`;
 
+//更新dateWork
+const dateWorkUpdateBatch = `${host}/dateWork/updateBatch`
+
 //微信消息推送
 const messageSend = `${host}/message/send`;
 
@@ -157,5 +160,6 @@ module.exports = {
 	messageSend:messageSend,
 	messageSet:messageSet,
 	roleApplyDeleteBatch:roleApplyDeleteBatch,
-	userProjectDepartmentDeleteBatch:userProjectDepartmentDeleteBatch
+	userProjectDepartmentDeleteBatch:userProjectDepartmentDeleteBatch,
+	dateWorkUpdateBatch:dateWorkUpdateBatch
 } 

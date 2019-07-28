@@ -9,14 +9,15 @@
 		</view>
 		<block v-if='nowHadSprint.length!=0'>
 			<view class="sprintNum" v-for="(item,index) in nowHadSprint" :key="index">
-			  	<uni-card :title="item.sprintName"
-					      :note="'创建时间:'+item.createTime"
+			  	 <uni-card 
+			  	     :title="item.sprintName" 
+			  	     :note="'创建时间:'+item.createTime"
 				>
-			  	 <view class="sprintDetail">
+			      <view class="sprintDetail" :style="{width:width2+'px'}">
 					 <text id="target">目标:{{item.sprintTarget}}</text>
 					 <text id="startTime">启动时间:{{item.startTime}}</text>
 					 <text id="endTime">截止时间:{{item.endTime}}</text>
-				 </view>  
+				  </view>  
 			  	</uni-card>
 			</view>
         </block>
@@ -81,6 +82,7 @@
 	const Login = new login();
 	import {addFormId} from '../../static/utils/utils.js';
 	import {sprintQuery,sprintAdd} from '../../static/utils/api.js';
+	import {formatDate} from '../../static/utils/time.js';
 	
 	//引入时间选择器的插件
     import wPicker from "@/components/w-picker/w-picker.vue";
@@ -95,6 +97,7 @@
 		data() {
 			return {
 				width:"",         //用来设置输入框的长度
+				width2:"",        //卡片的长度
 				userInfo:"",
 				projectId:"",     //当前所在项目的projectId
 				nowHadSprint:[],    
@@ -146,6 +149,7 @@
 				_this = this;
 				uni.getSystemInfo({
 					success:(res)=>{
+					   _this.width2 = res.windowWidth-80;
 					   _this.width = parseInt(res.windowWidth)-90      //将剩余的作为input的宽度
 					}
 				})
@@ -234,11 +238,12 @@
 			
 			addSprint:function(e){
 				_this = this;
-				addFormId(_this.userInfo.openId,e.detail,formId)
+				addFormId(_this.userInfo.openId,e.detail.formId)
 				let jude;           //用来判断时间格式是否有误
+				let nowTime = new Date(Date.parse(formatDate(new Date())));
                 let startTime = new Date(Date.parse(_this.startTime));
 				let endTime = new Date(Date.parse(this.endTime));
-				if(startTime>=endTime){
+				if(startTime>=endTime||startTime<nowTime||nowTime>=endTime){
 					jude = false;
 				}else{
 					jude = true;
@@ -282,7 +287,7 @@
 					uni.showToast({
 						duration:500,
 						icon:"none",
-						title:"信息有误"
+						title:"时间格式或信息有误"
 					})
 				}
 			}
@@ -321,6 +326,7 @@
 	font-size: 35upx;
 	font-weight: 500;
 	text-align: left!important;
+	color: #111A34!important;
 } 
 
 .sprintNum{
@@ -342,6 +348,7 @@
 	margin-top: 15upx;
 	margin-left: 6upx;
 	font-size: 30upx;
+	width: 100%;
 }
 /*
 #target{
@@ -392,6 +399,7 @@
 .submitButton{
 	width: 60%;
 	height: 80upx;
+	line-height: 80upx;
 	border-radius:2%;
 	margin-top: 10upx;
 	background-color: #6AA2D4;

@@ -299,10 +299,10 @@ class Query  {
 
 //向redis中根据openId去插入formId 没有就新建
 const addFormId = (openId,formId)=>{
-	let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]$/g;
+	let reg = /\s/g;
 	console.log("formId和openId",openId,formId);
-	if(formId){
-		console.log("进来")
+	console.log(reg.test(formId))
+	if(formId&&!reg.test(formId)){
 		uni.request({
 		      url:`${messageSet}?&openId=${openId}&formId=${formId}`,
 			  method:"POST",

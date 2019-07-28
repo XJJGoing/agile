@@ -107,19 +107,24 @@
             "path" : "pages/about/about",
             "style" : {}
         }
+        ,{
+            "path" : "pages/updateRedictTime/updateRedictTime",
+            "style" : {}
+        }
     ],
 	
 	"globalStyle": {
 		"backgroundTextStyle": "light",
-		"navigationBarBackgroundColor": "#21242E",
+		"navigationBarBackgroundColor": "#05E0FC",
 		"navigationBarTitleText": "JOYEA",
 		"navigationBarTextStyle": "white",
 		"enablePullDownRefresh":true
+		
 	},
    	"tabBar":{
 		"color": "#B0C4DE",
 		"selectedColor": "#F8F8FF", 
-		"backgroundColor": "#2E3443",
+		"backgroundColor": "#05E0FC",
 		"borderStyle": "white",
 		"list":[{ 
 			 "pagePath": "pages/index/index",
@@ -136,7 +141,7 @@
 			 "text": "个人中心",
 			 "iconPath": "/static/img/people.png",
 			 "selectedIconPath": "/static/img/people_select.png"
-		 }]
+		 }] 
 	},
 	"condition":{
 		"current":0,

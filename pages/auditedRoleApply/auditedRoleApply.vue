@@ -48,6 +48,7 @@
 		   } from '../../static/utils/api.js';
  	import {addFormId} from "../../static/utils/utils.js";
 	import {formatDate} from "../../static/utils/time.js";
+	
 	const query = require('../../static/utils/utils').Query;
 	const Query = new query();
 	import wPicker from "@/components/w-picker/w-picker.vue";
@@ -112,6 +113,7 @@
 			//进行审核
 			examine:function(e){  //通过和不同过监听同一个函数根据id去判断进而实现通过和不通过
 			    _this = this;
+				let nowTime = new Date(Date.parse(formatDate(new Date())));
 				console.log(e)
 				addFormId(_this.userInfo.openId,e.detail.formId);
 				console.log(e.currentTarget.id);
@@ -120,7 +122,7 @@
 			    let roleId;
 				if(state===1){
 					let roleId = 3;
-					if(_this.chooseTime!=""){
+					if(_this.chooseTime&&new Data(Date.parse(_this.chooseTime))>nowTime){
 						console.log("提交的消息",{
 									id:_this.chooseItem.id,
 							  		effectiveTime: _this.chooseTime,

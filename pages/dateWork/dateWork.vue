@@ -46,14 +46,18 @@
 	const Query = new query();
 	
 	import {format} from'../../static/utils/time.js';
-	import {dateWorkAdd,taskUpdateBatch,dateWorkQuery} from "../../static/utils/api.js";
+	import {dateWorkAdd,
+	        taskUpdateBatch,
+			dateWorkQuery,
+			dateWorkUpdateBatch
+	       } from "../../static/utils/api.js";
 	var _this;
 	export default {
 		data() {
 			return {
 			   width:"",                  //设置输入框和输入区域的长度
 			   userInfo:"",
-			   projectId:"",
+			   projectId:"",                             //这三个也传
 			   sprintId:"",
 			   departmentId:"",
 			   taskId:6,                                  //任务的id.
@@ -68,6 +72,8 @@
 			   dayWorkTime:"",        //输入的每天工时
 			   dayNote:"",            //每天的日报
 			   completionDegree:""         ,//每日的完成度
+			   
+			   dateWorkId:"",                //dateWorkId。用于更新用
 			   
 			}
 		},
@@ -131,6 +137,8 @@
 							data:{
 								taskId:_this.taskId,
 								userId:_this.userId,
+								sprintId:_this.sprintId,
+								projectId:_this.projectId,
 								date:dateTime,
 							},
 							dataType:'json'
@@ -138,10 +146,13 @@
 						.then(data=>{
 							uni.hideLoading();
 							console.log("查找成功",data[1].data.data.records[0]);
-						    if(data[1].data.data.records.length){
+						    if(data[1].data.data.records.length){  //查找是否存在
+								_this.dateWorkId = data[1].data.data.records[0].id;
 								_this.dayWorkTime = data[1].data.data.records[0].workTime;
 								_this.dayNote = data[1].data.data.records[0].note;
 								_this.taskState = 3;
+							}else{
+								
 							}
 						})
 						.catch(Error=>{
@@ -191,50 +202,56 @@
 			},
 			
 			
-			//提交每日打卡
+			//提交每日打卡, 之前已经存在的就进行更新。
 			submitDateWork:function(){
 				_this = this;
 				if(_this.dayNote&&_this.dayWorkTime
 				   &&_this.completionDegree&&_this.taskId
 				   ){
 					let dateTime  = format(new Date());
-					uni.showLoading({
-						title:"提交中",
-						success:()=>{
-							uni.request({
-								url:dateWorkAdd,
-								method:"POST",
-								data:{
-								  taskId:_this.taskId,
-							      userId:_this.userInfo.id,
-								  date:dateTime,
-								  completionDegree:_this.completionDegree,
-								  note:_this.dayNote,
-								  workTime:_this.dayWorkTime
-								},
-								dataType:'json'
-							})
-							.then(data=>{
-								console.log('提交成功',data)
-								uni.hideLoading();
-								uni.showToast({
-									title:"打卡成功",
-									icon:"../../static/img/Icon/success.png",
-								    duration:500
-								})
-								if(_this.taskState){  //当选中的状态不为未完成时，更新任务的状态
-								   _this.updatetTask();
-								}
-							})
-							.catch(Error=>{
-								uni.showToast({
-									title:"网络错误",
-									icon:"loading",
-									duration:500
-								})
-							})
-						}
-					})
+					if(_this.dateWorkId){              //已经存在则进行更新
+						_this.updateDateWork()
+					}else{
+					    uni.showLoading({
+					    	title:"提交中",
+					    	success:()=>{
+					    		uni.request({
+					    			url:dateWorkAdd,
+					    			method:"POST",
+					    			data:{
+					    			  taskId:_this.taskId,
+					    		      userId:_this.userInfo.id,
+					    			  sprintId:_this.sprintId,
+					    			  projectId:_this.projectId,
+					    			  date:dateTime,
+					    			  completionDegree:_this.completionDegree,
+					    			  note:_this.dayNote,
+					    			  workTime:_this.dayWorkTime
+					    			},
+					    			dataType:'json'
+					    		})
+					    		.then(data=>{
+					    			console.log('提交成功',data)
+					    			if(_this.taskState){  //当选中的状态不为未完成时，更新任务的状态
+					    			   _this.updatetTask();
+					    			}else{
+											uni.showToast({
+											title:"打卡成功",
+											icon:"../../static/img/Icon/success.png",
+											duration:500,
+											})
+									}
+					    		})
+					    		.catch(Error=>{
+					    			uni.showToast({
+					    				title:"网络错误",
+					    				icon:"loading",
+					    				duration:500
+					    			})
+					    		})
+					    	}
+					    })	
+					}
 				}else{
 					uni.showToast({
 						title:"请完善信息",
@@ -244,11 +261,45 @@
 				}
 			},
 			
+			
+			//当已经存在dateWorkId的时候进行更新
+			updateDateWork:function(){
+				_this = this;
+				uni.showLoading({
+					title:"更新中",
+					success:()=>{
+						uni.request({
+							url:dateWorkUpdateBatch,
+							method:"POST",
+							data:[{
+								"id":_this.dateWorkId,
+					            "completionDegree": _this.completionDegree,
+					            "note": _this.dayNote,
+					            "workTime": _this.dayWorkTime,
+					          }],
+							dataType:'json',
+						})
+						.then(data=>{
+							console.log("更新打卡",data)
+							_this.updatetTask()
+						})
+						.catch(Error=>{
+							uni.showToast({
+								title:"网络错误",
+								icon:"loading",
+								duration:1000
+							})
+						})
+					}
+				})
+
+			},
+			
 			//当taskStatus选中为非0状态的时候向任务表中更新状态
 			updatetTask:function(){
 				_this = this;
 				uni.showLoading({
-					title:"提交中",
+					title:"更新中",
 					success:()=>{
 						uni.request({
 							url:taskUpdateBatch,
@@ -261,11 +312,15 @@
 						})
 						.then(data=>{
 							console.log("更新任务成功",data)
-							uni.hideLoading();
 							uni.showToast({
 								title:"更新成功",
 								icon:"../../static/img/Icon/success.png",
-								duration:500
+								duration:500,
+								success:()=>{
+									uni.navigateBack({
+										delta:1
+									})
+								}
 							})
 						})
 						.catch(Error=>{
@@ -277,7 +332,7 @@
 						})
 					}
 				})
-			}
+			},
 			
 		}
 	}

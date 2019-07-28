@@ -437,6 +437,7 @@
 								  "taskPredictTime": _this.taskPredictTime,
 								  "taskPriority": _this.taskPriority,
 								  "taskState": 0,
+								  "lastChangeStr":_this.taskPredictTime
 						    },
 							dataType:'json'
 						})

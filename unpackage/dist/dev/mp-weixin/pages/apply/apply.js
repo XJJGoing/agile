@@ -211,6 +211,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _time = __webpack_require__(/*! ../../static/utils/time.js */ "../../../../../个人信息/agile/static/utils/time.js");
 var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js");
 
@@ -323,10 +325,12 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 //
 //
 //
+//
+//
 //引入封装好模块
 var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query(); //引入时间格式处理函数
 var uniPagination = function uniPagination() {return __webpack_require__.e(/*! import() | components/uni-pagination/uni-pagination */ "components/uni-pagination/uni-pagination").then(__webpack_require__.bind(null, /*! ../../components/uni-pagination/uni-pagination.vue */ "../../../../../个人信息/agile/components/uni-pagination/uni-pagination.vue"));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ "../../../../../个人信息/agile/components/uni-tag/uni-tag.vue"));};var _this;var _default = { components: { uniPagination: uniPagination, uniTag: uniTag }, data: function data() {return { width: "", //设置输入框的长度
-      userInfo: {}, //用户的个人信息，
+      submitInput: "", userInfo: {}, //用户的个人信息，
       isLookApply: false, windowWidth: "", //可使用的窗口的宽度
       isApplyProject: false, //展示申请项目的页面
       trueName: "", //申请查看的人的真实姓名
@@ -343,13 +347,14 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
         Query.findUser(id).then(function (data) {//console.log("用户的信息",data.data.records[0]);
           if (data.data.records[0].isRoot) {uni.switchTab({ url: '../people/people' });} else {_this.userInfo = data.data.records[0];_this.getAllProjectInfo(); //查询所有的项目信息   
           }}).catch(function (error) {uni.showToast({ title: "网络连接错误", icon: 'none', duration: 500 });});}, fail: function fail(error) {uni.redirectTo({ url: '../login/login' });} });}, methods: { //获取系统信息设置输入框的长达
-    getSystem: function getSystem() {uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 80; //50px是text的upx转成px的长度
-        }, fail: function fail() {uni.showToast({ duration: 500, title: "获取宽度失败", icon: "none" });} });}, //输入查看者的真实姓名
+    getSystem: function getSystem() {uni.getSystemInfo({ success: function success(res) {var textWidth = parseInt(res.windowWidth * 0.2);var submitInput = parseInt(200 / res.windowWidth) * 100;_this.width = parseInt(res.windowWidth) - textWidth;}, fail: function fail() {uni.showToast({ duration: 500, title: "获取宽度失败", icon: "none" });} });}, //输入查看者的真实姓名
     inputName: function inputName(e) {_this = this;_this.trueName = e.detail.value;}, //输入项目的编号
     inputProjectName: function inputProjectName(e) {_this = this;_this.projectName = e.detail.value;}, //输入申请查看项目的原因
     inputWhy: function inputWhy(e) {_this = this;_this.why = e.detail.value;}, //输入申请项目人的真实姓名
     inputApplyTrueName: function inputApplyTrueName(e) {_this = this;_this.applyTrueName = e.detail.value;}, //输入申请项目的名称
-    inputApplyProjectName: function inputApplyProjectName(e) {_this = this;var reg = /[A-Za-z]+[0-9]+/g;var applyProjectName = e.detail.value;if (reg.test(applyProjectName)) {_this.applyProjectName = applyProjectName;}if (applyProjectName.length > 10) {_this.applyProjectName = "";uni.showToast({ title: "编号格式有误", duration: 1000, icon: "none" });}
+    inputApplyProjectName: function inputApplyProjectName(e) {_this = this;var reg = /[A-Za-z]+[0-9]+/g;var applyProjectName = e.detail.value;if (reg.test(applyProjectName)) {_this.applyProjectName = applyProjectName;}if (applyProjectName.length > 10) {_this.applyProjectName = "";uni.showToast({ title: "编号格式有误", duration: 1000, icon: "none" });
+
+      }
     },
 
     //输入申请项目的理由

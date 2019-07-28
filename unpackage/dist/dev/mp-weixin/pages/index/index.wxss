@@ -29,6 +29,8 @@
 	border-radius: 4%;
 	text-align: center;
 	background-color:rgba(171,159,174,0.93);
+	font-size: 28rpx;
+	line-height: 60rpx;
 }
 .chooseItem picker text{
 	height: 60rpx;
@@ -40,7 +42,8 @@
 .titleView{
   width: 100%;
   height: 70rpx;
-  background-color:#94B6CB ;
+  text-align: center;
+  background-color: #6CA0D9;
   margin-left: 0rpx;
 }
 .title{
@@ -49,6 +52,7 @@
 	line-height: 70rpx;
 	font-size: 35rpx;
 	font-family: webfont;
+	color: #F0F8FF;
 }
 .projectInfo{
 	display: -webkit-box;
