@@ -136,14 +136,18 @@ var _this;var _default =
   components: { uniCard: uniCard },
   data: function data() {
     return {
+      height: "",
       userInfo: "",
       projectId: "", //项目的id
       sprintId: "", //冲刺的id
-      noReviewTaskList: [] //待审核的任务     
-    };
+      noReviewTaskList: [], //待审核的任务     
+      pageNum: 0, //页数
+      pageSize: 5 };
+
   },
   onShow: function onShow() {
     _this = this;
+    _this.getSystem();
     uni.getStorage({
       key: "userInfo",
       success: function success(res) {
@@ -202,7 +206,17 @@ var _this;var _default =
   },
   methods: {
 
-    //查询为未审核的项目  等待完善等着接口的api
+    getSystem: function getSystem() {
+      _this = this;
+      uni.getSystemInfo({
+        success: function success(res) {
+          _this.height = res.windowHeight;
+          console.log(_this.height);
+        } });
+
+    },
+
+    //查询为未审核的任务  
     getAllNoReview: function getAllNoReview() {
       _this = this;
       uni.showLoading({
@@ -215,7 +229,9 @@ var _this;var _default =
             data: {
               projectId: _this.projectId,
               sprintId: _this.sprintId,
-              isReview: 0 },
+              isReview: 0,
+              pageNum: _this.pageNum,
+              pageSize: _this.pageSize },
 
             dataType: 'json' }).
 
@@ -373,6 +389,21 @@ var _this;var _default =
           });
         } });
 
+    },
+
+    //触底加载加载待审核的项目
+    loaderMore: function loaderMore() {
+      _this = this;
+      if (_this.pageSize > _this.noReviewTaskList.length) {
+        uni.showToast({
+          title: "已经到底了哦!",
+          icon: "none",
+          duration: 1000 });
+
+      } else {
+        _this.pageSize += 5;
+        _this.getAllNoReview();
+      }
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

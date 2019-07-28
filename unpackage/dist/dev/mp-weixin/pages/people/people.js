@@ -135,20 +135,29 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var icard = function icard() {return __webpack_require__.e(/*! import() | static/dist/card/index */ "common/vendor").then(__webpack_require__.t.bind(null, /*! ../../static/dist/card/index.js */ "../../../../../个人信息/agile/static/dist/card/index.js", 7));};
 
-var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;
-var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;
-var Query = new query();
-var Login = new login();
 
+
+
+
+
+
+var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");
+
+
+
+
+
+
+var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js");var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var cmdCellItem = function cmdCellItem() {return __webpack_require__.e(/*! import() | components/cmd-cell-item/cmd-cell-item */ "components/cmd-cell-item/cmd-cell-item").then(__webpack_require__.bind(null, /*! @/components/cmd-cell-item/cmd-cell-item.vue */ "../../../../../个人信息/agile/components/cmd-cell-item/cmd-cell-item.vue"));};var icard = function icard() {return __webpack_require__.e(/*! import() | static/dist/card/index */ "common/vendor").then(__webpack_require__.t.bind(null, /*! ../../static/dist/card/index.js */ "../../../../../个人信息/agile/static/dist/card/index.js", 7));};var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Query = new query();var Login = new login();
 var _this;var _default =
 {
-  components: { uniCard: uniCard, icard: icard },
+  components: { uniCard: uniCard, icard: icard, cmdCellItem: cmdCellItem },
   data: function data() {
     return {
       userInfo: {},
       roleId: "",
+      projectId: "",
       isRoot: "", //特别设置的超级权限用户.
       roleName: "", //权限对应的名称
       allRole: [], //存放获取到的所有的专业
@@ -173,14 +182,14 @@ var _this;var _default =
           var isRoot = data.data.records[0].isRoot;
           if (isRoot) {
             _this.roleId = 0;
-            _this.roleName = "超级用户";
+            _this.roleName = "管理员";
           } else {
             uni.getStorage({
               key: "nowInProject",
               success: function success(res) {
 
                 //设置普通权限并且,获取对应权限用户权限的名称和专业名称
-
+                _this.projectId = res.data.projectId;
                 _this.roleId = res.data.roleId;
                 _this.getRoleName();
                 if (_this.roleId === 2) {
@@ -230,6 +239,10 @@ var _this;var _default =
     //根据用户的projectId以及用户的userId查找专业
     getUserDepartmentId: function getUserDepartmentId() {
       _this = this;
+      // console.log("查询的条件为",{
+      // 				projectId:_this.projectId,
+      // 				userId:_this.userInfo.id
+      // 			})
       uni.showLoading({
         title: "切换中",
         success: function success() {
@@ -238,12 +251,13 @@ var _this;var _default =
             method: "POST",
             data: {
               projectId: _this.projectId,
-              roleId: _this.roleId },
+              userId: _this.userInfo.id },
 
             dataType: 'json' }).
 
           then(function (data) {
             uni.hideLoading();
+            console.log(data);
             if (data[1].data.data.records[0]) {
               _this.getUserDepartmentName(data[1].data.data.records[0].departmentId);
             } else {
@@ -289,6 +303,7 @@ var _this;var _default =
 
     },
 
+
     //退出登录
     logout: function logout() {
       uni.removeStorage({
@@ -299,6 +314,12 @@ var _this;var _default =
 
         } });
 
+    },
+
+    //向服务器增加自己的formId
+    addMyFormId: function addMyFormId(e) {
+      _this = this;
+      (0, _utils.addFormId)(_this.userInfo.openId, e.detail.formId);
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

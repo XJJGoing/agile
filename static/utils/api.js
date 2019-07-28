@@ -109,6 +109,15 @@ const dateWorkQuery = `${host}/datework/query`;
 //微信消息推送
 const messageSend = `${host}/message/send`;
 
+//设置增加formId和openId缓存的api
+const messageSet = `${host}/message/set`;
+
+//删除申请表
+const  roleApplyDeleteBatch = `${host}/roleApply/deleteBatch`;
+
+//删除这个用户项目专业表数据
+const  userProjectDepartmentDeleteBatch = `${host}/userprojectdepartment/deleteBatch`;
+
 module.exports = {
 	getUserOpenId:getUserOpenId,
 	register:register,
@@ -145,5 +154,8 @@ module.exports = {
 	commnetQuery:commnetQuery,
 	dateWorkAdd:dateWorkAdd,
 	dateWorkQuery:dateWorkQuery,
-	messageSend:messageSend
+	messageSend:messageSend,
+	messageSet:messageSet,
+	roleApplyDeleteBatch:roleApplyDeleteBatch,
+	userProjectDepartmentDeleteBatch:userProjectDepartmentDeleteBatch
 } 

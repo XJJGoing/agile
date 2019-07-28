@@ -95,14 +95,20 @@
 				   })
 				   .then(data=>{
 					   uni.hideLoading();
-					   console.log("返回的用户的信息",data.data)
+					   console.log("返回的用户的信息",data)
 					   uni.setStorage({
 					   	 key:'userInfo',
 						 data:data.data,
 						 success:()=>{
-							 uni.redirectTo({
-							 	url:'../apply/apply'
-							 })
+							 if(data.data.isRoot){  //为超级用户直接跳转people
+								 uni.redirectTo({
+								 	url:"../people/people"
+								 })
+							 }else{
+								 uni.redirectTo({
+									url:'../apply/apply'
+								}) 
+							 }
 						 },
 						 fail:()=> {
 						   	uni.showToast({

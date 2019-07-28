@@ -5,7 +5,8 @@
 			"style": {
 				"usingComponents":{
 				
-				}
+				},
+				"enablePullDownRefresh":true
 			}
 		},
 		{
@@ -14,7 +15,8 @@
 				"usingComponents":{
 					"i-button": "/static/dist/button/index",
 					"i-page":"/static/dist/page/index"
-				} 
+				},
+				 "enablePullDownRefresh":true
 			}
 		}
 	    ,{

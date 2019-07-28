@@ -1,6 +1,5 @@
 <template>
 	<scroll-view class="all" scroll-y="true">
-		
 		<view class="search_project">
 			<button @click="bindChange()" 
 			        class="ibutton" 
@@ -48,7 +47,7 @@
 				<view class="applyList">
 					<view class="appListProjectName">
 						 <text>项目编号:</text>
-						 <input placeholder="填入项目编号(数字和字母组合10位数以内)" @input="inputApplyProjectName" :value="applyProjectName" :style="{width:width+'px'}"></input>
+						 <input placeholder="填入项目编号(字母开头和数字组合10位数以内)" @input="inputApplyProjectName" :value="applyProjectName" :style="{width:width+'px'}"></input>
 					</view> 
 					<view class="appListView1">
 						 <text>申请人:</text>
@@ -56,10 +55,11 @@
 					</view>  
 					<view class="appListView2">
 						  <text>理由:</text>
-						  <textarea placeholder="填入申请项目的理由" 
+						  <textarea placeholder="填入申请项目的理由....." 
 						            :style="{width:width+'px'}"
 									:value="applyWhy"
 									@input="inputApplyWhy"
+									
 						  >
 						  </textarea>
 					</view>
@@ -112,7 +112,7 @@
 	
 	//引入时间格式处理函数
 	import {formatDate} from '../../static/utils/time.js';
-
+    import {addFormId} from '../../static/utils/utils.js';
 	
 	
 	//引入分页的组建-实现分页查询
@@ -166,9 +166,15 @@
 				   _this.getSystem();  //获取系统信息
 				   Query.findUser(id)
 				   .then(data=>{
-					   console.log("用户的信息",data.data.records[0]);
-					  _this.userInfo = data.data.records[0];
-					  _this.getAllProjectInfo();         //查询所有的项目信息
+					   //console.log("用户的信息",data.data.records[0]);
+					   if(data.data.records[0].isRoot){
+						   uni.switchTab({
+						   	 url:'../people/people'
+						   })
+					   }else{
+						 _this.userInfo = data.data.records[0];
+						 _this.getAllProjectInfo();         //查询所有的项目信息   
+					   }
 				   })
 				   .catch(error=>{
 					   uni.showToast({ 
@@ -185,7 +191,6 @@
 				}
 			})
 		},
-		 
 		 
 		methods:{
 			
@@ -262,7 +267,7 @@
 							  Query.findAllProjectInfo()
 							  .then(data=>{
 								  uni.hideLoading();
-								  console.log("获取到的所有的项目的信息",data.data.records);
+								 // console.log("获取到的所有的项目的信息",data.data.records);
 								  _this.allUserProjectInfo = data.data.records;
 								  _this.getUserProjectRole();
 							   })
@@ -280,19 +285,27 @@
 			
 	        //查询t_role_project_role表中所有用户的字段（userId、projectId、roleId并进行显示编号处理
 			getUserProjectRole:function(){
-				_this = this;			
+				_this = this;
+				let arry1 = [];
+				let arry2 = [];
+				let arry3 = [];
+				let arry4 = [];
+				let arry5 = [];
+				let arry6 = [];
+				let promise = ()=>{
+				    return new Promise(resolve=>{
+						resolve()
+					})	
+				}
 				Query.findUserProjectRoleByUserId(_this.userInfo.id)
 				.then(data=>{
 					let dataAll = data.data.records;
-					let arry1 = [];
-					let arry2 = [];
-					let arry3 = [];
 					if(dataAll.length!=0){
 					  dataAll.forEach((item,index)=>{
 					   if(item.roleId===1){
 					  	   arry1.push(item)
 					   }else if(item.roleId===2){
-					       arry2.push(item) 
+					       arry2.push(item)
 					   }else if(item.roleId===3){
 					       arry3.push(item)
 					   }
@@ -300,9 +313,6 @@
 					}
 					
 					//进行显示编号的处理
-					let arry4 = [];
-					let arry5 = [];
-					let arry6 = [];
 					for(let i = 0;i<_this.allUserProjectInfo.length;i++){
 						for(let j = 0;j<arry1.length;j++){
 							if(_this.allUserProjectInfo[i].id === arry1[j].projectId){
@@ -330,11 +340,15 @@
 							}
 						}
 					}
+					promise();
+				})
+				.then(()=>{
 					_this.chargeProject = arry4;
 					_this.joinProject = arry5;
-					_this.ableLookProject = arry6;	
+					_this.ableLookProject = arry6;
 				})
 				.catch(error=>{
+					console.log(error);
 					uni.showToast({
 						title:"网络错误",
 						icon:"none",
@@ -387,9 +401,8 @@
 			//提交申请的项目的函数,提交之前先去t_project中寻找有没有这个项目编号.
 			//有的就直接拿projectId下来
 			submitApply:function(e){
-				let formId = e.detail.formId;
-				console.log("formId",formId);
 				_this = this;
+				addFormId(_this.userInfo.openId,e.detail.formId);
 				if(_this.projectName&&_this.trueName&&_this.why){    //申请查看的项目
 				    _this.findProjectIdByProjectName(_this.projectName,(data)=>{
 						if(data.length!=0){
@@ -420,13 +433,8 @@
 							   		 })
 							   		 .then(data=>{
 							   			 uni.hideLoading();
-										 uni.showToast({
-										 	title:"提交成功",
-											duration:500,
-											icon:"none"
-										 })
 							   			 console.log(data)
-										 _this.getUserOpenIdByPushUserId(projectId,formId)     //拿到projectId用于获取该项目的负责人的id并且传输formId用于进行消息推送
+										 _this.getUserOpenIdByPushUserId(projectId)     //拿到projectId用于获取该项目的负责人的openId
 							   		 })
 							   		 .catch(error=>{
 							   				uni.showToast({
@@ -491,8 +499,8 @@
 			  
 			  //提交申请新增项目的函数申请的时候已经有的不添加，没有的就添加
 			  submitApplyProject:function(e){
-				  let formId = e.detail.formId;
 				  _this = this;
+				  addFormId(_this.userInfo.openId,e.detail.formId);
 				  if(_this.applyWhy&&_this.applyTrueName&&_this.applyProjectName){
 					   uni.showLoading({
 							title:"提交中",
@@ -511,11 +519,7 @@
 								.then(data=>{
 									uni.hideLoading();
 									if(data[1].data.code===200){
-										uni.showToast({
-											title:'提交申请成功',
-											icon:"none",
-											duration:500
-										})
+										_this.pushApplyProject()
 									}else if(data[1].data.code===525){
 										uni.showToast({
 											title:"编号已存在",
@@ -608,8 +612,9 @@
 			},
 			
 			//消息推送申请查看项目
-			pushApplyLookProject:function(openId,formId){
+			pushApplyLookProject:function(openId){
 				_this = this;
+				console.log("拿到的openId",openId);
 				let applyTime = formatDate(new Date());
 				uni.showLoading({
 					title:"提交提交中",
@@ -618,10 +623,10 @@
 							url:messageSend,
 							method:"POST",
 							data:{
-								"touser": openId,
+								"touser": openId,              //目标用户
 							    "template_id": "FE-AORZYC_o3cwMXmLYPpPNt0hgHVbyld3isE2i3z5U",    //模板id
-								"page": "message",
-							    "form_id": formId,                    //表单提交后返回的formid
+								"page": "pages/message/message",
+							    "form_id": "",                                               //表单提交后返回的formid
 								"data": {
 									 "keyword1": {
 										"value": _this.projectName,
@@ -638,13 +643,16 @@
 									"emphasis_keyword": "keyword1.DATA"
 								}
 							},	
-						})
+						}) 
 						.then(data=>{
 							uni.hideLoading();
 							uni.showToast({
 								title:"提交成功",
 								icon:"../../static/img/Icon/success.png",
-								duration:500
+								duration:500,
+								success:()=>{
+									_this.isLookApply = false;
+								}
 							})
 							console.log("消息推送成功",data)
 						})
@@ -665,33 +673,35 @@
 				let applyTime = formatDate(new Date());
 				Query.findRootUserInfo()                    //查找超级用户的openid
 				.then(data=>{
+					console.log(data)
 					let openId = data.data.records[0].openId;
+					console.log(openId)
 					uni.showLoading({
-						title:"提交提交中",
+						title:"提交中",
 						success:()=>{
 							uni.request({
 								url:messageSend,
 								method:"POST",
 								data:{
-									"touser": openId,
-								    "template_id": "WbZENx_FJEUAppF6QtaGDYbsyIHsATescsF0YVFRib4",    //模板id
-									"page": "message",
-								    "form_id": formId,                    //表单提交后返回的formid
-									"data": {
-										 "keyword1": {
-											"value": _this.applyProjectName,
-										},
-										"keyword2": { 
-											"value": _this.applyTrueName,
-										},
-										"keyword3": {
-											"value": applyTime,
-										},
-										"keyword4": {
-											"value": _this.applyWhy
-										},
-										"emphasis_keyword": "keyword1.DATA"
-									}
+									  "touser":openId,
+									  "template_id":"WbZENx_FJEUAppF6QtaGDYbsyIHsATescsF0YVFRib4",    //模板id
+									  "page":"pages/reviewProject",
+									  "form_id":"",                                   //实际后台拼接目标用户缓存中的openId
+									  "data": {
+									  	 "keyword1":{
+									  		"value":_this.applyProjectName,
+									  	},
+									  	"keyword2":{ 
+									  		"value":_this.applyTrueName,
+									  	},
+									  	"keyword3":{
+									  		"value":applyTime,
+									  	},
+									  	"keyword4":{
+									  		"value":_this.applyWhy
+									  	},
+									  	"emphasis_keyword": "keyword1.DATA"
+									  }	
 								},	
 							})
 							.then(data=>{
@@ -699,7 +709,10 @@
 								uni.showToast({
 									title:"提交成功",
 									icon:"../../static/img/Icon/success.png",
-									duration:500
+									duration:500,
+									success:()=>{
+									   _this.isApplyProject = false;
+									}
 								})
 								console.log("消息推送成功",data)
 							})
@@ -725,20 +738,23 @@
 			
 			
 			//查询申请项目负责人userId并查询用户的openid
-			getUserOpenIdByPushUserId:function(projectId,formId){
+			getUserOpenIdByPushUserId:function(projectId){
 				_this = this;
 				Query.findUserProjectRoleByRoleAndProject(1,projectId)
 				.then(data=>{
 					console.log("查询到的",data)
-					let userId = data[1].data.data.records[0].userId;
+					let userId = data.data.records[0].userId;
 					let id = {
 						id:userId
 					}
 					return Query.findUser(id)
 				})
 				.then(data=>{
-					let openId = data.data.records[0].openid;
-					_this.pushApplyLookProject(openId,formId)
+					console.log(data)
+					console.log("拿用户的",data)
+					let openId = data.data.records[0].openId;
+					console.log(openId);
+					_this.pushApplyLookProject(openId)
 				})
 				.catch(Error=>{
 					uni.showToast({
@@ -765,7 +781,6 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top:50upx;
 	color:#FEFEFE;
 }
 ::-webkit-scrollbar{
@@ -773,7 +788,7 @@
 	height: 6upx;
 }
 .ibutton{
-	width: 300upx;
+	width: 40%;
 	height: 100upx;
 	color: #19BE6B;
 	border-radius: 4%;

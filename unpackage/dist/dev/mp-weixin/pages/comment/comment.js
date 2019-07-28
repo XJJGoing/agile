@@ -153,8 +153,10 @@ var _this;var _default =
       projectId: "", //项目的id，拿到用户所在的项目的id
       sprintId: "", //用户选中的冲刺的id
       allComment: [], //所有的评论,包括评论的人（真实姓名），评论的内容，评论的时间
-      content: "" };
-
+      content: "",
+      pageNum: 0, //评论的页数
+      pageSize: 10 //一开始加载的个数
+    };
   },
 
   onShow: function onShow() {
@@ -279,7 +281,9 @@ var _this;var _default =
             url: _api.commnetQuery,
             data: {
               projectId: _this.projectId,
-              sprintId: _this.sprintId },
+              sprintId: _this.sprintId,
+              pageNum: _this.pageNum,
+              pageSize: _this.pageSize },
 
             method: 'POST',
             dataType: 'json' }).
@@ -299,6 +303,22 @@ var _this;var _default =
           });
         } });
 
+    },
+
+    //触底加载更多的评论
+    loaderMore: function loaderMore() {
+      console.log("进入");
+      _this = this;
+      if (_this.pageSize > _this.allComment.length) {
+        uni.showToast({
+          title: "已经到底了哦！",
+          icon: "none",
+          duration: 500 });
+
+      } else {
+        _this.pageSize += 10;
+        _this.queryComment();
+      }
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

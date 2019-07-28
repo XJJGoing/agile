@@ -179,10 +179,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
+var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js");
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js"); //
-//
 //
 //
 //
@@ -270,7 +268,8 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       _this = this;uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 90; //将剩余的作为input的宽度
         } });}, //添加冲刺序号即名称
     addSprintName: function addSprintName(e) {var reg = /冲刺(\d)+/g;if (e.detail.value.length <= 4 && reg.test(e.detail.value)) {this.sprintName = e.detail.value;} else {uni.showToast({ title: "输入格式有误", duration: 500, icon: "none" });}}, //添加冲刺的目标
-    addSprintTarget: function addSprintTarget(e) {if (e.detail.value.length <= 20) {this.sprintTarget = e.detail.value;} else {
+    addSprintTarget: function addSprintTarget(e) {if (e.detail.value.length <= 20) {this.sprintTarget = e.detail.value;
+      } else {
         uni.showToast({
           title: "长度过长",
           icon: "none",
@@ -333,8 +332,9 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     },
 
 
-    addSprint: function addSprint() {
+    addSprint: function addSprint(e) {
       _this = this;
+      (0, _utils.addFormId)(_this.userInfo.openId, e.detail, formId);
       var jude; //用来判断时间格式是否有误
       var startTime = new Date(Date.parse(_this.startTime));
       var endTime = new Date(Date.parse(this.endTime));

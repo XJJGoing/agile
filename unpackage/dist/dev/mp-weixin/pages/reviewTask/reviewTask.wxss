@@ -1,12 +1,11 @@
 
 .class{
 	width: 100%;
-	height: auto;
 	overflow: scroll;
 }
 ::-webkit-scrollbar{
-	height: 6rpx;
-	width: 2rpx;
+	height: 4rpx;
+	width: 4rpx;
 }
 #title{ 
 	height: 70rpx;

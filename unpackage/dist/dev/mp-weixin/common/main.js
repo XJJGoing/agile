@@ -109,8 +109,9 @@ var enterSprint = function enterSprint(projectId) {
             sprintId = allSprint[i].id;
           }
         }
-        if (sprintId === "") {//如果实在都超过了时间段就默认进入最后一个
-          sprintId = allSprint.pop().id;
+        if (!sprintId) {//如果实在都超过了时间段就默认进入最后一个
+          var len = allSprint.length - 1;
+          sprintId = allSprint[len].id;
         }
         uni.setStorage({
           key: 'sprintId',
@@ -145,7 +146,7 @@ var _this;var _default =
     _this = this;
     console.log("启动微信小程序");
 
-    //当微信小程序一启动的时候就去判断用户有没有登录
+    //当微信小程序一启动的时候就去判断用户有没有登录,如果为超级用户就直接跳转people页面进行项目的审核
     //当微信小程序一启动的时候，就去storage中判断有没有nowInproject,
     //而且判断里面roleid为3的时候，再去数据库中查找进而确定还能不能够访问。
     //如果有项目和冲刺就进入时间段内sprintId
@@ -153,59 +154,79 @@ var _this;var _default =
     uni.getStorage({
       key: 'userInfo',
       success: function success(res1) {
-        _this.userInfo = res1.data;
-        uni.getStorage({
-          key: 'nowInProject',
-          success: function success(res2) {
-            if (res2.data.roleId === 3)
-            {//不用判断等于四,这种设计不存在等于4权限的情况
-              Query.findUserProjectRole(_this.userInfo.id, res2.data.projectId).
-              then(function (data) {
-                console.log("获取到的用户的最新的权限", data);
-                if (data.data.roleId === 4) {
-                  uni.removeStorage({
-                    key: "nowInPorject",
-                    success: function success() {
-                      console.log("权限改变移除nowInProject");
-                      uni.redirectTo({
-                        url: '/pages/apply/apply' });
+        var id = {
+          id: res1.data.id };
 
-                    } });
+        Query.findUser(id).
+        then(function (data) {
+          console.log("启动信息", data.data.records[0]);
+          if (data.data.records[0].isRoot) {
+            uni.switchTab({
+              url: '/pages/people/people' });
 
-                } else {
-                  uni.setStorage({
-                    key: 'nowInProject',
-                    data: data.data.records[0],
-                    success: function success() {
+          } else {
+            _this.userInfo = data.data.records[0];
+            uni.getStorage({
+              key: 'nowInProject',
+              success: function success(res2) {
+                if (res2.data.roleId === 3)
+                {//不用判断等于四,这种设计不存在等于4权限的情况
+                  Query.findUserProjectRole(_this.userInfo.id, res2.data.projectId).
+                  then(function (data) {
+                    console.log("获取到的用户的最新的权限", data);
+                    if (data.data.roleId === 4) {
+                      uni.removeStorage({
+                        key: "nowInPorject",
+                        success: function success() {
+                          console.log("权限改变移除nowInProject");
+                          uni.redirectTo({
+                            url: '/pages/apply/apply' });
 
-                      //设置projectId并且进入冲刺
-                      _this.projectId = data.data.records[0].projectId;
-                      enterSprint(_this.projectId);
+                        } });
 
-                      uni.redirectTo({
-                        url: '/pages/index/index' });
+                    } else {
+                      uni.setStorage({
+                        key: 'nowInProject',
+                        data: data.data.records[0],
+                        success: function success() {
 
-                    } });
+                          //设置projectId并且进入冲刺
+                          _this.projectId = data.data.records[0].projectId;
+                          enterSprint(_this.projectId);
+
+                          uni.redirectTo({
+                            url: '/pages/index/index' });
+
+                        } });
+
+                    }
+                  });
+                } else
+                {
+                  //设置projectId并且进入冲刺
+                  _this.projectId = res2.data.projectId;
+                  enterSprint(_this.projectId);
+
+                  uni.redirectTo({
+                    url: '/pages/index/index' });
 
                 }
-              });
-            } else
-            {
-              //设置projectId并且进入冲刺
-              _this.projectId = res2.data.projectId;
-              enterSprint(_this.projectId);
+              },
+              fail: function fail() {//没有直接跳
+                uni.redirectTo({
+                  url: '/pages/apply/apply' });
 
-              uni.redirectTo({
-                url: '/pages/index/index' });
+              } });
 
-            }
-          },
-          fail: function fail() {//没有直接跳
-            uni.redirectTo({
-              url: '/pages/apply/apply' });
+          }
+        }).
+        catch(function (Error) {
+          uni.showToast({
+            title: "网络错误",
+            duration: 1000,
+            icon: "loading" });
 
-          } });
-
+        });
       },
       fail: function fail() {
         uni.redirectTo({

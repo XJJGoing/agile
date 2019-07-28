@@ -14996,6 +14996,15 @@ var dateWorkQuery = "".concat(host, "/datework/query");
 //微信消息推送
 var messageSend = "".concat(host, "/message/send");
 
+//设置增加formId和openId缓存的api
+var messageSet = "".concat(host, "/message/set");
+
+//删除申请表
+var roleApplyDeleteBatch = "".concat(host, "/roleApply/deleteBatch");
+
+//删除这个用户项目专业表数据
+var userProjectDepartmentDeleteBatch = "".concat(host, "/userprojectdepartment/deleteBatch");
+
 module.exports = {
   getUserOpenId: getUserOpenId,
   register: register,
@@ -15032,7 +15041,10 @@ module.exports = {
   commnetQuery: commnetQuery,
   dateWorkAdd: dateWorkAdd,
   dateWorkQuery: dateWorkQuery,
-  messageSend: messageSend };
+  messageSend: messageSend,
+  messageSet: messageSet,
+  roleApplyDeleteBatch: roleApplyDeleteBatch,
+  userProjectDepartmentDeleteBatch: userProjectDepartmentDeleteBatch };
 
 /***/ }),
 
@@ -15085,6 +15097,7 @@ module.exports = {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {
 var _api = __webpack_require__(/*! ./api */ "../../../../../个人信息/agile/static/utils/api.js");function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}
+
 
 
 
@@ -15345,8 +15358,8 @@ var Query = /*#__PURE__*/function () {
         uni.request({
           url: _api.projectQuery,
           method: "POST",
-          data: {},
-
+          data: {
+            pageSize: 1000 },
 
           dataType: 'json',
           success: function success(res) {
@@ -15363,7 +15376,7 @@ var Query = /*#__PURE__*/function () {
   }, { key: "findRootUserInfo", value: function findRootUserInfo() {
       return new Promise(function (resolve, reject) {
         uni.request({
-          url: xxx,
+          url: _api.queryUser,
           method: "POST",
           data: {
             isRoot: 1 },
@@ -15381,9 +15394,39 @@ var Query = /*#__PURE__*/function () {
 
 
 
+//向redis中根据openId去插入formId 没有就新建
+var addFormId = function addFormId(openId, formId) {
+  var reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]$/g;
+  console.log("formId和openId", openId, formId);
+  if (formId) {
+    console.log("进来");
+    uni.request({
+      url: "".concat(_api.messageSet, "?&openId=").concat(openId, "&formId=").concat(formId),
+      method: "POST",
+      header: {
+        "Content-Type": "application/xxx-www-form-urlencoded" },
+
+      success: function success(res) {
+        console.log(res);
+        console.log("增加formId成功");
+      },
+      fail: function fail() {
+        uni.showToast({
+          title: "网络错误",
+          duration: 500,
+          icon: "none" });
+
+      } });
+
+  } else {
+    console.log("增加formId失败");
+  }
+};
+
 module.exports = {
   Login: Login,
-  Query: Query };
+  Query: Query,
+  addFormId: addFormId };
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ }),
@@ -15917,7 +15960,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -22120,7 +22163,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -22141,14 +22184,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -22224,7 +22267,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));

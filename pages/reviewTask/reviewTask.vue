@@ -1,5 +1,5 @@
 <template>
-	<scroll-view class="all" scroll-y="true">
+	<scroll-view class="all" scroll-y="true" @scrolltolower="loaderMore" :style="{height:height+'px'}">
 		<view class="reviewList">
 			
 			<text id="title">待审核的任务:</text>
@@ -36,14 +36,18 @@
 			components: {uniCard},
 			data() {
 				return {
+					height:"",                  
 					userInfo:"",
 					projectId:"",            //项目的id
 				    sprintId:"",            //冲刺的id
 					noReviewTaskList:[],    //待审核的任务     
+					pageNum:0,              //页数
+					pageSize:5              
 				}
 			},
 			onShow(){
 				_this = this;
+				_this.getSystem();
 				uni.getStorage({
 					key:"userInfo", 
 					success:(res)=>{
@@ -102,7 +106,17 @@
 			},
 			methods: {
 				
-				//查询为未审核的项目  等待完善等着接口的api
+				getSystem:function(){
+					_this = this;
+					uni.getSystemInfo({
+						success:(res)=>{
+							_this.height = res.windowHeight;
+							console.log(_this.height)
+						}
+					})
+				},
+				
+				//查询为未审核的任务  
 				getAllNoReview:function(){
 					_this = this;
 					uni.showLoading({
@@ -115,7 +129,9 @@
 								data:{
 									projectId:_this.projectId,
                                     sprintId:_this.sprintId,
-									isReview:0
+									isReview:0,
+									pageNum:_this.pageNum,
+									pageSize:_this.pageSize
 								},
 								dataType:'json'
 							})
@@ -273,8 +289,23 @@
 							}) 
 						}
 				    })
+				},
+				
+				//触底加载加载待审核的项目
+				loaderMore:function(){
+					_this = this;
+					if(_this.pageSize>_this.noReviewTaskList.length){
+						uni.showToast({
+							title:"已经到底了哦!",
+							icon:"none",
+							duration:1000
+						})
+					}else{
+						_this.pageSize +=5;
+						_this.getAllNoReview()
+					}
 				}
-			},	
+			},
 			
 		}
 </script>
@@ -282,12 +313,11 @@
 <style>
 .class{
 	width: 100%;
-	height: auto;
 	overflow: scroll;
 }
 ::-webkit-scrollbar{
-	height: 6upx;
-	width: 2upx;
+	height: 4upx;
+	width: 4upx;
 }
 #title{ 
 	height: 70upx;

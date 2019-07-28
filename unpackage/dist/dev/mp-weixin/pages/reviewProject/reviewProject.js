@@ -128,6 +128,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var _time = __webpack_require__(/*! ../../static/utils/time.js */ "../../../../../个人信息/agile/static/utils/time.js");
 
 
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
@@ -154,7 +155,12 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 //
 //
 //
-var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query();var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var _this;var _default = { components: { uniCard: uniCard }, data: function data() {return { userInfo: "", noExamineProject: [] };}, onShow: function onShow() {_this = this;uni.getStorage({ key: "userInfo", success: function success(res) {
+var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query();var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var _this;var _default = { components: { uniCard: uniCard }, data: function data() {return { height: "", userInfo: "", noExamineProject: [], pageNum: 0, pageSize: 5 };}, onShow: function onShow() {
+    _this = this;
+    _this.getSystem();
+    uni.getStorage({
+      key: "userInfo",
+      success: function success(res) {
         var id = {
           id: res.data.id };
 
@@ -184,6 +190,15 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
   },
   methods: {
 
+    getSystem: function getSystem() {
+      _this = this;
+      uni.getSystemInfo({
+        success: function success(res) {
+          _this.height = res.windowHeight;
+        } });
+
+    },
+
     //获取申请项目表的所有未审核的项目
     getAllNoExamineProjects: function getAllNoExamineProjects() {
       _this = this;
@@ -194,7 +209,9 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
             url: _api.projectApplyQuery,
             method: "POST",
             data: {
-              isReview: 0 },
+              state: 0,
+              pageNum: _this.pageNum,
+              pageSize: _this.pageSize },
 
             dataType: 'json' }).
 
@@ -220,7 +237,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     examineItem: function examineItem(e) {
       _this = this;
       var project = JSON.parse(e.currentTarget.id);
-      console.log('选中的任务', project);
+      console.log('选中的项目', project);
       uni.showModal({
         title: "审核",
         confirmText: '通过',
@@ -278,12 +295,13 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
             method: 'POST',
             data: [{
               id: project.id,
-              isReview: 1 }],
+              state: 1 }],
 
             dataType: 'json' }).
 
           then(function (data) {
             uni.hideLoading();
+
             uni.showToast({
               title: "提交成功",
               duration: 500,
@@ -291,6 +309,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
             //重新刷新
             _this.getAllNoExamineProjects();
+            _this.pushMessage(); //同步进行就行了
           }).
           catch(function (Error) {
             uni.showToast({
@@ -404,6 +423,79 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
           });
         } });
 
+    },
+
+    //将申请的项目通过的消息推送回去
+    pushMessage: function pushMessage(project) {
+      _this = this;
+      var time = (0, _time.formatDate)(new Date());
+      Query.findUser({ id: project.userId }).
+      then(function (data) {
+        var openId = data.data.records[0].openId;
+        uni.showLoading({
+          title: "提交中",
+          success: function success() {
+            uni.request({
+              url: _api.messageSend,
+              method: 'POST',
+              data: {
+                "touser": openId,
+                "page": "pages/index/index",
+                "template_id": "OPM7GA_vTZbtxK8ACVwRoIpq2uxKl7SrF4TdRdB6N_I",
+                "formId": "",
+                "data": {
+                  "keyword1": {
+                    "value": project.projectName },
+
+                  "keyword2": {
+                    "value": time },
+
+                  "keyword3": {
+                    "value": "申请的项目已通过" },
+
+                  "keyword4": {
+                    "value": "请熟记自己唯一的项目编号,以及前往项目主页填写项目信息以及添加冲刺" },
+
+                  "emphasis_keyword": "keyword1.DATA" } },
+
+
+              dataType: 'json' }).
+
+            then(function (data) {
+              console.log("推送成功");
+            }).
+            catch(function (Error) {
+              uni.showToast({
+                title: "网络错误",
+                duration: 500,
+                icon: "loading" });
+
+            });
+          } });
+
+      }).
+      catch(function (Error) {
+        uni.showToast({
+          title: '网络错误',
+          duration: 500,
+          icon: "loading" });
+
+      });
+
+    },
+
+    loaderMore: function loaderMore() {
+      _this = this;
+      if (_this.pageSize > _this.noExamineProject.length) {
+        uni.showToast({
+          title: "已经到底了哦!",
+          duration: 1000,
+          icon: "none" });
+
+      } else {
+        _this.pageSize += 5;
+        _this.getAllNoExamineProjects();
+      }
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

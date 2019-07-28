@@ -4,7 +4,8 @@ import {queryUser,
 		userProjectDepartmentQuery,
 		departmentQuery,
 		projectQuery,
-		getUserOpenId
+		getUserOpenId,
+		messageSet
 	   } from './api';
 
 //登录模块
@@ -261,7 +262,7 @@ class Query  {
 				url:projectQuery,
 				method:"POST",
 				data:{
-					
+					pageSize: 1000,
 				},
 				dataType:'json',
 				success:(res)=>{
@@ -278,7 +279,7 @@ class Query  {
 	findRootUserInfo(){
 		return new Promise((resolve,reject)=>{
 			uni.request({
-				url:xxx,
+				url:queryUser,
 				method:"POST",
 				data:{
 					isRoot:1,
@@ -296,7 +297,37 @@ class Query  {
 }
 
 
+//向redis中根据openId去插入formId 没有就新建
+const addFormId = (openId,formId)=>{
+	let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]$/g;
+	console.log("formId和openId",openId,formId);
+	if(formId){
+		console.log("进来")
+		uni.request({
+		      url:`${messageSet}?&openId=${openId}&formId=${formId}`,
+			  method:"POST",
+			  header:{
+				  "Content-Type":"application/xxx-www-form-urlencoded"
+			  },
+			  success:(res)=>{
+				 console.log(res)
+				 console.log("增加formId成功",)
+			  },
+			  fail:()=>{
+				  uni.showToast({
+				  	title:"网络错误",
+					duration:500,
+					icon:"none"
+				  })
+			  }
+		})
+	}else{
+		console.log("增加formId失败")
+	}
+}
+
 module.exports = {
 	  Login:Login,
-	  Query:Query
+	  Query:Query,
+	  addFormId:addFormId
 }

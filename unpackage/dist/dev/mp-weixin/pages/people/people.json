@@ -18,6 +18,7 @@
     "i-collapse-item": "/static/dist/collapse-item/index",
     "i-card": "/static/dist/card/index",
     "uni-card": "/components/uni-card/uni-card",
-    "icard": "/static/dist/card/index"
+    "icard": "/static/dist/card/index",
+    "cmd-cell-item": "/components/cmd-cell-item/cmd-cell-item"
   }
 }

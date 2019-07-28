@@ -188,8 +188,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js");
 var _time = __webpack_require__(/*! ../../static/utils/time.js */ "../../../../../个人信息/agile/static/utils/time.js");
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js"); //
+//
+//
+//
+//
+//
 //
 //
 //
@@ -284,12 +294,10 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       myLookProject: [] //切换项目，项目的权限为可查看的编号projectName
     };}, mounted: function mounted() {//获取所有的项目信息 
   }, //写好的页面加载的函数
-  onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {console.log(data);_this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId = res.data.roleId;_this.getAllProjectInfo(); //获取所有项目的信息
-            }, fail: function fail() {uni.redirectTo({ url: '../apply/apply' });} });}).catch(function (error) {console.log(error);});}, fail: function fail() {uni.redirectTo({ url: '../login/login' });} });}, methods: { //设置输入框的长度
+  onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data.records[0];if (data.data.records[0].isRoot) {_this.roleId = 0;} else {uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId = res.data.roleId;_this.getAllProjectInfo(); //获取所有项目的信息
+              }, fail: function fail() {uni.redirectTo({ url: '../apply/apply' });} });}}).catch(function (error) {console.log(error);});}, fail: function fail() {uni.redirectTo({ url: '../login/login' });} });}, methods: { //设置输入框的长度
     getSystem: function getSystem() {_this = this;uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 80;} });}, //填写信息的函数 
-    ftarget: function ftarget(e) {this.target = e.detail.value;},
-
-    ffinishTime: function ffinishTime(e) {
+    ftarget: function ftarget(e) {this.target = e.detail.value;}, ffinishTime: function ffinishTime(e) {
       this.finishTime = e.detail.value;
     },
 
@@ -460,12 +468,14 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     //获取用户的权限为将1 2 3 4权限的项目全部查找到再进行分类并且显示项目编号
     getUserProjectRole: function getUserProjectRole() {
       _this = this;
+      var arry1 = [];
+      var arry2 = [];
+      var arry3 = [];
+      var arry4 = [];
       Query.findUserProjectRoleByUserId(_this.userInfo.id).
       then(function (data) {
         var dataAll = data.data.records;
         _this.allUserProjectRoles = dataAll;
-        var arry1 = [];
-        var arry2 = [];
         if (dataAll != 0) {
           dataAll.forEach(function (item, index) {
             if (item.roleId === 1 || item.roleId === 2) {
@@ -477,8 +487,6 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
         }
 
         //进行显示项目编号处理
-        var arry3 = [];
-        var arry4 = [];
         for (var i = 0; i < _this.allUserProjectInfo.length; i++) {
           for (var j = 0; j < arry1.length; j++) {
             if (_this.allUserProjectInfo[i].id === arry1[j]) {
@@ -493,15 +501,14 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
             }
           }
         }
-        _this.myProject = arry3;
-        _this.myLookProject = arry4;
       });
+      _this.myProject = arry3;
+      _this.myLookProject = arry4;
     },
 
 
     //提交项目的函数
     saveProject: function saveProject() {
-      _this = this;
       console.log("提交的信息", {
         target: _this.target,
         sprintNum: _this.sprintNum,
@@ -520,33 +527,47 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
           projectManagement: _this.management,
           projectPeople: _this.people,
           projectFinishTime: _this.finishTime,
-          projectResult: _this.projectResult }];
+          projectResult: _this.result }];
 
 
         //提交到服务端并且进行项目的更新后并重新获取该项目的信息
-        uni.showLoading({
-          title: "提交中",
-          success: function success() {
-            uni.request({
-              url: _api.projectUpdate,
-              data: data,
-              method: 'POST',
-              dataType: 'json' }).
+        uni.showModal({
+          title: "提醒",
+          content: "项目信息只能完成提交一次,后期无法再修改，提交之前请确认是否所有信息正确且无误",
+          confirmText: "确认",
+          confirmColor: "#19BE6B",
+          cancelText: "再看看",
+          cancelColor: "#DD524D",
+          success: function success(res) {
+            if (res.confirm) {
+              uni.showLoading({
+                title: "提交中",
+                success: function success() {
+                  uni.request({
+                    url: _api.projectUpdate,
+                    data: data,
+                    method: 'POST',
+                    dataType: 'json' }).
 
-            then(function (data) {
-              console.log("更新后的项目", data);
-              uni.hideLoading();
+                  then(function (data) {
+                    console.log("更新后的项目", data);
+                    uni.hideLoading();
 
-              //提交之后因为项目的信息有改变，所以重新获取全部的项目信息。
-              _this.getAllProjectInfo();
+                    //提交之后因为项目的信息有改变，所以重新获取全部的项目信息。
+                    _this.getAllProjectInfo();
 
-            }).
-            catch(function (error) {
-              uni.showToast({
-                title: "提交失败",
-                duration: 1000 });
+                  }).
+                  catch(function (error) {
+                    uni.showToast({
+                      title: "提交失败",
+                      duration: 1000 });
 
-            });
+                  });
+                } });
+
+            } else if (res.cancel) {
+
+            }
           } });
 
       } else {
@@ -604,9 +625,11 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
                 sprintId = allSprint[i].id;
               }
             }
-            if (sprintId === "") {//如果实在都超过了时间段就默认进入最后一个
-              sprintId = allSprint.pop().id;
+            if (!sprintId) {//如果实在都超过了时间段就默认进入最后一个
+              var len = allSprint.length - 1;
+              sprintId = allSprint[len].id;
             }
+            console.log(sprintId);
             uni.setStorage({
               key: 'sprintId',
               data: sprintId });

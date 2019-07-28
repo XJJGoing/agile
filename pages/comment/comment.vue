@@ -1,5 +1,5 @@
 <template>
-	<scroll-view class="comment" scroll-y="true">
+	<scroll-view class="comment" scroll-y="true" @scrolltolower="loaderMore">
 		<view class="commentDetail">
 			
 		  <view class="addComment">
@@ -54,6 +54,8 @@
 				sprintId:"",         //用户选中的冲刺的id
 				allComment:[],      //所有的评论,包括评论的人（真实姓名），评论的内容，评论的时间
 				content:"",
+				pageNum:0,         //评论的页数
+				pageSize:10       //一开始加载的个数
 			}
 		},
 		
@@ -179,7 +181,9 @@
 						url:commnetQuery,
 						data:{ 
 							projectId: _this.projectId,
-							sprintId :_this.sprintId
+							sprintId :_this.sprintId,
+							pageNum:_this.pageNum,
+							pageSize:_this.pageSize
 						},
 						method:'POST',
 						dataType:'json'
@@ -200,6 +204,22 @@
 				}
 			 })
 		  },
+		  
+		  //触底加载更多的评论
+		  loaderMore:function(){
+			  console.log("进入")
+			  _this = this;
+			  if(_this.pageSize>_this.allComment.length){
+				  uni.showToast({
+				  	title:"已经到底了哦！",
+					icon:"none",
+					duration:500
+				  })
+			  }else{
+				  _this.pageSize +=10;
+				  _this.queryComment();
+			  }
+		  }
 	},
 }
 </script>
