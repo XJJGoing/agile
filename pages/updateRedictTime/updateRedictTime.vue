@@ -50,12 +50,12 @@
 				
 				lastChangeStr:"",               //拼接修改后的字符串
 	
-			}
+			} 
 		},
 		onLoad(e){ //传送过来的对象,1为改变预估工时，2为改变优先级
 			_this = this;
 			_this.enterId = 1;
-			_this.taskId = 1;
+			_this.taskId = 2;
 		   _this.queryTaskInfo();        //查询任务的信息
 		},
 		onShow(){
@@ -205,7 +205,7 @@
 								dataType:'json',
 							 })
 							 .then(data=>{
-								 console.log('更新成功',data);
+								 console.log('更新成功',data); 
 								 uni.showToast({
 									title:'提交成功',
 									icon:"../../static/img/Icon/success.png",
@@ -282,14 +282,14 @@
 			   let reg = /[+-]/g;
 			   let lastChangeStr = _this.task.lastChangeStr;
 			   if(reg.test(lastChangeStr)){            //判断是否有加或者减
-				  let arry = reg.split(lastChangeStr);
+				  let arry = lastChangeStr.split(reg);
 				  if(arry.length===3){                  //为三不能修改
 					  _this.canChangeTaskPredictTime = true;  
 					  _this.restChangeTimes = 0;		
 				  }else if(arry.length===2){
 					  _this.restChangeTimes = 1;
 				  }
-			   }else{
+			   }else{ 
 				   _this.restChangeTimes = 2;
 			   }
 		   },
