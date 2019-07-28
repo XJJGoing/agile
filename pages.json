@@ -5,7 +5,8 @@
 			"style": {
 				"usingComponents":{
 				
-				}
+				},
+				"enablePullDownRefresh":true
 			}
 		},
 		{
@@ -14,7 +15,8 @@
 				"usingComponents":{
 					"i-button": "/static/dist/button/index",
 					"i-page":"/static/dist/page/index"
-				} 
+				},
+				 "enablePullDownRefresh":true
 			}
 		}
 	    ,{
@@ -59,7 +61,9 @@
         }
         ,{
             "path" : "pages/reviewProject/reviewProject",
-            "style" : {}
+            "style" : {
+				"enablePullDownRefresh":true
+			}
         }
         ,{
             "path" : "pages/admin/admin",
@@ -67,11 +71,11 @@
         }
         ,{
             "path" : "pages/message/message",
-            "style" : {}
+            "style" : {"enablePullDownRefresh":true}
         }
         ,{
             "path" : "pages/reviewTask/reviewTask",
-            "style" : {}
+            "style" : {"enablePullDownRefresh":true}
         }
         ,{
             "path" : "pages/addSprint/addSprint",
@@ -95,23 +99,37 @@
             "path" : "pages/picture/picture",
             "style" : {}
         }  
+        ,{
+            "path" : "pages/dateWork/dateWork",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/about/about",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/updateRedictTime/updateRedictTime",
+            "style" : {}
+        }
     ],
 	
 	"globalStyle": {
 		"backgroundTextStyle": "light",
-		"navigationBarBackgroundColor": "#21242E",
+		"navigationBarBackgroundColor": "#05E0FC",
 		"navigationBarTitleText": "JOYEA",
-		"navigationBarTextStyle": "white"
+		"navigationBarTextStyle": "white",
+		"enablePullDownRefresh":true
+		
 	},
    	"tabBar":{
 		"color": "#B0C4DE",
 		"selectedColor": "#F8F8FF", 
-		"backgroundColor": "#2E3443",
+		"backgroundColor": "#05E0FC",
 		"borderStyle": "white",
 		"list":[{ 
 			 "pagePath": "pages/index/index",
 			 "text": "主页",
-			 "iconPath": "/static/img/home.png",
+			 "iconPath": "/static/img/home.png", 
 			 "selectedIconPath": "/static/img/home_select.png"
 		},{
 			"pagePath": "pages/picture/picture",
@@ -123,14 +141,74 @@
 			 "text": "个人中心",
 			 "iconPath": "/static/img/people.png",
 			 "selectedIconPath": "/static/img/people_select.png"
-		 }]
+		 }] 
 	},
 	"condition":{
 		"current":0,
 		"list":[
 			{
-				"name":"swiper1",
+				"name":"login",
 				"path":"pages/login/login"
+			},
+			{
+				"name":"apply",
+				"path":"pages/apply/apply"
+			},
+			{
+				"name":"about",
+				"path":"pages/addSprint/addSprint"
+			},
+			{
+				"name":"addTask",
+				"path":"pages/addTask/addTask"
+			},
+			{
+				"name":"admin",
+				"path":"pages/admin/admin"
+			},
+			{
+				"name":"auditedRoleApply",
+				"path":"pages/auditedRoleApply/auditedRoleApply"
+			},
+			{
+				"name":"changeUserRole",
+				"path":"pages/changeUserRole/changeUserRole"
+			},
+			{
+				"name":"comment",
+				"path":"pages/comment/comment"
+			},
+			{
+				"name":"dateWork",
+				"path":"pages/dateWork/dateWork"
+			},
+			{
+				"name":"index",
+				"path":"pages/index/index"
+			},
+			{
+				"name":"message",
+				"path":"pages/message/message"
+			},
+			{
+				"name":"people",
+				"path":"pages/people/people"
+			},
+			{
+				"name":"picture",
+				"path":"pages/picture/picture"
+			},
+			{
+				"name":"reviewProject",
+				"path":"pages/reviewProject/reviewProject"
+			},
+			{
+				"name":"reviewTask",
+				"path":"pages/reviewTask/reviewTask"
+			},
+			{
+				"name":"addSprint",
+				"path":"pages/addSprint/addSprint"
 			}
 		]
 	}

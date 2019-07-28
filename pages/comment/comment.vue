@@ -1,5 +1,5 @@
 <template>
-	<scroll-view class="comment" scroll-y="true">
+	<scroll-view class="comment" scroll-y="true" @scrolltolower="loaderMore">
 		<view class="commentDetail">
 			
 		  <view class="addComment">
@@ -19,7 +19,7 @@
 			   <uni-card 
 				   :title="item.trueName" 
 				   :thumbnail="item.avatarUrl"
-				   :note="item.time"
+				   :note="'评论时间:'+item.createTime"
 				    class="commentCard"
 				>
 				  <text id="content">{{item.content}}</text>
@@ -54,6 +54,8 @@
 				sprintId:"",         //用户选中的冲刺的id
 				allComment:[],      //所有的评论,包括评论的人（真实姓名），评论的内容，评论的时间
 				content:"",
+				pageNum:0,         //评论的页数
+				pageSize:10       //一开始加载的个数
 			}
 		},
 		
@@ -119,7 +121,6 @@
 				if(content.length<=30){
 					this.content = content
 				}else{
-					this.content = "";
 					uni.showToast({
 						title:"内容过长",
 						duration:1000,
@@ -130,99 +131,95 @@
 			
 		   //增加评论
 		   addComment:function(){
-			 //这里mook增加
-			 if(this.content){
-				 let data = {
-					 id:5,
-					 trueName:"林永健",
-					 avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
-					 content:this.content,
-					 time:"2019-07-09-17:00"   
+				_this  = this;
+				if(_this.content){
+					uni.showLoading({
+						title:'增加中',
+						success:()=>{
+							uni.request({
+								url:commentAdd,
+								method:"POST",
+								data:{
+									userId:_this.userInfo.id,
+									projectId:_this.projectId,
+									sprintId:_this.sprintId,
+									content:_this.content
+								},
+								dataType:'json'
+							})
+							.then(data=>{  
+								console.log("添加评论成功",data)
+								uni.hideLoading();
+								_this.queryComment();
+							})
+							.catch(Error=>{
+								uni.showToast({
+									title:"增加评论失败",
+									icon:"none",
+									duration:500
+								})
+							})	
+						}
+					})
+				 }else{
+					 uni.showToast({
+						title:"评论有误",
+						duration:1000,
+						icon:"none"
+					 })
 				 }
-				 this.allComment.push(data)
-			 }
-			   
-			//下方为正确的代码   
-		    // _this  = this;
-			// if(_this.content){
-			//    uni.request({
-			//    	url:commentAdd,
-			//    	data:{
-			//    		userId:_this.userId,
-			//    		projectId:_this.projectId,
-			//    		sprintId:_this.sprintId,
-			//    		content:_this.content
-			//    	},
-			//    	dataType:'json'
-			//    })
-			//    .then(data=>{  
-			//    	console.log("增加评论成功")
-			//    })
-			//    .catch(Error=>{
-			//    	uni.showToast({
-			//    		title:"增加评论失败",
-			//    		icon:"none",
-			//    		duration:500
-			//    	})
-			//    })	
-			//  }else{
-			// 	 uni.showToast({
-			// 	 	title:"评论信息不正确",
-			// 		duration:1000,
-			// 		icon:"none"
-			// 	 })
-			//  }
 		   },
 		 
-		  //查找评论	  待完善
+		  //查找评论	 
 		  queryComment:function(){
-			  
-			  //先mook数据
-			let  moonComment = [{     
-			    id:1,
-			 	trueName:"林永健",
-			 	avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
-			 	content:"这是模拟的评论测试",
-			 	time:"2019-07-09-17:00"                    
-			 },{ 
-			 	id:2,
-			 	trueName:"林永健",
-			 	avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
-			 	content:"这是模拟的评论测试",
-			 	time:"2019-07-09-17:00"                   
-			 },{
-			     id:3,
-			     trueName:"林永健",
-			     avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/ibicjibxHvO5wGt56YmcWhDMicoM7GPeKgibXM9T8gqAyyQrqTtOfJfEibqKB5KxsoibtNT3GPHQsfoySPFEIPRAjBplw/132",
-			     content:"这是模拟的评论测试",
-			     time:"2019-07-09-17:00"   
-			 }] 
-			 
-			 this.allComment =  moonComment;
-			  
-			  //下方为正确代码
-			 //  _this = this;
-			 // uni.request({
-			 // 	url:xxx,
-				// data:{
-				// 	 projectId: _this.projectId,
-				// 	 sprintId :_this.sprintId
-				// },
-				// method:'POST',
-				// dataType:'json'
-			 // })
-			 // .then(data=>{  //获取到的评论对
-				//   console.log("拿到的评论",data)
-			 // })
-			 // .catch(Error=>{
-				//  uni.showToast({
-				//  	icon:"none",
-				// 	title:"获取评论失败",  
-				// 	duration:500
-				//  })
-			 // })
-		  // }
-		}
+			
+			 _this = this; 
+			 uni.showLoading({
+			 	title:"获取中",
+				success:()=>{
+					 uni.request({
+						url:commnetQuery,
+						data:{ 
+							projectId: _this.projectId,
+							sprintId :_this.sprintId,
+							pageNum:_this.pageNum,
+							pageSize:_this.pageSize
+						},
+						method:'POST',
+						dataType:'json'
+					})
+					.then(data=>{  
+						uni.hideLoading();
+						console.log(data)
+						console.log("获取到的评论",data[1].data.data.records)
+					    _this.allComment =  data[1].data.data.records;
+					})
+					.catch(Error=>{
+						 uni.showToast({
+							icon:"none",
+							title:"网络错误",  
+							duration:1000
+						 })
+					})
+				}
+			 })
+		  },
+		  
+		  //触底加载更多的评论
+		  loaderMore:function(){
+			  console.log("进入")
+			  _this = this;
+			  if(_this.pageSize>_this.allComment.length){
+				  uni.showToast({
+				  	title:"已经到底了哦！",
+					icon:"none",
+					duration:500
+				  })
+			  }else{
+				  _this.pageSize +=10;
+				  _this.queryComment();
+			  }
+		  }
 	},
 }
 </script>
@@ -232,7 +229,6 @@
 	width: 100%;
 	height: auto;
 	overflow-y: scroll;
-	background-color: #007AFF;
 }
 ::-webkit-scrollbar{
 	width: 2upx;
@@ -267,12 +263,15 @@
 	width: 140upx;
 	line-height: 100upx;
 	font-size: 30upx!important;
+	color: #E9EFED;
+	font-weight: bold;
 }
 
 .content input{
 	height: 100upx;
 	line-height: ""!important;
 	font-size: 30upx!important;
+	color: #F0F8FF;
 }
 
 .commentDetail{
@@ -280,9 +279,7 @@
 }
 .eachDetail{
 	width: 100%;
-	height: 200upx;
 	margin-top: 15upx;
-	background-color: #19BE6B;
 }
 .commentCard{
 	border-radius:10%!important;

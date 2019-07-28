@@ -9,14 +9,15 @@
 		</view>
 		<block v-if='nowHadSprint.length!=0'>
 			<view class="sprintNum" v-for="(item,index) in nowHadSprint" :key="index">
-			  	<uni-card 
-			  	    :title="item.sprintName"
+			  	 <uni-card 
+			  	     :title="item.sprintName" 
+			  	     :note="'创建时间:'+item.createTime"
 				>
-			  	 <view class="sprintDetail">
+			      <view class="sprintDetail" :style="{width:width2+'px'}">
 					 <text id="target">目标:{{item.sprintTarget}}</text>
 					 <text id="startTime">启动时间:{{item.startTime}}</text>
 					 <text id="endTime">截止时间:{{item.endTime}}</text>
-				 </view>  
+				  </view>  
 			  	</uni-card>
 			</view>
         </block>
@@ -26,7 +27,7 @@
 	</view>
 	
 		<view class="sprintMessage">
-			
+			<form report-submit="true" @submit="addSprint">
 			<view class="titleView">
 				<text class="title">添加冲刺:</text>
 			</view>
@@ -38,40 +39,39 @@
 			<text>冲刺目标:</text>
 			<input placeholder="请填入冲刺的目标(20个字以内)"  :style="{width:width+'px'}" @input="addSprintTarget"></input>
 		   </view>
-		   <view>
+		   <view class="chooseTime">
 		   	  <text>启动时间:</text>
-		      <input placeholder="点击选择冲刺启动时间"  :style="{width:width+'px'}" @click="openStartTimePicker" :value="startTime" ></input>
+		      <input placeholder="点击选择冲刺启动时间"  :style="{width:width+'px'}" @click="openStartTimePicker" :value="startTime" disabled="true"></input>
 		   </view>
-		   <view>
+		   <view class="chooseTime">
 		   	  <text>截止时间:</text>
-		      <input placeholder="点击选择冲刺截止时间"  :style="{width:width+'px'}" :value="endTime" @click="openEndTimePicker"></input>
+		      <input placeholder="点击选择冲刺截止时间"  :style="{width:width+'px'}" :value="endTime" @click="openEndTimePicker" disabled="true"></input>
 		   </view>
 		   
-			<button class="submitButton" @click="addSprint" >提交</button>
+			<button class="submitButton" form-type="submit">提交</button>
+			</form>
 		</view>
-	   
-	   <view>
-		   <w-picker 
-		   	 mode="dateTime" 
-		   	 startYear="2019" 
-		   	 endYear="2030"   
-		   	 :current="true" 
-		   	 @confirm="onConfirm1" 
-		   	 ref="picker1"
-		   >
-		   </w-picker>
-	   </view>
-	   <view>
-		    <w-picker 
-		   			 mode="dateTime" 
-		   			 startYear="2019" 
-		   			 endYear="2030"   
-		   			 :current="true" 
-		   			 @confirm="onConfirm2" 
-		   			 ref="picker2"
-		   ></w-picker>
-	   </view>
-	   
+		<view class="wpicker">
+           	<w-picker 
+				 mode="dateTime" 
+				 startYear="2019" 
+				 endYear="2030"   
+				 :current="true" 
+				 @confirm="onConfirm1" 
+				 ref="picker1"
+           	 >
+           	</w-picker>
+			
+			<w-picker 
+				 mode="dateTime" 
+				 startYear="2019" 
+				 endYear="2030"   
+				 :current="true" 
+				 @confirm="onConfirm2" 
+				 ref="picker2"
+           	  ></w-picker>		
+		</view>
+		
 	</scroll-view>
 </template>
 
@@ -80,8 +80,9 @@
 	const query = require('../../static/utils/utils').Query;
 	const Query = new query();
 	const Login = new login();
-	
+	import {addFormId} from '../../static/utils/utils.js';
 	import {sprintQuery,sprintAdd} from '../../static/utils/api.js';
+	import {formatDate} from '../../static/utils/time.js';
 	
 	//引入时间选择器的插件
     import wPicker from "@/components/w-picker/w-picker.vue";
@@ -96,6 +97,7 @@
 		data() {
 			return {
 				width:"",         //用来设置输入框的长度
+				width2:"",        //卡片的长度
 				userInfo:"",
 				projectId:"",     //当前所在项目的projectId
 				nowHadSprint:[],    
@@ -147,6 +149,7 @@
 				_this = this;
 				uni.getSystemInfo({
 					success:(res)=>{
+					   _this.width2 = res.windowWidth-80;
 					   _this.width = parseInt(res.windowWidth)-90      //将剩余的作为input的宽度
 					}
 				})
@@ -233,12 +236,14 @@
 			},
 			
 			
-			addSprint:function(){
+			addSprint:function(e){
 				_this = this;
+				addFormId(_this.userInfo.openId,e.detail.formId)
 				let jude;           //用来判断时间格式是否有误
+				let nowTime = new Date(Date.parse(formatDate(new Date())));
                 let startTime = new Date(Date.parse(_this.startTime));
 				let endTime = new Date(Date.parse(this.endTime));
-				if(startTime>=endTime){
+				if(startTime>=endTime||startTime<nowTime||nowTime>=endTime){
 					jude = false;
 				}else{
 					jude = true;
@@ -282,7 +287,7 @@
 					uni.showToast({
 						duration:500,
 						icon:"none",
-						title:"信息有误"
+						title:"时间格式或信息有误"
 					})
 				}
 			}
@@ -302,7 +307,6 @@
 }
 .hadSprint{
 	width: 100%;
-	height: auto;
 	display: flex;
 	flex-direction: column;
 }
@@ -320,8 +324,9 @@
 	height: 70upx!important;
 	line-height: 70upx;
 	font-size: 35upx;
-	font-weight: 400;
+	font-weight: 500;
 	text-align: left!important;
+	color: #111A34!important;
 } 
 
 .sprintNum{
@@ -332,6 +337,7 @@
 	margin-top:10upx;
     width: 100%;
 }
+
 .sprintDetail{
 	width: 100%;
 	display: flex;
@@ -339,9 +345,10 @@
 }
 .sprintDetail text{
 	height: 30upx;
-	margin-top: 5upx;
-	margin-left: 10upx;
+	margin-top: 15upx;
+	margin-left: 6upx;
 	font-size: 30upx;
+	width: 100%;
 }
 /*
 #target{
@@ -364,6 +371,7 @@
 .sprintMessage view{
 	display: flex;
 	flex-direction: row;
+	justify-content: flex-start;
 	align-items: center;
 	margin-top: 5upx;
 	height: 100upx;
@@ -383,10 +391,15 @@
 	margin-left: 10upx;
 	height: 80upx;
 }
+.wpicker{
+	width: 100%;
+	height: 600upx;
+}
 
 .submitButton{
 	width: 60%;
 	height: 80upx;
+	line-height: 80upx;
 	border-radius:2%;
 	margin-top: 10upx;
 	background-color: #6AA2D4;

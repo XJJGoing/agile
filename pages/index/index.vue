@@ -2,18 +2,22 @@
 	<scroll-view scroll-y="true"
 	             class="project"
 	>
+	<block v-if="roleId==0">
+		<text style="{color:#FCFBFF;font-size: 40upx; height: 100upx;}">无参看权限!!!</text>
+	</block>
 	
+   <block v-else>
 	<view class="chooseItem">
 			 <picker @change="bindPickerMyProject" :value="index" :range="myProject">
-				 <text>切换首页冲刺</text>
+				 切换首页项目
 			 </picker>
 			<picker @change="bindPickerLookProject" :value="index" :range="myLookProject">
-			    <text>切换可看项目</text>
+			     切换可看项目
 			</picker>
 	</view>
 	
 	<view class="titleView">
-	   <text class="title">项目信息:</text>
+	   <text class="title">项目信息</text>
 	</view>
 	<view class="projectInfo">
 		 <view>
@@ -38,36 +42,36 @@
 		 </view>
 		 <view>
 			 <text>冲刺个数:</text>
-			 <input placeholder="填入项目冲刺的个数" :value="nowProject.projectSprintNum" @input="fprintNum" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
+			 <input placeholder="填入项目冲刺的个数" :value="nowProject.projectSprintNum" @input="fspintNum" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
 		 </view>
 		 <view>
 			 <text>项目成员:</text>
-			 <input placeholder="填入项目的成员" :value="nowProject.projectPeople" @input="fpeople" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
+			 <input placeholder="填入项目的成员(输入数字)" :value="nowProject.projectPeople" @input="fpeople" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
 		 </view>
 	</view>
 	   
 	 <block v-if="roleId===1">
 		 <view class="footer">
 			 <block v-if="roleId===1&&isDisplay">
-			   <QSWavesButton btnType="default" 
-			                  @click="saveProject"
-							  plain="true"
-							  class="QSbutton"
-							  wavesColor="rgba(211,220,114,0.93)"
-							  btnStyle="{font-size:35upx;color: #E9EFED;}"
-			    >
-				<text>提交</text>
-			   </QSWavesButton>
+				   <QSWavesButton btnType="default" 
+								  @click="saveProject"
+								  plain="true"
+								  class="QSbutton"
+								  wavesColor="rgba(211,220,114,0.93)"
+								  btnStyle="{font-size:35upx;color: #E9EFED;}"
+					>
+					<text>提交</text>
+				   </QSWavesButton>
 			 </block>
-			 <QSWavesButton btnType="default" 
-							@click="addSprint"
-							plain="true"
-							class="QSbutton"
-							wavesColor="rgba(114,220,158,0.93)"
-							btnStyle="{font-size:35upx;color:#E9EFED;}"
-			 >
-			  <text>添加冲刺</text>
-			 </QSWavesButton>
+				 <QSWavesButton btnType="default"
+				                @click="addSprint"
+								plain="true"
+								class="QSbutton"
+								wavesColor="rgba(114,220,158,0.93)"
+								btnStyle="{font-size:35upx;color:#E9EFED;}"
+				 >
+				  <text>添加冲刺</text>
+				 </QSWavesButton>
 		 </view>
 	 </block>
 		 <QSWavesButton btnType="default" 
@@ -79,6 +83,7 @@
 		 >
 		 <text>申请查看其他项目</text>
 		 </QSWavesButton>
+  </block>
 	</scroll-view>
 </template>
 
@@ -87,7 +92,7 @@
 	const query = require('../../static/utils/utils').Query;
 	const Query = new query();
 	const Login = new login();
-	
+	import {addFormId} from '../../static/utils/utils.js';
 	import {formatDate} from '../../static/utils/time.js';
 	import {projectQuery,userPojectRoleQuery,projectUpdate,sprintQuery} from '../../static/utils/api.js'
 	
@@ -142,20 +147,24 @@
 				   Query.findUser(id)
 				   .then(data=>{
 					 _this.userInfo = data.data.records[0];
-					 uni.getStorage({
-						 key:"nowInProject",
-						 success:(res)=>{
-							 _this.projectId = res.data.projectId;
-							 _this.roleId = res.data.roleId;
-							   _this.getAllProjectInfo();              //获取所有项目的信息
-						 },
-						 fail:()=>{
-						    uni.redirectTo({
-						    	url:'../apply/apply'
-						    })	 
-						 }
-					 })
-				   })
+					 if(data.data.records[0].isRoot){
+						 _this.roleId=0;
+					 }else{
+					    uni.getStorage({
+							 key:"nowInProject",
+							 success:(res)=>{
+								 _this.projectId = res.data.projectId;
+								 _this.roleId = res.data.roleId;
+								   _this.getAllProjectInfo();              //获取所有项目的信息
+							 },
+							 fail:()=>{
+								uni.redirectTo({
+									url:'../apply/apply'
+								})	 
+							 }
+						 })
+					   }
+					})
 				   .catch(error=>{
 					   console.log(error)
 				   })
@@ -183,29 +192,39 @@
 				})
 			},
 			
-			//填写信息的函数
+			//填写信息的函数 
 			ftarget:function(e){
-					this.target = e.detail.value;
+				this.target = e.detail.value;
 			},
 			
 			ffinishTime:function(e){
-					this.finishTime = e.detail.value;
+				 this.finishTime = e.detail.value;
 			},
 			
 			fresult:function(e){
-					this.result = e.detail.value;
+				this.result = e.detail.value;
 			},
 			
 			fmanagement:function(e){
-					this.management = e.detail.value;
+				 this.management = e.detail.value;
 			},
 			
 			fspintNum:function(e){
-					this.sprintNum = e.detail.value;
+				this.sprintNum = e.detail.value;
 			},
 			
 			fpeople:function(e){
-					this.people = e.detail.value;
+				  let reg = /^[0-9]$/g
+				  let people = e.detail.value;
+				  if(reg.test(people)){
+					  this.people = people;
+				  }else{
+					uni.showToast({
+						title:"请输入数字",
+						icon:"none",
+						duration:500
+					})  
+				  }
 			},
 			
 			//切换12权限项目
@@ -255,7 +274,7 @@
 					if(chooseProjectName === _this.allUserProjectInfo[i].projectName){
 						chooseProjectId = _this.allUserProjectInfo[i].id;
 					}
-				}
+				} 
                 let nowInProject;                                   //准备将storage中的nowInProject给替换掉.
 				_this.allUserProjectRoles.forEach((item,index)=>{
 					if(item.projectId === chooseProjectId){
@@ -294,7 +313,7 @@
 					  console.log("获取到的所有的项目的信息",data.data.records);
 					  _this.allUserProjectInfo = data.data.records;
 					  _this.getProject();                  //请求结束之后页面项目的信息
-					  _this.getUserProjectRole();        //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
+					  _this.getUserProjectRole();          //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
 				   })
 				   .catch(Error=>{
 					   uni.showToast({
@@ -349,12 +368,14 @@
 		   //获取用户的权限为将1 2 3 4权限的项目全部查找到再进行分类并且显示项目编号
 		   getUserProjectRole:function(){ 
 			   _this = this;
+			   let arry1 = [];
+			   let arry2 = [];
+			   let arry3 = [];
+			   let arry4 = [];
 				Query.findUserProjectRoleByUserId(_this.userInfo.id)
 				.then(data=>{
 					let dataAll = data.data.records;
 					_this.allUserProjectRoles = dataAll;
-					let arry1 = [];
-					let arry2 = [];
 					if(dataAll!=0){
 					  dataAll.forEach((item,index)=>{
 					    if(item.roleId===1||item.roleId===2){
@@ -366,8 +387,6 @@
 					}
 					
 					//进行显示项目编号处理
-					let arry3 = [];
-					let arry4 = [];
 					for(let i = 0;i<_this.allUserProjectInfo.length;i++){
 						for(let j = 0;j<arry1.length;j++){
 							if(_this.allUserProjectInfo[i].id === arry1[j]){
@@ -382,15 +401,14 @@
 							}
 						}
 					}
-					_this.myProject = arry3;
-					_this.myLookProject = arry4;
 				})
+				_this.myProject = arry3;
+				_this.myLookProject = arry4;
 		   },
 		   
 		   
 		   //提交项目的函数
 		   saveProject:function(){
-			   _this = this;
 			   console.log("提交的信息",{
 				   target:_this.target,
 				   sprintNum:_this.sprintNum,
@@ -401,7 +419,7 @@
 			   })
 			   if(_this.target&&_this.sprintNum&&_this.management&&_this.people&&_this.finishTime&&_this.result){
 				   //这里项目信息，将项目信息提交到服务端
-				   let data = {
+				   let data = [{
 					   id:_this.projectId,
 					   projectId:_this.projectId,
 					   projectTarget:_this.target,
@@ -409,34 +427,49 @@
 					   projectManagement:_this.management,
 					   projectPeople:_this.people,
 					   projectFinishTime:_this.finishTime,
-					   projectResult:_this.projectResult 
-				   }
+					   projectResult:_this.result 
+				   }];
 				   
 				   //提交到服务端并且进行项目的更新后并重新获取该项目的信息
-				   uni.showLoading({
-				   	  title:"提交中",
-					  success:()=>{
-					      uni.request({
-					       url:projectUpdate,
-					       data:data,
-					       method:'POST',
-					       dataType:'json' 
-					     })
-					     .then(data=>{
-					        console.log("更新后的项目",data); 
-						    uni.hideLoading();
+				   uni.showModal({
+				   	title:"提醒",
+					content:"项目信息只能完成提交一次,后期无法再修改，提交之前请确认是否所有信息正确且无误",
+					confirmText:"确认",
+					confirmColor:"#19BE6B",
+					cancelText:"再看看",
+					cancelColor:"#DD524D",
+					success:(res)=>{
+						if(res.confirm){
+					         uni.showLoading({
+					        	  title:"提交中",
+								  success:()=>{
+									  uni.request({
+									   url:projectUpdate,
+									   data:data,
+									   method:'POST',
+									   dataType:'json' 
+									 })
+									 .then(data=>{
+										console.log("更新后的项目",data); 
+										uni.hideLoading();
+										
+									   //提交之后因为项目的信息有改变，所以重新获取全部的项目信息。
+									   _this.getAllProjectInfo();
+									   
+									 })
+									 .catch(error=>{
+										 uni.showToast({
+										 title:"提交失败",
+										 duration:1000,
+										})
+									 })	  
+								  }
+					        }) 		
+						}else if(res.cancel){
 							
-					       //并且重新获取项目信息
-					       _this.getProject();
-					     })
-					     .catch(error=>{
-					         uni.showToast({
-					         title:"提交失败",
-							 duration:1000,
-					     	})
-					     })	  
-					  }
-				   })   
+						}
+					}
+				  })  
 			   }else{
 				   uni.showToast({
 						title:"请完善信息",   
@@ -451,7 +484,7 @@
 			   uni.navigateTo({
 			   	 url:"../addSprint/addSprint"
 			   })
-		   }, 
+		   },  
 		      
 		   //继续申请查看其他的项目
 		   returnApply:function(){
@@ -492,9 +525,11 @@
 		   	  	  		sprintId = allSprint[i].id;
 		   	  	  	}	
 		   	  	  }
-		   	  	  if(sprintId===""){ //如果实在都超过了时间段就默认进入最后一个
-		   	  		  sprintId = allSprint.pop().id;
+		   	  	  if(!sprintId){                 //如果实在都超过了时间段就默认进入最后一个
+				      let len = allSprint.length-1;
+		   	  		  sprintId = allSprint[len].id;
 		   	  	  }
+				  console.log(sprintId)
 		   	  	  uni.setStorage({
 		   	  	  	key:'sprintId',
 		   	  		data:sprintId
@@ -504,7 +539,7 @@
 		   	  			key:'sprintId',
 		   	  			data:""
 		   	  		})
-		   	  	}
+		   	  	 }
 		   	   })
 		   	   .catch(Error=>{
 		   	   	uni.showToast({
@@ -542,6 +577,8 @@
 	border-radius: 4%;
 	text-align: center;
 	background-color:rgba(171,159,174,0.93);
+	font-size: 28upx;
+	line-height: 60upx;
 }
 .chooseItem picker text{
 	height: 60upx;
@@ -554,7 +591,8 @@
 .titleView{
   width: 100%;
   height: 70upx;
-  background-color:#94B6CB ;
+  text-align: center;
+  background-color: #6CA0D9;
   margin-left: 0upx;
 }
 
@@ -564,6 +602,7 @@
 	line-height: 70upx;
 	font-size: 35upx;
 	font-family: webfont;
+	color: #F0F8FF;
 }  
 
 .projectInfo{

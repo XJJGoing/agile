@@ -3,7 +3,6 @@
 	overflow: scroll;
 	height: auto;
 	width: 100%;
-	background-color:#FDFFF1;
 }
 ::-webkit-scrollbar{
 	height: 6rpx;
@@ -21,12 +20,12 @@
 	        flex-direction: column;
 }
 #title{
-	height: 120rpx;
+	height: 80rpx;
 	width: 100%;
 	font-size: 35rpx;
-	font-weight: 400;
-	line-height: 120rpx;
-	background-color:#6CA0D9;
+	font-weight:bold;
+	line-height: 80rpx;
+	background-color:#6195C0;
 	margin-left: 2rpx;
 }
 .addTask view{
@@ -42,37 +41,43 @@
 	    -ms-flex-direction: row;
 	        flex-direction: row;
 	margin-top: 5rpx;
-	background-color:#F4D8B1;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
 	    -ms-flex-align: center;
-	        align-items: center;
+	        align-items: center
 }
 #heading{
 	font-size:30rpx;
-	height: 100rpx;
+	height: 80rpx;
 	width: 150rpx;
 	margin-left:10rpx;
-    line-height: 100rpx;
-	background-color:#C9BFBD;
-	text-align: center;
+    line-height: 80rpx;
+	text-align: left;
+	color: #F1F1F1;
+	font-weight: bold;
 }
 .addTask view input{
 	margin-left: 10rpx;
 	height: 80rpx;
 	font-size:30rpx;
-	border-radius: 5%;
-	border: 1px solid #30FAF6;
     -webkit-box-align: center;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
+	color: #F0F8FF;
 }
 .submit{
+	height: 70rpx;
+	line-height: 70rpx;
+	font-size: 35rpx;
+	width: 70%;
+	margin-top: 20rpx;
+}
+.noSprintInfo{
+	font-size: 30rpx;
+	color: #E9EFED;
+	width: 100%;
 	height: 80rpx;
-	line-height: 80rpx;
-	font-size: 40rpx;
-	width: 90%;
-	margin-top: 10rpx;
+	text-align: center;
 }
 

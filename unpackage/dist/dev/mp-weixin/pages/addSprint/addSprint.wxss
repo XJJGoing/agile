@@ -10,7 +10,6 @@
 }
 .hadSprint{
 	width: 100%;
-	height: auto;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -33,8 +32,9 @@
 	height: 70rpx!important;
 	line-height: 70rpx;
 	font-size: 35rpx;
-	font-weight: 400;
+	font-weight: 500;
 	text-align: left!important;
+	color: #111A34!important;
 }
 .sprintNum{
 	display: -webkit-box;
@@ -71,9 +71,10 @@
 }
 .sprintDetail text{
 	height: 30rpx;
-	margin-top: 5rpx;
-	margin-left: 10rpx;
+	margin-top: 15rpx;
+	margin-left: 6rpx;
 	font-size: 30rpx;
+	width: 100%;
 }
 /*
 #target{
@@ -112,6 +113,10 @@
 	-webkit-flex-direction: row;
 	    -ms-flex-direction: row;
 	        flex-direction: row;
+	-webkit-box-pack: start;
+	-webkit-justify-content: flex-start;
+	    -ms-flex-pack: start;
+	        justify-content: flex-start;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
 	    -ms-flex-align: center;
@@ -133,9 +138,14 @@
 	margin-left: 10rpx;
 	height: 80rpx;
 }
+.wpicker{
+	width: 100%;
+	height: 600rpx;
+}
 .submitButton{
 	width: 60%;
 	height: 80rpx;
+	line-height: 80rpx;
 	border-radius:2%;
 	margin-top: 10rpx;
 	background-color: #6AA2D4;

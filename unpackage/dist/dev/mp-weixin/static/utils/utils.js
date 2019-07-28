@@ -3,7 +3,9 @@ import {queryUser,
         userProjectRoleQuery,
 		userProjectDepartmentQuery,
 		departmentQuery,
-		projectQuery
+		projectQuery,
+		getUserOpenId,
+		messageSet
 	   } from './api';
 
 //登录模块
@@ -39,16 +41,23 @@ class Login {
 		})
 	}
 	
-	//得到OpenId
+	//得到OpenId `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`
 	getOpenId(code){
 		return new Promise((resolve,reject)=> {
 	       let appId = "wxd763acfcb06de61a";
 		   let appSecret = "e8e7ea381fff59c2081d115cb312b22e";
 		   uni.request({
-		   	 url:`https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`,
-			 method:"GET",
-			 data:{},
-			 success:(res)=>{
+		   	 url:getUserOpenId,
+			 method:"POST", 
+			 data:{
+				 appId:appId, 
+				 appSecret:appSecret,
+				 code:code
+			 },
+			 header:{
+				 "Content-Type": "application/x-www-form-urlencoded"
+			 },
+			 success:(res)=>{  
 				 resolve(res)
 			 },
 			 fail:(error)=>{
@@ -64,7 +73,8 @@ class Login {
 			uni.request({
 				url:api,
 				method:method,
-				data:userInfo,
+				data:userInfo, 
+				dataType:'json',
 				success:(res)=>{
 					resolve(res.data)
 				},
@@ -252,7 +262,27 @@ class Query  {
 				url:projectQuery,
 				method:"POST",
 				data:{
-					
+					pageSize: 1000,
+				},
+				dataType:'json',
+				success:(res)=>{
+					resolve(res.data)
+				},
+				fail:(Error)=>{
+					reject(Error)
+				}
+			})
+		})
+	}
+	
+	//查询超级用户的信息进而拿openId
+	findRootUserInfo(){
+		return new Promise((resolve,reject)=>{
+			uni.request({
+				url:queryUser,
+				method:"POST",
+				data:{
+					isRoot:1,
 				},
 				dataType:'json',
 				success:(res)=>{
@@ -267,7 +297,37 @@ class Query  {
 }
 
 
+//向redis中根据openId去插入formId 没有就新建
+const addFormId = (openId,formId)=>{
+	let reg = /\s/g;
+	console.log("formId和openId",openId,formId);
+	console.log(reg.test(formId))
+	if(formId&&!reg.test(formId)){
+		uni.request({
+		      url:`${messageSet}?&openId=${openId}&formId=${formId}`,
+			  method:"POST",
+			  header:{
+				  "Content-Type":"application/xxx-www-form-urlencoded"
+			  },
+			  success:(res)=>{
+				 console.log(res)
+				 console.log("增加formId成功",)
+			  },
+			  fail:()=>{
+				  uni.showToast({
+				  	title:"网络错误",
+					duration:500,
+					icon:"none"
+				  })
+			  }
+		})
+	}else{
+		console.log("增加formId失败")
+	}
+}
+
 module.exports = {
 	  Login:Login,
-	  Query:Query
+	  Query:Query,
+	  addFormId:addFormId
 }

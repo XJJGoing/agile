@@ -2,7 +2,6 @@
 .all{
 	height: auto;
 	overflow: scroll;
-	background-color: #007AFF;
 }
 ::-webkit-scrollbar{
 	width: 2rpx;
@@ -25,7 +24,6 @@
 	        justify-content: flex-start;
 }
 .updateUserRole view{
-	height: 100rpx;
 	width: 100%;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -40,48 +38,50 @@
 	-webkit-align-items: center;
 	    -ms-flex-align: center;
 	        align-items: center;
-	background-color: #19BE6B;
 	margin-top: 10rpx;
 }
-.updateUserRole view picker{
-	height: 80rpx;
-	line-height: 80rpx;
-	border: 1px solid #19BE6B;
-	width: 50%;
+.updateUserRole view text{
 	margin-left: 10rpx;
-	background-color: #F5A623!important;
+	font-size: 30rpx;
+	font-weight: bold;
+	color: #F0F8FF;
+	width: 100rpx;
+}
+.updateUserRole view picker{
+	margin-left: 10rpx;
+	color: #F1F1F1;
 }
 .addNewDepartment{
 	display: -webkit-box!important;
 	display: -webkit-flex!important;
 	display: -ms-flexbox!important;
 	display: flex!important;
-	height: auto!important;
-	-webkit-box-orient: vertical!important;
+	-webkit-box-orient: horizontal!important;
 	-webkit-box-direction: normal!important;
-	-webkit-flex-direction: column!important;
-	    -ms-flex-direction: column!important;
-	        flex-direction: column!important;
-	-webkit-box-pack: start!important;
-	-webkit-justify-content: flex-start!important;
-	    -ms-flex-pack: start!important;
-	        justify-content: flex-start!important;
+	-webkit-flex-direction: row!important;
+	    -ms-flex-direction: row!important;
+	        flex-direction: row!important;
+	margin-top: 15rpx;
 }
-.addNewDepartment button{
-	width: 300rpx;
-	height: 80rpx;
-	margin-left: 0rpx;
-	margin-top: 5rpx;
+.addNewDepartment text{
+	height: 100rpx;
+	font-size: 30rpx;
+	width: 200rpx;
+	line-height: 100rpx;
+	margin-left: 5rpx;
 }
 .addNewDepartment input{
-	margin-left: 0rpx;
-	width: 100%;
-	margin-top: 4rpx;
+	margin-left: 10rpx;
+	height: 100rpx;
 	font-size: 30rpx;
-	border: 1px solid #FCFBFF;
+	color: #F0F8FF;
+}
+.sureAddDepartment{
+	margin-top: 10rpx;
+	width:50%;
 }
 .submit{
-	width: 100%;
+	width: 90%;
 	margin-top: 10rpx;
 }
 

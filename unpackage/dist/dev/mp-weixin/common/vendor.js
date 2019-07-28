@@ -1510,6 +1510,8 @@ var _api = __webpack_require__(/*! ./api */ 8);function _classCallCheck(instance
 
 
 
+
+
 //登录模块
 var Login = /*#__PURE__*/function () {
   function Login(arg) {_classCallCheck(this, Login);
@@ -1543,15 +1545,22 @@ var Login = /*#__PURE__*/function () {
       });
     }
 
-    //得到OpenId
+    //得到OpenId `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`
   }, { key: "getOpenId", value: function getOpenId(code) {
       return new Promise(function (resolve, reject) {
         var appId = "wxd763acfcb06de61a";
         var appSecret = "e8e7ea381fff59c2081d115cb312b22e";
         uni.request({
-          url: "https://api.weixin.qq.com/sns/jscode2session?appid=".concat(appId, "&secret=").concat(appSecret, "&js_code=").concat(code, "&grant_type=authorization_code"),
-          method: "GET",
-          data: {},
+          url: _api.getUserOpenId,
+          method: "POST",
+          data: {
+            appId: appId,
+            appSecret: appSecret,
+            code: code },
+
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded" },
+
           success: function success(res) {
             resolve(res);
           },
@@ -1569,6 +1578,7 @@ var Login = /*#__PURE__*/function () {
           url: api,
           method: method,
           data: userInfo,
+          dataType: 'json',
           success: function success(res) {
             resolve(res.data);
           },
@@ -1755,8 +1765,28 @@ var Query = /*#__PURE__*/function () {
         uni.request({
           url: _api.projectQuery,
           method: "POST",
-          data: {},
+          data: {
+            pageSize: 1000 },
 
+          dataType: 'json',
+          success: function success(res) {
+            resolve(res.data);
+          },
+          fail: function fail(Error) {
+            reject(Error);
+          } });
+
+      });
+    }
+
+    //查询超级用户的信息进而拿openId
+  }, { key: "findRootUserInfo", value: function findRootUserInfo() {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: _api.queryUser,
+          method: "POST",
+          data: {
+            isRoot: 1 },
 
           dataType: 'json',
           success: function success(res) {
@@ -1771,9 +1801,39 @@ var Query = /*#__PURE__*/function () {
 
 
 
+//向redis中根据openId去插入formId 没有就新建
+var addFormId = function addFormId(openId, formId) {
+  var reg = /\s/g;
+  console.log("formId和openId", openId, formId);
+  console.log(reg.test(formId));
+  if (formId && !reg.test(formId)) {
+    uni.request({
+      url: "".concat(_api.messageSet, "?&openId=").concat(openId, "&formId=").concat(formId),
+      method: "POST",
+      header: {
+        "Content-Type": "application/xxx-www-form-urlencoded" },
+
+      success: function success(res) {
+        console.log(res);
+        console.log("增加formId成功");
+      },
+      fail: function fail() {
+        uni.showToast({
+          title: "网络错误",
+          duration: 500,
+          icon: "none" });
+
+      } });
+
+  } else {
+    console.log("增加formId失败");
+  }
+};
+
 module.exports = {
   Login: Login,
-  Query: Query };
+  Query: Query,
+  addFormId: addFormId };
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
@@ -26740,122 +26800,9 @@ createPage(_admin.default);
   !*** E:/code/agile-front/agile/static/utils/api.js ***!
   \*****************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
- //注册的api
-var register = "http://120.79.49.245:7377/user/registerByWeChat";
-
-//查找该用户
-var queryUser = "http://120.79.49.245:7377/user/query";
-
-//查找用户权限项目关系，可以根据userId、roleId、projectId单独和两两和三去查
-var userProjectRoleQuery = "http://120.79.49.245:7377/userProjectRole/query";
-
-//查找项目，库查找所有的项目，也可以单个查询
-var projectQuery = "http://120.79.49.245:7377/project/query";
-
-//添加申请
-var roleApplyAdd = "http://120.79.49.245:7377/roleApply/add";
-
-//添加评论
-var commentAdd = "http://120.79.49.245:7377/comment/add";
-
-//查找评论
-var commnetQuery = "http://120.79.49.245:7377/comment/add";
-
-//增加冲刺的信息
-var sprintAdd = "http://120.79.49.245:7377/sprint/add";
-
-//进行项目的更新（可以单个，也可以多个）
-var projectUpdate = "http://120.79.49.245:7377/project/updateBatch";
-
-//获取所有权限
-var getAllRole = "http://120.79.49.245:7377/other/getAllRole";
-
-//在t_user_project_role中增加信息
-var userProjectRoleAdd = "http://120.79.49.245:7377/userProjectRole/add";
-
-//在t_user_project_role中更新权限信息
-var userProjectRoleUpdateBatch = "http://120.79.49.245:7377/userProjectRole/updateBatch";
-
-//获取所有专业
-var getAllDepartment = "http://120.79.49.245:7377/other/getAllDepartment";
-
-//获取申请记录
-var roleApplyQuery = "http://120.79.49.245:7377/roleApply/query";
-
-//增加用户项目专业记录
-var userProjectDepartmentAdd = "http://120.79.49.245:7377/userprojectdepartment/add";
-
-//查找用户项目专业记录
-var userProjectDepartmentQuery = "http://120.79.49.245:7377/userprojectdepartment/query";
-
-//修改t_user_project_department中的数据
-var updateUserProjectDepartment = "http://120.79.49.245:7377/userprojectdepartment/updateBatch";
-
-//审核的时候更新申请记录
-var updateRoleApply = "http://120.79.49.245:7377/roleApply/updateBatch";
-
-//新增专业的api
-var departmentAdd = "http://120.79.49.245:7377/department/add";
-
-//新增任务的api
-var taskAdd = "http://120.79.49.245:7377/task/add";
-
-//查找专业
-var departmentQuery = "http://120.79.49.245:7377/department/query";
-
-//查找所有专业
-var departmentQueryAll = "http://120.79.49.245:7377/department/queryAll";
-
-//查找任务
-var taskQuery = "http://120.79.49.245:7377/task/query";
-
-//查找冲刺
-var sprintQuery = "http://120.79.49.245:7377/sprint/query";
-
-//任务的更新
-var taskUpdateBatch = "http://120.79.49.245:7377/task/updateBatch";
-
-//增加消息
-var messageAdd = "http://120.79.49.245:7377/message/add";
-
-//删除任务 /task/deleteBatch
-var deleteTask = "http://120.79.49.245:7377/task/deleteBatch";
-
-//获取折线图数据
-var getLineData = "http://120.79.49.245:7377/picture/getLineData";
-
-
-module.exports = {
-  departmentQueryAll: departmentQueryAll,
-  register: register,
-  queryUser: queryUser,
-  projectQuery: projectQuery,
-  commentAdd: commentAdd,
-  commnetQuery: commnetQuery,
-  userProjectRoleQuery: userProjectRoleQuery,
-  roleApplyAdd: roleApplyAdd,
-  sprintAdd: sprintAdd,
-  projectUpdate: projectUpdate,
-  getAllRole: getAllRole,
-  userProjectRoleAdd: userProjectRoleAdd,
-  getAllDepartment: getAllDepartment,
-  roleApplyQuery: roleApplyQuery,
-  userProjectDepartmentAdd: userProjectDepartmentAdd,
-  userProjectDepartmentQuery: userProjectDepartmentQuery,
-  userProjectRoleUpdateBatch: userProjectRoleUpdateBatch,
-  updateUserProjectDepartment: updateUserProjectDepartment,
-  updateRoleApply: updateRoleApply,
-  departmentAdd: departmentAdd,
-  taskAdd: taskAdd,
-  departmentQuery: departmentQuery,
-  sprintQuery: sprintQuery,
-  taskQuery: taskQuery,
-  taskUpdateBatch: taskUpdateBatch,
-  messageAdd: messageAdd,
-  deleteTask: deleteTask };
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: E:\\code\\agile-front\\agile\\static\\utils\\api.js: Unexpected token (103:1)\n\n  101 | const messageQuery = `${host}/message/query`;\n  102 | \n> 103 | <<<<<<< HEAD\n      |  ^\n  104 | //获取折线图数据\n  105 | const getLineData =\"http://120.79.49.245:7377/picture/getLineData\";\n  106 | =======\n    at _class.raise (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:4051:15)\n    at _class.unexpected (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:5382:16)\n    at _class.jsxParseIdentifier (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:3527:14)\n    at _class.jsxParseNamespacedName (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:3537:23)\n    at _class.jsxParseElementName (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:3548:23)\n    at _class.jsxParseOpeningElementAt (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:3633:24)\n    at _class.jsxParseElementAt (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:3666:33)\n    at _class.jsxParseElement (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:3735:19)\n    at _class.parseExprAtom (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:3742:21)\n    at _class.parseExprSubscripts (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:6104:21)\n    at _class.parseMaybeUnary (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:6083:21)\n    at _class.parseExprOps (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:5968:21)\n    at _class.parseMaybeConditional (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:5940:21)\n    at _class.parseMaybeAssign (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:5887:21)\n    at _class.parseExpression (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:5840:21)\n    at _class.parseStatementContent (D:\\install\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:7619:21)");
 
 /***/ }),
 
@@ -26893,12 +26840,25 @@ var formatDate = function formatDate(date) {
   var seconds = date.getSeconds();
   return [year, month, day].map(formatNumber).join('-') + " " + [hours, minutes, seconds].map(formatNumber).join(':');
 };
+
+var format = function format(date) {
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+  return [year, month, day].map(formatNumber).join('-');
+};
+
 var formatNumber = function formatNumber(n) {
   n = n.toString();
   return n[1] ? n : '0' + n; //表示字符串第一个数是否存在
 };
+
 module.exports = {
-  formatDate: formatDate };
+  formatDate: formatDate,
+  format: format };
 
 /***/ }),
 

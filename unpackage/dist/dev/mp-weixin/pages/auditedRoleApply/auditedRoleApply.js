@@ -143,7 +143,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _api = __webpack_require__(/*! ../../static/utils/api.js */ 8); //
+
+
+
+
+
+var _api = __webpack_require__(/*! ../../static/utils/api.js */ 8);
+
+
+
+
+var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ 10);
+var _time = __webpack_require__(/*! ../../static/utils/time.js */ 9); //
+//
+//
+//
+//
+//
 //
 //
 //
@@ -178,69 +194,134 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ 8); //
 //
 //
 var _this = void 0; //引入更新申请状态的记录
-var wPicker = function wPicker() {return Promise.all(/*! import() | components/w-picker/w-picker */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/w-picker/w-picker")]).then(__webpack_require__.bind(null, /*! @/components/w-picker/w-picker.vue */ 183));};var _default = { components: { wPicker: wPicker }, data: function data() {return { chooseTime: "", //设置的时间
-      chooseItem: "" //选中的项目
-    };}, onLoad: function onLoad(e) {;console.log(e);console.log(e.chooseItem);this.chooseItem = JSON.parse(e.chooseItem);console.log(this.chooseItem);}, methods: { //显示时间选择器
-    isDisplay: function isDisplay() {this.$refs.picker.show();}, //监听时间选择器拿到的东西
-    chooseDate: function chooseDate(e) {console.log("拿到的时间", e);this.chooseTime = e.result;}, //进行审核
+var query = __webpack_require__(/*! ../../static/utils/utils */ 10).Query;var Query = new query();var wPicker = function wPicker() {return Promise.all(/*! import() | components/w-picker/w-picker */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/w-picker/w-picker")]).then(__webpack_require__.bind(null, /*! @/components/w-picker/w-picker.vue */ 183));};var _default = { components: { wPicker: wPicker }, data: function data() {return { userInfo: "", //用户的信息
+      width: "", //输入框的长度
+      chooseTime: "", //设置的时间
+      chooseItem: "" //选中的审核的项目
+    };}, onLoad: function onLoad(e) {this.getSystem();this.chooseItem = JSON.parse(e.chooseItem);}, onShow: function onShow() {_this = this;uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data.records[0];});}, fail: function fail() {uni.redirectTo({ url: "../login/login" });} });}, methods: { //获取系统信息
+    getSystem: function getSystem() {_this = this;
+      uni.getSystemInfo({
+        success: function success(res) {
+          _this.width = parseInt(res.windowWidth) - 70;
+        } });
+
+    },
+
+    //显示时间选择器
+    isDisplay: function isDisplay() {
+      this.$refs.picker.show();
+    },
+
+    //监听时间选择器拿到的东西
+    chooseDate: function chooseDate(e) {
+      this.chooseTime = e.result;
+    },
+
+    //进行审核
     examine: function examine(e) {//通过和不同过监听同一个函数根据id去判断进而实现通过和不通过
-      _this = this;console.log(e.currentTarget.id);var state = parseInt(e.currentTarget.id);console.log(state);var roleId;if (state === 1) {roleId = 3;
-      } else {
-        roleId = "";
-      }
       _this = this;
-      if (_this.chooseTime != "") {
-        var data = [{
-          id: _this.chooseItem.id,
-          effectiveTime: _this.chooseTime,
-          projectId: _this.chooseItem.projectId,
-          roleId: roleId,
-          state: state,
-          userId: _this.chooseItem.userId }];
+      var nowTime = new Date(Date.parse((0, _time.formatDate)(new Date())));
+      console.log(e);
+      (0, _utils.addFormId)(_this.userInfo.openId, e.detail.formId);
+      console.log(e.currentTarget.id);
+      var state = parseInt(e.target.target.id);
+      console.log(state);
+      var roleId;
+      if (state === 1) {
+        var _roleId = 3;
+        if (_this.chooseTime && new Data(Date.parse(_this.chooseTime)) > nowTime) {
+          console.log("提交的消息", {
+            id: _this.chooseItem.id,
+            effectiveTime: _this.chooseTime,
+            projectId: _this.chooseItem.projectId,
+            state: 1,
+            userId: _this.chooseItem.userId });
 
-        console.log("提交的数据", data);
-        uni.showLoading({
-          title: "提交中",
-          success: function success() {
-            uni.request({
-              url: _api.updateRoleApply,
-              method: "POST",
-              data: [{
-                id: _this.chooseItem.id,
-                effectiveTime: _this.chooseTime,
-                projectId: _this.chooseItem.projectId,
-                roleId: roleId,
-                state: state,
-                userId: _this.chooseItem.userId }],
+          uni.showLoading({
+            title: "提交中",
+            success: function success() {
+              uni.request({
+                url: _api.updateRoleApply,
+                method: "POST",
+                data: [{
+                  id: _this.chooseItem.id,
+                  effectiveTime: _this.chooseTime,
+                  projectId: _this.chooseItem.projectId,
+                  state: 1,
+                  userId: _this.chooseItem.userId }],
 
-              dataType: 'json' }).
+                dataType: 'json' }).
 
-            then(function (data) {
-              uni.hideLoading();
-              console.log(data);
-              console.log("更新成功");
-            }).
-            catch(function (error) {
-              uni.showToast({
-                duration: 1000,
-                title: "网络错误",
-                icon: "loading" });
+              then(function (data) {
+                uni.hideLoading();
+                console.log(data);
+                console.log("更新成功");
+                _this.addUserProjectRole(); //增加权限以及推送消息
+              }).
+              catch(function (error) {
+                uni.showToast({
+                  duration: 1000,
+                  title: "网络错误",
+                  icon: "loading" });
 
-            });
-          } });
+              });
+            } });
 
-        //在此提交向t_user_project_role中插入数据
-        if (state === 1 && roleId === 3) {
-          _this.addUserProjectRole();
+
+        } else {
+          uni.showToast({
+            title: "请选择截止时间",
+            icon: "none",
+            duration: 1000 });
+
         }
-
-      } else {
-        uni.showToast({
-          title: "请选择截止时间",
-          icon: "none",
-          duration: 1000 });
+      } else if (state === 2) {//不通过直接删除
+        _this.deleteRoleApply();
+        uni.navigateBack({
+          delta: 1 });
 
       }
+
+    },
+
+
+    //不通过的时候删除这条申请记录
+    deleteRoleApply: function deleteRoleApply() {
+      var id = [];
+      id.push(_this.chooseItem.id);
+      uni.showLoading({
+        title: "提交中",
+        success: function success() {
+          uni.request({
+            url: _api.roleApplyDeleteBatch,
+            method: "POST",
+            data: id,
+            dataType: 'json' }).
+
+          then(function (data) {
+            uni.hideLoading();
+            console.log(data);
+            uni.showToast({
+              title: "提交成功",
+              icon: '../../static/img/Icon/success.png',
+              duration: 500,
+              success: function success() {
+                uni.navigateBack({
+                  delta: 1 });
+
+              } });
+
+          }).
+          catch(function (Error) {
+            console.log(Error);
+            uni.showToast({
+              title: "网络错误",
+              icon: "loading",
+              duration: 500 });
+
+          });
+        } });
+
     },
 
     //审核查看的时候顺便在t_user_project_role中插入一条数组权限为3
@@ -263,9 +344,10 @@ var wPicker = function wPicker() {return Promise.all(/*! import() | components/w
 
           then(function (data) {
             console.log("插入成功", data);
-            uni.hideLoading();
+            _this.pushMessage();
           }).
           catch(function (error) {
+            console.log(error);
             uni.showToast({
               title: "提交失败",
               duration: 1000,
@@ -274,6 +356,65 @@ var wPicker = function wPicker() {return Promise.all(/*! import() | components/w
           });
         } });
 
+    },
+
+    //申请查看通过和不通过都将消息推送给用户
+    pushMessage: function pushMessage() {
+      _this = this;
+      var time = (0, _time.formatDate)(new Date());
+      Query.findUser({ id: _this.chooseItem.userId }).
+      then(function (data) {
+        var openId = data.data.records[0].openId;
+        console.log("推送给的用户的openId", openId);
+        uni.showLoading({
+          title: "提交中",
+          success: function success() {
+            uni.request({
+              url: _api.messageSend,
+              method: "POST",
+              data: {
+                "touser": openId,
+                "template_id": "0FFMkBzLjvI51ZlVhuGj5eWPppXMWwJnc2xdI0E4Y5Y",
+                "page": "pages/index/index",
+                "formId": "",
+                "data": {
+                  "keyword1": {
+                    "value": '您申请查看编号为 ' + _this.chooseItem.projectName + '的项目申请已通过' },
+
+                  "keyword2": {
+                    "value": "截止 " + time },
+
+                  "keyword3": {
+                    "value": "访问过程中请勿将内部数据透露。" },
+
+                  "emphasis_keyword": "keyword1.DATA" } } }).
+
+
+
+            then(function (data) {
+              console.log("推送成功");
+              uni.showToast({
+                title: "提交成功",
+                icon: '../../static/Img/Icon/success.png',
+                duration: 500,
+                success: function success() {
+                  uni.navigateBack({
+                    delta: 1 });
+
+                } });
+
+            }).
+            catch(function (Error) {
+              console.log(Error);
+              uni.showToast({
+                title: "网络错误",
+                icon: "loading",
+                duration: 500 });
+
+            });
+          } });
+
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

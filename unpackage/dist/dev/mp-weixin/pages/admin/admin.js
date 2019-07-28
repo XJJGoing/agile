@@ -148,129 +148,144 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
-var login = __webpack_require__(/*! ../../static/utils/utils */ 10).Login;
-var query = __webpack_require__(/*! ../../static/utils/utils */ 10).Query;var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ 168));};
 
-var Login = new login();
-var Query = new query();
-var _this;var _default =
-{
-  components: { uniCard: uniCard },
-  data: function data() {
-    return {
-      userInfo: " ",
-      projectId: " ", //所在的项目的id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _api = __webpack_require__(/*! ../../static/utils/api.js */ 8);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var login = __webpack_require__(/*! ../../static/utils/utils */ 10).Login;var query = __webpack_require__(/*! ../../static/utils/utils */ 10).Query;var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ 168));};var Login = new login();var Query = new query();var _this;var _default = { components: { uniCard: uniCard }, data: function data() {return { userInfo: " ", projectId: " ", //所在的项目的id
       userList1: [], //项目负责人
-      userList2: [], //2全新用户表
+      userList2: [], //2权限用户表
       userList3: [], //3权限用户表
       roleId: "", //用户的权限  1权限获取本项目的所有的工程师和Boss 0权限没有这个功能不用考虑
-
-      allUserProjectRole: [] //存放着获取到的所有的用户项目权限信息
-    };
-  },
-  onShow: function onShow() {
-    _this = this;
-    uni.getStorage({
-      key: "userInfo",
-      success: function success(res) {
-        var id = {
-          id: res.data.id };
-
-        Query.findUser(id).
-        then(function (data) {
-          //console.log(data)
-          _this.userInfo = data.data;
-          var isRoot;
-          uni.getStorage({
-            key: "nowInProject",
-            success: function success(res) {
-              _this.projectId = res.data.projectId;
-              _this.roleId === 1; //能进来这个页面肯定为项目的负责人，权限为1
-              _this.getAllUserProjectRole1();
-            } });
-
-        });
-      },
-      fail: function fail() {
-        url: '../login/login';
-      } });
-
-  },
-
-  methods: {
-
-
-    //1权限用户的查询
-    getAllUserProjectRole1: function getAllUserProjectRole1() {
-      _this = this;
-      Query.findUserProjectRoleByProjectId(_this.projectId).
-      then(function (data) {
-        console.log("1权限用户查询到的", data.data.records);
-        var allUser = data.data.records;
-        _this.allUserProjectRole = allUser;
-        var userList1 = [];
-        var userList2 = [];
-        var userList3 = [];
-        allUser.forEach(function (item, index) {
-          switch (item.roleId) {
-            case 1:
-              Query.findUser({ id: item.userId }).
-              then(function (data) {
-                userList1.push(data.data.records[0]);
-              }).
-              catch(function (error) {
-                uni.showToast({
+      allUserProjectRole: [], //存放着获取到的所有的用户项目权限信息
+      allDepartmentInfo: [] //存放着所有专业的信息
+    };}, onShow: function onShow() {_this = this;_this.getAllDepartment(); //获取所有专业
+    uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {console.log(data);_this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId === 1; //能进来这个页面肯定为项目的负责人，权限为1
+              _this.getAllUserProjectRole1();} });});}, fail: function fail() {url: '../login/login';} });}, methods: { //1权限用户的查询
+    getAllUserProjectRole1: function getAllUserProjectRole1() {_this = this;Query.findUserProjectRoleByProjectId(_this.projectId).then(function (data) {console.log("1权限用户查询到的", data.data.records);var allUser = data.data.records;_this.allUserProjectRole = allUser;var userList1 = [];var userList2 = [];var userList3 = [];var item; //中间量
+        allUser.forEach(function (item, index) {switch (item.roleId) {case 1:Query.findUser({ id: item.userId }).then(function (data) {userList1.push(data.data.records[0]);}).catch(function (error) {uni.showToast({
                   title: '获取失败',
                   duration: 1000,
                   icon: 'none' });
@@ -280,7 +295,17 @@ var _this;var _default =
             case 2:
               Query.findUser({ id: item.userId }).
               then(function (data) {
-                userList2.push(data.data.records[0]);
+                item = data.data.records[0];
+                return Query.findUserProjectDepartmentByUserIdAndProjectId(data.data.records[0].id, _this.projectId);
+              }).
+              then(function (data) {
+                var departmentId = data.data.records[0].departmentId;
+                for (var i = 0; i < _this.allDepartmentInfo.length; i++) {
+                  if (_this.allDepartmentInfo[i].id === departmentId) {
+                    item.departmentName = _this.allDepartmentInfo[i].name;
+                  }
+                }
+                userList2.push(item);
               }).
               catch(function (error) {
                 uni.showToast({
@@ -327,11 +352,57 @@ var _this;var _default =
 
           }
         }
-        //console.log("跳转页面传递的参数",roleAndUserId)
-        uni.navigateTo({
-          url: "../changeUserRole/changeUserRole?userId=".concat(roleAndUserId.userId, "&roleId=").concat(roleAndUserId.roleId, "&id=").concat(roleAndUserId.id) });
+        if (roleAndUserId.roleId === 2) {
+          uni.showModal({
+            title: "提醒",
+            content: "项目启动并且冲刺开始后请勿修改用户的专业和权限不然会造成数据紊乱后果自理",
+            confirmText: "同意",
+            confirmColor: "#19BE6B",
+            cancelText: "不同意",
+            cancelColor: "#DD524D",
+            success: function success(res) {
+              if (res.confirm) {
+                uni.navigateTo({
+                  url: "../changeUserRole/changeUserRole?userId=".concat(roleAndUserId.userId, "&roleId=").concat(roleAndUserId.roleId, "&id=").concat(roleAndUserId.id) });
 
+              } else if (res.cancel) {
+
+              }
+            } });
+
+        } else {
+          uni.navigateTo({
+            url: "../changeUserRole/changeUserRole?userId=".concat(roleAndUserId.userId, "&roleId=").concat(roleAndUserId.roleId, "&id=").concat(roleAndUserId.id) });
+
+        }
       }
+    },
+
+
+    //获取所有的专业
+    getAllDepartment: function getAllDepartment() {
+      _this = this;
+      uni.showLoading({
+        title: '获取中',
+        success: function success() {
+          uni.request({
+            url: _api.getAllDepartment,
+            method: "GET" }).
+
+          then(function (data) {
+            console.log("获取到的所有的专业", data);
+            uni.hideLoading();
+            _this.allDepartmentInfo = data[1].data.data;
+          }).
+          catch(function (Error) {
+            uni.showToast({
+              title: "网络错误",
+              duration: 500,
+              icon: "loading" });
+
+          });
+        } });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

@@ -7,9 +7,13 @@
 				<view v-for="(item,index) in userList1" :key="index" class="eachOne">
 					<view :id="JSON.stringify({userId:item.id,roleId:1})" @click="changeUserRole">
 						<uni-card 
-							:title="item.nickName" 
+							:title="item.trueName" 
 							:thumbnail="item.avatarUrl" 
 						>
+						<view class="info">
+							<text>国家:{{item.country}}</text>
+							<text>城市:{{item.province}}</text>
+						</view>
 						</uni-card> 
 					</view>
 				</view>
@@ -20,10 +24,14 @@
 				<view v-for="(item,index) in userList2" :key="index" class="eachOne">
 				 <view :id="JSON.stringify({userId:item.id,roleId:2})" @click="changeUserRole">
 					<uni-card 
-						:title="item.nickName" 
+						:title="item.trueName" 
 						:thumbnail="item.avatarUrl" 
 					>
-						
+						<view class="info">
+							<text>国家:{{item.country}}</text>
+							<text>城市:{{item.province}}</text>
+							<text>专业:{{item.departmentName}}</text>
+						</view>
 					</uni-card>
 				 </view>
 				</view>
@@ -34,10 +42,13 @@
 				<view v-for="(item,index) in userList3" :key="index" class="eachOne">
 				  <view :id="JSON.stringify({userId:item.id,roleId:3})" @click="changeUserRole">
 					<uni-card 
-						:title="item.nickName" 
+						:title="item.trueName" 
 						:thumbnail="item.avatarUrl" 
 					>
-					  	
+					  <view class="info">
+					  	<text>国家:{{item.country}}</text>
+					  	<text>城市:{{item.province}}</text>
+					  </view>	
 					</uni-card>
 				   </view>	
 				</view>
@@ -51,7 +62,8 @@
 <script>
 	const login = require('../../static/utils/utils').Login;
 	const query = require('../../static/utils/utils').Query;
-	import uniCard from "@/components/uni-card/uni-card.vue"
+	import uniCard from "@/components/uni-card/uni-card.vue";
+	import {getAllDepartment} from '../../static/utils/api.js';
 	const Login = new login();
 	const Query = new query();
 	var _this;
@@ -62,15 +74,18 @@
 					userInfo:" ",
 					projectId:" ",      //所在的项目的id
 					userList1:[],       //项目负责人
-					userList2:[],       //2全新用户表
+					userList2:[],       //2权限用户表
 					userList3:[],       //3权限用户表
 					roleId:"" ,         //用户的权限  1权限获取本项目的所有的工程师和Boss 0权限没有这个功能不用考虑
 					
 					allUserProjectRole:[],   //存放着获取到的所有的用户项目权限信息
+					
+					allDepartmentInfo:[]     //存放着所有专业的信息
 				}
 			},
 			onShow(){
 				_this = this;
+				_this.getAllDepartment();     //获取所有专业
 				uni.getStorage({
 					key:"userInfo",
 					success:(res)=>{
@@ -79,9 +94,8 @@
 						}
 						Query.findUser(id)
 						.then(data=>{
-							//console.log(data)
-							   _this.userInfo = data.data;
-						       let isRoot;
+							   console.log(data)
+							   _this.userInfo = data.data.records[0];
 							   uni.getStorage({
 							  	 	key:"nowInProject",
 							  	 	success:(res)=>{
@@ -112,12 +126,13 @@
 						   let userList1 = [];
 						   let userList2 = [];
 						   let userList3 = [];
+						   let item;       //中间量
 						   allUser.forEach((item,index)=>{
 							  switch (item.roleId){
 							  	case 1:
 									Query.findUser({id:item.userId})
 									.then(data=>{
-										userList1.push(data.data.records[0]);
+									  userList1.push(data.data.records[0])	
 									})
 									.catch(error=>{
 										uni.showToast({
@@ -130,7 +145,17 @@
 								case 2:
 									Query.findUser({id:item.userId})
 									.then(data=>{
-										userList2.push(data.data.records[0]);
+										item = data.data.records[0];
+										return Query.findUserProjectDepartmentByUserIdAndProjectId(data.data.records[0].id,_this.projectId)
+									})
+									.then(data=>{
+									  let departmentId = data.data.records[0].departmentId;
+									  for(var i = 0;i<_this.allDepartmentInfo.length;i++){
+										  if(_this.allDepartmentInfo[i].id===departmentId){
+											  item.departmentName = _this.allDepartmentInfo[i].name
+										  }
+									  }
+									  userList2.push(item);
 									})
 									.catch(error=>{
 										uni.showToast({
@@ -177,12 +202,58 @@
 								 }
 							 }
 						 }
-						 //console.log("跳转页面传递的参数",roleAndUserId)
-						 uni.navigateTo({
-							url:`../changeUserRole/changeUserRole?userId=${roleAndUserId.userId}&roleId=${roleAndUserId.roleId}&id=${roleAndUserId.id}`
-						}) 
+						 if(roleAndUserId.roleId===2){
+							 uni.showModal({
+							 	title:"提醒",
+								content:"项目启动并且冲刺开始后请勿修改用户的专业和权限不然会造成数据紊乱后果自理",
+								confirmText:"同意",
+								confirmColor:"#19BE6B",
+								cancelText:"不同意",
+								cancelColor:"#DD524D",
+								success:(res)=>{
+									if(res.confirm){
+									   uni.navigateTo({
+									  	url:`../changeUserRole/changeUserRole?userId=${roleAndUserId.userId}&roleId=${roleAndUserId.roleId}&id=${roleAndUserId.id}`
+									  }) 
+									}else if(res.cancel){
+										
+									}
+								}
+							 })
+						 }else{
+							 uni.navigateTo({
+								url:`../changeUserRole/changeUserRole?userId=${roleAndUserId.userId}&roleId=${roleAndUserId.roleId}&id=${roleAndUserId.id}`
+							})  
+						 }
 					 }
-				 }
+				 },
+				 
+				 
+				 //获取所有的专业
+				 getAllDepartment:function(){
+					 _this = this;
+					 uni.showLoading({
+					 	title:'获取中',
+						 success:()=>{
+							 uni.request({
+							 	url:getAllDepartment,
+								method:"GET"
+							 })
+							 .then(data=>{
+								 console.log("获取到的所有的专业",data)
+								 uni.hideLoading();
+								 _this.allDepartmentInfo = data[1].data.data;
+							 })
+							 .catch(Error=>{
+								uni.showToast({
+									title:"网络错误",
+									duration:500,
+									icon:"loading"
+								})
+							 })
+						  }
+					   })
+				   }
 				
 			  }
 			}
@@ -193,11 +264,16 @@
 	width: 100%;
 	height: auto;
 	overflow: scroll;
-	background-color: #007AFF;
 }
 ::-webkit-scrollbar{
 	width: 2px;
 	height: 6px;
+}
+.userDetail{
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
 }
 #title{
 	font-size:35upx;
@@ -206,18 +282,20 @@
 	text-align: left;
 	height: 50upx;
 	line-height: 50upx;
-	background-color: #F5A623;
+	background-color: #5585BC;
 	margin-top: 10upx;
 }
-.userDetail{
-	height: auto;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-}
 .eachOne{
-	height: 100upx;
 	width: 100%;
 	margin-top:10upx;
+}
+.info{
+	display:flex;
+	flex-direction: column;
+}
+.info text{
+	font-size: 30upx;
+	margin-top: 10upx;
+	margin-left: 5upx;
 }
 </style>

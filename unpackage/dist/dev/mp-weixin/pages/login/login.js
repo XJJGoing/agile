@@ -187,8 +187,8 @@ var login = __webpack_require__(/*! ../../static/utils/utils.js */ 10).Login;var
             return Login.getOpenId(data);
           }).
           then(function (data) {
-            openId = data.data.openid;
-            sessionKey = data.data.session_key;
+            openId = JSON.parse(data.data.data).openid;
+            sessionKey = JSON.parse(data.data.data).session_key;
             return Login.getUserInfo();
           }).
           then(function (data) {
@@ -198,20 +198,24 @@ var login = __webpack_require__(/*! ../../static/utils/utils.js */ 10).Login;var
               sessionKey: sessionKey,
               trueName: trueName });
 
-            //console.log("发送到服务器的信息",userInfo)  
             return Login.insertUser(userInfo, _api.register, "POST");
           }).
           then(function (data) {
             uni.hideLoading();
-            console.log("返回的用户的信息", data.data);
-            // console.log(userInfo)
+            console.log("返回的用户的信息", data);
             uni.setStorage({
               key: 'userInfo',
               data: data.data,
               success: function success() {
-                uni.redirectTo({
-                  url: '../apply/apply' });
+                if (data.data.isRoot) {//为超级用户直接跳转people
+                  uni.redirectTo({
+                    url: "../people/people" });
 
+                } else {
+                  uni.redirectTo({
+                    url: '../apply/apply' });
+
+                }
               },
               fail: function fail() {
                 uni.showToast({

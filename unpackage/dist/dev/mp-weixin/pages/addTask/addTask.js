@@ -153,6 +153,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+var _time = __webpack_require__(/*! ../../static/utils/time.js */ 9);
+
+
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ 8); //
 //
 //
@@ -194,13 +201,17 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ 8); //
 //
 //
 //
-var login = __webpack_require__(/*! ../../static/utils/utils */ 10).Login;var query = __webpack_require__(/*! ../../static/utils/utils */ 10).Query;var Login = new login();var Query = new query(); //引入api
-var _this;var _default = { data: function data() {return { inputWidth: "", //输入框的长度
+//
+//
+//
+//
+//
+var login = __webpack_require__(/*! ../../static/utils/utils */ 10).Login;var query = __webpack_require__(/*! ../../static/utils/utils */ 10).Query;var Login = new login();var Query = new query();var _this;var _default = { data: function data() {return { inputWidth: "", //输入框的长度
       userInfo: "", projectId: "", //项目的id
       departmentId: "", //专业的id
       taskExcuteUserId: "", //执行人的id默认为该用户的id
       taskChargeUserId: "", //该项目的负责人的id,默认为该项目的权限1的用户的id
-      sprintId: "", //冲刺的id
+      sprintId: true, //冲刺的id
       workNote: "", //任务的备注信息
       taskChargeUserName: "", //该项目的负责人的名字
       taskPriority: "", //项目的优先级（1、2、3、4）;
@@ -208,13 +219,16 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
       taskOrder: "", //任务的序号，默认为真实姓名的第一个字母开头,自动获取排序号
       taskName: "", //任务的内容
       departmentName: "", //专业的名称
+      openId: "", //项目负责人的openId
+      projectName: "", //项目的名称
       priority: [1, 2, 3, 4], //优先级实现可以改变
       index: "" //选择优先级的下标
     };}, onLoad: function onLoad() {this.getSystem();}, onShow: function onShow() {_this = this;uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {//console.log(data.data.records[0]);
           _this.userInfo = data.data.records[0];_this.taskExcuteUserId = _this.userInfo.id; //_this.taskChargeUserName = _this.userInfo.trueName;
           uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId; //设置项目的id
               uni.getStorage({ key: "sprintId", success: function success(res) {_this.sprintId = res.data; //设置冲刺
-                  _this.getChargeUserId();_this.getDepartmentId();}, fail: function fail() {console.log("暂时无冲刺相关的信息");} });},
+                  if (!_this.sprintId) {//没有冲刺  则显示暂无冲刺信息
+                    _this.sprintId = "";} else {_this.getChargeUserId();_this.getDepartmentId();_this.findProjectNameByProjectId();}}, fail: function fail() {_this.sprintId = "";} });},
             fail: function fail() {
               uni.redirectTo({
                 url: '../apply/apply' });
@@ -252,10 +266,8 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
           Query.findUserProjectRoleByRoleAndProject(1, _this.projectId).
           then(function (data) {
             uni.hideLoading();
-            console.log(data);
             console.log("查询到的项目负责人的关系", data.data.records[0]);
             _this.taskChargeUserId = data.data.records[0].userId;
-
             _this.getChargeUserTrueName();
           }).
           catch(function (Error) {
@@ -284,6 +296,7 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
             //console.log(data)
             console.log("查询到的项目负责人的真实姓名", data.data.records[0].trueName);
             _this.taskChargeUserName = data.data.records[0].trueName;
+            _this.openId = data.data.records[0].openId;
           }).
           catch(function (Error) {
             uni.showToast({
@@ -303,12 +316,14 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
         success: function success() {
           Query.findUserProjectDepartmentByUserIdAndProjectId(_this.userInfo.id, _this.projectId).
           then(function (data) {
+            console.log(data);
             uni.hideLoading();
             console.log("查询到的departmentId", data.data.records[0].departmentId);
             _this.departmentId = data.data.records[0].departmentId;
-            _this.getDepartmentName();
+            _this.getDepartmentName(data.data.records[0].departmentId);
           }).
           catch(function (error) {
+            console.log(error);
             uni.showToast({
               title: "网络错误",
               icon: "loading",
@@ -320,7 +335,7 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
     },
 
     //根据专业的id去查询专业的name
-    getDepartmentName: function getDepartmentName() {
+    getDepartmentName: function getDepartmentName(departmentId) {
       _this = this;
       uni.showLoading({
         title: "获取中",
@@ -329,7 +344,7 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
             url: _api.departmentQuery,
             method: "POST",
             data: {
-              id: _this.departmentId },
+              id: departmentId },
 
             dataType: 'json' }).
 
@@ -340,10 +355,39 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
             _this.departmentName = data[1].data.data.records[0].name;
           }).
           catch(function (Error) {
+            console.log(Error);
             uni.showToast({
               title: "网络错误",
               duration: 1000,
               icon: 'loading' });
+
+          });
+        } });
+
+    },
+
+    //根据项目的id去获取projectName
+    findProjectNameByProjectId: function findProjectNameByProjectId() {
+      uni.showLoading({
+        title: "获取中",
+        success: function success() {
+          uni.request({
+            url: _api.projectQuery,
+            data: {
+              id: _this.projectId },
+
+            method: "POST",
+            dataType: 'json' }).
+
+          then(function (data) {
+            console.log("查询到的项目信息", data);
+            _this.projectName = data[1].data.data.records[0].projectName;
+          }).
+          catch(function (Error) {
+            uni.showToast({
+              title: "网络错误",
+              duration: 500,
+              icon: "loading" });
 
           });
         } });
@@ -361,6 +405,14 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
     //根据查找到任务的总数进行统计,然后将统计的个数+1
     getNowHadTaskOrder: function getNowHadTaskOrder(callback) {
       _this = this;
+      console.log("查询条件", {
+        taskExcuteUserId: _this.userInfo.id,
+        taskSprint: _this.sprintId,
+        projectId: _this.projectId,
+        departmentId: _this.departmentId,
+        pageNum: 0,
+        pageSize: 1000 });
+
       uni.showLoading({
         title: "获取中",
         success: function success() {
@@ -371,7 +423,9 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
               taskExcuteUserId: _this.userInfo.id,
               taskSprint: _this.sprintId,
               projectId: _this.projectId,
-              departmentId: _this.departmentId },
+              departmentId: _this.departmentId,
+              pageNum: 0,
+              pageSize: 1000 },
 
             dataType: 'json' }).
 
@@ -431,11 +485,21 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
 
     //输入预估工时
     inputTaskPredictTime: function inputTaskPredictTime(e) {
-      this.taskPredictTime = e.detail.value;
+      var taskPredictTime = e.detail.value;
+      var reg = /^[0-9]$/g;
+      if (reg.test(taskPredictTime)) {
+        this.taskPredictTime = e.detail.value;
+      } else {
+        uni.showToast({
+          title: '请输入数字',
+          duration: 500,
+          icon: "none" });
+
+      }
     },
 
     //添加任务提交的函数
-    submitAddTask: function submitAddTask() {
+    submitAddTask: function submitAddTask(e) {
       _this = this;
       //信息不为空的时候进行提交
       var data = {
@@ -457,7 +521,7 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
       _this.taskChargeUserId && _this.sprintId &&
       _this.taskChargeUserName && _this.taskPriority &&
       _this.taskPredictTime && _this.taskOrder &&
-      _this.taskName)
+      _this.taskName && _this.departmentName)
       {
         uni.showLoading({
           title: '提交中',
@@ -479,13 +543,15 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
                 "taskPlainId": "",
                 "taskPredictTime": _this.taskPredictTime,
                 "taskPriority": _this.taskPriority,
-                "taskState": 0 },
+                "taskState": 0,
+                "lastChangeStr": _this.taskPredictTime },
 
               dataType: 'json' }).
 
             then(function (data) {
               uni.hideLoading();
               console.log("提交任务成功", data);
+              _this.pushAddMessagePush();
             }).
             catch(function (Error) {
               uni.showToast({
@@ -504,6 +570,63 @@ var _this;var _default = { data: function data() {return { inputWidth: "", //输
           icon: "none" });
 
       }
+    },
+
+    //添加任务增加微信消息推送
+    pushAddMessagePush: function pushAddMessagePush(formId) {
+      _this = this;
+      console.log("项目负责人的openId", _this.openId);
+      console.log("formId", formId);
+      var applyTime = (0, _time.formatDate)(new Date());
+      uni.showLoading({
+        title: "提交提交中",
+        success: function success() {
+          uni.request({
+            url: _api.messageSend,
+            method: "POST",
+            data: {
+              "touser": _this.openId, //目标用户
+              "template_id": "Paifa1aKUvziS35PwSX4L8XWX-aVMamivXDW5c9XOzc", //模板id
+              "page": "pages/reviewTask/reviewTask",
+              "form_id": "", //后台寻找这个目标用户的formId
+              "data": {
+                "keyword1": {
+                  "value": _this.userInfo.trueName },
+
+                "keyword2": {
+                  "value": _this.projectName },
+
+                "keyword3": {
+                  "value": _this.departmentName },
+
+                "keyword4": {
+                  "value": "新增" + _this.taskName },
+
+                "keyword5": {
+                  "value": applyTime },
+
+                "emphasis_keyword": "keyword1.DATA" } } }).
+
+
+
+          then(function (data) {
+            uni.hideLoading();
+            uni.showToast({
+              title: "提交成功",
+              icon: "../../static/img/Icon/success.png",
+              duration: 500 });
+
+            console.log("消息推送成功", data);
+          }).
+          catch(function (Error) {
+            uni.showToast({
+              title: "网络错误",
+              icon: "loading",
+              duration: 500 });
+
+          });
+        } });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

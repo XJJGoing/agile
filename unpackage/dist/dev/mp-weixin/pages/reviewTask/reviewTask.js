@@ -101,14 +101,18 @@ var _this;var _default =
   components: { uniCard: uniCard },
   data: function data() {
     return {
+      height: "",
       userInfo: "",
       projectId: "", //项目的id
       sprintId: "", //冲刺的id
-      noReviewTaskList: [] //待审核的任务     
-    };
+      noReviewTaskList: [], //待审核的任务     
+      pageNum: 0, //页数
+      pageSize: 5 };
+
   },
   onShow: function onShow() {
     _this = this;
+    _this.getSystem();
     uni.getStorage({
       key: "userInfo",
       success: function success(res) {
@@ -161,9 +165,23 @@ var _this;var _default =
       } });
 
   },
+  onPullDownRefresh: function onPullDownRefresh() {
+    _this = this;
+    _this.getAllNoReview();
+  },
   methods: {
 
-    //查询为未审核的项目  等待完善等着接口的api
+    getSystem: function getSystem() {
+      _this = this;
+      uni.getSystemInfo({
+        success: function success(res) {
+          _this.height = res.windowHeight;
+          console.log(_this.height);
+        } });
+
+    },
+
+    //查询为未审核的任务  
     getAllNoReview: function getAllNoReview() {
       _this = this;
       uni.showLoading({
@@ -176,7 +194,9 @@ var _this;var _default =
             data: {
               projectId: _this.projectId,
               sprintId: _this.sprintId,
-              isReview: 0 },
+              isReview: 0,
+              pageNum: _this.pageNum,
+              pageSize: _this.pageSize },
 
             dataType: 'json' }).
 
@@ -208,44 +228,70 @@ var _this;var _default =
         cancelColor: "#DD524D",
         success: function success(res) {
           if (res.confirm) {
-            var content = "".concat(task.taskOrder, "\u5BA1\u6838\u5DF2\u901A\u8FC7");
-            uni.showLoading({
-              title: "提交中",
-              success: function success() {
-                uni.request({
-                  url: _api.taskUpdateBatch,
-                  method: "POST",
-                  data: [{
-                    "id": task.id,
-                    "isReview": 1 }],
+            uni.showModal({
+              title: '是否确定？',
+              confirmText: "确定",
+              cancelText: "取消",
+              confirmColor: "#19BE6B",
+              cancelColor: "#DD524D",
+              success: function success(res) {
+                if (res.confirm) {
+                  var content = "".concat(task.taskOrder, "\u5BA1\u6838\u5DF2\u901A\u8FC7");
+                  uni.showLoading({
+                    title: "提交中",
+                    success: function success() {
+                      uni.request({
+                        url: _api.taskUpdateBatch,
+                        method: "POST",
+                        data: [{
+                          "id": task.id,
+                          "isReview": 1 }],
 
-                  dataType: 'json' }).
+                        dataType: 'json' }).
 
-                then(function (data) {
-                  uni.hideLoading();
-                  console.log("审核成功", data);
-                  _this.getAllNoReview(); //重新获取未审核的任务
-                }).
-                catch(function (Error) {
-                  uni.showToast({
-                    title: "网络错误",
-                    duration: 500,
-                    icon: "none" });
+                      then(function (data) {
+                        uni.hideLoading();
+                        console.log("审核成功", data);
+                        _this.getAllNoReview(); //重新获取未审核的任务
+                      }).
+                      catch(function (Error) {
+                        uni.showToast({
+                          title: "网络错误",
+                          duration: 500,
+                          icon: "none" });
 
-                });
+                      });
+                    } });
+
+
+                  //同时也增加消息.
+                  _this.addMessage(task, content);
+                } else {
+
+                }
               } });
 
 
-            //同时也增加消息.
-            _this.addMessage(task, content);
-
           } else if (res.cancel) {//审核不通过向消息模块增加消息
-            var _content = "".concat(task.taskOrder, "\u5BA1\u6838\u672A\u901A\u8FC7");
+            uni.showModal({
+              title: "是否确定？",
+              confirmText: "确定",
+              cancelText: "取消",
+              confirmColor: "#19BE6B",
+              cancelColor: "#DD524D",
+              success: function success(res) {
+                if (res.confirm) {
+                  var content = "".concat(task.taskOrder, "\u5BA1\u6838\u672A\u901A\u8FC7");
 
-            //发送消息并且删除该任务,并且重新获取任务
-            _this.addMessage(task, _content);
-            _this.deteleTask(task.id);
-            _this.getAllNoReview();
+                  //发送消息并且删除该任务,并且重新获取任务
+                  _this.addMessage(task, content);
+                  _this.deteleTask(task.id);
+                  _this.getAllNoReview();
+                } else {
+
+                }
+              } });
+
           }
         } });
 
@@ -308,6 +354,21 @@ var _this;var _default =
           });
         } });
 
+    },
+
+    //触底加载加载待审核的项目
+    loaderMore: function loaderMore() {
+      _this = this;
+      if (_this.pageSize > _this.noReviewTaskList.length) {
+        uni.showToast({
+          title: "已经到底了哦!",
+          icon: "none",
+          duration: 1000 });
+
+      } else {
+        _this.pageSize += 5;
+        _this.getAllNoReview();
+      }
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

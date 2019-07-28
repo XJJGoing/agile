@@ -1,0 +1,69 @@
+
+.all{
+	width: 100%;
+	height: auto;
+	overflow-y: scroll;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.title{
+	height: 80rpx;
+	background-color: #5087BF;
+	line-height: 80rpx;
+	width: 100%;
+	font-size: 30rpx;
+	font-weight: 600;
+}
+.all view{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	width: 100%;
+	height: 100rpx;
+	margin-top: 20rpx;
+}
+.all view text{
+	width: 20%;
+	height: 100rpx;
+	line-height: 100rpx;
+	font-size: 30rpx;
+	margin-left: 10rpx;
+	color: #F0F8FF;
+	font-weight: 600;
+}
+.all view input {
+	line-height: 100rpx;
+	height: 100rpx;
+	font-size: 30rpx;
+	margin-left: 10rpx;
+	color: #F0F8FF;
+}
+.all view picker{
+	line-height: 100rpx;
+	height: 100rpx;
+	color: #F0F8FF;
+	font-size: 30rpx;
+}
+.submintBtn{
+	margin-top: 60rpx;
+	height: 80rpx;
+	width: 60%;
+	line-height: 80rpx;
+	background-color: #5087BF;
+}
+
+
+

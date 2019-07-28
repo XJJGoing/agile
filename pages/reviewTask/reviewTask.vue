@@ -1,18 +1,18 @@
 <template>
-	<scroll-view class="all" scroll-y="true">
+	<scroll-view class="all" scroll-y="true" @scrolltolower="loaderMore" :style="{height:height+'px'}">
 		<view class="reviewList">
 			
 			<text id="title">待审核的任务:</text>
 			<view v-for="(item,index) in noReviewTaskList" :key="index" class="eachOneTask">
 				<uni-card  
-				    :title="'任务序号'+item.taskOrder" 
+				    :title="'任务序号 '+item.taskOrder" 
 				>
 				    <view class="Taskdetail" :id="JSON.stringify(item)" @click="examine">
-						<text>申请人ID:{{item.taskExecuteUserId}}</text>
+						<text>申请人:{{item.taskExecuteTrueName}}</text>
 						<text>内容:{{item.taskName}}</text>
 						<text>优先级:{{item.taskPriority}}</text>
 						<text>预估工时:{{item.taskPredictTime}}</text>
-						<text>专业ID:{{item.departmentId}}</text>
+						<text>专业:{{item.departmentName}}</text>
 						<text>提交申请时间:{{item.createTime}}</text>
 					</view>
 				</uni-card>
@@ -36,14 +36,18 @@
 			components: {uniCard},
 			data() {
 				return {
+					height:"",                  
 					userInfo:"",
 					projectId:"",            //项目的id
 				    sprintId:"",            //冲刺的id
 					noReviewTaskList:[],    //待审核的任务     
+					pageNum:0,              //页数
+					pageSize:5              
 				}
 			},
 			onShow(){
 				_this = this;
+				_this.getSystem();
 				uni.getStorage({
 					key:"userInfo", 
 					success:(res)=>{
@@ -96,9 +100,23 @@
 					}
 				})
 			},
+			onPullDownRefresh(){
+				_this = this;
+				_this.getAllNoReview();
+			},
 			methods: {
 				
-				//查询为未审核的项目  等待完善等着接口的api
+				getSystem:function(){
+					_this = this;
+					uni.getSystemInfo({
+						success:(res)=>{
+							_this.height = res.windowHeight;
+							console.log(_this.height)
+						}
+					})
+				},
+				
+				//查询为未审核的任务  
 				getAllNoReview:function(){
 					_this = this;
 					uni.showLoading({
@@ -111,7 +129,9 @@
 								data:{
 									projectId:_this.projectId,
                                     sprintId:_this.sprintId,
-									isReview:0
+									isReview:0,
+									pageNum:_this.pageNum,
+									pageSize:_this.pageSize
 								},
 								dataType:'json'
 							})
@@ -143,44 +163,70 @@
 						cancelColor:"#DD524D",
 						success:(res)=>{
 							if(res.confirm){
-								let content = `${task.taskOrder}审核已通过`
-								uni.showLoading({
-									title:"提交中",
-									success:()=>{
-										uni.request({
-											url:taskUpdateBatch,
-											method:"POST",
-											data:[{
-												    "id":task.id,
-													"isReview": 1,
-												  }],
-											dataType:'json'
-										})
-										.then(data=>{
-											uni.hideLoading()
-											console.log("审核成功",data);
-											_this.getAllNoReview();            //重新获取未审核的任务
-							 			})
-										.catch(Error=>{
-											uni.showToast({
-												title:"网络错误",
-												duration:500,
-												icon:"none"
+								uni.showModal({
+									title:'是否确定？',
+									confirmText:"确定",
+									cancelText:"取消",
+									confirmColor:"#19BE6B",
+									cancelColor:"#DD524D",
+									success:(res)=>{
+										if(res.confirm){
+											let content = `${task.taskOrder}审核已通过`
+											uni.showLoading({
+												title:"提交中",
+												success:()=>{
+													uni.request({
+														url:taskUpdateBatch,
+														method:"POST",
+														data:[{
+															    "id":task.id,
+																"isReview": 1,
+															  }],
+														dataType:'json'
+													})
+													.then(data=>{
+														uni.hideLoading()
+														console.log("审核成功",data);
+														_this.getAllNoReview();            //重新获取未审核的任务
+													})
+													.catch(Error=>{
+														uni.showToast({
+															title:"网络错误",
+															duration:500,
+															icon:"none"
+														})
+													})
+												}
 											})
-										})
+											
+											//同时也增加消息.
+											_this.addMessage(task,content)
+										}else{
+											
+										}
 									}
 								})
 								
-								//同时也增加消息.
-								_this.addMessage(task,content);
-								
 							}else if(res.cancel){ //审核不通过向消息模块增加消息
-							   let content = `${task.taskOrder}审核未通过`;
-							   
-							   //发送消息并且删除该任务,并且重新获取任务
-							   _this.addMessage(task,content);
-							   _this.deteleTask(task.id);
-							   _this.getAllNoReview();
+							   uni.showModal({
+									title:"是否确定？",
+									confirmText:"确定",
+									cancelText:"取消",
+									confirmColor:"#19BE6B",
+									cancelColor:"#DD524D",
+									success:(res)=>{
+										if(res.confirm){
+											let content = `${task.taskOrder}审核未通过`;
+											
+											//发送消息并且删除该任务,并且重新获取任务
+											_this.addMessage(task,content);
+											_this.deteleTask(task.id);
+											_this.getAllNoReview();
+										}else{
+											
+										}
+									}
+							   })
 							}
 						}
 					})
@@ -243,8 +289,23 @@
 							}) 
 						}
 				    })
+				},
+				
+				//触底加载加载待审核的项目
+				loaderMore:function(){
+					_this = this;
+					if(_this.pageSize>_this.noReviewTaskList.length){
+						uni.showToast({
+							title:"已经到底了哦!",
+							icon:"none",
+							duration:1000
+						})
+					}else{
+						_this.pageSize +=5;
+						_this.getAllNoReview()
+					}
 				}
-			},	
+			},
 			
 		}
 </script>
@@ -252,12 +313,11 @@
 <style>
 .class{
 	width: 100%;
-	height: auto;
 	overflow: scroll;
 }
 ::-webkit-scrollbar{
-	height: 6upx;
-	width: 2upx;
+	height: 4upx;
+	width: 4upx;
 }
 #title{ 
 	height: 70upx;

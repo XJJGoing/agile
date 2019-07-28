@@ -15,19 +15,23 @@
     "pages/addTask/addTask",
     "pages/changeUserRole/changeUserRole",
     "pages/auditedRoleApply/auditedRoleApply",
-    "pages/picture/picture"
+    "pages/picture/picture",
+    "pages/dateWork/dateWork",
+    "pages/about/about",
+    "pages/updateRedictTime/updateRedictTime"
   ],
   "subPackages": [],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#21242E",
+    "navigationBarBackgroundColor": "#05E0FC",
     "navigationBarTitleText": "JOYEA",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "color": "#B0C4DE",
     "selectedColor": "#F8F8FF",
-    "backgroundColor": "#2E3443",
+    "backgroundColor": "#05E0FC",
     "borderStyle": "white",
     "list": [
       {
@@ -51,6 +55,5 @@
     ]
   },
   "permission": {},
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

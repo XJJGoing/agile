@@ -152,22 +152,23 @@
 
 
 .all{
-	height: auto;
 	width: 100%;
 	overflow: scroll;
 }
 ::-webkit-scrollbar{
-	height: 6rpx;
-	width: 2rpx;
+	height: 4rpx;
+	width: 6rpx;
 }
 #title{
 	width: 100%;
 	height: 80rpx;
 	line-height: 80rpx;
 	font-size:30rpx;
-	background-color: #32FBF0;
+	font-weight: bold;
+	background-color: #6198C1;
 }
 .applyMessage{
+	width: 100%;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -197,7 +198,16 @@
     width: 100%;
 	font-size: 30rpx;
 	border-radius: 5%;
-	margin-top: 10rpx;
+	margin-top: 15rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
 }
 .task{
 	width: 100%;
@@ -214,7 +224,7 @@
 .taskMessage{
 	width: 100%;
 	height: 150rpx;
-	margin-top: 10rpx;
+	margin-top: 15rpx;
 }
 
 

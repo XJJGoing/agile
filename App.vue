@@ -26,10 +26,11 @@
 			  		  	if(new Date(Date.parse(allSprint[i].startTime))<=nowDateTime
 			  		  	&&nowDateTime<new Date(Date.parse(allSprint[i].endTime))){
 			  		  		sprintId = allSprint[i].id;
-			  		  	}	
+			  		  	}	 
 			  		  } 
-			  		  if(sprintId===""){ //如果实在都超过了时间段就默认进入最后一个
-			  			  sprintId = allSprint.pop().id;
+			  		  if(!sprintId){           //如果实在都超过了时间段就默认进入最后一个
+			  			   let len = allSprint.length-1;
+			  			   sprintId = allSprint[len].id;
 			  		  }
 			  		  uni.setStorage({
 			  		  	key:'sprintId', 
@@ -60,11 +61,11 @@
 				projectId:""        //项目的id
 			}
 		},
-		onLaunch: function() {
+		onShow: function() {
 			_this = this;
 			console.log("启动微信小程序")
 			
-			//当微信小程序一启动的时候就去判断用户有没有登录
+			//当微信小程序一启动的时候就去判断用户有没有登录,如果为超级用户就直接跳转people页面进行项目的审核
 			 //当微信小程序一启动的时候，就去storage中判断有没有nowInproject,
 			//而且判断里面roleid为3的时候，再去数据库中查找进而确定还能不能够访问。
 			//如果有项目和冲刺就进入时间段内sprintId
@@ -72,61 +73,81 @@
 			uni.getStorage({
 				key:'userInfo', 
 				success:(res1)=>{
-					 _this.userInfo = res1.data;
-						 uni.getStorage({
-						 	key:'nowInProject',
-							success:(res2)=>{
-							   	    if(res2.data.roleId===3)
-							        {     //不用判断等于四,这种设计不存在等于4权限的情况
-							   		Query.findUserProjectRole(_this.userInfo.id,res2.data.projectId)
-							   		.then(data=>{
-										console.log("获取到的用户的最新的权限",data)
-							   			if(data.data.roleId===4){
-							   				 uni.removeStorage({
-							   					 key:"nowInPorject",
-							   					 success:()=>{ 
-							   						 console.log("权限改变移除nowInProject")
-													 uni.redirectTo({
-													 	url: '/pages/apply/apply',
-													 });
-							   					 }
-							   				 })
-							   			}else{ 
-							   			      uni.setStorage({
-							   				  key:'nowInProject',
-							   				  data:data.data.records[0],
-							   				  success:()=>{
-												  
-												 //设置projectId并且进入冲刺
-		                                        _this.projectId = data.data.records[0].projectId;
-												enterSprint(_this.projectId);  
-												
-							   					uni.redirectTo({
-							   						url:'/pages/index/index'
-							   			        })
-							   		         }
-							   	          })
-							   		    }
-							   	    })		
-							    }
-							    else{
-								 //设置projectId并且进入冲刺
-								_this.projectId = res2.data.projectId;
-								enterSprint(_this.projectId);  
-									
-							   	uni.redirectTo({
-							   		url:'/pages/index/index'
-							   	  })
-							    }
+					let id = {
+						id:res1.data.id
+					}
+				    Query.findUser(id)
+ 					.then(data=>{
+						console.log("启动信息",data.data.records[0])
+                        if(data.data.records[0].isRoot){
+							uni.switchTab({
+								url:'/pages/people/people'
+							})
+						}else{
+							_this.userInfo = data.data.records[0]
+						     uni.getStorage({
+						    	key:'nowInProject',
+								success:(res2)=>{
+										if(res2.data.roleId===3)
+										{     //不用判断等于四,这种设计不存在等于4权限的情况
+										 Query.findUserProjectRole(_this.userInfo.id,res2.data.projectId)
+										 .then(data=>{
+											console.log("获取到的用户的最新的权限",data)
+											if(data.data.roleId===4){
+												 uni.removeStorage({
+													 key:"nowInPorject",
+													 success:()=>{ 
+														 console.log("权限改变移除nowInProject")
+														 uni.redirectTo({
+															url: '/pages/apply/apply',
+														 });
+													 }
+												 })
+											}else{ 
+												  uni.setStorage({
+												  key:'nowInProject',
+												  data:data.data.records[0],
+												  success:()=>{
+													  
+													 //设置projectId并且进入冲刺
+						                            _this.projectId = data.data.records[0].projectId;
+													enterSprint(_this.projectId);  
+													
+													uni.redirectTo({
+														url:'/pages/index/index'
+													})
+												 }
+											  })
+											}
+										})		
+									}
+									else{
+									 //设置projectId并且进入冲刺
+									_this.projectId = res2.data.projectId;
+									enterSprint(_this.projectId);  
+										
+									uni.redirectTo({
+										url:'/pages/index/index'
+									  })
+									}
 					        }, 
 							fail:()=>{  //没有直接跳
 								uni.redirectTo({
 									url:'/pages/apply/apply'
 								})
 							},
-						  })
-						},
-				   		fail:()=>{
+						     })	
+						} 						
+					})
+					.catch(Error=>{
+						   uni.showToast({
+							title:"网络错误",
+							duration:1000,
+							icon:"loading"
+						   })
+					  })
+					},
+				   	fail:()=>{
 				   			uni.redirectTo({
 				   				url:'/pages/login/login'
 				   			})
@@ -134,8 +155,8 @@
 				   	})
 		 },
 			
-		onShow: function() {
-			console.log('App Show')
+	    onLaunch:function(){
+			
 		},
 		
 		//退出该小程序的时候再次进行权限的判断，将信息保存到nowInProject 中,应付1权限用户将2权限用户改成3、4权限
@@ -182,4 +203,25 @@
 page{
 	background-color:  rgb(33, 36, 46);
 }
+::-webkit-scrollbar {
+  width: 6upx;
+  height: 4upx;
+  border-radius: 10upx;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 10upx rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6upx rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 10upx rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6upx rgba(0, 0, 0, 0.1);
+  background-color:#C8C7CC;
+}
+
 </style>
+ 

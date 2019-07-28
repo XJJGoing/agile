@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "uni-card": "/components/uni-card/uni-card"
+  }
 }

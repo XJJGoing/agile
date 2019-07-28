@@ -1,5 +1,5 @@
 <template>
-	<scroll-view scroll-y="true" class="all">
+	<scroll-view scroll-y="true" :style="{height:height+'px'}" class="all" @scrolltolower="loaderMore">
 		
 		<!--当为权限1的时候显示的是审核查看项目的人的选项-->
 		<block v-if="roleId===1">
@@ -12,31 +12,32 @@
 					   :id="JSON.stringify(item)"
 			    >
 					<uni-card 
-					    :title="item.trueName" 
-					    :extra="item.effectiveTime" 
+					    :title="'项目编号:'+item.projectName" 
+					    :note="'申请的时间 '+item.createTime" 
 					>
-					   <view>申请理由:</view>
-					   <view id="content">
-						   {{item.content}}
+					   <view id="content"> 
+					       <text>申请人:{{item.trueName}}</text>
+						   <text>申请理由:{{item.content}}</text>
 					   </view>
 					</uni-card>
 				</view>
 			</view>
 		</block>
 		
-		<!--当权限为2的时候显示的是审核通过的任务-->
+		<!--当权限为2的时候显示的是审核通过的任务--> 
 	    <block v-if="roleId===2">
 			<view class="task">
 				<text id="title">任务进度消息:</text>
 				<view class="taskMessage" v-for="(item,index) in myTaskMessage" :key="index">
 					<uni-card 
 						:title="item.content" 
-						:note="item.createTime" 
+						:note="'通过时间 '+item.createTime" 
 					>
 					</uni-card>
 				</view>
 			</view>
 		</block>
+		
 			
     </scroll-view>
 </template>
@@ -46,7 +47,7 @@
 	const query = require('../../static/utils/utils').Query;
 	
 	//引入查找申请记录的api
-	import {roleApplyQuery} from '../../static/utils/api.js';
+	import {roleApplyQuery,messageQuery} from '../../static/utils/api.js';
 	
 	//引入uni-card
 	import uniCard from "@/components/uni-card/uni-card.vue"
@@ -60,16 +61,20 @@
 		components: {uniNoticeBar},
 		data() {
 			return {
+				height:"",                //设置可见区域的高度
 				userInfo:" ",  
 				projectId:" ",
 				roleId:" ",
-				allNotAudited:[],     //存放所有的未审核的项目
+				allNotAudited:[],                    //存放所有的未审核的申请查看的项目
 				
 				myTaskMessage:[],                     //存放
+				pageSize:8                           ,//消息的分页查找的每次查找的大小，滚动条触底加载更多
+				pageNum:0                              //默认的页
 			}
 		},
 		onShow(){
 			_this = this;
+			_this.getSystem();
 			uni.getStorage({
 				key:"userInfo",
 				success:(res)=>{
@@ -83,7 +88,7 @@
 						   uni.getStorage({
 						  	 	key:"nowInProject",
 						  	 	success:(res)=>{
-						  	 		_this.projectId = res.data.projectId;
+						  	 		_this.projectId = res.data.projectId; 
 									_this.roleId = res.data.roleId;      //进行相关权限的获取
 									if(_this.roleId===1){                //当为1权限的时候，消息中心获取的是申请查看项目的信息 2权限的时候为审核通过和未通过的任务
 									  _this.getNotAuditedRole1();
@@ -99,11 +104,34 @@
 				}
 			})
 		},
+		onPullDownRefresh(){
+			_this = this;
+			if(_this.roleId===1){               
+			  _this.getNotAuditedRole1();
+			}else if(this.roleId===2){
+			  _this.getTaskMessage();          
+			}
+		},
 		methods: {	
 			
+         getSystem:function(){
+			 _this = this;
+			 uni.getSystemInfo({
+			 	success:(res)=>{
+					_this.height = res.windowHeight;
+				}
+			 })
+		 },	
+			
+		 //onPullDownRefresh
+	     reRresh:function(){
+			 this.onShow();
+		 },
+		 
 		 //当进入这个消息中心的为项目的负责人的时候根据projectId和state为0去查找
 		 getNotAuditedRole1:function(){
 			 _this = this;
+			 console.log('本项目',_this.projectId)
 			 uni.showLoading({
 			 	title:'获取中',
 				success:()=>{
@@ -112,13 +140,16 @@
 					method:"POST",
 					data:{
 					  projectId:_this.projectId,
-					  state:0
+					  state:0,
+					  pageNum:_this.pageNum,
+					  pageSize:_this.pageSize
 					 },
 					 dataType:'json'
-					})
+					}) 
 					.then(data=>{
+					 console.log("获取到的数据",data)
 					  uni.hideLoading();
-					  _this.allNotAudited = data[1].data.data.records;
+					  _this.allNotAudited = data[1].data.data.records.reverse();
 					})
 					.catch(error=>{
 					  uni.hideLoading();
@@ -142,50 +173,68 @@
 		},
 		
 		 //当进入这个消息中心的为工程师的时候内容显示为任务审核的部分
-		 
-		 
-		//进行查找消息，即工程师的添加的任务的审核的状态的提醒。	 待完善
+		//进行查找消息，即工程师的添加的任务的审核的状态的提醒。
 	    getTaskMessage:function(){
 			_this = this;
-			//目前这样运用假数据去处理现实
-			let data = [{
-				 content:"Z1任务审核已经通过",
-				 createTime:"2019-1xxxxxxxx",
-			},{
-				 content:"Z2任务审核未通过",
-			     createTime:"2019-1xxxxxxxx",
-			},{
-				 content:"Z3任务审核已经通过",
-				 createTime:"2019-1xxxxxxxx",
-			}]
-			_this.myTaskMessage = data;
-			
-			//下方为正确的代码
-			// uni.showLoading({
-			// 	title:'查找中',
-			// 	success:()=>{
-			// 		uni.request({
-			// 			url:xxxx,
-			// 			method:"POST",
-			// 			data:{
-			// 				messageTo:_this.userInfo.id,
-			// 				isLook:1
-			// 			},
-			// 			dataType:json;
-			// 		})
-			// 		.then(data=>{
-			// 			console.log('查找成功',data[1].data.data.records);
-			// 		})
-			// 		.catch(Error=>{
-			// 			uni.showToast({
-			// 				title:"查找失败",
-			// 				icon:"none",
-			// 				duration:1000
-			// 			})
-			// 		})
-			// 	}
-			// })	
-		 }	 
+			uni.showLoading({
+				title:'查找中',
+				success:()=>{
+					uni.request({
+						url:messageQuery,
+						method:"POST",
+						data:{
+							messageTo:_this.userInfo.id,
+							isLook:1,
+							pageNum:_this.pageNum,
+							pageSize:_this.pageSize
+						},
+						dataType:'json' 
+					})
+					.then(data=>{
+						uni.hideLoading()
+					    console.log(data)
+						console.log('查找成功',data[1].data.data.records);
+						_this.myTaskMessage = data[1].data.data.records.reverse();
+						
+					})
+					.catch(Error=>{
+						uni.showToast({
+							title:"查找失败",
+							icon:"none",
+							duration:1000
+						})
+					})
+				}
+			})	
+		 },
+			  
+		//滚动条触底加载更多的消息
+		loaderMore:function(){
+			_this = this;
+			if(_this.roleId===1){
+			  if(_this.pageSize>_this.allNotAudited.length){
+			  	uni.showToast({
+			  		title:"已经到底了哦!",
+			  		duration:1000,
+			  		icon:"none"
+			  	})
+			  }else{
+			    _this.pageSize += 8;
+			    _this.getNotAuditedRole1();	
+			  }	
+			} else if(_this.roleId===2){
+			  if(_this.pageSize>_this.myTaskMessage.length){
+			  	uni.showToast({
+			  		title:"已经到底了哦!",
+			  		duration:1000,
+			  		icon:"none"
+			  	})
+			  }else{
+			    _this.pageSize += 8;
+			    _this.getTaskMessage();	
+			  }	
+			}
+		 }
 		
 		}
 	}
@@ -193,22 +242,23 @@
 
 <style>
 .all{
-	height: auto;
 	width: 100%;
 	overflow: scroll;
 }
 ::-webkit-scrollbar{
-	height: 6upx;
-	width: 2upx;
+	height: 4upx;
+	width: 6upx;
 }
 #title{
 	width: 100%;
 	height: 80upx;
 	line-height: 80upx;
 	font-size:30upx;
-	background-color: #32FBF0;
+	font-weight: bold;
+	background-color: #6198C1;
 }
 .applyMessage{
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 }
@@ -226,7 +276,9 @@
     width: 100%;
 	font-size: 30upx;
 	border-radius: 5%;
-	margin-top: 10upx;
+	margin-top: 15upx;
+	display: flex;
+	flex-direction: column;
 }
 
 .task{
@@ -237,7 +289,7 @@
 .taskMessage{
 	width: 100%;
 	height: 150upx;
-	margin-top: 10upx;
+	margin-top: 15upx;
 }
 
 </style>

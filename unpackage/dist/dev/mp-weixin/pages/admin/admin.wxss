@@ -3,21 +3,10 @@
 	width: 100%;
 	height: auto;
 	overflow: scroll;
-	background-color: #007AFF;
 }
 ::-webkit-scrollbar{
 	width: 2px;
 	height: 6px;
-}
-#title{
-	font-size:35rpx;
-	color: #F9FAF0;
-	width: 100%;
-	text-align: left;
-	height: 50rpx;
-	line-height: 50rpx;
-	background-color: #F5A623;
-	margin-top: 10rpx;
 }
 .userDetail{
 	height: auto;
@@ -35,9 +24,34 @@
 	    -ms-flex-pack: start;
 	        justify-content: flex-start;
 }
+#title{
+	font-size:35rpx;
+	color: #F9FAF0;
+	width: 100%;
+	text-align: left;
+	height: 50rpx;
+	line-height: 50rpx;
+	background-color: #5585BC;
+	margin-top: 10rpx;
+}
 .eachOne{
-	height: 100rpx;
 	width: 100%;
 	margin-top:10rpx;
+}
+.info{
+	display:-webkit-box;
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.info text{
+	font-size: 30rpx;
+	margin-top: 10rpx;
+	margin-left: 5rpx;
 }
 

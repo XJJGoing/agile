@@ -169,6 +169,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ 8);
 
 
@@ -216,17 +217,44 @@ var _uniNoticeBar = _interopRequireDefault(__webpack_require__(/*! @/components/
 //
 //
 //
+//
 var login = __webpack_require__(/*! ../../static/utils/utils */ 10).Login;var query = __webpack_require__(/*! ../../static/utils/utils */ 10).Query; //引入查找申请记录的api
-var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ 168));};var Login = new login();var Query = new query();var _this;var _default = (_components$component = { components: { uniCard: uniCard } }, _defineProperty(_components$component, "components", { uniNoticeBar: _uniNoticeBar.default }), _defineProperty(_components$component, "data", function data() {return { userInfo: " ", projectId: " ", roleId: " ", allNotAudited: [], //存放所有的未审核的项目
-    myTaskMessage: [] //存放
-  };}), _defineProperty(_components$component, "onShow", function onShow() {var _this2 = this;_this = this;uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {// console.log("查询到的用户的信息",data)
+var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ 168));};var Login = new login();var Query = new query();var _this;var _default = (_components$component = { components: { uniCard: uniCard } }, _defineProperty(_components$component, "components", { uniNoticeBar: _uniNoticeBar.default }), _defineProperty(_components$component, "data", function data() {return { height: "", //设置可见区域的高度
+    userInfo: " ", projectId: " ", roleId: " ", allNotAudited: [], //存放所有的未审核的申请查看的项目
+    myTaskMessage: [], //存放
+    pageSize: 8, //消息的分页查找的每次查找的大小，滚动条触底加载更多
+    pageNum: 0 //默认的页
+  };}), _defineProperty(_components$component, "onShow", function onShow() {var _this2 = this;_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {// console.log("查询到的用户的信息",data)
         _this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId = res.data.roleId; //进行相关权限的获取
             if (_this.roleId === 1) {//当为1权限的时候，消息中心获取的是申请查看项目的信息 2权限的时候为审核通过和未通过的任务
               _this.getNotAuditedRole1();} else if (_this2.roleId === 2) {_this.getTaskMessage(); //获取任务审核状态的消息	
-            }} });});}, fail: function fail() {url: '../login/login';} });}), _defineProperty(_components$component, "methods", {
+            }} });});}, fail: function fail() {url: '../login/login';} });}), _defineProperty(_components$component, "onPullDownRefresh", function onPullDownRefresh() {_this = this;
+  if (_this.roleId === 1) {
+    _this.getNotAuditedRole1();
+  } else if (this.roleId === 2) {
+    _this.getTaskMessage();
+  }
+}), _defineProperty(_components$component, "methods",
+{
+
+  getSystem: function getSystem() {
+    _this = this;
+    uni.getSystemInfo({
+      success: function success(res) {
+        _this.height = res.windowHeight;
+      } });
+
+  },
+
+  //onPullDownRefresh
+  reRresh: function reRresh() {
+    this.onShow();
+  },
+
   //当进入这个消息中心的为项目的负责人的时候根据projectId和state为0去查找
   getNotAuditedRole1: function getNotAuditedRole1() {
     _this = this;
+    console.log('本项目', _this.projectId);
     uni.showLoading({
       title: '获取中',
       success: function success() {
@@ -235,13 +263,16 @@ var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | co
           method: "POST",
           data: {
             projectId: _this.projectId,
-            state: 0 },
+            state: 0,
+            pageNum: _this.pageNum,
+            pageSize: _this.pageSize },
 
           dataType: 'json' }).
 
         then(function (data) {
+          console.log("获取到的数据", data);
           uni.hideLoading();
-          _this.allNotAudited = data[1].data.data.records;
+          _this.allNotAudited = data[1].data.data.records.reverse();
         }).
         catch(function (error) {
           uni.hideLoading();
@@ -265,49 +296,67 @@ var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | co
   },
 
   //当进入这个消息中心的为工程师的时候内容显示为任务审核的部分
-
-
-  //进行查找消息，即工程师的添加的任务的审核的状态的提醒。	 待完善
+  //进行查找消息，即工程师的添加的任务的审核的状态的提醒。
   getTaskMessage: function getTaskMessage() {
     _this = this;
-    //目前这样运用假数据去处理现实
-    var data = [{
-      content: "Z1任务审核已经通过",
-      createTime: "2019-1xxxxxxxx" },
-    {
-      content: "Z2任务审核未通过",
-      createTime: "2019-1xxxxxxxx" },
-    {
-      content: "Z3任务审核已经通过",
-      createTime: "2019-1xxxxxxxx" }];
+    uni.showLoading({
+      title: '查找中',
+      success: function success() {
+        uni.request({
+          url: _api.messageQuery,
+          method: "POST",
+          data: {
+            messageTo: _this.userInfo.id,
+            isLook: 1,
+            pageNum: _this.pageNum,
+            pageSize: _this.pageSize },
 
-    _this.myTaskMessage = data;
+          dataType: 'json' }).
 
-    //下方为正确的代码
-    // uni.showLoading({
-    // 	title:'查找中',
-    // 	success:()=>{
-    // 		uni.request({
-    // 			url:xxxx,
-    // 			method:"POST",
-    // 			data:{
-    // 				messageTo:_this.userInfo.id,
-    // 				isLook:1
-    // 			},
-    // 			dataType:json;
-    // 		})
-    // 		.then(data=>{
-    // 			console.log('查找成功',data[1].data.data.records);
-    // 		})
-    // 		.catch(Error=>{
-    // 			uni.showToast({
-    // 				title:"查找失败",
-    // 				icon:"none",
-    // 				duration:1000
-    // 			})
-    // 		})
-    // 	}
-    // })	
+        then(function (data) {
+          uni.hideLoading();
+          console.log(data);
+          console.log('查找成功', data[1].data.data.records);
+          _this.myTaskMessage = data[1].data.data.records.reverse();
+
+        }).
+        catch(function (Error) {
+          uni.showToast({
+            title: "查找失败",
+            icon: "none",
+            duration: 1000 });
+
+        });
+      } });
+
+  },
+
+  //滚动条触底加载更多的消息
+  loaderMore: function loaderMore() {
+    _this = this;
+    if (_this.roleId === 1) {
+      if (_this.pageSize > _this.allNotAudited.length) {
+        uni.showToast({
+          title: "已经到底了哦!",
+          duration: 1000,
+          icon: "none" });
+
+      } else {
+        _this.pageSize += 8;
+        _this.getNotAuditedRole1();
+      }
+    } else if (_this.roleId === 2) {
+      if (_this.pageSize > _this.myTaskMessage.length) {
+        uni.showToast({
+          title: "已经到底了哦!",
+          duration: 1000,
+          icon: "none" });
+
+      } else {
+        _this.pageSize += 8;
+        _this.getTaskMessage();
+      }
+    }
   } }), _components$component);exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

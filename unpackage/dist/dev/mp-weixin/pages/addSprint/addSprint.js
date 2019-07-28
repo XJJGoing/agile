@@ -187,8 +187,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-var _api = __webpack_require__(/*! ../../static/utils/api.js */ 8); //
+var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ 10);
+var _api = __webpack_require__(/*! ../../static/utils/api.js */ 8);
+var _time = __webpack_require__(/*! ../../static/utils/time.js */ 9); //
 //
 //
 //
@@ -266,6 +267,7 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ 8); //
 //
 //
 var login = __webpack_require__(/*! ../../static/utils/utils */ 10).Login;var query = __webpack_require__(/*! ../../static/utils/utils */ 10).Query;var Query = new query();var Login = new login();var wPicker = function wPicker() {return Promise.all(/*! import() | components/w-picker/w-picker */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/w-picker/w-picker")]).then(__webpack_require__.bind(null, /*! @/components/w-picker/w-picker.vue */ 183));};var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ 168));};var _this;var _default = { components: { wPicker: wPicker, uniCard: uniCard }, data: function data() {return { width: "", //用来设置输入框的长度
+      width2: "", //卡片的长度
       userInfo: "", projectId: "", //当前所在项目的projectId
       nowHadSprint: [], sprintName: "", //冲刺的序号.
       sprintTarget: "", //冲刺的目标
@@ -274,10 +276,11 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ 10).Login;var qu
     };}, onShow: function onShow() {_this = this;_this.getSystem(); //设置输入框的长度
     uni.getStorage({ key: "userInfo", success: function success(res) {console.log(res.data);var id = { id: res.data.id };return Query.findUser(id).then(function (data) {// console.log("用户的信息",data.data.records[0]);
           _this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.getHadProjectSprint();}, fail: function fail() {uni.redirectTo({ url: '../apply/apply' });} });});}, fail: function fail(error) {uni.redirectTo({ url: '../login/login' });} });}, methods: { getSystem: function getSystem() {//获取宽度，用来设置input出的长度
-      _this = this;uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 90; //将剩余的作为input的宽度
+      _this = this;uni.getSystemInfo({ success: function success(res) {_this.width2 = res.windowWidth - 80;_this.width = parseInt(res.windowWidth) - 90; //将剩余的作为input的宽度
         } });}, //添加冲刺序号即名称
     addSprintName: function addSprintName(e) {var reg = /冲刺(\d)+/g;if (e.detail.value.length <= 4 && reg.test(e.detail.value)) {this.sprintName = e.detail.value;} else {uni.showToast({ title: "输入格式有误", duration: 500, icon: "none" });}}, //添加冲刺的目标
-    addSprintTarget: function addSprintTarget(e) {if (e.detail.value.length <= 20) {this.sprintTarget = e.detail.value;} else {
+    addSprintTarget: function addSprintTarget(e) {if (e.detail.value.length <= 20) {this.sprintTarget = e.detail.value;
+      } else {
         uni.showToast({
           title: "长度过长",
           icon: "none",
@@ -340,12 +343,14 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ 10).Login;var qu
     },
 
 
-    addSprint: function addSprint() {
+    addSprint: function addSprint(e) {
       _this = this;
+      (0, _utils.addFormId)(_this.userInfo.openId, e.detail.formId);
       var jude; //用来判断时间格式是否有误
+      var nowTime = new Date(Date.parse((0, _time.formatDate)(new Date())));
       var startTime = new Date(Date.parse(_this.startTime));
       var endTime = new Date(Date.parse(this.endTime));
-      if (startTime >= endTime) {
+      if (startTime >= endTime || startTime < nowTime || nowTime >= endTime) {
         jude = false;
       } else {
         jude = true;
@@ -389,7 +394,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ 10).Login;var qu
         uni.showToast({
           duration: 500,
           icon: "none",
-          title: "信息有误" });
+          title: "时间格式或信息有误" });
 
       }
     } } };exports.default = _default;

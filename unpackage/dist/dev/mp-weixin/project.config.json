@@ -1,42 +1,115 @@
 {
-	"description": "项目配置文件。",
-	"packOptions": {
-		"ignore": []
-	},
-	"setting": {
-		"urlCheck": false,
-		"es6": true,
-		"postcss": false,
-		"minified": false
-	},
-	"compileType": "miniprogram",
-	"libVersion": "2.7.0",
-	"appid": "wxd763acfcb06de61a",
-	"projectname": "agile",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"current": -1,
-			"list": []
-		},
-		"miniprogram": {
-			"current": 0,
-			"list": [
-				{
-					"name": "swiper1",
-					"id": 0,
-					"pathName": "pages/login/login"
-				}
-			]
-		}
-	}
+  "description": "项目配置文件。",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.7.0",
+  "appid": "wxd763acfcb06de61a",
+  "projectname": "agile",
+  "condition": {
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
+      "current": -1,
+      "list": []
+    },
+    "game": {
+      "current": -1,
+      "list": []
+    },
+    "miniprogram": {
+      "current": 0,
+      "list": [
+        {
+          "name": "login",
+          "id": 0,
+          "pathName": "pages/login/login"
+        },
+        {
+          "name": "apply",
+          "id": 1,
+          "pathName": "pages/apply/apply"
+        },
+        {
+          "name": "about",
+          "id": 2,
+          "pathName": "pages/addSprint/addSprint"
+        },
+        {
+          "name": "addTask",
+          "id": 3,
+          "pathName": "pages/addTask/addTask"
+        },
+        {
+          "name": "admin",
+          "id": 4,
+          "pathName": "pages/admin/admin"
+        },
+        {
+          "name": "auditedRoleApply",
+          "id": 5,
+          "pathName": "pages/auditedRoleApply/auditedRoleApply"
+        },
+        {
+          "name": "changeUserRole",
+          "id": 6,
+          "pathName": "pages/changeUserRole/changeUserRole"
+        },
+        {
+          "name": "comment",
+          "id": 7,
+          "pathName": "pages/comment/comment"
+        },
+        {
+          "name": "dateWork",
+          "id": 8,
+          "pathName": "pages/dateWork/dateWork"
+        },
+        {
+          "name": "index",
+          "id": 9,
+          "pathName": "pages/index/index"
+        },
+        {
+          "name": "message",
+          "id": 10,
+          "pathName": "pages/message/message"
+        },
+        {
+          "name": "people",
+          "id": 11,
+          "pathName": "pages/people/people"
+        },
+        {
+          "name": "picture",
+          "id": 12,
+          "pathName": "pages/picture/picture"
+        },
+        {
+          "name": "reviewProject",
+          "id": 13,
+          "pathName": "pages/reviewProject/reviewProject"
+        },
+        {
+          "name": "reviewTask",
+          "id": 14,
+          "pathName": "pages/reviewTask/reviewTask"
+        },
+        {
+          "name": "addSprint",
+          "id": 15,
+          "pathName": "pages/addSprint/addSprint"
+        }
+      ]
+    }
+  }
 }

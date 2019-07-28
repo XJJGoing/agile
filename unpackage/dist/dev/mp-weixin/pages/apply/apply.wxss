@@ -1,4 +1,6 @@
 
+page{
+}
 .all{
 	width: 100%;
 	overflow: scroll;
@@ -18,17 +20,16 @@
 	-webkit-align-items: center;
 	    -ms-flex-align: center;
 	        align-items: center;
-	margin-top:50rpx;
-	color:#FEFEFE;
+	color:#F0F8FF;
 }
 ::-webkit-scrollbar{
 	width: 4rpx;
 	height: 6rpx;
 }
 .ibutton{
-	width: 300rpx;
+	width: 40%;
 	height: 100rpx;
-	color: #19BE6B;
+	color:#F0F8FF;
 	border-radius: 4%;
 	font-size: 35rpx;
 	font-weight: 300;
@@ -74,12 +75,12 @@
 	        align-items: center;
 	margin-top: 5rpx;
 	height: 100rpx;
+	font-size: 26rpx;
 	width: 100%;
-	font-size: 25rpx;
 }
 .applyList view text{
-	width:120rpx;
-	margin-left: 10rpx;
+	width:20%;
+	margin-left: 2%;
 	line-height: 80rpx;
 	height: 80rpx;
 }
@@ -88,7 +89,6 @@
 	height: 80rpx;
 	line-height: 80rpx;
 	border-radius: 4%;
-	border:1rpx solid #eea4b8;
 }
 .appListView2{
 	height: 250rpx!important;
@@ -106,13 +106,14 @@
 }
 /*提交申请表的按钮*/
 .submitApply{
-	width: 200rpx;
 	height: 100rpx;
 	border-radius: 2%;
 	margin-top: 15rpx;
 	margin-bottom: 20rpx;
 	font-size: 30rpx;
 	line-height: 100rpx;
+	color: #333333;
+	border: 1px solid #FCFBFF;
 }
 .ableProjects{
 	display: -webkit-box;
@@ -129,13 +130,23 @@
 	    -ms-flex-pack: start;
 	        justify-content: flex-start;
 	width: 100%;
-	margin-top: 50rpx;
+	margin-top: 150rpx;
 }
 .titleInfo{
+	background-color:#063143 ;
 	height: 50rpx;
 	margin-top: 10rpx;
 	width: 100%;
+	font-size: 30rpx;
 	margin-bottom: 15rpx;
+	color:#F0F8FF;
+	font-weight: 800;
+}
+.titleInfo text{
+	line-height: 50rpx;
+}
+.uniTag{
+	background-color: #5087BF;
 }
 .myHadProject{
 	height: 50rpx;
@@ -146,7 +157,10 @@
 	height: 50rpx;
 	line-height: 50rpx;
 	text-align: left;
-	font-size:25rpx;
+	font-size:26rpx;
 	width: 100%;
+	font-weight: 700;
+	color: #F8F1F3;
+	border: 0rpx;
 }
 
