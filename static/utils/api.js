@@ -100,8 +100,15 @@ const messageQuery = `${host}/message/query`;
 //获取评论
 const commnetQuery = `${host}/comment/query`;
 
+
+
+
+
+
+
 //提交每日输入工时打卡阶段
 const dateWorkAdd = `${host}/datework/add`;
+
 
 //查找dateWork
 const dateWorkQuery = `${host}/datework/query`;
@@ -120,6 +127,9 @@ const  roleApplyDeleteBatch = `${host}/roleApply/deleteBatch`;
 
 //删除这个用户项目专业表数据
 const  userProjectDepartmentDeleteBatch = `${host}/userprojectdepartment/deleteBatch`;
+
+//燃尽图的图表
+const  getLineData = `${host}/picture/getLineData`;
 
 module.exports = {
 	getUserOpenId:getUserOpenId,
@@ -161,5 +171,6 @@ module.exports = {
 	messageSet:messageSet,
 	roleApplyDeleteBatch:roleApplyDeleteBatch,
 	userProjectDepartmentDeleteBatch:userProjectDepartmentDeleteBatch,
-	dateWorkUpdateBatch:dateWorkUpdateBatch
+	dateWorkUpdateBatch:dateWorkUpdateBatch,
+	getLineData:getLineData
 } 

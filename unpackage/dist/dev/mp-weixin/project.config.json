@@ -7,7 +7,10 @@
 		"urlCheck": false,
 		"es6": true,
 		"postcss": false,
-		"minified": false
+		"minified": false,
+		"newFeature": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.7.0",
@@ -33,7 +36,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 18,
+			"current": 16,
 			"list": [
 				{
 					"id": 0,
@@ -133,22 +136,8 @@
 				},
 				{
 					"id": -1,
-					"name": "people",
-					"pathName": "pages/people/people",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "apply",
-					"pathName": "pages/apply/apply",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "updateRedictTime",
-					"pathName": "pages/updateRedictTime/updateRedictTime",
+					"name": "pictrue",
+					"pathName": "pages/picture/picture",
 					"scene": null
 				}
 			]

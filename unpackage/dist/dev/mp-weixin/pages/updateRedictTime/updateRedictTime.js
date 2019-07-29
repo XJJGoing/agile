@@ -128,8 +128,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");
 var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js"); //
+//
+//
 //
 //
 //
@@ -169,9 +173,7 @@ var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       lastChangeStr: "" //拼接修改后的字符串
     };}, onLoad: function onLoad(e) {//传送过来的对象,1为改变预估工时，2为改变优先级
     _this = this;_this.enterId = 1;_this.taskId = 2;_this.queryTaskInfo(); //查询任务的信息
-  }, onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {Query.findUser({ id: res.data.id }).then(function (data) {_this.userInfo = data.data.records[0];}).catch(function (Error) {uni.showToast({
-            title: "网络错误",
-            icon: "loading",
+  }, onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {Query.findUser({ id: res.data.id }).then(function (data) {_this.userInfo = data.data.records[0];}).catch(function (Error) {uni.showToast({ title: "网络错误", icon: "loading",
             duration: 500 });
 
         });

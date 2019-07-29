@@ -98,28 +98,69 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
-var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;
-var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;
-var Login = new login();
-var Query = new query();
-var _this;var _default =
-{
-  data: function data() {
-    return {
-      userInfo: "", //用户的信息
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _uCharts = _interopRequireDefault(__webpack_require__(/*! ../../js_sdk/u-charts/u-charts/u-charts.js */ "../../../../../个人信息/agile/js_sdk/u-charts/u-charts/u-charts.js"));
+
+
+
+
+
+
+
+
+var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _self;var canvaLineA = null;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var Login = new login();var Query = new query(); //引入api
+var _this;var _default = { data: function data() {return { departmentArray: [], departmentIndex: 0, sprintArray: [], sprintIndex: 0, windowWidth: 320, cWidth: '', cHeight: '', pixelRatio: 1, userInfo: "", //用户的信息
       projectId: "", //项目的id
       sprintId: "", //冲刺的id
       roleId: "", //权限的id
       departmentId: "" //专业id 当用户的权限为2的时候默认进入自己的专业
-    };
-  },
+    };}, onLoad: function onLoad() {_self = this;this.cWidth = uni.upx2px(400);this.cHeight = uni.upx2px(500);},
   onShow: function onShow() {
     _this = this;
     uni.getStorage({
@@ -130,7 +171,6 @@ var _this;var _default =
 
         Query.findUser(id).
         then(function (data) {
-          console.log("返回的用户信息", data.data.records[0]);
           _this.userInfo = data.data.records[0];
           uni.getStorage({
             key: "nowInProject",
@@ -141,6 +181,9 @@ var _this;var _default =
                 key: 'sprintId',
                 success: function success(res) {
                   _this.sprintId = res.data;
+                  //获取所有专业
+                  _this.getDepartmentArray(res.data);
+                  _this.getSprintArray(res.data);
                 } });
 
             } });
@@ -163,9 +206,182 @@ var _this;var _default =
   },
 
   methods: {
+    //获取系统的信息
+    getSystem: function getSystem() {
+      _this = this;
+      uni.getSystemInfo({
+        success: function success(res) {
+          _this.windowWidth = res.windowWidth;
+        } });
 
-    //当用户的权限为2的时候，默认进入该用户再该项目下该冲刺下的自己的专业
-  } };exports.default = _default;
+    },
+
+    //获取图表信息
+    getChartData: function getChartData() {
+      _this = this;
+      uni.request({
+        url: "".concat(_api.getLineData, "?sprintId={$_this.sprint}&projectId=").concat(_this.projectId, "&userId=").concat(_this.userInfo.id),
+        method: "POST",
+        header: {
+          'ContentType': 'application/x-www-form-urlencoded' //自定义请求头信息
+        },
+        success: function success(res) {
+          if (res.data.code === 200) {
+            var categories = res.data.data.categories;
+            var plainData = res.data.data.plainData;
+            var planDataList = [];
+            for (var i = 0; i < plainData.length; i++) {
+              planDataList[i] = plainData[i].workTime;
+            }
+            var trueData = res.data.data.trueData;
+            var trueDataList = [];
+            for (var i = 0; i < trueData.length; i++) {
+              trueDataList[i] = trueData[i].workTime;
+            }
+            var LineA = {
+              categories: categories,
+              series: [{
+                color: "#05B2CA",
+                data: planDataList,
+                textColor: "#F70082",
+                name: "计划数据",
+                type: "line",
+                format: function format(val) {
+                  return val.toFixed(2);
+                } },
+              {
+                color: "#42C87B",
+                data: trueDataList,
+                name: "实际数据",
+                textColor: "#E2E6D8",
+                type: "line",
+                format: function format(val) {
+                  return val.toFixed(2);
+                } }] };
+
+
+            console.log(LineA);
+
+            _this.showLineA("canvasLineA", LineA);
+          }
+        } });
+
+    },
+
+    getDepartmentArray: function getDepartmentArray(projectId) {
+      var _this = this;
+      uni.request({
+        url: "".concat(_api.departmentQueryAll, "?projectId=").concat(projectId),
+        method: "POST",
+        data: {},
+        header: {
+          'ContentType': 'application/json' },
+
+        success: function success(res) {
+          if (res.data.code === 200) {
+            var departmentArray = [];
+            for (var i = 0; i < res.data.data.length; i++) {
+              departmentArray[i] = res.data.data[i].name;
+            }
+            _this.departmentArray = departmentArray;
+            console.log(departmentArray);
+          }
+        } });
+
+    },
+
+    getSprintArray: function getSprintArray(projectId) {
+      var _this = this;
+      uni.request({
+        url: "".concat(_api.sprintQuery),
+        method: "POST",
+        data: {
+          "pageNum": 0,
+          "pageSize": 1000,
+          "projectId": projectId },
+
+        header: {
+          'ContentType': 'application/json' },
+
+        success: function success(res) {
+          if (res.data.code === 200) {
+            var sprintArray = [];
+            for (var i = 0; i < res.data.data.length; i++) {
+              sprintArray[i] = res.data.data[i].sprintName;
+            }
+            _this.sprintArray = sprintArray;
+          }
+        } });
+
+    },
+    departmentPickerChange: function departmentPickerChange(e) {
+      this.departmentIndex = e.target.value;
+      console.log('获取值', this.departmentArray[this.departmentIndex]);
+
+    },
+    sprintPickerChange: function sprintPickerChange(e) {
+      this.sprintIndex = e.target.value;
+      console.log('获取值', this.sprintArray[this.sprintIndex]);
+
+    },
+    scroll: function scroll(e) {
+      var scrollLeft = e.detail.scrollLeft;
+      this.setData({
+        scrollLeft: scrollLeft });
+
+      console.log(scrollLeft);
+    },
+    showLineA: function showLineA(canvasId, chartData) {
+      var _this = this;
+      canvaLineA = new _uCharts.default({
+        $this: _this,
+        canvasId: canvasId,
+        type: 'line',
+        enableScroll: false, //可拖动
+        fontSize: 11,
+        legend: true,
+        dataLabel: false,
+        dataPointShape: true,
+        background: '#21242E',
+        pixelRatio: _this.pixelRatio,
+        categories: chartData.categories,
+        series: chartData.series,
+        animation: true,
+        xAxis: {
+          type: 'grid',
+          disableGrid: true,
+          dashLength: 8,
+          scrollShow: true,
+          fontColor: '#058' },
+
+        yAxis: {
+          title: '预估剩余时间（小时）',
+          titleFontColor: 'white',
+          gridType: 'solid',
+          gridColor: '#CCCCCC',
+          splitNumber: 8, //y轴网格的数量
+          fontColor: '#058',
+          format: function format(val) {
+            return val.toFixed(0);
+          } },
+
+        width: _this.windowWidth,
+        height: _this.cHeight * _this.pixelRatio,
+        extra: {
+          line: {
+            type: 'straight' } } });
+
+
+
+
+    },
+    touchLineA: function touchLineA(e) {
+      canvaLineA.showToolTip(e, {
+        format: function format(item, category) {
+          return category + ' ' + item.name + ':' + item.data;
+        } });
+
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ }),
