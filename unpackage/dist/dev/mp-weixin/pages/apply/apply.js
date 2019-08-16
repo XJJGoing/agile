@@ -219,7 +219,6 @@ var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../..
 
 
 
-
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
 //
 //
@@ -329,7 +328,7 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 //
 //引入封装好模块
 var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query(); //引入时间格式处理函数
-var uniPagination = function uniPagination() {return __webpack_require__.e(/*! import() | components/uni-pagination/uni-pagination */ "components/uni-pagination/uni-pagination").then(__webpack_require__.bind(null, /*! ../../components/uni-pagination/uni-pagination.vue */ "../../../../../个人信息/agile/components/uni-pagination/uni-pagination.vue"));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ "../../../../../个人信息/agile/components/uni-tag/uni-tag.vue"));};var _this;var _default = { components: { uniPagination: uniPagination, uniTag: uniTag }, data: function data() {return { width: "", //设置输入框的长度
+var _this;var _default = { data: function data() {return { width: "", //设置输入框的长度
       submitInput: "", userInfo: {}, //用户的个人信息，
       isLookApply: false, windowWidth: "", //可使用的窗口的宽度
       isApplyProject: false, //展示申请项目的页面
@@ -353,7 +352,6 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
     inputWhy: function inputWhy(e) {_this = this;_this.why = e.detail.value;}, //输入申请项目人的真实姓名
     inputApplyTrueName: function inputApplyTrueName(e) {_this = this;_this.applyTrueName = e.detail.value;}, //输入申请项目的名称
     inputApplyProjectName: function inputApplyProjectName(e) {_this = this;var reg = /[A-Za-z]+[0-9]+/g;var applyProjectName = e.detail.value;if (reg.test(applyProjectName)) {_this.applyProjectName = applyProjectName;}if (applyProjectName.length > 10) {_this.applyProjectName = "";uni.showToast({ title: "编号格式有误", duration: 1000, icon: "none" });
-
       }
     },
 
@@ -661,29 +659,41 @@ var uniPagination = function uniPagination() {return __webpack_require__.e(/*! i
           url: _api.sprintQuery,
           method: "POST",
           data: {
-            projectId: projectId },
+            projectId: projectId,
+            pageNum: 0,
+            pageSize: 1000 },
 
           dataType: 'json' }).
 
         then(function (data) {
           var allSprint = data[1].data.data.records;
-          var sprintId;
+          var sprintId = "";
           if (allSprint.length) {
             //获取当前的时间并且进行时间转换用作比较
-            var nowDateTime = new Date(Date.parse((0, _time.formatDate)(new Date())));
-            for (var i in allSprint) {
-              if (new Date(Date.parse(allSprint[i].startTime)) <= nowDateTime &&
-              nowDateTime < new Date(Date.parse(allSprint[i].endTime))) {
-                sprintId = allSprint[i].id;
-              }
-            }
-            if (sprintId == "") {//如果实在都超过了时间段就默认进入最后一个
-              sprintId = allSprint.pop().id;
-            }
-            uni.setStorage({
-              key: 'sprintId',
-              data: sprintId });
+            var nowDateTime = (0, _time.formatDate)(new Date());var _loop = function _loop(
+            i) {
+              (0, _utils.compareTime)(allSprint[i].startTime, allSprint[i].endTime, nowDateTime, function (jude) {
+                if (jude) {
+                  sprintId = allSprint[i].id;
+                  console.log("设置了冲刺", sprintId);
+                  uni.setStorage({
+                    key: 'sprintId',
+                    data: sprintId });
 
+                }
+              });};for (var i = 0; i < allSprint.length; i++) {_loop(i);
+            }
+            if (sprintId === "") {//如果实在都超过了时间段就默认进入最后一个
+              var len = allSprint.length - 1;
+              sprintId = allSprint[len].id;
+              uni.setStorage({
+                key: 'sprintId',
+                data: sprintId,
+                success: function success() {
+                  console.log("设置冲刺成功", sprintId);
+                } });
+
+            }
           } else {
             uni.setStorage({
               key: 'sprintId',

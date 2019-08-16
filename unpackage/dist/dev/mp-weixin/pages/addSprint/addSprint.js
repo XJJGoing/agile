@@ -340,9 +340,9 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       _this = this;
       (0, _utils.addFormId)(_this.userInfo.openId, e.detail.formId);
       var jude; //用来判断时间格式是否有误
-      var nowTime = new Date(Date.parse((0, _time.formatDate)(new Date())));
-      var startTime = new Date(Date.parse(_this.startTime));
-      var endTime = new Date(Date.parse(this.endTime));
+      var nowTime = new Date(Date.parse((0, _time.formatDate)(new Date()).replace(/-/g, '/')));
+      var startTime = new Date(Date.parse(_this.startTime.replace(/-/g, '/')));
+      var endTime = new Date(Date.parse(this.endTime.replace(/-/g, '/')));
       if (startTime >= endTime || startTime < nowTime || nowTime >= endTime) {
         jude = false;
       } else {
@@ -390,6 +390,32 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
           title: "时间格式或信息有误" });
 
       }
+    },
+
+    //修改冲刺
+    updateSprint: function updateSprint(e) {
+      _this = this;
+      console.log(e);
+      var item = e.currentTarget.id;
+      uni.showModal({
+        title: "提醒",
+        content: "\u51B2\u523A\u5F00\u59CB\u5E76\u4E14\u5F00\u59CB\u6BCF\u65E5\u6253\u5361\u540E\uFF0C\u8BF7\u614E\u91CD\u51CF\u5C11\u51B2\u523A\u7ED3\u675F\u65F6\u95F4,\n\t\t\t\t\t\r\n\u51CF\u5C11\u51B2\u523A\u65F6\u95F4\u53EF\u80FD\u4F1A\u5F15\u8D77\u6570\u636E\u7D0A\u4E71,\u589E\u52A0\u51B2\u523A\u65F6\u95F4\u4E0D\u4F1A\u9020\u6210\u5F71\u54CD",
+
+        confirmColor: "#4CD964",
+        confirmText: "同意",
+        cancelColor: "#DD524D",
+        cancelText: "不同意",
+        success: function success(res) {
+          if (res.confirm) {
+            uni.navigateTo({
+              url: "../updateSprint/updateSprint?item=".concat(item) });
+
+          } else if (res.cancel) {
+
+          }
+        } });
+
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
@@ -421,6 +447,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.__map(_vm.nowHadSprint, function(item, index) {
+    var g0 = JSON.stringify(item)
+    return {
+      $orig: _vm.__get_orig(item),
+      g0: g0
+    }
+  })
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

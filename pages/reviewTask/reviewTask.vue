@@ -1,7 +1,6 @@
 <template>
 	<scroll-view class="all" scroll-y="true" @scrolltolower="loaderMore" :style="{height:height+'px'}">
 		<view class="reviewList">
-			
 			<text id="title">待审核的任务:</text>
 			<view v-for="(item,index) in noReviewTaskList" :key="index" class="eachOneTask">
 				<uni-card  
@@ -23,14 +22,14 @@
 </template>
 
 <script>
-	import uniCard from "@/components/uni-card/uni-card.vue"
-	
+	import uniCard from "@/components/uni-card/uni-card.vue";
+	import {formatDate} from '../../static/utils/time.js';
 	const login = require('../../static/utils/utils').Login;
 	const query = require('../../static/utils/utils').Query;
 	const Login = new login();
 	const Query = new query();
 	
-	import {taskQuery,taskUpdateBatch,messageAdd,deleteTask} from '../../static/utils/api.js';
+	import {taskQuery,taskUpdateBatch,messageAdd,deleteTask,messageSend} from '../../static/utils/api.js';
 	var _this;
 		export default {
 			components: {uniCard},
@@ -59,15 +58,15 @@
 							
 							//console.log("获取到的用户信息",data.data.records[0])
 							_this.userInfo = data.data.records[0];
-							uni.getStorage({ //设置项目
+							uni.getStorage({                //设置项目
 								key:"nowInProject",
 								success:(res)=>{
 									_this.projectId = res.data.projectId;
-									uni.getStorage({  //设置冲刺
+									uni.getStorage({        //设置冲刺
 										key:"sprintId",
 										success:(res)=>{
 											_this.sprintId = res.data;    
-											_this.getAllNoReview();   //获取未审核的项目
+											_this.getAllNoReview(_this.projectId,_this.sprintId);   //获取未审核的项目
 										},
 										fail:()=>{
 											uni.showToast({
@@ -102,7 +101,7 @@
 			},
 			onPullDownRefresh(){
 				_this = this;
-				_this.getAllNoReview();
+				_this.getAllNoReview(_this.projectId,_this.sprintId);
 			},
 			methods: {
 				
@@ -117,7 +116,8 @@
 				},
 				
 				//查询为未审核的任务  
-				getAllNoReview:function(){
+				getAllNoReview:function(projectId,sprintId){
+					console.log("查询的条件",projectId,sprintId)
 					_this = this;
 					uni.showLoading({
 						title:'获取中',
@@ -127,8 +127,8 @@
 								url:taskQuery,
 								method:'POST',
 								data:{
-									projectId:_this.projectId,
-                                    sprintId:_this.sprintId,
+									projectId:projectId,
+                                    sprintId:sprintId,
 									isReview:0,
 									pageNum:_this.pageNum,
 									pageSize:_this.pageSize
@@ -137,6 +137,7 @@
 							})
 							.then(data=>{
 								uni.hideLoading();
+								console.log("查询到的",data);
 								console.log("查询到的未审核的任务",data[1].data.data.records);
 								_this.noReviewTaskList = data[1].data.data.records;
 							})
@@ -155,6 +156,8 @@
 					_this = this;
 					let task = JSON.parse(e.currentTarget.id);
 					console.log('选中更新的任务',task);
+					let taskExecuteUserId = task.taskExecuteUserId;
+				    let taskName = task.taskOrder+task.taskName;
 					uni.showModal({
 						title:"审核任务",
 						cancelText:"不通过",
@@ -187,7 +190,7 @@
 													.then(data=>{
 														uni.hideLoading()
 														console.log("审核成功",data);
-														_this.getAllNoReview();            //重新获取未审核的任务
+														_this.getAllNoReview(_this.projectId,_this.sprintId);      //重新获取未审核的任务
 													})
 													.catch(Error=>{
 														uni.showToast({
@@ -199,7 +202,9 @@
 												}
 											})
 											
-											//同时也增加消息.
+											//同时也增加消息和推送消息
+											 let content2 = "通过";
+											 _this.pushMessage(taskExecuteUserId,taskName,content2);
 											_this.addMessage(task,content)
 										}else{
 											
@@ -217,9 +222,11 @@
 									success:(res)=>{
 										if(res.confirm){
 											let content = `${task.taskOrder}审核未通过`;
+											let content2 = "未通过";
 											
-											//发送消息并且删除该任务,并且重新获取任务
+											//发送消息并且删除该任务推送微信消息,并且重新获取任务
 											_this.addMessage(task,content);
+											_this.pushMessage(taskExecuteUserId,taskName,content2)
 											_this.deteleTask(task.id);
 											_this.getAllNoReview();
 										}else{
@@ -291,6 +298,47 @@
 				    })
 				},
 				
+				//审核的结果微信消息推送给用户
+				pushMessage:function(taskExecuteUserId,taskName,content){
+					_this = this;
+					console.log(taskExecuteUserId)
+					let time = formatDate(new Date());
+					Query.findUser({id:taskExecuteUserId})
+					.then(data=>{
+						let openId = data.data.records[0].openId;
+						console.log(openId);
+	                    uni.request({
+	                    	url:messageSend,
+	                    	method:"POST",
+	                    	data:{
+	                    		 "touser": openId,             
+								 "template_id": "i_uMOCIeL3R7vfxZtOBg88_-IiZbLN5VItvgQM_AJ2I",   
+								 "page": "pages/message/message",
+								 "form_id":"", 
+								 "data": {
+									 "keyword1": {
+												 "value": taskName
+											 },
+									  "keyword2":{ 
+												"value": content
+											 },
+										   "keyword3":{
+												 "value": time
+										 },
+										"emphasis_keyword": "keyword1.DATA"
+									}
+	                    	},	
+	                    })
+						.then(data=>{
+							console.log("消息推送成功",data);
+						})
+					    .catch(Error=>{
+							console.log(Error)
+						})
+					})
+					
+				},
+				
 				//触底加载加载待审核的项目
 				loaderMore:function(){
 					_this = this;
@@ -325,8 +373,8 @@
 	line-height: 70upx;
 	font-weight: bold;
 	font-size: 30upx;
-	background-color: #9BC4CE;
-	margin-left: 10upx;
+	background-color: rgb(153,153,153);
+	margin-top: 5upx;
 }
 .reviewList{
 	display: flex;

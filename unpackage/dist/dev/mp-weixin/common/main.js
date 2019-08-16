@@ -84,7 +84,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _api = __webpack_require__(/*! ./static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");
-var _time = __webpack_require__(/*! ./static/utils/time.js */ "../../../../../个人信息/agile/static/utils/time.js");var query = __webpack_require__(/*! ./static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Query = new query();
+var _time = __webpack_require__(/*! ./static/utils/time.js */ "../../../../../个人信息/agile/static/utils/time.js");
+var _utils = __webpack_require__(/*! ./static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js");var query = __webpack_require__(/*! ./static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Query = new query();
 
 //一进入项目就设置进入本项目的相应的时间段内的冲刺(先查询然后进行时间的比对)
 var enterSprint = function enterSprint(projectId) {
@@ -93,30 +94,42 @@ var enterSprint = function enterSprint(projectId) {
       url: _api.sprintQuery,
       method: "POST",
       data: {
-        projectId: projectId },
+        projectId: projectId,
+        pageNum: 0,
+        pageSize: 1000 },
 
       dataType: 'json' }).
 
     then(function (data) {
       var allSprint = data[1].data.data.records;
-      var sprintId;
+      console.log(allSprint);
+      var sprintId = "";
       if (allSprint.length) {
         //获取当前的时间并且进行时间转换用作比较
-        var nowDateTime = new Date(Date.parse((0, _time.formatDate)(new Date())));
-        for (var i in allSprint) {
-          if (new Date(Date.parse(allSprint[i].startTime)) <= nowDateTime &&
-          nowDateTime < new Date(Date.parse(allSprint[i].endTime))) {
-            sprintId = allSprint[i].id;
-          }
+        var nowDateTime = (0, _time.formatDate)(new Date());var _loop = function _loop(
+        i) {
+          (0, _utils.compareTime)(allSprint[i].startTime, allSprint[i].endTime, nowDateTime, function (jude) {
+            if (jude) {
+              sprintId = allSprint[i].id;
+              console.log("设置了冲刺", sprintId);
+              uni.setStorage({
+                key: 'sprintId',
+                data: sprintId });
+
+            }
+          });};for (var i = 0; i < allSprint.length; i++) {_loop(i);
         }
-        if (!sprintId) {//如果实在都超过了时间段就默认进入最后一个
+        if (sprintId === "") {//如果实在都超过了时间段就默认进入最后一个
           var len = allSprint.length - 1;
           sprintId = allSprint[len].id;
-        }
-        uni.setStorage({
-          key: 'sprintId',
-          data: sprintId });
+          uni.setStorage({
+            key: 'sprintId',
+            data: sprintId,
+            success: function success() {
+              console.log("设置冲刺成功", sprintId);
+            } });
 
+        }
       } else {
         uni.setStorage({
           key: 'sprintId',
@@ -173,8 +186,8 @@ var _this;var _default =
                 {//不用判断等于四,这种设计不存在等于4权限的情况
                   Query.findUserProjectRole(_this.userInfo.id, res2.data.projectId).
                   then(function (data) {
-                    console.log("获取到的用户的最新的权限", data);
-                    if (data.data.roleId === 4) {
+                    console.log("获取到的用户的最新的权限", data.data.records);
+                    if (!data.data.records.length) {
                       uni.removeStorage({
                         key: "nowInPorject",
                         success: function success() {
@@ -189,11 +202,9 @@ var _this;var _default =
                         key: 'nowInProject',
                         data: data.data.records[0],
                         success: function success() {
-
                           //设置projectId并且进入冲刺
                           _this.projectId = data.data.records[0].projectId;
                           enterSprint(_this.projectId);
-
                           uni.redirectTo({
                             url: '/pages/index/index' });
 
@@ -206,7 +217,6 @@ var _this;var _default =
                   //设置projectId并且进入冲刺
                   _this.projectId = res2.data.projectId;
                   enterSprint(_this.projectId);
-
                   uni.redirectTo({
                     url: '/pages/index/index' });
 

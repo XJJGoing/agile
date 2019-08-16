@@ -20,13 +20,14 @@
 	        flex-direction: column;
 }
 #title{
-	height: 80rpx;
+	height: 70rpx;
 	width: 100%;
-	font-size: 35rpx;
+	font-size: 30rpx;
 	font-weight:bold;
-	line-height: 80rpx;
-	background-color:#6195C0;
-	margin-left: 2rpx;
+	line-height: 70rpx;
+	background-color:rgb(153,153,153);
+	margin-top:5rpx;
+	margin-left: 0rpx;
 }
 .addTask view{
 	height: 100rpx;

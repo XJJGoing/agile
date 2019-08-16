@@ -6,14 +6,14 @@
 					plain="true" 
 					style="color:#fbf3f5; border:1px solid #fbf3f5;"
 					:style="{width:submitInput+'%'}"
-			>查看项目</button>
+			>申请查看项目</button>
 			
 			<block v-if="isLookApply">
 			  <form report-submit="true" @submit="submitApply">
 				<view class="applyList">
 					<view class="appListProjectName">
 						<text>项目编号:</text>
-						<input placeholder="请输入项目的编号..." @input="inputProjectName" :value="projectName" :style="{width:width+'px'}"></input>
+						<input placeholder="请向项目负责人索取编号..." @input="inputProjectName" :value="projectName" :style="{width:width+'px'}"></input>
 					</view>
 					<view class="appListView1">
 						 <text>申请人:</text>
@@ -21,11 +21,11 @@
 				    </view>
 					<view class="appListView2">
 						<text>理由:</text>
-						<textarea placeholder="填入申请查看项目的理由" 
+						<input placeholder="填入申请查看项目的理由" 
 						          :style="{width:width+'px'}" 
 								  :value="why" 
 								  @input="inputWhy"
-						></textarea>
+						></input>
 					</view>
 					<button
 					          class="submitApply" 
@@ -41,7 +41,7 @@
 			        class="ibutton"
 					plain="true" 
 					style="color:#fbf3f5; border:1px solid #fbf3f5;"
-			>申请项目</button>
+			>申请新建项目</button>
 			
 			<block v-if="isApplyProject">
 			  <form report-submit="true" @submit="submitApplyProject">	
@@ -56,13 +56,13 @@
 					</view>  
 					<view class="appListView2">
 						  <text>理由:</text>
-						  <textarea placeholder="填入申请项目的理由....." 
+						  <input placeholder="填入申请项目的理由....." 
 						            :style="{width:width+'px'}"
 									:value="applyWhy"
 									@input="inputApplyWhy"
 									
 						  >
-						  </textarea>
+						  </input>
 					</view>
 					<button form-type="submit"
 					        class="submitApply" 
@@ -78,7 +78,7 @@
 	    </view>
 		<view class="ableProjects">
 			<view class="titleInfo">
-				<text>可看的项目:</text>
+				<text>临时访问项目:</text>
 			</view>
 			<block v-if="ableLookProject">
 				<view v-for="(item,index) in ableLookProject" :key="index" class="myHadProject">
@@ -86,7 +86,7 @@
 				</view>
 			</block>	
 			<view class="titleInfo">
-				<text>负责的项目:</text>
+				<text>负责人项目:</text>
 			</view>
 			<block  v-if="chargeProject">
 				<view v-for="(item,index) in chargeProject" :key="index" class="myHadProject">
@@ -94,7 +94,7 @@
 				</view>	
 			</block>	
 			<view class="titleInfo">
-				<text>参与的项目:</text>
+				<text>参与人项目:</text>
 			</view>
 			<block v-if="joinProject">
 				<view v-for="(item,index) in joinProject" :key="index" class="myHadProject">
@@ -115,11 +115,10 @@
 	//引入时间格式处理函数
 	import {formatDate} from '../../static/utils/time.js';
     import {addFormId} from '../../static/utils/utils.js';
+	import {compareTime} from '../../static/utils/utils.js';
 	
 	
 	//引入分页的组建-实现分页查询
-	import uniPagination from "../../components/uni-pagination/uni-pagination.vue"
-	import uniTag from "@/components/uni-tag/uni-tag.vue"
 	import {projectQuery,
 	        roleApplyAdd,
 			sprintQuery,
@@ -129,7 +128,6 @@
 	
 	var _this;
 	export default {
-		components: {uniPagination,uniTag},
 		data() {
 			return {
 				width:"",                 //设置输入框的长度
@@ -562,28 +560,40 @@
 				   	method:"POST",
 				   	data:{
 				   		projectId:projectId,
+						pageNum:0,
+						pageSize:1000
 				   	},
 				   	dataType:'json',
 				   })
 				   .then(data=>{
 				   	let allSprint = data[1].data.data.records;
-				  	let sprintId;
+				  	let sprintId = "";
 				   	if(allSprint.length){
 				  	  //获取当前的时间并且进行时间转换用作比较
-				  	  let nowDateTime = new Date(Date.parse(formatDate(new Date())));
-				  	  for(var i in allSprint){
-				  	  	if(new Date(Date.parse(allSprint[i].startTime))<=nowDateTime
-				  	  	&&nowDateTime<new Date(Date.parse(allSprint[i].endTime))){
-				  	  		sprintId = allSprint[i].id;
-				  	  	}	
-				  	  }
-				  	  if(sprintId==""){ //如果实在都超过了时间段就默认进入最后一个
-				  		  sprintId = allSprint.pop().id;
-				  	  }
-				  	  uni.setStorage({
-				  	  	key:'sprintId',
-				  		data:sprintId
-				  	  })
+						 let nowDateTime = formatDate(new Date());
+						 for(let i = 0;i<allSprint.length;i++){
+							compareTime(allSprint[i].startTime,allSprint[i].endTime,nowDateTime,(jude)=>{
+								if(jude){
+									sprintId = allSprint[i].id;
+									console.log("设置了冲刺",sprintId);
+									uni.setStorage({
+										key:'sprintId', 
+										data:sprintId,
+									})
+								}
+							})
+						 } 
+						 if(sprintId===""){           //如果实在都超过了时间段就默认进入最后一个
+							   let len = allSprint.length-1;
+							   sprintId = allSprint[len].id;
+							   uni.setStorage({
+								key:'sprintId', 
+								data:sprintId,
+								success:()=>{
+									console.log("设置冲刺成功",sprintId);
+								}
+							   })
+						 }  	 
 				   	}else{
 				  		uni.setStorage({
 				  			key:'sprintId',
@@ -837,19 +847,18 @@ page{
 
 
 .appListView2{
-	height: 250upx!important;
+	height: 100upx!important;
 }
 .appListView2 text{
-  height: 250upx!important;
-  font-size:30upx!important;
-  line-height: 250upx!important;
+  height: 100upx!important;
+  font-size:26upx!important;
+  line-height: 100upx!important;
 }
-.appListView2 textarea{
-	height: 250upx;
-    border:1px solid #f8f1f3;
+/*.appListView2 textarea{
+	height: 80upx;
 	border-radius: 2%;
 	margin-top: 5upx;
-}
+}*/
 
 /*提交申请表的按钮*/
 .submitApply{

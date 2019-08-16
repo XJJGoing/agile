@@ -24,6 +24,7 @@
 	margin-top: 15rpx;
 	width: 90%;
 	height: 85rpx;
+	line-break: 85rpx;
 	border-radius: 1px solid #E9EFED;
 }
 .content{

@@ -1,0 +1,1 @@
+<view class="landScapePicture"><canvas class="charts" style="{{'width:'+(windowWidth+'px')+';'+('height:'+(windowHeight+'px')+';')}}" canvas-id="canvasLineA" id="canvasLineA" disable-scroll="true" data-event-opts="{{[['touchstart',[['touchLineA',['$event']]]]]}}" bindtouchstart="__e"></canvas></view>

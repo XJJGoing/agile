@@ -107,6 +107,7 @@
 			
 			//监听时间选择器拿到的东西
 			chooseDate:function(e){
+				console.log(e);
 				this.chooseTime = e.result;
 			},
 			
@@ -117,16 +118,20 @@
 				console.log(e)
 				addFormId(_this.userInfo.openId,e.detail.formId);
 				console.log(e.currentTarget.id);
-				let state = parseInt(e.target.target.id);
+				let state = parseInt(e.detail.target.id);
 				console.log(state);
+				console.log(_this.chooseTime);
+				console.log(nowTime);
+				let chooseTime = new Date(Date.parse(_this.chooseTime));
 			    let roleId;
 				if(state===1){
 					let roleId = 3;
-					if(_this.chooseTime&&new Data(Date.parse(_this.chooseTime))>nowTime){
+					console.log("进来")
+					if(_this.chooseTime){
 						console.log("提交的消息",{
 									id:_this.chooseItem.id,
 							  		effectiveTime: _this.chooseTime,
-							  		projectId: _this.chooseItem.projectId,
+							  		projectId: _this.chooseItem.projectId, 
 							  		state: 1,
 							  		userId: _this.chooseItem.userId
 							  	  })
@@ -272,7 +277,7 @@
 								"formId":"",
 								"data":{
 									"keyword1": {
-										"value": '您申请查看编号为 '+_this.chooseItem.projectName+'的项目申请已通过',
+										"value": '您申请查看编号为 '+_this.chooseItem.projectName+'的项目申请已通过'
 									},
 									"keyword2": { 
 										"value": "截止 "+time

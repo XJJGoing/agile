@@ -13,8 +13,8 @@
 	line-height: 70rpx;
 	font-weight: bold;
 	font-size: 30rpx;
-	background-color: #9BC4CE;
-	margin-left: 10rpx;
+	background-color: rgb(153,153,153);
+	margin-top: 5rpx;
 }
 .reviewList{
 	display: -webkit-box;

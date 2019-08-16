@@ -18,7 +18,12 @@
     "pages/picture/picture",
     "pages/dateWork/dateWork",
     "pages/about/about",
-    "pages/updateRedictTime/updateRedictTime"
+    "pages/updateRedictTime/updateRedictTime",
+    "pages/landScapePicture/landScapePicture",
+    "pages/updateSprint/updateSprint",
+    "pages/customer/customer",
+    "pages/addStory/addStory",
+    "pages/updateStory/updateStory"
   ],
   "subPackages": [],
   "window": {
@@ -29,16 +34,22 @@
     "enablePullDownRefresh": true
   },
   "tabBar": {
-    "color": "#B0C4DE",
+    "color": "#2c2c2c",
     "selectedColor": "#F8F8FF",
     "backgroundColor": "#05E0FC",
     "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "主页",
-        "iconPath": "/static/img/home.png",
-        "selectedIconPath": "/static/img/home_select.png"
+        "text": "项目概况",
+        "iconPath": "/static/img/project.png",
+        "selectedIconPath": "/static/img/project_select.png"
+      },
+      {
+        "pagePath": "pages/customer/customer",
+        "text": "用户故事",
+        "iconPath": "/static/img/customer.png",
+        "selectedIconPath": "/static/img/customer_selected.png"
       },
       {
         "pagePath": "pages/picture/picture",

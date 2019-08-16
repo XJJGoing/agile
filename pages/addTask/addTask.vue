@@ -4,13 +4,16 @@
 	 <form report-submit="true" @submit="submitAddTask">
 		<view class="addTask">
 			<text id="title">新增任务:</text>
-			<view>
-				<text id="heading">标识号:</text>
-				<input :style="{width:inputWidth+'px'}"  placeholder="真实姓的首字母大写(仅限一个)" @input="inputTaskOrder" :value="taskOrder"></input>
-			</view>
+			<!--
+				<view>
+					<text id="heading">标识号:</text>
+					<input :style="{width:inputWidth+'px'}"  placeholder="真实姓的首字母大写(仅限一个)" @input="inputTaskOrder" :value="taskOrder"></input>
+				</view>
+			-->
+			
 			<view>
 				<text id="heading">任务内容:</text>
-				<input :style="{width:inputWidth+'px'}" placeholder="请输入任务的内容(20个字以内)" @input="inputTaskName"></input>
+				<input :style="{width:inputWidth+'px'}" placeholder="请输入任务的内容(30个字以内)" @input="inputTaskName"></input>
 			</view>
 			<view>
 				<text id="heading">优先级:</text>
@@ -51,9 +54,10 @@
 	const Query = new query();
 	
 	import {formatDate} from '../../static/utils/time.js'
+	import {addFormId,compareTime} from '../../static/utils/utils.js';
 	
 	//引入api
-	import {taskAdd,departmentQuery,taskQuery,messageSend,projectQuery} from '../../static/utils/api.js';
+	import {taskAdd,departmentQuery,taskQuery,messageSend,projectQuery,sprintQuery} from '../../static/utils/api.js';
 	var _this;
 		export default {
 			data() {
@@ -69,10 +73,10 @@
 					workNote:"",            //任务的备注信息
 					
 					taskChargeUserName:"",   //该项目的负责人的名字
-					taskPriority:"",        //项目的优先级（1、2、3、4）;
-				    taskPredictTime:"",     //任务的预估时间
-					taskOrder:"",           //任务的序号，默认为真实姓名的第一个字母开头,自动获取排序号
-					taskName:"",            //任务的内容
+					taskPriority:"",         //项目的优先级（1、2、3、4）;
+					taskOrder:"",            //任务的序号从专业里面取跟序号进行拼接
+				    taskPredictTime:"",      //任务的预估时间
+					taskName:"",             //任务的内容
 					
 					departmentName:"",      //专业的名称
 					openId:"",             //项目负责人的openId
@@ -81,7 +85,10 @@
 					
 					
 				    priority:[1,2,3,4],      //优先级实现可以改变
-					index:""                 //选择优先级的下标
+					index:""                 ,//选择优先级的下标
+					
+				    departmentNum:"",            //从专业中取到的任务的标识号
+					
 				}
 			},
 			onLoad(){
@@ -227,7 +234,7 @@
 				})
 			 },
 			 
-			 //根据专业的id去查询专业的name
+			 //根据专业的id去查询专业.departmentName
 			getDepartmentName:function(departmentId){
 					_this = this;
 					uni.showLoading({
@@ -244,8 +251,9 @@
 						.then(data=>{
 							uni.hideLoading();
 							console.log(data)
-							console.log("查询到的执行人的专业",data[1].data.data.records[0].name);
-							_this.departmentName = data[1].data.data.records[0].name;
+							console.log("查询到的执行人的专业",data[1].data.data.records[0].departmentName);
+							_this.departmentName = data[1].data.data.records[0].departmentName;
+							_this.departmentNum = data[1].data.data.records[0].departmentNum;
 						})
 						.catch(Error=>{
 							console.log(Error)
@@ -294,12 +302,12 @@
 				this.taskPriority = this.priority[index];
 			},
 			
-		    //首先获取本人在本项目下本冲刺的本专业的情况下taskOrder 
+		    //首先获取在本项目下本冲刺的本专业的情况下taskOrder 
 			//根据查找到任务的总数进行统计,然后将统计的个数+1
 			getNowHadTaskOrder:function(callback){
 				_this = this;
 				console.log("查询条件",{
-							  taskExcuteUserId:_this.userInfo.id,
+							 // taskExcuteUserId:_this.userInfo.id,
 							  taskSprint:_this.sprintId,
 							  projectId:_this.projectId,
 							  departmentId:_this.departmentId,
@@ -313,7 +321,6 @@
 							url:taskQuery,
 							method:"POST",
 							data:{
-							  taskExcuteUserId:_this.userInfo.id,
 							  taskSprint:_this.sprintId,
 							  projectId:_this.projectId,
 							  departmentId:_this.departmentId,
@@ -326,9 +333,13 @@
 							
 							//查到任务并且返回长度.
 							uni.hideLoading();
-							console.log("查询到的任务",data);
-							let taskLength = data[1].data.data.records.length;
-							  callback(taskLength);
+							console.log("查询到的专业下的任务",data);
+							if(data[1].data.data.records.length){
+								let taskLength = data[1].data.data.records.length;
+								callback(taskLength)
+							}else{
+							    callback(0);	
+							}
 						})
 					    .catch(error=>{
 							uni.hideLoading();
@@ -342,30 +353,36 @@
 				})
 			},
 			
-			//输入首字母
-			//这里获取所有的该项目下该冲刺下该专业该用户的任务
-			//即调用getNowHadTaskOrder函数来计算总数然后将输入的值
-			//和总数＋1进行拼接作为最终的taskOrder赋给this.taskOrder	
-			inputTaskOrder:function(e){
-				let taskOrder = e.target.value;
-			    let reg = /[A-Z]/i;
-				if(reg.test(taskOrder)&&taskOrder.length===1){
-					this.getNowHadTaskOrder((length)=>{
-						this.taskOrder = taskOrder+(length+1);
-					})
-				}else{
-					this.taskOrder = "";
-					uni.showToast({
-						title:"输入有误",
-						icon:"none",
-						duration:500
-					})
-				}
-			},
+			// //输入首字母
+			// //这里获取所有的该项目下该冲刺下该专业该用户的任务
+			// //即调用getNowHadTaskOrder函数来计算总数然后将输入的值
+			// //和总数＋1进行拼接作为最终的taskOrder赋给this.taskOrder	
+			// inputTaskOrder:function(e){
+			// 	let taskOrder = e.target.value;
+			//     let reg = /[A-Z]/i;
+			// 	if(reg.test(taskOrder)&&taskOrder.length===1){
+			// 		this.getNowHadTaskOrder(length=>{    //0-9自动前缀补充0
+			// 			let len = length.toString();
+			// 			if(len.length===1&&len.length!=9){
+			// 			  this.taskOrder = taskOrder+("0"+(length+1));	
+			// 			}else{
+			// 			  this.taskOrder = taskOrder+(length+1);	
+			// 			}
+			// 		})
+			// 	}else{
+			// 		this.taskOrder = "";
+			// 		uni.showToast({
+			// 			title:"输入有误",
+			// 			icon:"none",
+			// 			duration:500
+			// 		})
+			// 	}
+			// },
+			// 
 			
 			//输入任务的内容
 			inputTaskName:function(e){
-				if(e.detail.value.length<=20){
+				if(e.detail.value.length<=30){
 					this.taskName = e.detail.value
 				}else{
 					this.taskName = "";
@@ -378,98 +395,151 @@
 			
 			//输入预估工时
 			inputTaskPredictTime:function(e){
-				let taskPredictTime = e.detail.value;
-				let reg = /^[0-9]$/g;
-				if(reg.test(taskPredictTime)){
-					this.taskPredictTime = e.detail.value;
-				}else{
-					uni.showToast({
-						title:'请输入数字',
-						duration:500,
-						icon:"none"
-					})
-				}
+				let taskPredictTime = parseFloat(e.detail.value);
+				this.taskPredictTime = taskPredictTime;
 			},
+			
+			//查找冲刺的启动时间和截止时间
+			querySprintInfo:function(callback){
+				_this = this;
+				uni.request({
+					url:sprintQuery,
+					method:"POST",
+					data:{
+						id:_this.sprintId,
+					},
+					dataType:'json'
+				})
+				.then(data=>{
+					let sprint = data[1].data.data.records[0];
+					let nowTime = formatDate(new Date());
+					let startTime = sprint.startTime;
+					let endTime = sprint.endTime;
+					compareTime(startTime,endTime,nowTime,(jude)=>{
+						if(jude){
+							callback(true)
+						}else{
+							callback(false)
+						}
+					})
+				})
+				.catch(Error=>{
+					uni.showToast({
+						title:'网络错误',
+						icon:"none",
+						duration:1000
+					})
+				})
+			},
+			
 			
 		    //添加任务提交的函数
 			submitAddTask:function(e){
 			   _this = this;
-			   //信息不为空的时候进行提交
-			   let data ={
-				   "departmentId": _this.departmentId,
-				   "isReview": 0,
-				   "projectId": _this.projectId,
-				   "sprintId": _this.sprintId,
-				   "taskChargeUserId": _this.taskChargeUserId,
-				   "taskExecuteUserId": _this.taskExcuteUserId,
-				   "taskName": _this.taskName,
-				   "taskOrder": _this.taskOrder,
-				   "taskPlainId":"",                
-				   "taskPredictTime": _this.taskPredictTime,
-				   "taskPriority": _this.taskPriority,
-				   "taskState": 0,
-			   };
-			   console.log("提交的信息",data)
-			   if(_this.projectId&&_this.taskExcuteUserId
-			       &&_this.taskChargeUserId&&_this.sprintId
-				   &&_this.taskChargeUserName&&_this.taskPriority
-				   &&_this.taskPredictTime&&_this.taskOrder
-				   &&_this.taskName&&_this.departmentName
-				 ){
-					 uni.showLoading({
-					 	title: '提交中',
-					 	mask: false,
-						success:()=>{
-							 uni.request({
-							url:taskAdd,
-							method:'POST',
-							//这个taskPlainId 在考虑要不要
-							data:{
-								  "departmentId": _this.departmentId,
-								  "isReview": 0,
-								  "projectId": _this.projectId,
-								  "sprintId": _this.sprintId,
-								  "taskChargeUserId": _this.taskChargeUserId,
-								  "taskExecuteUserId": _this.taskExcuteUserId,
-								  "taskName": _this.taskName,
-								  "taskOrder": _this.taskOrder,
-								  "taskPlainId":"",                
-								  "taskPredictTime": _this.taskPredictTime,
-								  "taskPriority": _this.taskPriority,
-								  "taskState": 0,
-								  "lastChangeStr":_this.taskPredictTime
-						    },
-							dataType:'json'
-						})
-						.then(data=>{
-							uni.hideLoading();
-							console.log("提交任务成功",data);
-							_this.pushAddMessagePush()
-						})
-						.catch(Error=>{
-						  uni.showToast({
-							 title: '网络错误',
-							 duration:500,
-							 icon:"none"
-						  });
-						})	
-				    } 
-				  });
-				
-				 }else{
-					 uni.showToast({
-					 	title:"请完善信息",
-						duration:1000,
-						icon:"none"
-					 })
-				 }
+			   addFormId(_this.userInfo.openId,e.detail.formId);
+			   
+			   let taskOrder;
+			   
+			   _this.getNowHadTaskOrder(length=>{       //0-9自动前缀补充0
+			   	let len = length.toString();
+			   	if(len.length===1&&len.length!=9){
+			   	  taskOrder = _this.departmentNum+"0"+(length+1);
+				  _this.taskOrder = taskOrder;
+				  console.log(taskOrder)
+				  _this.addTask();
+			   	}else{
+			   	    taskOrder = _this.departmentNum+(length+1);	
+				   _this.taskOrder = taskOrder
+				   _this.addTask();
+			   	 }
+			   })
+			},
+			
+			//addTask
+			addTask:function(){
+				 //信息不为空的时候进行提交
+				let data = {
+					   "departmentId": _this.departmentId,
+					   "isReview": 0,
+					   "projectId": _this.projectId,
+					   "sprintId": _this.sprintId,
+					   "taskChargeUserId": _this.taskChargeUserId,
+					   "taskExecuteUserId": _this.taskExcuteUserId,
+					   "taskName": _this.taskName,
+					   "taskOrder": _this.taskOrder,
+					   "taskPlainId":"",                
+					   "taskPredictTime": _this.taskPredictTime,
+					   "taskPriority": _this.taskPriority,
+					   "taskState": 0,
+				};
+				console.log("提交的任务的信息为",data)
+				if(_this.projectId&&_this.taskExcuteUserId
+				    &&_this.taskChargeUserId&&_this.sprintId
+				    &&_this.taskChargeUserName&&_this.taskPriority
+				    &&_this.taskPredictTime&&_this.taskOrder
+				    &&_this.taskName&&_this.departmentName
+				   ){
+						 _this.querySprintInfo(jude=>{
+							 if(jude){
+									 uni.showLoading({
+										title: '提交中',
+										mask: false,
+										success:()=>{
+											uni.request({
+											url:taskAdd,
+											method:'POST',
+											data:{
+												  "departmentId": _this.departmentId,
+												  "isReview": 0,
+												  "projectId": _this.projectId,
+												  "sprintId": _this.sprintId,
+												  "taskChargeUserId": _this.taskChargeUserId,
+												  "taskExecuteUserId": _this.taskExcuteUserId,
+												  "taskName": _this.taskName,
+												  "taskOrder": _this.taskOrder,
+												  "taskPlainId":"",                
+												  "taskPredictTime": _this.taskPredictTime,
+												  "taskPriority": _this.taskPriority,
+												  "taskState": 0,
+												  "lastChangeStr":_this.taskPredictTime
+											},
+											dataType:'json'
+										})
+										.then(data=>{
+											uni.hideLoading();
+											console.log("提交任务成功",data);
+											_this.pushAddMessagePush();
+										})
+										.catch(Error=>{
+										  uni.showToast({
+											 title: '网络错误',
+											 duration:500,
+											 icon:"none"
+										  });
+										})	
+									} 
+								 });
+							 }else{
+								 uni.showToast({
+									title:"冲刺已完成无法添加",
+									duration:1000,
+									icon:"none"
+								 })
+							  }
+							})
+						 }else{
+							 uni.showToast({
+								title:"请完善信息",
+								duration:1000,
+								icon:"none"
+							 })
+						 }
 			},
 			
 			//添加任务增加微信消息推送
-			pushAddMessagePush:function(formId){
+			pushAddMessagePush:function(){
 				_this = this;
 				console.log("项目负责人的openId",_this.openId)
-				console.log("formId",formId);
 				let applyTime = formatDate(new Date());
 				uni.showLoading({
 					title:"提交提交中", 
@@ -503,11 +573,15 @@
 							},	
 						}) 
 						.then(data=>{
-							uni.hideLoading();
 							uni.showToast({
-								title:"提交成功",
+								title:"提交成功等待审核",
 								icon:"../../static/img/Icon/success.png",
-								duration:500
+								duration:500,
+								success:()=>{
+									uni.navigateBack({
+										delta:1
+									})
+								}
 							})
 							console.log("消息推送成功",data)
 						})
@@ -541,13 +615,14 @@
 	flex-direction: column;
 }
 #title{
-	height: 80upx;
+	height: 70upx;
 	width: 100%;
-	font-size: 35upx;
+	font-size: 30upx;
 	font-weight:bold;
-	line-height: 80upx;
-	background-color:#6195C0;
-	margin-left: 2upx;
+	line-height: 70upx;
+	background-color:rgb(153,153,153);
+	margin-top:5upx;
+	margin-left: 0upx;
 }
 .addTask view{
 	height: 100upx;

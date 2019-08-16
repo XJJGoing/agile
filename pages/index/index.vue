@@ -9,11 +9,11 @@
    <block v-else>
 	<view class="chooseItem">
 			 <picker @change="bindPickerMyProject" :value="index" :range="myProject">
-				 切换首页项目
+				 切换参与项目
 			 </picker>
 			<picker @change="bindPickerLookProject" :value="index" :range="myLookProject">
-			     切换可看项目
-			</picker>
+			     临时访问项目
+			</picker> 
 	</view>
 	
 	<view class="titleView">
@@ -21,7 +21,7 @@
 	</view>
 	<view class="projectInfo">
 		 <view>
-			 <text>项目编号:</text>
+			 <text>项目名称:</text>
 			 <input disabled="true" :value="nowProject.projectName" :style="{width:width+'px'}"></input>
 		 </view>
 		 <view>
@@ -32,17 +32,10 @@
 			 <text>交付时间:</text>
 			 <input placeholder="填入项目交付的时间" :value="nowProject.projectFinishTime"  @input="ffinishTime" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
 		 </view>
-		 <view>
-			 <text>项目成果:</text>
-			 <input placeholder="填入项目的成果" :value="nowProject.projectResult" @input="fresult" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
-		 </view>
-		 <view>
-			 <text>项目管理:</text>
-			 <input placeholder="填入项目的管理" :value="nowProject.projectManagement" @input="fmanagement" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
-		 </view>
-		 <view>
-			 <text>冲刺个数:</text>
-			 <input placeholder="填入项目冲刺的个数" :value="nowProject.projectSprintNum" @input="fspintNum" :disabled="isChooseInput" :style="{width:width+'px'}"></input>
+		 
+		  <view>
+			 <text>项目经理:</text>
+			 <input  :value="manager" disabled="true" :style="{width:width+'px'}"></input>
 		 </view>
 		 <view>
 			 <text>项目成员:</text>
@@ -58,31 +51,16 @@
 								  plain="true"
 								  class="QSbutton"
 								  wavesColor="rgba(211,220,114,0.93)"
-								  btnStyle="{font-size:35upx;color: #E9EFED;}"
+								  btnStyle="{font-size:30upx;color: #E9EFED;}"
 					>
 					<text>提交</text>
 				   </QSWavesButton>
 			 </block>
-				 <QSWavesButton btnType="default"
-				                @click="addSprint"
-								plain="true"
-								class="QSbutton"
-								wavesColor="rgba(114,220,158,0.93)"
-								btnStyle="{font-size:35upx;color:#E9EFED;}"
-				 >
-				  <text>添加冲刺</text>
-				 </QSWavesButton>
 		 </view>
 	 </block>
-		 <QSWavesButton btnType="default" 
-						@click="returnApply"
-						plain="true"
-						class="QSbutton"
-						wavesColor="#e4712b"
-						btnStyle="{font-size:35upx;color:#E9EFED;width:400upx;}"
-		 >
-		 <text>申请查看其他项目</text>
-		 </QSWavesButton>
+		 <button class="return-apply-btn"  plain="true" @click="returnApply">
+			 申请查看其他项目
+		 </button>
   </block>
 	</scroll-view>
 </template>
@@ -94,15 +72,14 @@
 	const Login = new login();
 	import {addFormId} from '../../static/utils/utils.js';
 	import {formatDate} from '../../static/utils/time.js';
+	import {compareTime} from '../../static/utils/utils.js';
 	import {projectQuery,userPojectRoleQuery,projectUpdate,sprintQuery} from '../../static/utils/api.js'
 	
-	 import uniTag from "@/components/uni-tag/uni-tag.vue"
 	 import QSWavesButton from '@/components/QS-WavesButton/QS-WavesButton.vue';
 	var _this;
 	export default {
 		components:{
 			QSWavesButton,
-			uniTag
 		},
 		data() {
 			return {
@@ -120,6 +97,7 @@
 				management:"",
 				sprintNum:"",
 				people:"",
+				manager:"",                      //项目经理
 	            
 				allUserProjectRoles:[],     //从t_user_role_project这张表中拿到的所有的权限为1234的项目		
 				allUserProjectInfo:[],      //所有的项目信息
@@ -214,7 +192,7 @@
 			},
 			
 			fpeople:function(e){
-				  let reg = /^[0-9]$/g
+				  let reg = /^[0-9]+$/g
 				  let people = e.detail.value;
 				  if(reg.test(people)){
 					  this.people = people;
@@ -304,25 +282,20 @@
 		   //获取所有的项目的信息
 		  getAllProjectInfo:function(){
 			  _this = this;
-			  uni.showLoading({
-			  	title:"获取中",
-				success:()=>{
-				  Query.findAllProjectInfo()
-				  .then(data=>{
-					  uni.hideLoading();
-					  console.log("获取到的所有的项目的信息",data.data.records);
-					  _this.allUserProjectInfo = data.data.records;
-					  _this.getProject();                  //请求结束之后页面项目的信息
-					  _this.getUserProjectRole();          //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
+			 Query.findAllProjectInfo()
+			 .then(data=>{
+				  uni.hideLoading();
+				  console.log("获取到的所有的项目的信息",data.data.records);
+				  _this.allUserProjectInfo = data.data.records;
+				  _this.getProject();                  //请求结束之后页面项目的信息
+				  _this.getUserProjectRole();          //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
+			  })
+			  .catch(Error=>{
+				   uni.showToast({
+					title:"网络错误",
+					icon:"none",
+					duration:1000
 				   })
-				   .catch(Error=>{
-					   uni.showToast({
-					   	title:"网络错误",
-						icon:"none",
-						duration:1000
-					   })
-				   })
-				}
 			  })
 		  },
 			
@@ -347,10 +320,9 @@
 				   _this.finishTime = project.projectFinishTime;
 				   _this.result = project.projectResult;
 				   
-				   //判断是否显示按钮和是否可以输入
+				    //判断是否显示按钮和是否可以输入
 				   if(project.projectName&&project.projectTarget&&
-				     project.projectFinishTime&&project.projectResult
-					 &&project.projectManagement&&project.projectSprintNum&&project.projectPeople!=0&&_this.roleId===1
+				     project.projectFinishTime&&project.projectPeople!=0&&_this.roleId===1
 					 ){ 
 						 _this.isDisplay = false;               //不为空不显示,输入默认就行了
 						 _this.isChooseInput = true;
@@ -361,7 +333,18 @@
 						  _this.isChooseInput = true;
 						  _this.isDisplay = false;
 					  }  
-			   
+				   
+					   Query.findUser({id:project.projectChargeUserId})
+					   .then(data=>{
+						   _this.manager = data.data.records[0].trueName;
+					   })
+					   .catch(Error=>{
+						   uni.showLoading({
+							title:"网络错误",
+							icon:"loading",
+							duration:1000
+						   })
+					   })  
 		   },
 		   
 		   
@@ -411,23 +394,17 @@
 		   saveProject:function(){
 			   console.log("提交的信息",{
 				   target:_this.target,
-				   sprintNum:_this.sprintNum,
-				   management:_this.management,
 				   people:_this.people,
 				   finishTime:_this.finishTime,
-				   result:_this.result,
 			   })
-			   if(_this.target&&_this.sprintNum&&_this.management&&_this.people&&_this.finishTime&&_this.result){
+			   if(_this.target&&_this.people&&_this.finishTime){
 				   //这里项目信息，将项目信息提交到服务端
 				   let data = [{
 					   id:_this.projectId,
 					   projectId:_this.projectId,
 					   projectTarget:_this.target,
-					   projectSprintNum:_this.sprintNum,
-					   projectManagement:_this.management,
 					   projectPeople:_this.people,
 					   projectFinishTime:_this.finishTime,
-					   projectResult:_this.result 
 				   }];
 				   
 				   //提交到服务端并且进行项目的更新后并重新获取该项目的信息
@@ -479,12 +456,6 @@
 			   }
 		   },
 		   
-		   //添加冲刺进行页面的跳转。
-		   addSprint:function(){
-			   uni.navigateTo({
-			   	 url:"../addSprint/addSprint"
-			   })
-		   },  
 		      
 		   //继续申请查看其他的项目
 		   returnApply:function(){
@@ -508,32 +479,42 @@
 		   	   	method:"POST",
 		   	   	data:{
 		   	   		projectId:projectId,
+					pageNum:0,
+					pageSize:1000
 		   	   	},
 		   	   	dataType:'json',
 		   	   })
 		   	   .then(data=>{
 				console.log("进入获取到的冲刺",data[1].data.data.records)
 		   	   	let allSprint = data[1].data.data.records;
-		   	  	let sprintId; 
+		   	  	let sprintId = ""; 
 				console.log(allSprint.length)
 		   	   	if(allSprint.length){
 		   	  	  //获取当前的时间并且进行时间转换用作比较
-		   	  	  let nowDateTime = new Date(Date.parse(formatDate(new Date())));
-		   	  	  for(var i=0; i<allSprint.length;i++){
-		   	  	  	if(new Date(Date.parse(allSprint[i].startTime))<=nowDateTime
-		   	  	  	&&nowDateTime<new Date(Date.parse(allSprint[i].endTime))){
-		   	  	  		sprintId = allSprint[i].id;
-		   	  	  	}	
-		   	  	  }
-		   	  	  if(!sprintId){                 //如果实在都超过了时间段就默认进入最后一个
-				      let len = allSprint.length-1;
-		   	  		  sprintId = allSprint[len].id;
-		   	  	  }
-				  console.log(sprintId)
-		   	  	  uni.setStorage({
-		   	  	  	key:'sprintId',
-		   	  		data:sprintId
-		   	  	  })
+		   	  	  let nowDateTime = formatDate(new Date());
+		   	  	  for(let i = 0;i<allSprint.length;i++){
+		   	  	    	compareTime(allSprint[i].startTime,allSprint[i].endTime,nowDateTime,(jude)=>{
+							if(jude){
+								sprintId = allSprint[i].id;
+								console.log("设置了冲刺",sprintId);
+								uni.setStorage({
+									key:'sprintId', 
+									data:sprintId,
+								})
+							}
+						})
+		   	  	  } 
+			     if(sprintId===""){           //如果实在都超过了时间段就默认进入最后一个
+					   let len = allSprint.length-1;
+					   sprintId = allSprint[len].id;
+					   uni.setStorage({
+						key:'sprintId', 
+						data:sprintId,
+						success:()=>{
+							console.log("设置冲刺成功",sprintId);
+						}
+					   })
+		   	  	  } 
 		   	   	}else{
 		   	  		uni.setStorage({
 		   	  			key:'sprintId',
@@ -569,38 +550,45 @@
 	display: flex;
 	flex-direction:row;
 	justify-content: space-around;
-	margin-bottom: 5upx;
+	margin-bottom: 30upx;
+	margin-top: 30upx;
 }
 .chooseItem picker{
-	height: 60upx;
+	height: 55upx;
 	width: 200upx;
-	border-radius: 4%;
+	border-radius: 3%;
 	text-align: center;
-	background-color:rgba(171,159,174,0.93);
-	font-size: 28upx;
-	line-height: 60upx;
+	background-color:rgb(5,224,252);
+	font-size: 13px;
+	line-height: 55upx;
+    color: #F0F8FF;
 }
 .chooseItem picker text{
-	height: 60upx;
+	height: 55upx;
 	width: 200upx;
-	line-height: 60upx;
-    font-size:28upx;
+	line-height: 55upx;
+    font-size:12px;
 	text-align: center;
+	color: #F0F8FF;
+	font-weight: 600;
 }
 
 .titleView{
   width: 100%;
-  height: 70upx;
+  height: 50upx;
   text-align: center;
-  background-color: #6CA0D9;
+  background-color:rgb(5,224,252);
+  color: #F0F8FF;
   margin-left: 0upx;
+  border-radius: 2%;
 }
 
 .title{
 	width: 100%;
-	height: 70upx;
-	line-height: 70upx;
-	font-size: 35upx;
+	height: 50upx;
+	line-height: 50upx;
+	font-size: 30upx;
+	font-weight: 600;
 	font-family: webfont;
 	color: #F0F8FF;
 }  
@@ -641,13 +629,22 @@
 .QSbutton{
 	margin-top: 5upx;
 	width: 50%;
-	height: 80upx;
-	line-height: 80upx;
+	height: 60upx;
+	line-height: 60upx;
 	margin-top: 10upx;
 	margin-bottom: 30upx;
 }
 .QSbutton text{
 	color:#E9EFED;
+}
+.return-apply-btn{
+	color: #F0F8FF!important;
+	width: 60%;
+	border: 1px solid #E9EFED;
+	font-size: 30upx!important; 
+	height: 90upx;
+	margin-top: 20upx;
+	line-height: 90upx;
 }
 
 /*字体设置*/

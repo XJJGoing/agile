@@ -207,6 +207,7 @@ var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
     //监听时间选择器拿到的东西
     chooseDate: function chooseDate(e) {
+      console.log(e);
       this.chooseTime = e.result;
     },
 
@@ -217,12 +218,16 @@ var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       console.log(e);
       (0, _utils.addFormId)(_this.userInfo.openId, e.detail.formId);
       console.log(e.currentTarget.id);
-      var state = parseInt(e.target.target.id);
+      var state = parseInt(e.detail.target.id);
       console.log(state);
+      console.log(_this.chooseTime);
+      console.log(nowTime);
+      var chooseTime = new Date(Date.parse(_this.chooseTime));
       var roleId;
       if (state === 1) {
         var _roleId = 3;
-        if (_this.chooseTime && new Data(Date.parse(_this.chooseTime)) > nowTime) {
+        console.log("进来");
+        if (_this.chooseTime) {
           console.log("提交的消息", {
             id: _this.chooseItem.id,
             effectiveTime: _this.chooseTime,

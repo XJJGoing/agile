@@ -15,7 +15,7 @@
 					    :title="'项目编号:'+item.projectName" 
 					    :note="'申请的时间 '+item.createTime" 
 					>
-					   <view id="content"> 
+					   <view id="content">  
 					       <text>申请人:{{item.trueName}}</text>
 						   <text>申请理由:{{item.content}}</text>
 					   </view>
@@ -51,14 +51,12 @@
 	
 	//引入uni-card
 	import uniCard from "@/components/uni-card/uni-card.vue"
-	import uniNoticeBar from "@/components/uni-notice-bar/uni-notice-bar.vue"
 	
 	const Login = new login();
 	const Query = new query();
 	var _this;
 	export default {
 		components: {uniCard},
-		components: {uniNoticeBar},
 		data() {
 			return {
 				height:"",                //设置可见区域的高度
@@ -255,7 +253,8 @@
 	line-height: 80upx;
 	font-size:30upx;
 	font-weight: bold;
-	background-color: #6198C1;
+	margin-top: 5upx;
+	background-color: rgb(153,153,153);
 }
 .applyMessage{
 	width: 100%;

@@ -1,29 +1,40 @@
 <template>
 	<view class="userinfo">
-			  <view class="userinfo-avatar">
-			    <open-data  type="userAvatarUrl"></open-data>
-			  </view>
-			  <view class="userinfo-nickName">
-				 <open-data  type="userNickName" style="color: white;"></open-data>
-			  </view>
-				<view class="login">
-		            <input placeholder="请输入真实姓名否则无法登陆" 
-					       @input="inputTrueName" 
-						   :value="trueName"
-				     >
-				    </input>         
-					<button open-type="getUserInfo"
-							v-if="canIUse"  
-							@click="bindGetUserInfo()"
-							style="color: white;"
-							plain="trueName"
-							:disabled="disable"
-					>
-						授权登录
-					</button>
-					<view v-else>请升级微信的版本</view>
-			  </view>	 
-	</view>
+		<!-- #ifdef H5 -->
+		   <view class="h5-login">
+			 <form @submit="h5Login">  
+			   <input placeholder="输入账号" name="Id"></input>
+			   <input placeholder="输入密码" type="password" name="pwd"></input>
+			   <button type="primary" form-type="submit">登录</button>
+			 </form>  
+		   </view>
+		<!-- #endif -->
+		<!-- #ifdef MP-WEIXIN -->
+		    <view class="userinfo-avatar">
+		    		    <open-data  type="userAvatarUrl"></open-data>
+		    		  </view>
+		    		  <view class="userinfo-nickName">
+		    			 <open-data  type="userNickName" style="color: white;"></open-data>
+		    		  </view>
+		    			<view class="login">
+		    	            <input placeholder="请输入真实姓名否则无法登陆" 
+		    				       @input="inputTrueName" 
+		    					   :value="trueName"
+		    			     >
+		    			    </input>         
+		    				<button open-type="getUserInfo"
+		    						v-if="canIUse"  
+		    						@click="bindGetUserInfo()"
+		    						style="color: white;"
+		    						plain="trueName"
+		    						:disabled="disable"
+		    				>
+		    					授权登录
+		    				</button>
+		    				<view v-else>请升级微信的版本</view>
+		    		  </view>
+		<!-- #endif -->
+		</view>
 </template>
 
 <script>
@@ -124,12 +135,40 @@
 				   })	
 				}
 			  })
-		}
+		},
+		
 	  }
 	}
 </script>
 
 <style>
+.h5-login{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  color: #E9EFED;
+  margin-top: 15%;
+}
+.h5-login form{
+	width: 100%;
+	height: 100%;
+}
+.h5-login input{
+	width: 30%;
+	height: 40px;
+	border-radius: 2%;
+	border:1px solid #4CD964;
+	margin-top: 10px;
+	margin: 0 auto;
+}
+.h5-login button{
+	width: 20%;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 4%;
+	margin-top: 10px;
+}
 .userinfo{
 	width: 750upx;
 	height: 600upx;
@@ -161,7 +200,6 @@
 .login input{
 	width: 450upx;
 	height: 100upx;
-	border: 1upx solid #30FAF6;
 	border-radius: 4%;
 	font-size: 30upx;
 	line-height: 100upx;

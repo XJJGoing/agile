@@ -91,19 +91,18 @@ page{
 	border-radius: 4%;
 }
 .appListView2{
-	height: 250rpx!important;
+	height: 100rpx!important;
 }
 .appListView2 text{
-  height: 250rpx!important;
-  font-size:30rpx!important;
-  line-height: 250rpx!important;
+  height: 100rpx!important;
+  font-size:26rpx!important;
+  line-height: 100rpx!important;
 }
-.appListView2 textarea{
-	height: 250rpx;
-    border:1px solid #f8f1f3;
+/*.appListView2 textarea{
+	height: 80upx;
 	border-radius: 2%;
-	margin-top: 5rpx;
-}
+	margin-top: 5upx;
+}*/
 /*提交申请表的按钮*/
 .submitApply{
 	height: 100rpx;

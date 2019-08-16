@@ -155,7 +155,8 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 //
 //
 //
-var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query();var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var _this;var _default = { components: { uniCard: uniCard }, data: function data() {return { height: "", userInfo: "", noExamineProject: [], pageNum: 0, pageSize: 5 };}, onShow: function onShow() {
+var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query();var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var _this;var _default = { components: { uniCard: uniCard }, data: function data() {return { height: "", userInfo: "", noExamineProject: [], pageNum: 0, pageSize: 5, project: "" //点击选中的项目
+    };}, onShow: function onShow() {
     _this = this;
     _this.getSystem();
     uni.getStorage({
@@ -168,13 +169,14 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
         then(function (data) {
           console.log("用户信息", data);
           _this.userInfo = data.data.records[0];
-          if (_this.userInfo.isRoot) {
-            _this.getAllNoExamineProjects();
-          } else {
-            uni.redirectTo({
-              url: '../people/people' });
-
-          }
+          // if(_this.userInfo.isRoot){  
+          // 	_this.getAllNoExamineProjects();
+          // }else{
+          // 	uni.redirectTo({
+          // 		url:'../people/people'
+          // 	})
+          // }
+          _this.getAllNoExamineProjects();
         });
       },
       fail: function fail() {
@@ -237,6 +239,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     examineItem: function examineItem(e) {
       _this = this;
       var project = JSON.parse(e.currentTarget.id);
+      _this.project = project;
       console.log('选中的项目', project);
       uni.showModal({
         title: "审核",
@@ -308,8 +311,10 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
               icon: "none" });
 
             //重新刷新
+            var content = "已通过";
+            var content2 = "请熟记自己唯一的项目编号,以及前往项目主页填写项目信息以及添加冲刺";
+            _this.pushMessage(content, content2);
             _this.getAllNoExamineProjects();
-            _this.pushMessage(); //同步进行就行了
           }).
           catch(function (Error) {
             uni.showToast({
@@ -412,6 +417,9 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
 
             //重新刷新
+            var content = "未通过";
+            var content2 = "项目信息审核未通过,具体原因可以询问项目审核人员。";
+            _this.pushMessage(content, content2);
             _this.getAllNoExamineProjects();
           }).
           catch(function (Error) {
@@ -426,8 +434,9 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     },
 
     //将申请的项目通过的消息推送回去
-    pushMessage: function pushMessage(project) {
+    pushMessage: function pushMessage(content, content2) {
       _this = this;
+      var project = _this.project;
       var time = (0, _time.formatDate)(new Date());
       Query.findUser({ id: project.userId }).
       then(function (data) {
@@ -441,20 +450,20 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
               data: {
                 "touser": openId,
                 "page": "pages/index/index",
-                "template_id": "OPM7GA_vTZbtxK8ACVwRoIpq2uxKl7SrF4TdRdB6N_I",
+                "template_id": "vjCjvwma7S6l1dcL_fBY9jPPTJEgvfsYsTFktBX0a7Q",
                 "formId": "",
                 "data": {
                   "keyword1": {
                     "value": project.projectName },
 
                   "keyword2": {
-                    "value": time },
+                    "value": "\u7533\u8BF7\u7684\u9879\u76EE".concat(content) },
 
                   "keyword3": {
-                    "value": "申请的项目已通过" },
+                    "value": time },
 
                   "keyword4": {
-                    "value": "请熟记自己唯一的项目编号,以及前往项目主页填写项目信息以及添加冲刺" },
+                    "value": content2 },
 
                   "emphasis_keyword": "keyword1.DATA" } },
 
@@ -462,6 +471,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
               dataType: 'json' }).
 
             then(function (data) {
+              uni.hideLoading();
               console.log("推送成功");
             }).
             catch(function (Error) {

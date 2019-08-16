@@ -8,7 +8,9 @@
 			   <text>{{userInfo.trueName}}</text>
 			   <text id="roleName" >{{roleName}}</text>
 			   <view class="hr"></view>
-			   <text id="department">{{departmentName}}</text>
+			   <block v-if="roleId===2">
+			     <text id="department">{{departmentName}}</text>
+			   </block>
 	   </view>
 	  
 	  <view class="function">
@@ -40,8 +42,6 @@
 
 <script>
 	import uniCard from "@/components/uni-card/uni-card.vue";
-	import cmdCellItem from '@/components/cmd-cell-item/cmd-cell-item.vue'
-	import icard from "../../static/dist/card/index.js";
 	import {getAllRole,userProjectDepartmentQuery,departmentQuery} from "../../static/utils/api.js";
 	
 	const login = require('../../static/utils/utils').Login;
@@ -52,7 +52,7 @@
 	import {addFormId} from"../../static/utils/utils.js";
 	var _this;
 	export default {
-		components: {uniCard,icard,cmdCellItem},
+		components: {uniCard},
 		data() {
 			return {
 				userInfo:{},
@@ -87,7 +87,6 @@
 					   uni.getStorage({
 					   	key:"nowInProject",
 						success:(res)=>{
-							
 			 				//设置普通权限并且,获取对应权限用户权限的名称和专业名称
 							_this.projectId = res.data.projectId;
 							_this.roleId = res.data.roleId;
@@ -139,67 +138,53 @@
 			//根据用户的projectId以及用户的userId查找专业
 			getUserDepartmentId:function(){
 				_this = this;
-				// console.log("查询的条件为",{
-				// 				projectId:_this.projectId,
-				// 				userId:_this.userInfo.id
-				// 			})
-				uni.showLoading({
-					title:"切换中",
-					success:()=>{
-							uni.request({
-							url:userProjectDepartmentQuery,
-							method:"POST",
-							data:{
-								projectId:_this.projectId,
-								userId:_this.userInfo.id
-							},
-							dataType:'json'
-						 })
-						.then(data=>{
-							uni.hideLoading();
-							console.log(data)
-							if(data[1].data.data.records[0]){
-								_this.getUserDepartmentName(data[1].data.data.records[0].departmentId)
-							}else{
-								_this.departmentName = "";
-							}
-						})
-						.catch(Error=>{
-							uni.showToast({
-								title:"网络错误",
-								icon:"none",
-								duration:1000
-							})
-						})
+				uni.request({
+					url:userProjectDepartmentQuery,
+					method:"POST",
+					data:{
+						projectId:_this.projectId,
+						userId:_this.userInfo.id
+					},
+					dataType:'json'
+				 })
+				.then(data=>{
+					uni.hideLoading();
+					console.log(data)
+					if(data[1].data.data.records[0]){
+						_this.getUserDepartmentName(data[1].data.data.records[0].departmentId)
+					}else{
+						_this.departmentName = "";
 					}
+				})
+				.catch(Error=>{
+					uni.showToast({
+						title:"网络错误",
+						icon:"none",
+						duration:1000
+					})
 				})
 			},
 			
 			//根据专业的id进行查询专业的名称
 			getUserDepartmentName:function(departmentId){
-				uni.showLoading({
-				   title:"切换中",
-				   success:()=>{
-					   uni.request({
-					   	  url:departmentQuery,
-						  method:"POST",
-						  data:{
-							id:departmentId 
-						  },
-						  dataType:'json'
+				uni.request({
+					  url:departmentQuery,
+					  method:"POST",
+					  data:{
+						id:departmentId 
+					  },
+					  dataType:'json'
+				})
+				.then(data=>{ 
+					   uni.hideLoading()
+					   _this.departmentName = data[1].data.data.records[0].departmentName
+				})
+				.catch(Error=>{
+					   uni.showToast({
+						 title:"网络错误",
+						 duration:1000,
+						 icon:"none"
 					   })
-					   .then(data=>{ 
-						   uni.hideLoading()
-						   _this.departmentName = data[1].data.data.records[0].name
-					   })
-					   .catch(Error=>{
-						   uni.showToast({
-						   	 title:"网络错误",
-							 duration:1000,
-							 icon:"none"
-						   })
-					   })
-				   }
 				})
 			},
 			

@@ -25,11 +25,15 @@
 				  <text>专业名:</text>
 				  <input placeholder="请输入新增专业的名称(4个字以内)" @input="inputDeparment" :style="{width:inputWidth+'px'}"></input>
 			  </view>
-			  <form report-submit="true" @click="addDepartment">
+			  <view class="addNewDepartment">
+				  <text>标识号:</text>
+				  <input placeholder="请输入一个专业的标识号(1个大写字母)" @input="inputTaskOrderName" :style="{width:inputWidth+'px'}"></input>
+			  </view>
+			  <form report-submit="true" @submit="addDepartment">
 			    <button form-type="submit" class="sureAddDepartment">确认新增</button>
 			  </form>
 		  </block>
-		  <form report-submit="true" @click="submitChange">
+		  <form report-submit="true" @submit="submitChange">
 		   <button form-type="submit" class="submit" >提交修改</button>
 		  </form>
 		</view>
@@ -47,7 +51,8 @@
 			userProjectDepartmentQuery,
 			updateUserProjectDepartment,
 			departmentAdd,
-			userProjectDepartmentDeleteBatch
+			userProjectDepartmentDeleteBatch,
+			departmentQuery
 			} from '../../static/utils/api.js';
 	import {addFormId} from '../../static/utils/utils.js';
 	var _this;
@@ -74,6 +79,8 @@
 			   hadUserProjectDepartmentId:""  ,//查询到原本已经有的t_user_project_department那张表的id用于更新用
 			   
 			   isHadUserProjectDepartment:false,    //判断这个用户之前有没有这个字段在t_user_project_department中
+			   
+			   departmentNum:"",                   //新增专业输入的标识号
 			}
 		},
 		onShow(){
@@ -88,7 +95,7 @@
 					Query.findUser(id)
 					.then(data=>{
 						console.log("用户信息",data.data)
-						   _this.userInfo = data.data;
+						   _this.userInfo = data.data.records[0];
 						   uni.getStorage({
 						  	 	key:"nowInProject",
 						  	 	success:(res)=>{
@@ -117,6 +124,7 @@
 		
 		methods: {	
 			
+			
 			//获取系统的信息设置picker的长度
 			getSystem:function(){
 				_this = this;
@@ -141,7 +149,7 @@
 				   _this.allDepartmentArry = department;
 				   let arry = [];
 				  for(var i in department){
-					  arry.push(department[i].name)
+					  arry.push(department[i].departmentName)
 				  }
 				   _this.departmentArry = arry;
 			    })
@@ -179,7 +187,16 @@
 			    })
 				.then(data=>{ 
 					console.log("更新成功",data)
-					uni.hideLoading();
+					uni.showToast({
+						title:"提交成功",
+						icon:"../../static/img/Icon/success.png",
+						duration:500,
+						success:()=>{
+							uni.navigateBack({
+								delta:1
+							})
+						}
+					})
 				})
 			},
 		
@@ -209,12 +226,7 @@
 				 uni.showToast({
 				 	title:"修改成功",
 					icon:"../../static/img/Icon/success.png",
-					duration:500,
-					success:()=>{
-						uni.navigateBack({
-							delta:1,
-						})
-					}
+					duration:500
 				 })
 			  })
 		  },
@@ -265,15 +277,15 @@
 			  })
 		  },
 		  
-		  //查询t_user_project_department中用户的专业        //目前出了问题
+		  //查询t_user_project_department中用户的专业        
 		  queryUserProjectDepartment:function(){
 			  _this = this;
-			  console.log("查询的项目的id",_this.projectId)
+			  console.log("查询的项目的id",_this.projectId,_this.beChangeUserId)
 			  uni.request({
 			  	url:userProjectDepartmentQuery,
 				data:{
 				  userId:_this.beChangeUserId,
-				  project:_this.projectId
+				  projectId:_this.projectId
 				},
 				dataType:'json',
 				method:"POST"
@@ -290,7 +302,7 @@
 					 _this.hadDepartmentId = departmentId;
 					 for(var i in _this.allDepartmentArry){
 					 	 if(departmentId === _this.allDepartmentArry[i].id){
-					 		  _this.hadDepartment = _this.allDepartmentArry[i].name
+					 		  _this.hadDepartment = _this.allDepartmentArry[i].departmentName
 							  console.log(_this.hadDepartment)
 					 	 }
 					 }  
@@ -323,13 +335,13 @@
 				 }) 
 			  }
 			  if(_this.isHadUserProjectDepartment&&_this.beChangeUserRoleId===3){   //权限被改变为3并且已经有对应专业时直接删除t_user_project_department中的数据
-				  _this.deleteUserProjectDepartment();    
+				  _this.deleteUserProjectDepartment();
 			  }
-			  if(_this.beChangeUserRoleId){       //改变权限
+			  if(_this.beChangeUserRoleId){        //单改变权限
 				   uni.showLoading({
 				  	 title:"提交中",
-				  	 success:()=>{
-				  		   _this.updateUserRoleId();  //改变roleId
+				  	 success:()=>{ 
+				  		   _this.updateUserRoleId();     //改变roleId
 				  	 }
 				  }) 
 			  }
@@ -356,45 +368,137 @@
 					icon:"none"
 				  })
 			  }
-			  
+		   },
+		   
+		   //输入标识字母
+		   inputTaskOrderName:function(e){
+		   	_this = this;
+		   	let departmentNum = e.detail.value;
+		       let reg = /^[A-Z]$/g;
+		   	if(reg.test(departmentNum)&&departmentNum.length===1){
+		   		_this.departmentNum = departmentNum;
+		   	}else{
+		   		_this.departmentNum = "";
+		   		uni.showToast({
+		   			title:"输入有误",
+		   			duration:500,
+		   			icon:"none"
+		   		})
+		   	 }
+		   },
+		   
+		   //查询是否已存在该专业
+		   queryDepartment:function(callback){
+			   _this = this;
+			   let departmentName = _this.newDepartment;
+			   uni.request({
+			   	url:departmentQuery,
+				method:"POST",
+				data:{
+					departmentName:departmentName
+				},
+				dataType:'json'
+			   })
+			   .then(data=>{
+				   if(data[1].data.data.records.length&&data[1].data.code===200){
+					   uni.showToast({
+					   	title:"已有该专业",
+						duration:500,
+						icon:"none"
+					   })
+				   }else{
+					   callback(true)
+				   }
+			   })
+			   .catch(Error=>{
+				   console.log(Error);
+				   uni.showToast({
+				   	title:'网络错误',
+					duration:500,
+					icon:"loading"
+				   })
+			   })
+		   },
+		   
+		   //查找是否已有该标识号
+		   queryDepartmentNum:function(callback){
+			   _this = this;
+			   uni.request({
+			   	    url:departmentQuery,
+					method:"POST",
+					data:{
+						departmentNum:_this.departmentNum,
+					},
+					dataType:'json'
+			   })
+			   .then(data=>{
+				   console.log("查询的标识号",data)
+				   if(data[1].data.data.records.length&&data[1].data.code===200){
+					   uni.showToast({
+						title:"已有该标识号",
+						duration:500,
+						icon:"none"
+					   })
+				   }else{
+					   callback(true)
+				   }
+			   })
+			   .catch(Error=>{
+				   console.log(Error);
+				   uni.showToast({
+					title:'网络错误',
+					duration:500,
+					icon:"loading"
+				   })
+			   })
 		   },
 			 
 		   //确认新增专业   ---
-		   addDepartment:function(){
+		   addDepartment:function(e){
 			   _this = this;
+			   console.log(e);
 			   addFormId(_this.userInfo.openId,e.detail.formId)
-			   if(_this.newDepartment&&_this.newDepartment.length<=4){ 
-	
-				  //这里添加请求新增专业
-				  uni.showLoading({
-				  	title:"添加中",
-				    success:()=>{ 
-						 uni.request({
-							url:departmentAdd,
-						    method:"POST",
-							data:{
-								name:_this.newDepartment
-							},
-						    dataType:'josn'
-						 })
-						 .then(data=>{ //新增专业成功，在此调用获取所有专业的函数
-							 uni.hideLoading();
-							_this.getAllDepartment();
-							uni.showToast({
-								title:"新增成功",
-								icon:"../../static/img/Icon/success.png",
-								duration:500
-							})
-						 })
-						 .catch(error=>{
-							uni.showToast({
-								title:"添加失败",
-								icon:"loading",
-								duration:1000
-							})
-						 })
-					}
-				  })
+			   if(_this.departmentNum&&_this.newDepartment&&_this.newDepartment.length<=4){ 
+	              _this.queryDepartment(jude=>{                  //查询是否有该专业
+					  if(jude){ 
+						  _this.queryDepartmentNum(jude2=>{           //查询是否有该专业标号
+							  if(jude2){
+								  	uni.showLoading({
+								  	title:"添加中",
+								    success:()=>{ 
+									 uni.request({
+										url:departmentAdd,
+										method:"POST",
+										data:{
+											departmentName:_this.newDepartment,
+											departmentNum:_this.departmentNum
+										},
+										dataType:'josn'
+									 })
+									 .then(data=>{ //新增专业成功，在此调用获取所有专业的函数
+										 uni.hideLoading();
+										 console.log(data)
+										_this.getAllDepartment();
+										uni.showToast({
+											title:"新增成功",
+											icon:"../../static/img/Icon/success.png",
+											duration:500
+										})
+									 })
+									 .catch(Error=>{
+										console.log(Error)
+										uni.showToast({
+											title:"添加失败",
+											icon:"loading",
+											duration:1000
+										})
+									 })
+								    }
+								  })  
+							  }
+						  })
+					  }
+				 })
 			   }else{
 				  uni.showToast({
 				  	title:"请按照要求填入专业",
@@ -420,18 +524,18 @@
 				  })
 				  .then(data=>{
 					  console.log("删除成功")
-					  uni.showToast({
-					  	title:"提交成功",
-						icon:"../../static/img/Icon/success.png",
-						duration:500,
-					  })
 				  })
 				  .catch(Error=>{
 					  console.log(Error);
 					  uni.showToast({
 					  	title:"网络错误",
 						duration:500,
-						icon:"loading"
+						icon:"loading",
+						success:()=>{
+							uni.navigateBack({
+								delta:1,
+							})
+						}
 					  })
 				  })
 				 }
@@ -451,7 +555,7 @@
 			   console.log("选中的department名字",this.departmentArry[index]);
 			   this.hadDepartment = this.departmentArry[index];
 			   for(var i in this.allDepartmentArry){
-				   if(this.departmentArry[index] === this.allDepartmentArry[i].name){
+				   if(this.departmentArry[index] === this.allDepartmentArry[i].departmentName){
 					   this.hadDepartmentId = this.allDepartmentArry[i].id;
 				   }
 			   }
@@ -500,6 +604,7 @@
 .updateUserRole view picker{
 	margin-left: 10upx;
 	color: #F1F1F1;
+	width: 80%;
 }
 
 .addNewDepartment{

@@ -1,0 +1,52 @@
+
+.sprintMessage{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	margin-top: 20px;
+}
+.sprintMessage view{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	height: 80rpx;
+	width: 100%;
+	font-size: 14px;
+	color: #F0F8FF;
+	margin-top: 10px;
+}
+.sprintMessage view text{
+	margin-left: 2%;
+	height: 80rpx;
+	line-height: 80rpx;
+	width: 20%;
+}
+.sprintMessage view input{
+	margin-left: 1%;
+	height: 80rpx;
+	line-height: 80rpx;
+}
+.sprintMessage button{
+	width: 60%;
+	height: 80rpx;
+	line-height: 80rpx;
+	background-color: #6CA0D9;
+	margin-top: 30rpx;
+}
+.wpicker{
+	height: 400rpx;
+	width: 100%;
+}
+

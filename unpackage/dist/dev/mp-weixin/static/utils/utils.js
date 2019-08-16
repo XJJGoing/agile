@@ -326,8 +326,22 @@ const addFormId = (openId,formId)=>{
 	}
 }
 
+//比较冲刺时间的大小的函数
+const compareTime = (startTime,endTime,nowTime,callback)=>{
+	let sprintStartTime = startTime.replace(/\-/g,'/');
+	let sprintEndTime = endTime.replace(/\-/g,'/');
+	let sprintNowTime = nowTime.replace(/\-/g,'/');
+	  if(new Date(Date.parse(sprintStartTime))<new Date(Date.parse(sprintNowTime))
+	  &&new Date(Date.parse(sprintNowTime))<new Date(Date.parse(sprintEndTime))){
+		  callback(1)
+	  }else{
+		  callback(0)
+	  }
+}
+
 module.exports = {
 	  Login:Login,
 	  Query:Query,
-	  addFormId:addFormId
+	  addFormId:addFormId,
+	  compareTime:compareTime
 }

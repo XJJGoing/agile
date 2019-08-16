@@ -7,10 +7,7 @@
 		"urlCheck": false,
 		"es6": true,
 		"postcss": false,
-		"minified": false,
-		"newFeature": true,
-		"autoAudits": false,
-		"checkInvalidKey": true
+		"minified": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.7.0",
@@ -36,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 16,
+			"current": 17,
 			"list": [
 				{
 					"id": 0,
@@ -136,7 +133,14 @@
 				},
 				{
 					"id": -1,
-					"name": "pictrue",
+					"name": "customer",
+					"pathName": "pages/customer/customer",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "picture",
 					"pathName": "pages/picture/picture",
 					"scene": null
 				}

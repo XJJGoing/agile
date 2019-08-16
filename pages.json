@@ -3,10 +3,11 @@
 		{
 			"path": "pages/index/index",
 			"style": {
+				"navigationBarTitleText":"首页",
 				"usingComponents":{
 				
 				},
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh":false
 			}
 		},
 		{
@@ -16,7 +17,7 @@
 					"i-button": "/static/dist/button/index",
 					"i-page":"/static/dist/page/index"
 				},
-				 "enablePullDownRefresh":true
+				 "enablePullDownRefresh":false
 			}
 		}
 	    ,{
@@ -30,25 +31,13 @@
         ,{
             "path" : "pages/people/people",
             "style" : {
+				"navigationBarTitleText":"个人中心",
 				"usingComponents":{
 					"i-button":"/static/dist/button/index",
-					"i-input":"/static/dist/input/index",
-					"i-panel":"/static/dist/panel/index",
-					"i-tab-bar":"/static/dist/tab-bar/index",
-					"i-tab-bar-item":"/static/dist/tab-bar-item/index",
-					"i-radio":"/static/dist/radio/index",
-					"i-alert": "/static/dist/alert/index",
-					"i-toast": "/static/dist/toast/index",
-					"i-avatar": "/static/dist/avatar/index",
 					"i-cell-group": "/static/dist/cell-group/index",
-					"i-cell": "/static/dist/cell/index",
-					"i-badge": "/static/dist/badge/index",
-					"i-page": "/static/dist/page/index",
-					"i-modal": "/static/dist/modal/index",
-					"i-collapse": "/static/dist/collapse/index",
-					"i-collapse-item": "/static/dist/collapse-item/index",
-					"i-card": "/static/dist/card/index"
-				}
+					"i-cell": "/static/dist/cell/index" 
+				},
+				"enablePullDownRefresh":false
 			}
         }
 		,{
@@ -97,7 +86,13 @@
         }
         ,{
             "path" : "pages/picture/picture",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText":"燃尽图",
+				"usingComponents":{
+					"i-progress":"/static/dist/progress/index"
+				},
+				"enablePullDownRefresh":false
+			}
         }  
         ,{
             "path" : "pages/dateWork/dateWork",
@@ -111,6 +106,28 @@
             "path" : "pages/updateRedictTime/updateRedictTime",
             "style" : {}
         }
+        ,{
+            "path" : "pages/landScapePicture/landScapePicture",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/updateSprint/updateSprint",
+            "style" : {}
+        }
+		,{
+           "path":"pages/customer/customer",
+	        "style" : {"enablePullDownRefresh":false,
+			           "navigationBarTitleText":"用户故事"
+			}
+		 }
+        ,{
+            "path" : "pages/addStory/addStory",
+            "style" : {"enablePullDownRefresh":false}
+        }
+        ,{
+            "path" : "pages/updateStory/updateStory",
+            "style" : {}
+        }
     ],
 	
 	"globalStyle": {
@@ -122,15 +139,21 @@
 		
 	},
    	"tabBar":{
-		"color": "#B0C4DE",
+		"color": "#2c2c2c",
 		"selectedColor": "#F8F8FF", 
 		"backgroundColor": "#05E0FC",
 		"borderStyle": "white",
 		"list":[{ 
 			 "pagePath": "pages/index/index",
-			 "text": "主页",
-			 "iconPath": "/static/img/home.png", 
-			 "selectedIconPath": "/static/img/home_select.png"
+			 "text": "项目概况",
+			 "iconPath": "/static/img/project.png", 
+			 "selectedIconPath": "/static/img/project_select.png"
+		},
+		{
+			"pagePath":"pages/customer/customer",
+			"text":"用户故事",
+			"iconPath":"/static/img/customer.png",
+			"selectedIconPath":"/static/img/customer_selected.png"
 		},{
 			"pagePath": "pages/picture/picture",
 			"text": "燃尽图",

@@ -149,10 +149,10 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 
 
 
-var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js");var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var cmdCellItem = function cmdCellItem() {return __webpack_require__.e(/*! import() | components/cmd-cell-item/cmd-cell-item */ "components/cmd-cell-item/cmd-cell-item").then(__webpack_require__.bind(null, /*! @/components/cmd-cell-item/cmd-cell-item.vue */ "../../../../../个人信息/agile/components/cmd-cell-item/cmd-cell-item.vue"));};var icard = function icard() {return __webpack_require__.e(/*! import() | static/dist/card/index */ "common/vendor").then(__webpack_require__.t.bind(null, /*! ../../static/dist/card/index.js */ "../../../../../个人信息/agile/static/dist/card/index.js", 7));};var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Query = new query();var Login = new login();
+var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js");var uniCard = function uniCard() {return __webpack_require__.e(/*! import() | components/uni-card/uni-card */ "components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/components/uni-card/uni-card.vue */ "../../../../../个人信息/agile/components/uni-card/uni-card.vue"));};var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Query = new query();var Login = new login();
 var _this;var _default =
 {
-  components: { uniCard: uniCard, icard: icard, cmdCellItem: cmdCellItem },
+  components: { uniCard: uniCard },
   data: function data() {
     return {
       userInfo: {},
@@ -187,7 +187,6 @@ var _this;var _default =
             uni.getStorage({
               key: "nowInProject",
               success: function success(res) {
-
                 //设置普通权限并且,获取对应权限用户权限的名称和专业名称
                 _this.projectId = res.data.projectId;
                 _this.roleId = res.data.roleId;
@@ -239,68 +238,54 @@ var _this;var _default =
     //根据用户的projectId以及用户的userId查找专业
     getUserDepartmentId: function getUserDepartmentId() {
       _this = this;
-      // console.log("查询的条件为",{
-      // 				projectId:_this.projectId,
-      // 				userId:_this.userInfo.id
-      // 			})
-      uni.showLoading({
-        title: "切换中",
-        success: function success() {
-          uni.request({
-            url: _api.userProjectDepartmentQuery,
-            method: "POST",
-            data: {
-              projectId: _this.projectId,
-              userId: _this.userInfo.id },
+      uni.request({
+        url: _api.userProjectDepartmentQuery,
+        method: "POST",
+        data: {
+          projectId: _this.projectId,
+          userId: _this.userInfo.id },
 
-            dataType: 'json' }).
+        dataType: 'json' }).
 
-          then(function (data) {
-            uni.hideLoading();
-            console.log(data);
-            if (data[1].data.data.records[0]) {
-              _this.getUserDepartmentName(data[1].data.data.records[0].departmentId);
-            } else {
-              _this.departmentName = "";
-            }
-          }).
-          catch(function (Error) {
-            uni.showToast({
-              title: "网络错误",
-              icon: "none",
-              duration: 1000 });
+      then(function (data) {
+        uni.hideLoading();
+        console.log(data);
+        if (data[1].data.data.records[0]) {
+          _this.getUserDepartmentName(data[1].data.data.records[0].departmentId);
+        } else {
+          _this.departmentName = "";
+        }
+      }).
+      catch(function (Error) {
+        uni.showToast({
+          title: "网络错误",
+          icon: "none",
+          duration: 1000 });
 
-          });
-        } });
-
+      });
     },
 
     //根据专业的id进行查询专业的名称
     getUserDepartmentName: function getUserDepartmentName(departmentId) {
-      uni.showLoading({
-        title: "切换中",
-        success: function success() {
-          uni.request({
-            url: _api.departmentQuery,
-            method: "POST",
-            data: {
-              id: departmentId },
+      uni.request({
+        url: _api.departmentQuery,
+        method: "POST",
+        data: {
+          id: departmentId },
 
-            dataType: 'json' }).
+        dataType: 'json' }).
 
-          then(function (data) {
-            uni.hideLoading();
-            _this.departmentName = data[1].data.data.records[0].name;
-          }).
-          catch(function (Error) {
-            uni.showToast({
-              title: "网络错误",
-              duration: 1000,
-              icon: "none" });
+      then(function (data) {
+        uni.hideLoading();
+        _this.departmentName = data[1].data.data.records[0].departmentName;
+      }).
+      catch(function (Error) {
+        uni.showToast({
+          title: "网络错误",
+          duration: 1000,
+          icon: "none" });
 
-          });
-        } });
-
+      });
     },
 
 

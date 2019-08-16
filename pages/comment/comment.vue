@@ -59,9 +59,12 @@
 			}
 		},
 		
-		onShow() {
-	      this.getSystem();    
+		onLoad(e) {
 		  _this = this
+		  console.log("评论区",e);
+		  _this.getSystem();
+		  _this.sprintId = parseInt(e.sprintId);
+		  console.log(e.sprintId)
 		  wx.getStorage({
 		  	key:"userInfo",
 			success:(res)=>{
@@ -76,13 +79,7 @@
 					   key:"nowInProject",
 					   success:(res)=>{
 						   _this.projectId = res.data.projectId;
-						   uni.getStorage({
-							   key:'sprintId',
-							   success:(res)=>{
-								   _this.sprintId = res.data;
-								   _this.queryComment();
-							   }
-						   })
+						   _this.queryComment();
 					   }
 				   })
 			   })
@@ -243,6 +240,7 @@
 	margin-top: 15upx;
 	width: 90%;
 	height: 85upx;
+	line-break: 85upx;
 	border-radius: 1px solid #E9EFED;
 }
 

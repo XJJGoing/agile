@@ -25,13 +25,14 @@
 	        justify-content: flex-start;
 }
 #title{
-	font-size:35rpx;
+	font-size:30rpx;
+	font-weight: 600;
 	color: #F9FAF0;
 	width: 100%;
 	text-align: left;
 	height: 50rpx;
 	line-height: 50rpx;
-	background-color: #5585BC;
+	background-color: #05E0FC;
 	margin-top: 10rpx;
 }
 .eachOne{
@@ -48,6 +49,7 @@
 	-webkit-flex-direction: column;
 	    -ms-flex-direction: column;
 	        flex-direction: column;
+	height: 50rpx;
 }
 .info text{
 	font-size: 30rpx;

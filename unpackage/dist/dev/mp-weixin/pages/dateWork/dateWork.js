@@ -188,13 +188,15 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 //
 //
 var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Login = new login();var Query = new query();var _this;var _default = { data: function data() {return { width: "", //设置输入框和输入区域的长度
-      userInfo: "", projectId: "", //这三个也传
-      sprintId: "", departmentId: "", taskId: 6, //任务的id.
-      taskOrder: "L3", //任务的序号 
-      taskName: "购买重量级别的原子弹", //任务的内容  这三个参数都通过页面传输参数传过来。
-      taskStatusArry: ["未完成", "完成", "中止", "进行中"], taskDisplayStatus: "未完成", //默认的任务状态
+      userInfo: "", projectId: "", //这4个也传
+      actualWorkingHours: "", //目前的实际工时
+      sprintId: "", departmentId: "", taskId: "", //任务的id.
+      taskOrder: "", //任务的序号 
+      taskName: "", //任务的内容  这三个参数都通过页面传输参数传过来。
+      taskStatusArry: ["未开始", "完成", "中止", "进行中"], taskDisplayStatus: "未完成", //默认的任务状态
       taskState: 0, // 0:未完成 1:完成 2:中止 3:进行中
       dayWorkTime: "", //输入的每天工时
+      preDayWorkTime: "", //打过卡原有的当天的工时
       dayNote: "", //每天的日报
       completionDegree: "", //每日的完成度
       dateWorkId: "" //dateWorkId。用于更新用
@@ -209,7 +211,15 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
   },
 
   onLoad: function onLoad(e) {
-
+    _this = this;
+    var item = JSON.parse(e.item);
+    _this.projectId = parseInt(item.projectId);
+    _this.sprintId = parseInt(item.sprintId);
+    _this.departmentId = parseInt(item.departmentId);
+    _this.taskId = parseInt(item.taskId);
+    _this.taskOrder = item.taskOrder;
+    _this.taskName = item.taskName;
+    _this.actualWorkingHours = parseFloat(item.actualWorkingHours);
   },
 
   methods: {
@@ -227,7 +237,18 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     //查询今日有没有打卡，有的就显示，再次提交的时候就更新
     getHadNowDateWork: function getHadNowDateWork() {
       _this = this;
-      var dateTime = (0, _time.format)(new Date());
+      var dateTime; //打卡的时间,填入的时间段
+      var nowHours = new Date().getHours();
+      var nowTimeStap = new Date().getTime(); //当前的时间磋
+      if (nowHours >= 0 && nowHours < 12) {//在3点之前就查前一天的
+        nowTimeStap -= 1 * 12 * 60 * 60 * 1000;
+        var year = new Date(nowTimeStap).getYear();
+        var month = new Date(nowTimeStap).getMonth() + 1;
+        var day = new Date(nowTimeStap).getDate();
+        dateTime = year + '-' + month + '-' + day;
+      } else {
+        dateTime = (0, _time.format)(new Date());
+      }
       uni.showLoading({
         title: "获取中",
         success: function success() {
@@ -245,10 +266,11 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
           then(function (data) {
             uni.hideLoading();
-            console.log("查找成功", data[1].data.data.records[0]);
+            console.log("查找成功", data[1].data.data.records);
             if (data[1].data.data.records.length) {//查找是否存在
               _this.dateWorkId = data[1].data.data.records[0].id;
               _this.dayWorkTime = data[1].data.data.records[0].workTime;
+              _this.preDayWorkTime = data[1].data.data.records[0].workTime;
               _this.dayNote = data[1].data.data.records[0].note;
               _this.taskState = 3;
             } else {
@@ -273,22 +295,24 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       _this.taskDisplayStatus = _this.taskStatusArry[index];
       _this.taskState = index;
     },
+
     inputDayWokrTime: function inputDayWokrTime(e) {
       _this = this;
       var dayWorkTime = e.detail.value;
-      var reg = /^[0-9]+$/g;
-      if (reg.test(dayWorkTime)) {
-        _this.dayWorkTime = dayWorkTime;
-      } else {
-        uni.showToast({
-          title: "请输入数字",
-          icon: "none",
-          duration: 500,
-          success: function success() {
-            _this.dayWorkTime = "";
-          } });
-
-      }
+      _this.dayWorkTime = dayWorkTime;
+      // let reg = /^[0-9]+$/g;
+      // if(reg.test(dayWorkTime)){
+      // 	_this.dayWorkTime = dayWorkTime;
+      // }else{
+      // 	uni.showToast({
+      // 		title:"请输入数字",
+      // 		icon:"none",
+      // 	    duration:500,
+      // 		success:()=>{
+      // 			_this.dayWorkTime = "";
+      // 		}
+      // 	})
+      // }
     },
 
     inputDayNote: function inputDayNote(e) {
@@ -308,10 +332,23 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       if (_this.dayNote && _this.dayWorkTime &&
       _this.completionDegree && _this.taskId)
       {
-        var dateTime = (0, _time.format)(new Date());
+        var dateTime; //打卡的时间,填入的时间段
+        var nowHours = new Date().getHours();
+        var nowTimeStap = new Date().getTime(); //当前的时间磋
+        if (nowHours >= 0 && nowHours < 12) {//在12点之前记录到前一天
+          nowTimeStap -= 1 * 12 * 60 * 60 * 1000;
+          var year = new Date(nowTimeStap).getYear();
+          var month = new Date(nowTimeStap).getMonth() + 1;
+          var day = new Date(nowTimeStap).getDate();
+          dateTime = year + '-' + month + '-' + day;
+        } else {
+          dateTime = (0, _time.format)(new Date());
+        }
+
         if (_this.dateWorkId) {//已经存在则进行更新
           _this.updateDateWork();
-        } else {
+        } else {//不存在进行时间的判断，3点之前的日报都记录到前一天
+
           uni.showLoading({
             title: "提交中",
             success: function success() {
@@ -354,7 +391,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
         }
       } else {
         uni.showToast({
-          title: "请完善信息",
+          title: "完善信息或中止请填0",
           duration: 500,
           icon: "none" });
 
@@ -395,9 +432,15 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
     },
 
-    //当taskStatus选中为非0状态的时候向任务表中更新状态
+    //当taskStatus选中为非0状态的时候向任务表中更新状态和实际工时
     updatetTask: function updatetTask() {
       _this = this;
+      var submitActualWorkingHours = 0;
+      if (_this.dateWorkId) {//同一天打卡的时候
+        submitActualWorkingHours = parseFloat(_this.actualWorkingHours) - parseFloat(_this.preDayWorkTime) + parseFloat(_this.dayWorkTime);
+      } else {
+        submitActualWorkingHours = parseFloat(_this.actualWorkingHours) + parseFloat(_this.dayWorkTime);
+      }
       uni.showLoading({
         title: "更新中",
         success: function success() {
@@ -406,7 +449,8 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
             method: "POST",
             data: [{
               id: _this.taskId,
-              taskState: _this.taskState }],
+              taskState: _this.taskState,
+              actualWorkingHours: submitActualWorkingHours }],
 
             dataType: 'json' }).
 

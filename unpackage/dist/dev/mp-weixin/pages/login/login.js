@@ -129,7 +129,29 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -162,18 +184,7 @@ var _this; //登录的用户的增加用户入库的api
 var login = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var Login = new login();var _default = { data: function data() {return { canIUse: wx.canIUse('button.open-type.getUserInfo'), trueName: "", disable: true };}, //登录之前就查看本地是否存在用户证明授权登录过直接跳转到申请表
   mounted: function mounted() {}, methods: { //输入这是的姓名	 
     inputTrueName: function inputTrueName(e) {var trueName = e.detail.value;var reg = /^[\u4e00-\u9fa5]+$/i; //正则表达式匹配中文
-      if (reg.test(trueName) && trueName.length <= 4 && trueName.length >= 2) {this.trueName = trueName;this.disable = false;} else {this.disable = true;uni.showToast({ title: "输入有误", duration: 1000, icon: "none" });
-
-      }
-    },
-
-
-    bindGetUserInfo: function bindGetUserInfo() {
-      var openId;
-      var sessionKey;
-      var trueName = this.trueName;
-      uni.showLoading({
-        title: "登录中",
+      if (reg.test(trueName) && trueName.length <= 4 && trueName.length >= 2) {this.trueName = trueName;this.disable = false;} else {this.disable = true;uni.showToast({ title: "输入有误", duration: 1000, icon: "none" });}}, bindGetUserInfo: function bindGetUserInfo() {var openId;var sessionKey;var trueName = this.trueName;uni.showLoading({ title: "登录中",
         success: function success() {
           Login.getCode().
           then(function (data) {

@@ -101,11 +101,6 @@ const messageQuery = `${host}/message/query`;
 const commnetQuery = `${host}/comment/query`;
 
 
-
-
-
-
-
 //提交每日输入工时打卡阶段
 const dateWorkAdd = `${host}/datework/add`;
 
@@ -114,7 +109,7 @@ const dateWorkAdd = `${host}/datework/add`;
 const dateWorkQuery = `${host}/datework/query`;
 
 //更新dateWork
-const dateWorkUpdateBatch = `${host}/dateWork/updateBatch`
+const dateWorkUpdateBatch = `${host}/datework/updateBatch`
 
 //微信消息推送
 const messageSend = `${host}/message/send`;
@@ -130,6 +125,12 @@ const  userProjectDepartmentDeleteBatch = `${host}/userprojectdepartment/deleteB
 
 //燃尽图的图表
 const  getLineData = `${host}/picture/getLineData`;
+
+//根据项目id查找项目有的专业
+const queryDepartmentByProjectId = `${host}/department/queryAll`;
+
+//更新冲刺
+const sprintUpdateBatch = `${host}/sprint/updateBatch`;
 
 module.exports = {
 	getUserOpenId:getUserOpenId,
@@ -172,5 +173,7 @@ module.exports = {
 	roleApplyDeleteBatch:roleApplyDeleteBatch,
 	userProjectDepartmentDeleteBatch:userProjectDepartmentDeleteBatch,
 	dateWorkUpdateBatch:dateWorkUpdateBatch,
-	getLineData:getLineData
+	getLineData:getLineData,
+	queryDepartmentByProjectId:queryDepartmentByProjectId,
+	sprintUpdateBatch:sprintUpdateBatch
 } 

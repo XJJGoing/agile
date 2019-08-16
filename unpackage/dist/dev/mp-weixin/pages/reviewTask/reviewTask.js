@@ -123,8 +123,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
+var _time = __webpack_require__(/*! ../../static/utils/time.js */ "../../../../../个人信息/agile/static/utils/time.js");
 
 
 
@@ -167,7 +166,7 @@ var _this;var _default =
                 key: "sprintId",
                 success: function success(res) {
                   _this.sprintId = res.data;
-                  _this.getAllNoReview(); //获取未审核的项目
+                  _this.getAllNoReview(_this.projectId, _this.sprintId); //获取未审核的项目
                 },
                 fail: function fail() {
                   uni.showToast({
@@ -202,7 +201,7 @@ var _this;var _default =
   },
   onPullDownRefresh: function onPullDownRefresh() {
     _this = this;
-    _this.getAllNoReview();
+    _this.getAllNoReview(_this.projectId, _this.sprintId);
   },
   methods: {
 
@@ -217,7 +216,8 @@ var _this;var _default =
     },
 
     //查询为未审核的任务  
-    getAllNoReview: function getAllNoReview() {
+    getAllNoReview: function getAllNoReview(projectId, sprintId) {
+      console.log("查询的条件", projectId, sprintId);
       _this = this;
       uni.showLoading({
         title: '获取中',
@@ -227,8 +227,8 @@ var _this;var _default =
             url: _api.taskQuery,
             method: 'POST',
             data: {
-              projectId: _this.projectId,
-              sprintId: _this.sprintId,
+              projectId: projectId,
+              sprintId: sprintId,
               isReview: 0,
               pageNum: _this.pageNum,
               pageSize: _this.pageSize },
@@ -237,6 +237,7 @@ var _this;var _default =
 
           then(function (data) {
             uni.hideLoading();
+            console.log("查询到的", data);
             console.log("查询到的未审核的任务", data[1].data.data.records);
             _this.noReviewTaskList = data[1].data.data.records;
           }).
@@ -255,6 +256,8 @@ var _this;var _default =
       _this = this;
       var task = JSON.parse(e.currentTarget.id);
       console.log('选中更新的任务', task);
+      var taskExecuteUserId = task.taskExecuteUserId;
+      var taskName = task.taskOrder + task.taskName;
       uni.showModal({
         title: "审核任务",
         cancelText: "不通过",
@@ -287,7 +290,7 @@ var _this;var _default =
                       then(function (data) {
                         uni.hideLoading();
                         console.log("审核成功", data);
-                        _this.getAllNoReview(); //重新获取未审核的任务
+                        _this.getAllNoReview(_this.projectId, _this.sprintId); //重新获取未审核的任务
                       }).
                       catch(function (Error) {
                         uni.showToast({
@@ -299,7 +302,9 @@ var _this;var _default =
                     } });
 
 
-                  //同时也增加消息.
+                  //同时也增加消息和推送消息
+                  var content2 = "通过";
+                  _this.pushMessage(taskExecuteUserId, taskName, content2);
                   _this.addMessage(task, content);
                 } else {
 
@@ -317,9 +322,11 @@ var _this;var _default =
               success: function success(res) {
                 if (res.confirm) {
                   var content = "".concat(task.taskOrder, "\u5BA1\u6838\u672A\u901A\u8FC7");
+                  var content2 = "未通过";
 
-                  //发送消息并且删除该任务,并且重新获取任务
+                  //发送消息并且删除该任务推送微信消息,并且重新获取任务
                   _this.addMessage(task, content);
+                  _this.pushMessage(taskExecuteUserId, taskName, content2);
                   _this.deteleTask(task.id);
                   _this.getAllNoReview();
                 } else {
@@ -388,6 +395,47 @@ var _this;var _default =
 
           });
         } });
+
+    },
+
+    //审核的结果微信消息推送给用户
+    pushMessage: function pushMessage(taskExecuteUserId, taskName, content) {
+      _this = this;
+      console.log(taskExecuteUserId);
+      var time = (0, _time.formatDate)(new Date());
+      Query.findUser({ id: taskExecuteUserId }).
+      then(function (data) {
+        var openId = data.data.records[0].openId;
+        console.log(openId);
+        uni.request({
+          url: _api.messageSend,
+          method: "POST",
+          data: {
+            "touser": openId,
+            "template_id": "i_uMOCIeL3R7vfxZtOBg88_-IiZbLN5VItvgQM_AJ2I",
+            "page": "pages/message/message",
+            "form_id": "",
+            "data": {
+              "keyword1": {
+                "value": taskName },
+
+              "keyword2": {
+                "value": content },
+
+              "keyword3": {
+                "value": time },
+
+              "emphasis_keyword": "keyword1.DATA" } } }).
+
+
+
+        then(function (data) {
+          console.log("消息推送成功", data);
+        }).
+        catch(function (Error) {
+          console.log(Error);
+        });
+      });
 
     },
 

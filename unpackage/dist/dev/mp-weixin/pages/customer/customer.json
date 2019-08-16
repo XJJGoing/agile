@@ -1,0 +1,7 @@
+{
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "用户故事",
+  "usingComponents": {
+    "uni-card": "/components/uni-card/uni-card"
+  }
+}

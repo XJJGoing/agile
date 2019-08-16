@@ -26,6 +26,7 @@
     font-size: 30rpx;
 	font-weight: bold;
 	background-color:#6CA0D9;
+	margin-top: 2rpx;
 }
 .title text{
    margin-left: 5rpx;

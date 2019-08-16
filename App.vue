@@ -4,6 +4,7 @@
 	
 	import {sprintQuery} from './static/utils/api.js';
 	import {formatDate} from './static/utils/time.js';
+	import {compareTime} from'./static/utils/utils';
 	
 	//一进入项目就设置进入本项目的相应的时间段内的冲刺(先查询然后进行时间的比对)
 	const enterSprint = (projectId) =>{
@@ -13,29 +14,41 @@
 			  	 	method:"POST",
 			  	 	data:{
 			  	 		projectId:projectId,
+						pageNum:0,
+						pageSize:1000
 			  	 	},
 			  	 	dataType:'json',
 			  	 })
 			  	 .then(data=>{
 			  	 	let allSprint = data[1].data.data.records;
-			  		let sprintId;
+					console.log(allSprint)
+			  		let sprintId = "";
 			  	 	if(allSprint.length){
 			  		  //获取当前的时间并且进行时间转换用作比较
-			  		  let nowDateTime = new Date(Date.parse(formatDate(new Date())));
-			  		  for(var i in allSprint){
-			  		  	if(new Date(Date.parse(allSprint[i].startTime))<=nowDateTime
-			  		  	&&nowDateTime<new Date(Date.parse(allSprint[i].endTime))){
-			  		  		sprintId = allSprint[i].id;
-			  		  	}	 
+			  		  let nowDateTime = formatDate(new Date());
+			  		  for(let i = 0;i<allSprint.length;i++){
+			  		    	compareTime(allSprint[i].startTime,allSprint[i].endTime,nowDateTime,(jude)=>{
+								if(jude){
+									sprintId = allSprint[i].id;
+									console.log("设置了冲刺",sprintId);
+									uni.setStorage({
+										key:'sprintId', 
+										data:sprintId,
+									})
+								}
+							})
 			  		  } 
-			  		  if(!sprintId){           //如果实在都超过了时间段就默认进入最后一个
+			  		  if(sprintId===""){           //如果实在都超过了时间段就默认进入最后一个
 			  			   let len = allSprint.length-1;
 			  			   sprintId = allSprint[len].id;
-			  		  }
-			  		  uni.setStorage({
-			  		  	key:'sprintId', 
-			  			data:sprintId,
-			  		  }) 
+						   uni.setStorage({
+						   	key:'sprintId', 
+						   	data:sprintId,
+						   	success:()=>{
+						   		console.log("设置冲刺成功",sprintId);
+						   	}
+						   })
+			  		  } 
 			  	 	}else{ 
 			  			uni.setStorage({
 			  				key:'sprintId',
@@ -92,15 +105,15 @@
 										{     //不用判断等于四,这种设计不存在等于4权限的情况
 										 Query.findUserProjectRole(_this.userInfo.id,res2.data.projectId)
 										 .then(data=>{
-											console.log("获取到的用户的最新的权限",data)
-											if(data.data.roleId===4){
+											console.log("获取到的用户的最新的权限",data.data.records)
+											if(!data.data.records.length){
 												 uni.removeStorage({
 													 key:"nowInPorject",
 													 success:()=>{ 
 														 console.log("权限改变移除nowInProject")
 														 uni.redirectTo({
 															url: '/pages/apply/apply',
-														 });
+														 }); 
 													 }
 												 })
 											}else{ 
@@ -108,11 +121,9 @@
 												  key:'nowInProject',
 												  data:data.data.records[0],
 												  success:()=>{
-													  
 													 //设置projectId并且进入冲刺
 						                            _this.projectId = data.data.records[0].projectId;
 													enterSprint(_this.projectId);  
-													
 													uni.redirectTo({
 														url:'/pages/index/index'
 													})
@@ -124,8 +135,7 @@
 									else{
 									 //设置projectId并且进入冲刺
 									_this.projectId = res2.data.projectId;
-									enterSprint(_this.projectId);  
-										
+									enterSprint(_this.projectId); 
 									uni.redirectTo({
 										url:'/pages/index/index'
 									  })

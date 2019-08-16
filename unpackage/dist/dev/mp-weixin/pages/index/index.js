@@ -170,30 +170,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js");
 var _time = __webpack_require__(/*! ../../static/utils/time.js */ "../../../../../个人信息/agile/static/utils/time.js");
+
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js"); //
 //
 //
@@ -261,43 +240,42 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Query = new query();var Login = new login();var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ "../../../../../个人信息/agile/components/uni-tag/uni-tag.vue"));};var QSWavesButton = function QSWavesButton() {return Promise.all(/*! import() | components/QS-WavesButton/QS-WavesButton */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/QS-WavesButton/QS-WavesButton")]).then(__webpack_require__.bind(null, /*! @/components/QS-WavesButton/QS-WavesButton.vue */ "../../../../../个人信息/agile/components/QS-WavesButton/QS-WavesButton.vue"));};var _this;var _default = { components: { QSWavesButton: QSWavesButton, uniTag: uniTag }, data: function data() {return { width: "", //设置input的长度
+var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Login;var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../个人信息/agile/static/utils/utils.js").Query;var Query = new query();var Login = new login();var QSWavesButton = function QSWavesButton() {return Promise.all(/*! import() | components/QS-WavesButton/QS-WavesButton */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/QS-WavesButton/QS-WavesButton")]).then(__webpack_require__.bind(null, /*! @/components/QS-WavesButton/QS-WavesButton.vue */ "../../../../../个人信息/agile/components/QS-WavesButton/QS-WavesButton.vue"));};var _this;var _default = { components: { QSWavesButton: QSWavesButton }, data: function data() {return { width: "", //设置input的长度
       userInfo: {}, projectId: "", //假数据 
       nowProject: {}, //显示的项目
       isDisplay: true, //是否显示按钮
       isChooseInput: true, //是否可以输入
-      roleId: "", target: "", finishTime: "", result: "", management: "", sprintNum: "", people: "", allUserProjectRoles: [], //从t_user_role_project这张表中拿到的所有的权限为1234的项目		
+      roleId: "", target: "", finishTime: "", result: "", management: "", sprintNum: "", people: "", manager: "", //项目经理
+      allUserProjectRoles: [], //从t_user_role_project这张表中拿到的所有的权限为1234的项目		
       allUserProjectInfo: [], //所有的项目信息
       myProject: [], //切换的项目,权限为 1 2的项目的编号即项目的projectName
       myLookProject: [] //切换项目，项目的权限为可查看的编号projectName
     };}, mounted: function mounted() {//获取所有的项目信息 
   }, //写好的页面加载的函数
   onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {_this.userInfo = data.data.records[0];if (data.data.records[0].isRoot) {_this.roleId = 0;} else {uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId = res.data.roleId;_this.getAllProjectInfo(); //获取所有项目的信息
-              }, fail: function fail() {uni.redirectTo({ url: '../apply/apply' });} });}}).catch(function (error) {console.log(error);});}, fail: function fail() {uni.redirectTo({ url: '../login/login' });} });}, methods: { //设置输入框的长度
-    getSystem: function getSystem() {_this = this;uni.getSystemInfo({ success: function success(res) {_this.width = parseInt(res.windowWidth) - 80;} });}, //填写信息的函数 
-    ftarget: function ftarget(e) {this.target = e.detail.value;}, ffinishTime: function ffinishTime(e) {
+              }, fail: function fail() {uni.redirectTo({ url: '../apply/apply' });} });}}).catch(function (error) {console.log(error);});}, fail: function fail() {uni.redirectTo({ url: '../login/login' });} });},
+
+
+
+
+  methods: {
+
+    //设置输入框的长度
+    getSystem: function getSystem() {
+      _this = this;
+      uni.getSystemInfo({
+        success: function success(res) {
+          _this.width = parseInt(res.windowWidth) - 80;
+        } });
+
+    },
+
+    //填写信息的函数 
+    ftarget: function ftarget(e) {
+      this.target = e.detail.value;
+    },
+
+    ffinishTime: function ffinishTime(e) {
       this.finishTime = e.detail.value;
     },
 
@@ -314,7 +292,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     },
 
     fpeople: function fpeople(e) {
-      var reg = /^[0-9]$/g;
+      var reg = /^[0-9]+$/g;
       var people = e.detail.value;
       if (reg.test(people)) {
         this.people = people;
@@ -404,26 +382,21 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     //获取所有的项目的信息
     getAllProjectInfo: function getAllProjectInfo() {
       _this = this;
-      uni.showLoading({
-        title: "获取中",
-        success: function success() {
-          Query.findAllProjectInfo().
-          then(function (data) {
-            uni.hideLoading();
-            console.log("获取到的所有的项目的信息", data.data.records);
-            _this.allUserProjectInfo = data.data.records;
-            _this.getProject(); //请求结束之后页面项目的信息
-            _this.getUserProjectRole(); //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
-          }).
-          catch(function (Error) {
-            uni.showToast({
-              title: "网络错误",
-              icon: "none",
-              duration: 1000 });
+      Query.findAllProjectInfo().
+      then(function (data) {
+        uni.hideLoading();
+        console.log("获取到的所有的项目的信息", data.data.records);
+        _this.allUserProjectInfo = data.data.records;
+        _this.getProject(); //请求结束之后页面项目的信息
+        _this.getUserProjectRole(); //所有的有关此用户的项目（1234权限）从用户权限关系表中查询
+      }).
+      catch(function (Error) {
+        uni.showToast({
+          title: "网络错误",
+          icon: "none",
+          duration: 1000 });
 
-          });
-        } });
-
+      });
     },
 
     //显示查看的项目,并且判断项目的信息为空的时候可以实现填写项目的信息,
@@ -449,8 +422,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
       //判断是否显示按钮和是否可以输入
       if (project.projectName && project.projectTarget &&
-      project.projectFinishTime && project.projectResult &&
-      project.projectManagement && project.projectSprintNum && project.projectPeople != 0 && _this.roleId === 1)
+      project.projectFinishTime && project.projectPeople != 0 && _this.roleId === 1)
       {
         _this.isDisplay = false; //不为空不显示,输入默认就行了
         _this.isChooseInput = true;
@@ -462,6 +434,17 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
         _this.isDisplay = false;
       }
 
+      Query.findUser({ id: project.projectChargeUserId }).
+      then(function (data) {
+        _this.manager = data.data.records[0].trueName;
+      }).
+      catch(function (Error) {
+        uni.showLoading({
+          title: "网络错误",
+          icon: "loading",
+          duration: 1000 });
+
+      });
     },
 
 
@@ -511,23 +494,17 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     saveProject: function saveProject() {
       console.log("提交的信息", {
         target: _this.target,
-        sprintNum: _this.sprintNum,
-        management: _this.management,
         people: _this.people,
-        finishTime: _this.finishTime,
-        result: _this.result });
+        finishTime: _this.finishTime });
 
-      if (_this.target && _this.sprintNum && _this.management && _this.people && _this.finishTime && _this.result) {
+      if (_this.target && _this.people && _this.finishTime) {
         //这里项目信息，将项目信息提交到服务端
         var data = [{
           id: _this.projectId,
           projectId: _this.projectId,
           projectTarget: _this.target,
-          projectSprintNum: _this.sprintNum,
-          projectManagement: _this.management,
           projectPeople: _this.people,
-          projectFinishTime: _this.finishTime,
-          projectResult: _this.result }];
+          projectFinishTime: _this.finishTime }];
 
 
         //提交到服务端并且进行项目的更新后并重新获取该项目的信息
@@ -579,12 +556,6 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       }
     },
 
-    //添加冲刺进行页面的跳转。
-    addSprint: function addSprint() {
-      uni.navigateTo({
-        url: "../addSprint/addSprint" });
-
-    },
 
     //继续申请查看其他的项目
     returnApply: function returnApply() {
@@ -607,33 +578,43 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
           url: _api.sprintQuery,
           method: "POST",
           data: {
-            projectId: projectId },
+            projectId: projectId,
+            pageNum: 0,
+            pageSize: 1000 },
 
           dataType: 'json' }).
 
         then(function (data) {
           console.log("进入获取到的冲刺", data[1].data.data.records);
           var allSprint = data[1].data.data.records;
-          var sprintId;
+          var sprintId = "";
           console.log(allSprint.length);
           if (allSprint.length) {
             //获取当前的时间并且进行时间转换用作比较
-            var nowDateTime = new Date(Date.parse((0, _time.formatDate)(new Date())));
-            for (var i = 0; i < allSprint.length; i++) {
-              if (new Date(Date.parse(allSprint[i].startTime)) <= nowDateTime &&
-              nowDateTime < new Date(Date.parse(allSprint[i].endTime))) {
-                sprintId = allSprint[i].id;
-              }
+            var nowDateTime = (0, _time.formatDate)(new Date());var _loop = function _loop(
+            i) {
+              (0, _utils.compareTime)(allSprint[i].startTime, allSprint[i].endTime, nowDateTime, function (jude) {
+                if (jude) {
+                  sprintId = allSprint[i].id;
+                  console.log("设置了冲刺", sprintId);
+                  uni.setStorage({
+                    key: 'sprintId',
+                    data: sprintId });
+
+                }
+              });};for (var i = 0; i < allSprint.length; i++) {_loop(i);
             }
-            if (!sprintId) {//如果实在都超过了时间段就默认进入最后一个
+            if (sprintId === "") {//如果实在都超过了时间段就默认进入最后一个
               var len = allSprint.length - 1;
               sprintId = allSprint[len].id;
-            }
-            console.log(sprintId);
-            uni.setStorage({
-              key: 'sprintId',
-              data: sprintId });
+              uni.setStorage({
+                key: 'sprintId',
+                data: sprintId,
+                success: function success() {
+                  console.log("设置冲刺成功", sprintId);
+                } });
 
+            }
           } else {
             uni.setStorage({
               key: 'sprintId',

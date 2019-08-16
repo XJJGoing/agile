@@ -159,15 +159,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
-//
-//
-//
-//
 //
 //
 //
@@ -235,7 +227,12 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {console.log(data);_this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.roleId === 1; //能进来这个页面肯定为项目的负责人，权限为1
               _this.getAllUserProjectRole1();} });});}, fail: function fail() {url: '../login/login';} });}, methods: { //1权限用户的查询
     getAllUserProjectRole1: function getAllUserProjectRole1() {_this = this;Query.findUserProjectRoleByProjectId(_this.projectId).then(function (data) {console.log("1权限用户查询到的", data.data.records);var allUser = data.data.records;_this.allUserProjectRole = allUser;var userList1 = [];var userList2 = [];var userList3 = [];var item; //中间量
-        allUser.forEach(function (item, index) {switch (item.roleId) {case 1:Query.findUser({ id: item.userId }).then(function (data) {userList1.push(data.data.records[0]);}).catch(function (error) {uni.showToast({
+        allUser.forEach(function (item, index) {switch (item.roleId) {case 1:Query.findUser({ id: item.userId }).then(function (data) {
+                userList1.push(data.data.records[0]);
+              }).
+              catch(function (Error) {
+                console.log(Error);
+                uni.showToast({
                   title: '获取失败',
                   duration: 1000,
                   icon: 'none' });
@@ -252,12 +249,13 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
                 var departmentId = data.data.records[0].departmentId;
                 for (var i = 0; i < _this.allDepartmentInfo.length; i++) {
                   if (_this.allDepartmentInfo[i].id === departmentId) {
-                    item.departmentName = _this.allDepartmentInfo[i].name;
+                    item.departmentName = _this.allDepartmentInfo[i].departmentName;
                   }
                 }
                 userList2.push(item);
               }).
-              catch(function (error) {
+              catch(function (Error) {
+                console.log(Error);
                 uni.showToast({
                   title: '获取失败',
                   duration: 1000,
@@ -270,7 +268,8 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
               then(function (data) {
                 userList3.push(data.data.records[0]);
               }).
-              catch(function (error) {
+              catch(function (Error) {
+                console.log(Error);
                 uni.showToast({
                   title: '获取失败',
                   duration: 1000,

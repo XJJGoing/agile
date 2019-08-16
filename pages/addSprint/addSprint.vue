@@ -13,7 +13,7 @@
 			  	     :title="item.sprintName" 
 			  	     :note="'创建时间:'+item.createTime"
 				>
-			      <view class="sprintDetail" :style="{width:width2+'px'}">
+			      <view class="sprintDetail" :style="{width:width2+'px'}" @click="updateSprint" :id="JSON.stringify(item)">
 					 <text id="target">目标:{{item.sprintTarget}}</text>
 					 <text id="startTime">启动时间:{{item.startTime}}</text>
 					 <text id="endTime">截止时间:{{item.endTime}}</text>
@@ -53,7 +53,7 @@
 		</view>
 		<view class="wpicker">
            	<w-picker 
-				 mode="dateTime" 
+				 mode="date" 
 				 startYear="2019" 
 				 endYear="2030"   
 				 :current="true" 
@@ -63,7 +63,7 @@
            	</w-picker>
 			
 			<w-picker 
-				 mode="dateTime" 
+				 mode="date" 
 				 startYear="2019" 
 				 endYear="2030"   
 				 :current="true" 
@@ -239,10 +239,10 @@
 			addSprint:function(e){
 				_this = this;
 				addFormId(_this.userInfo.openId,e.detail.formId)
-				let jude;           //用来判断时间格式是否有误
-				let nowTime = new Date(Date.parse(formatDate(new Date())));
-                let startTime = new Date(Date.parse(_this.startTime));
-				let endTime = new Date(Date.parse(this.endTime));
+				let jude;                                            //用来判断时间格式是否有误
+				let nowTime = new Date(Date.parse(formatDate(new Date()).replace(/-/g,'/')));
+                let startTime = new Date(Date.parse(_this.startTime.replace(/-/g,'/')));
+				let endTime = new Date(Date.parse(this.endTime.replace(/-/g,'/')));
 				if(startTime>=endTime||startTime<nowTime||nowTime>=endTime){
 					jude = false;
 				}else{
@@ -290,6 +290,32 @@
 						title:"时间格式或信息有误"
 					})
 				}
+			},
+			
+			//修改冲刺
+		    updateSprint:function(e){
+				_this = this;
+				console.log(e)
+				let item = e.currentTarget.id;
+				uni.showModal({
+					title:"提醒",
+					content:`冲刺开始并且开始每日打卡后，请慎重减少冲刺结束时间,
+					\r\n减少冲刺时间可能会引起数据紊乱,增加冲刺时间不会造成影响`,
+					confirmColor:"#4CD964",
+					confirmText:"同意",
+					cancelColor:"#DD524D",
+					cancelText:"不同意",
+					success:(res)=>{
+						if(res.confirm){
+							uni.navigateTo({
+								url:`../updateSprint/updateSprint?item=${item}`
+							})
+						}else if(res.cancel){
+							
+						}
+					}
+				})
+				
 			}
 		}
 	}
@@ -314,7 +340,7 @@
 .titleView{
   width: 100%;
   height: 70upx!important;
-  background-color:#6AA2D4;
+  background-color:#05E0FC;
   margin-left: 0upx;
   margin-bottom: 5upx;
 }
@@ -322,11 +348,11 @@
 .title{
 	width: 100%;
 	height: 70upx!important;
-	line-height: 70upx;
-	font-size: 35upx;
+	line-height: 70upx!important;
+	font-size: 30upx!important;
 	font-weight: 500;
 	text-align: left!important;
-	color: #111A34!important;
+	color: #F0F8FF!important;
 } 
 
 .sprintNum{
@@ -393,7 +419,7 @@
 }
 .wpicker{
 	width: 100%;
-	height: 600upx;
+	height: 200upx;
 }
 
 .submitButton{

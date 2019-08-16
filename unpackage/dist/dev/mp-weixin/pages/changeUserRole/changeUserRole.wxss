@@ -50,6 +50,7 @@
 .updateUserRole view picker{
 	margin-left: 10rpx;
 	color: #F1F1F1;
+	width: 80%;
 }
 .addNewDepartment{
 	display: -webkit-box!important;

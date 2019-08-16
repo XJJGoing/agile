@@ -172,8 +172,9 @@ var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       canChangeTaskPredictTime: false, restChangeTimes: "", //剩余的修改预估工时次数
       lastChangeStr: "" //拼接修改后的字符串
     };}, onLoad: function onLoad(e) {//传送过来的对象,1为改变预估工时，2为改变优先级
-    _this = this;_this.enterId = 1;_this.taskId = 2;_this.queryTaskInfo(); //查询任务的信息
-  }, onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {Query.findUser({ id: res.data.id }).then(function (data) {_this.userInfo = data.data.records[0];}).catch(function (Error) {uni.showToast({ title: "网络错误", icon: "loading",
+    _this = this;console.log(e);_this.enterId = parseInt(e.enter);_this.taskId = parseInt(e.taskId);_this.queryTaskInfo(); //查询任务的信息
+  }, onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {Query.findUser({ id: res.data.id }).then(function (data) {_this.userInfo = data.data.records[0];}).catch(function (Error) {uni.showToast({ title: "网络错误",
+            icon: "loading",
             duration: 500 });
 
         });
@@ -293,42 +294,50 @@ var query = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
           _this.lastChangeStr = _this.task.lastChangeStr;
         }
         console.log("提交的数据", _this.taskId, _this.lastChangeStr, _this.taskPredictTime);
-        uni.showLoading({
-          title: '更新中',
-          success: function success() {
-            uni.request({
-              url: _api.taskUpdateBatch,
-              method: "POST",
-              data: [{
-                id: _this.taskId,
-                taskPredictTime: _this.taskPredictTime,
-                lastChangeStr: _this.lastChangeStr }],
+        if (_this.taskPredictTime >= _this.task.actualWorkingHours) {
+          uni.showLoading({
+            title: '更新中',
+            success: function success() {
+              uni.request({
+                url: _api.taskUpdateBatch,
+                method: "POST",
+                data: [{
+                  id: _this.taskId,
+                  taskPredictTime: _this.taskPredictTime,
+                  lastChangeStr: _this.lastChangeStr }],
 
-              dataType: 'json' }).
+                dataType: 'json' }).
 
-            then(function (data) {
-              console.log('更新成功', data);
-              uni.showToast({
-                title: '提交成功',
-                icon: "../../static/img/Icon/success.png",
-                duration: 500,
-                success: function success() {
-                  uni.navigateBack({
-                    delta: 1 });
+              then(function (data) {
+                console.log('更新成功', data);
+                uni.showToast({
+                  title: '提交成功',
+                  icon: "../../static/img/Icon/success.png",
+                  duration: 500,
+                  success: function success() {
+                    uni.navigateBack({
+                      delta: 1 });
 
-                } });
+                  } });
 
-            }).
-            catch(function (Error) {
-              console.log(Error);
-              uni.showToast({
-                title: "网络错误",
-                icon: "loading",
-                duration: 500 });
+              }).
+              catch(function (Error) {
+                console.log(Error);
+                uni.showToast({
+                  title: "网络错误",
+                  icon: "loading",
+                  duration: 500 });
 
-            });
-          } });
+              });
+            } });
 
+        } else {
+          uni.showToast({
+            title: "修改的预估工时不能够少于实际工时",
+            duration: 1000,
+            icon: "none" });
+
+        }
       } else {
         uni.showToast({
           title: '输入有误',

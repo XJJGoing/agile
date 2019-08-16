@@ -2,7 +2,7 @@
 	<scroll-view class="all" scroll-y="true">
 		
 		<view class="userDetail">
-				<text id="title">项目负责人:</text>
+				<text id="title">项目经理:</text>
 				<block v-if="userList1.length!=0">
 				<view v-for="(item,index) in userList1" :key="index" class="eachOne">
 					<view :id="JSON.stringify({userId:item.id,roleId:1})" @click="changeUserRole">
@@ -11,8 +11,7 @@
 							:thumbnail="item.avatarUrl" 
 						>
 						<view class="info">
-							<text>国家:{{item.country}}</text>
-							<text>城市:{{item.province}}</text>
+							
 						</view>
 						</uni-card> 
 					</view>
@@ -28,8 +27,6 @@
 						:thumbnail="item.avatarUrl" 
 					>
 						<view class="info">
-							<text>国家:{{item.country}}</text>
-							<text>城市:{{item.province}}</text>
 							<text>专业:{{item.departmentName}}</text>
 						</view>
 					</uni-card>
@@ -46,8 +43,7 @@
 						:thumbnail="item.avatarUrl" 
 					>
 					  <view class="info">
-					  	<text>国家:{{item.country}}</text>
-					  	<text>城市:{{item.province}}</text>
+						  
 					  </view>	
 					</uni-card>
 				   </view>	
@@ -134,7 +130,8 @@
 									.then(data=>{
 									  userList1.push(data.data.records[0])	
 									})
-									.catch(error=>{
+									.catch(Error=>{
+										console.log(Error)
 										uni.showToast({
 											title: '获取失败',
 											duration:1000,
@@ -152,12 +149,13 @@
 									  let departmentId = data.data.records[0].departmentId;
 									  for(var i = 0;i<_this.allDepartmentInfo.length;i++){
 										  if(_this.allDepartmentInfo[i].id===departmentId){
-											  item.departmentName = _this.allDepartmentInfo[i].name
+											  item.departmentName = _this.allDepartmentInfo[i].departmentName
 										  }
 									  }
 									  userList2.push(item);
 									})
-									.catch(error=>{
+									.catch(Error=>{
+										console.log(Error)
 										uni.showToast({
 											title: '获取失败',
 											duration:1000,
@@ -170,7 +168,8 @@
 									.then(data=>{
 										userList3.push(data.data.records[0]);
 									})
-									.catch(error=>{
+									.catch(Error=>{
+										console.log(Error)
 										uni.showToast({
 											title: '获取失败',
 											duration:1000,
@@ -276,13 +275,14 @@
 	justify-content: flex-start;
 }
 #title{
-	font-size:35upx;
+	font-size:30upx;
+	font-weight: 600;
 	color: #F9FAF0;
 	width: 100%;
 	text-align: left;
 	height: 50upx;
 	line-height: 50upx;
-	background-color: #5585BC;
+	background-color: #05E0FC;
 	margin-top: 10upx;
 }
 .eachOne{
@@ -292,6 +292,7 @@
 .info{
 	display:flex;
 	flex-direction: column;
+	height: 50upx;
 }
 .info text{
 	font-size: 30upx;

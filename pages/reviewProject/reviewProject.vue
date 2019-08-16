@@ -52,7 +52,8 @@
 				userInfo:"",
 				noExamineProject:[],
 				pageNum:0,
-				pageSize:5
+				pageSize:5,
+				project:""         //点击选中的项目
 			}
 		},
 		onShow(){
@@ -68,13 +69,14 @@
 					.then(data=>{
 						console.log("用户信息",data);
 						_this.userInfo = data.data.records[0];
-						if(_this.userInfo.isRoot){  
-							_this.getAllNoExamineProjects();
-						}else{
-							uni.redirectTo({
-								url:'../people/people'
-							})
-						}
+						// if(_this.userInfo.isRoot){  
+						// 	_this.getAllNoExamineProjects();
+						// }else{
+						// 	uni.redirectTo({
+						// 		url:'../people/people'
+						// 	})
+						// }
+						_this.getAllNoExamineProjects();
 					})
 				},
 				fail:()=>{
@@ -137,6 +139,7 @@
 			examineItem:function(e){
 				_this = this;
 				let project = JSON.parse(e.currentTarget.id);
+				_this.project = project;
 				console.log('选中的项目',project)
 			    uni.showModal({
 			    	title:"审核",
@@ -208,8 +211,10 @@
 								icon:"none",
 							})
 							//重新刷新
+							let content = "已通过";
+							let content2 = "请熟记自己唯一的项目编号,以及前往项目主页填写项目信息以及添加冲刺";
+							_this.pushMessage(content,content2);
 							_this.getAllNoExamineProjects();
-							_this.pushMessage();          //同步进行就行了
 						})
 						.catch(Error=>{
 							uni.showToast({
@@ -312,6 +317,9 @@
 							})
 							
 							//重新刷新
+						    let content = "未通过";
+							let content2 = "项目信息审核未通过,具体原因可以询问项目审核人员。";
+							_this.pushMessage(content,content2);
 							_this.getAllNoExamineProjects();
 						})
 						.catch(Error=>{
@@ -326,8 +334,9 @@
 			},
 			
 			//将申请的项目通过的消息推送回去
-			pushMessage:function(project){
+			pushMessage:function(content,content2){
 				_this = this;
+				let project = _this.project;
 				let time = formatDate(new Date())
 				Query.findUser({id:project.userId})
 				.then(data=>{
@@ -341,20 +350,20 @@
 								data:{
 									"touser":openId,
 									"page":"pages/index/index",
-				                    "template_id":"OPM7GA_vTZbtxK8ACVwRoIpq2uxKl7SrF4TdRdB6N_I",
+				                    "template_id":"vjCjvwma7S6l1dcL_fBY9jPPTJEgvfsYsTFktBX0a7Q",
 									"formId":"",
 									"data":{
 										"keyword1":{
 											"value":project.projectName
 										},
 										"keyword2":{
-											"value":time
+											"value":`申请的项目${content}`
 										},
 										"keyword3":{
-											"value":"申请的项目已通过"
+											"value":time
 										},
 										"keyword4":{
-											"value":"请熟记自己唯一的项目编号,以及前往项目主页填写项目信息以及添加冲刺"
+											"value":content2
 										},
 										"emphasis_keyword": "keyword1.DATA"
 									}
@@ -362,6 +371,7 @@
 								dataType:'json'
 							})
 							.then(data=>{
+								uni.hideLoading();
 								console.log("推送成功")
 							})
 							.catch(Error=>{
@@ -427,6 +437,7 @@
     font-size: 30upx;
 	font-weight: bold;
 	background-color:#6CA0D9;
+	margin-top: 2upx;
 }
 .title text{
    margin-left: 5upx;

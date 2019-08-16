@@ -1,4 +1,41 @@
 
+.h5-login{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  color: #E9EFED;
+  margin-top: 15%;
+}
+.h5-login form{
+	width: 100%;
+	height: 100%;
+}
+.h5-login input{
+	width: 30%;
+	height: 40px;
+	border-radius: 2%;
+	border:1px solid #4CD964;
+	margin-top: 10px;
+	margin: 0 auto;
+}
+.h5-login button{
+	width: 20%;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 4%;
+	margin-top: 10px;
+}
 .userinfo{
 	width: 750rpx;
 	height: 600rpx;
@@ -49,7 +86,6 @@
 .login input{
 	width: 450rpx;
 	height: 100rpx;
-	border: 1rpx solid #30FAF6;
 	border-radius: 4%;
 	font-size: 30rpx;
 	line-height: 100rpx;

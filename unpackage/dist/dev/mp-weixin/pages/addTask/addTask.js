@@ -150,10 +150,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 var _time = __webpack_require__(/*! ../../static/utils/time.js */ "../../../../../个人信息/agile/static/utils/time.js");
+var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js");
 
 
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js"); //
+//
+//
+//
 //
 //
 //
@@ -208,21 +215,21 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       workNote: "", //任务的备注信息
       taskChargeUserName: "", //该项目的负责人的名字
       taskPriority: "", //项目的优先级（1、2、3、4）;
+      taskOrder: "", //任务的序号从专业里面取跟序号进行拼接
       taskPredictTime: "", //任务的预估时间
-      taskOrder: "", //任务的序号，默认为真实姓名的第一个字母开头,自动获取排序号
       taskName: "", //任务的内容
       departmentName: "", //专业的名称
       openId: "", //项目负责人的openId
       projectName: "", //项目的名称
       priority: [1, 2, 3, 4], //优先级实现可以改变
-      index: "" //选择优先级的下标
+      index: "", //选择优先级的下标
+      departmentNum: "" //从专业中取到的任务的标识号
     };}, onLoad: function onLoad() {this.getSystem();}, onShow: function onShow() {_this = this;uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {//console.log(data.data.records[0]);
           _this.userInfo = data.data.records[0];_this.taskExcuteUserId = _this.userInfo.id; //_this.taskChargeUserName = _this.userInfo.trueName;
           uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId; //设置项目的id
               uni.getStorage({ key: "sprintId", success: function success(res) {_this.sprintId = res.data; //设置冲刺
                   if (!_this.sprintId) {//没有冲刺  则显示暂无冲刺信息
-                    _this.sprintId = "";} else {_this.getChargeUserId();_this.getDepartmentId();_this.findProjectNameByProjectId();}}, fail: function fail() {_this.sprintId = "";} });},
-            fail: function fail() {
+                    _this.sprintId = "";} else {_this.getChargeUserId();_this.getDepartmentId();_this.findProjectNameByProjectId();}}, fail: function fail() {_this.sprintId = "";} });}, fail: function fail() {
               uni.redirectTo({
                 url: '../apply/apply' });
 
@@ -327,7 +334,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
     },
 
-    //根据专业的id去查询专业的name
+    //根据专业的id去查询专业.departmentName
     getDepartmentName: function getDepartmentName(departmentId) {
       _this = this;
       uni.showLoading({
@@ -344,8 +351,9 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
           then(function (data) {
             uni.hideLoading();
             console.log(data);
-            console.log("查询到的执行人的专业", data[1].data.data.records[0].name);
-            _this.departmentName = data[1].data.data.records[0].name;
+            console.log("查询到的执行人的专业", data[1].data.data.records[0].departmentName);
+            _this.departmentName = data[1].data.data.records[0].departmentName;
+            _this.departmentNum = data[1].data.data.records[0].departmentNum;
           }).
           catch(function (Error) {
             console.log(Error);
@@ -394,12 +402,12 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       this.taskPriority = this.priority[index];
     },
 
-    //首先获取本人在本项目下本冲刺的本专业的情况下taskOrder 
+    //首先获取在本项目下本冲刺的本专业的情况下taskOrder 
     //根据查找到任务的总数进行统计,然后将统计的个数+1
     getNowHadTaskOrder: function getNowHadTaskOrder(callback) {
       _this = this;
       console.log("查询条件", {
-        taskExcuteUserId: _this.userInfo.id,
+        // taskExcuteUserId:_this.userInfo.id,
         taskSprint: _this.sprintId,
         projectId: _this.projectId,
         departmentId: _this.departmentId,
@@ -413,7 +421,6 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
             url: _api.taskQuery,
             method: "POST",
             data: {
-              taskExcuteUserId: _this.userInfo.id,
               taskSprint: _this.sprintId,
               projectId: _this.projectId,
               departmentId: _this.departmentId,
@@ -426,9 +433,13 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
             //查到任务并且返回长度.
             uni.hideLoading();
-            console.log("查询到的任务", data);
-            var taskLength = data[1].data.data.records.length;
-            callback(taskLength);
+            console.log("查询到的专业下的任务", data);
+            if (data[1].data.data.records.length) {
+              var taskLength = data[1].data.data.records.length;
+              callback(taskLength);
+            } else {
+              callback(0);
+            }
           }).
           catch(function (error) {
             uni.hideLoading();
@@ -442,30 +453,36 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
     },
 
-    //输入首字母
-    //这里获取所有的该项目下该冲刺下该专业该用户的任务
-    //即调用getNowHadTaskOrder函数来计算总数然后将输入的值
-    //和总数＋1进行拼接作为最终的taskOrder赋给this.taskOrder	
-    inputTaskOrder: function inputTaskOrder(e) {var _this2 = this;
-      var taskOrder = e.target.value;
-      var reg = /[A-Z]/i;
-      if (reg.test(taskOrder) && taskOrder.length === 1) {
-        this.getNowHadTaskOrder(function (length) {
-          _this2.taskOrder = taskOrder + (length + 1);
-        });
-      } else {
-        this.taskOrder = "";
-        uni.showToast({
-          title: "输入有误",
-          icon: "none",
-          duration: 500 });
-
-      }
-    },
+    // //输入首字母
+    // //这里获取所有的该项目下该冲刺下该专业该用户的任务
+    // //即调用getNowHadTaskOrder函数来计算总数然后将输入的值
+    // //和总数＋1进行拼接作为最终的taskOrder赋给this.taskOrder	
+    // inputTaskOrder:function(e){
+    // 	let taskOrder = e.target.value;
+    //     let reg = /[A-Z]/i;
+    // 	if(reg.test(taskOrder)&&taskOrder.length===1){
+    // 		this.getNowHadTaskOrder(length=>{    //0-9自动前缀补充0
+    // 			let len = length.toString();
+    // 			if(len.length===1&&len.length!=9){
+    // 			  this.taskOrder = taskOrder+("0"+(length+1));	
+    // 			}else{
+    // 			  this.taskOrder = taskOrder+(length+1);	
+    // 			}
+    // 		})
+    // 	}else{
+    // 		this.taskOrder = "";
+    // 		uni.showToast({
+    // 			title:"输入有误",
+    // 			icon:"none",
+    // 			duration:500
+    // 		})
+    // 	}
+    // },
+    // 
 
     //输入任务的内容
     inputTaskName: function inputTaskName(e) {
-      if (e.detail.value.length <= 20) {
+      if (e.detail.value.length <= 30) {
         this.taskName = e.detail.value;
       } else {
         this.taskName = "";
@@ -478,22 +495,68 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
     //输入预估工时
     inputTaskPredictTime: function inputTaskPredictTime(e) {
-      var taskPredictTime = e.detail.value;
-      var reg = /^[0-9]$/g;
-      if (reg.test(taskPredictTime)) {
-        this.taskPredictTime = e.detail.value;
-      } else {
-        uni.showToast({
-          title: '请输入数字',
-          duration: 500,
-          icon: "none" });
-
-      }
+      var taskPredictTime = parseFloat(e.detail.value);
+      this.taskPredictTime = taskPredictTime;
     },
+
+    //查找冲刺的启动时间和截止时间
+    querySprintInfo: function querySprintInfo(callback) {
+      _this = this;
+      uni.request({
+        url: _api.sprintQuery,
+        method: "POST",
+        data: {
+          id: _this.sprintId },
+
+        dataType: 'json' }).
+
+      then(function (data) {
+        var sprint = data[1].data.data.records[0];
+        var nowTime = (0, _time.formatDate)(new Date());
+        var startTime = sprint.startTime;
+        var endTime = sprint.endTime;
+        (0, _utils.compareTime)(startTime, endTime, nowTime, function (jude) {
+          if (jude) {
+            callback(true);
+          } else {
+            callback(false);
+          }
+        });
+      }).
+      catch(function (Error) {
+        uni.showToast({
+          title: '网络错误',
+          icon: "none",
+          duration: 1000 });
+
+      });
+    },
+
 
     //添加任务提交的函数
     submitAddTask: function submitAddTask(e) {
       _this = this;
+      (0, _utils.addFormId)(_this.userInfo.openId, e.detail.formId);
+
+      var taskOrder;
+
+      _this.getNowHadTaskOrder(function (length) {//0-9自动前缀补充0
+        var len = length.toString();
+        if (len.length === 1 && len.length != 9) {
+          taskOrder = _this.departmentNum + "0" + (length + 1);
+          _this.taskOrder = taskOrder;
+          console.log(taskOrder);
+          _this.addTask();
+        } else {
+          taskOrder = _this.departmentNum + (length + 1);
+          _this.taskOrder = taskOrder;
+          _this.addTask();
+        }
+      });
+    },
+
+    //addTask
+    addTask: function addTask() {
       //信息不为空的时候进行提交
       var data = {
         "departmentId": _this.departmentId,
@@ -509,53 +572,61 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
         "taskPriority": _this.taskPriority,
         "taskState": 0 };
 
-      console.log("提交的信息", data);
+      console.log("提交的任务的信息为", data);
       if (_this.projectId && _this.taskExcuteUserId &&
       _this.taskChargeUserId && _this.sprintId &&
       _this.taskChargeUserName && _this.taskPriority &&
       _this.taskPredictTime && _this.taskOrder &&
       _this.taskName && _this.departmentName)
       {
-        uni.showLoading({
-          title: '提交中',
-          mask: false,
-          success: function success() {
-            uni.request({
-              url: _api.taskAdd,
-              method: 'POST',
-              //这个taskPlainId 在考虑要不要
-              data: {
-                "departmentId": _this.departmentId,
-                "isReview": 0,
-                "projectId": _this.projectId,
-                "sprintId": _this.sprintId,
-                "taskChargeUserId": _this.taskChargeUserId,
-                "taskExecuteUserId": _this.taskExcuteUserId,
-                "taskName": _this.taskName,
-                "taskOrder": _this.taskOrder,
-                "taskPlainId": "",
-                "taskPredictTime": _this.taskPredictTime,
-                "taskPriority": _this.taskPriority,
-                "taskState": 0,
-                "lastChangeStr": _this.taskPredictTime },
+        _this.querySprintInfo(function (jude) {
+          if (jude) {
+            uni.showLoading({
+              title: '提交中',
+              mask: false,
+              success: function success() {
+                uni.request({
+                  url: _api.taskAdd,
+                  method: 'POST',
+                  data: {
+                    "departmentId": _this.departmentId,
+                    "isReview": 0,
+                    "projectId": _this.projectId,
+                    "sprintId": _this.sprintId,
+                    "taskChargeUserId": _this.taskChargeUserId,
+                    "taskExecuteUserId": _this.taskExcuteUserId,
+                    "taskName": _this.taskName,
+                    "taskOrder": _this.taskOrder,
+                    "taskPlainId": "",
+                    "taskPredictTime": _this.taskPredictTime,
+                    "taskPriority": _this.taskPriority,
+                    "taskState": 0,
+                    "lastChangeStr": _this.taskPredictTime },
 
-              dataType: 'json' }).
+                  dataType: 'json' }).
 
-            then(function (data) {
-              uni.hideLoading();
-              console.log("提交任务成功", data);
-              _this.pushAddMessagePush();
-            }).
-            catch(function (Error) {
-              uni.showToast({
-                title: '网络错误',
-                duration: 500,
-                icon: "none" });
+                then(function (data) {
+                  uni.hideLoading();
+                  console.log("提交任务成功", data);
+                  _this.pushAddMessagePush();
+                }).
+                catch(function (Error) {
+                  uni.showToast({
+                    title: '网络错误',
+                    duration: 500,
+                    icon: "none" });
 
-            });
-          } });
+                });
+              } });
 
+          } else {
+            uni.showToast({
+              title: "冲刺已完成无法添加",
+              duration: 1000,
+              icon: "none" });
 
+          }
+        });
       } else {
         uni.showToast({
           title: "请完善信息",
@@ -566,10 +637,9 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
     },
 
     //添加任务增加微信消息推送
-    pushAddMessagePush: function pushAddMessagePush(formId) {
+    pushAddMessagePush: function pushAddMessagePush() {
       _this = this;
       console.log("项目负责人的openId", _this.openId);
-      console.log("formId", formId);
       var applyTime = (0, _time.formatDate)(new Date());
       uni.showLoading({
         title: "提交提交中",
@@ -603,11 +673,15 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
 
           then(function (data) {
-            uni.hideLoading();
             uni.showToast({
-              title: "提交成功",
+              title: "提交成功等待审核",
               icon: "../../static/img/Icon/success.png",
-              duration: 500 });
+              duration: 500,
+              success: function success() {
+                uni.navigateBack({
+                  delta: 1 });
+
+              } });
 
             console.log("消息推送成功", data);
           }).

@@ -23,18 +23,18 @@
 .titleView{
   width: 100%;
   height: 70rpx!important;
-  background-color:#6AA2D4;
+  background-color:#05E0FC;
   margin-left: 0rpx;
   margin-bottom: 5rpx;
 }
 .title{
 	width: 100%;
 	height: 70rpx!important;
-	line-height: 70rpx;
-	font-size: 35rpx;
+	line-height: 70rpx!important;
+	font-size: 30rpx!important;
 	font-weight: 500;
 	text-align: left!important;
-	color: #111A34!important;
+	color: #F0F8FF!important;
 }
 .sprintNum{
 	display: -webkit-box;
@@ -140,7 +140,7 @@
 }
 .wpicker{
 	width: 100%;
-	height: 600rpx;
+	height: 200rpx;
 }
 .submitButton{
 	width: 60%;

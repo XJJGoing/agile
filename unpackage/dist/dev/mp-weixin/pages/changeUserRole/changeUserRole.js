@@ -141,6 +141,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../个人信息/agile/static/utils/api.js");
 
 
@@ -149,7 +153,12 @@ var _api = __webpack_require__(/*! ../../static/utils/api.js */ "../../../../../
 
 
 
+
 var _utils = __webpack_require__(/*! ../../static/utils/utils.js */ "../../../../../个人信息/agile/static/utils/utils.js"); //
+//
+//
+//
+//
 //
 //
 //
@@ -199,13 +208,11 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       hadDepartment: "", //查询到的用户已经有的专业
       hadDepartmentId: "", //查询到的原本已经有的departmentId
       hadUserProjectDepartmentId: "", //查询到原本已经有的t_user_project_department那张表的id用于更新用
-      isHadUserProjectDepartment: false //判断这个用户之前有没有这个字段在t_user_project_department中
-    };}, onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {console.log("用户信息", data.data);_this.userInfo = data.data;uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.getAllDepartment(); //获取所有的专业
+      isHadUserProjectDepartment: false, //判断这个用户之前有没有这个字段在t_user_project_department中
+      departmentNum: "" //新增专业输入的标识号
+    };}, onShow: function onShow() {_this = this;_this.getSystem();uni.getStorage({ key: "userInfo", success: function success(res) {var id = { id: res.data.id };Query.findUser(id).then(function (data) {console.log("用户信息", data.data);_this.userInfo = data.data.records[0];uni.getStorage({ key: "nowInProject", success: function success(res) {_this.projectId = res.data.projectId;_this.getAllDepartment(); //获取所有的专业
               _this.queryUserProjectDepartment(); //查询该用户目前的专业
-            } });});}, fail: function fail() {url: '../login/login';} });
-  },
-
-  onLoad: function onLoad(e) {
+            } });});}, fail: function fail() {url: '../login/login';} });}, onLoad: function onLoad(e) {
     _this = this;
     var changeUserIdRoleId = e;
     console.log(e);
@@ -216,6 +223,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
   },
 
   methods: {
+
 
     //获取系统的信息设置picker的长度
     getSystem: function getSystem() {
@@ -241,7 +249,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
         _this.allDepartmentArry = department;
         var arry = [];
         for (var i in department) {
-          arry.push(department[i].name);
+          arry.push(department[i].departmentName);
         }
         _this.departmentArry = arry;
       }).
@@ -279,7 +287,16 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
       then(function (data) {
         console.log("更新成功", data);
-        uni.hideLoading();
+        uni.showToast({
+          title: "提交成功",
+          icon: "../../static/img/Icon/success.png",
+          duration: 500,
+          success: function success() {
+            uni.navigateBack({
+              delta: 1 });
+
+          } });
+
       });
     },
 
@@ -309,12 +326,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
         uni.showToast({
           title: "修改成功",
           icon: "../../static/img/Icon/success.png",
-          duration: 500,
-          success: function success() {
-            uni.navigateBack({
-              delta: 1 });
-
-          } });
+          duration: 500 });
 
       });
     },
@@ -365,15 +377,15 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
     },
 
-    //查询t_user_project_department中用户的专业        //目前出了问题
+    //查询t_user_project_department中用户的专业        
     queryUserProjectDepartment: function queryUserProjectDepartment() {
       _this = this;
-      console.log("查询的项目的id", _this.projectId);
+      console.log("查询的项目的id", _this.projectId, _this.beChangeUserId);
       uni.request({
         url: _api.userProjectDepartmentQuery,
         data: {
           userId: _this.beChangeUserId,
-          project: _this.projectId },
+          projectId: _this.projectId },
 
         dataType: 'json',
         method: "POST" }).
@@ -390,7 +402,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
           _this.hadDepartmentId = departmentId;
           for (var i in _this.allDepartmentArry) {
             if (departmentId === _this.allDepartmentArry[i].id) {
-              _this.hadDepartment = _this.allDepartmentArry[i].name;
+              _this.hadDepartment = _this.allDepartmentArry[i].departmentName;
               console.log(_this.hadDepartment);
             }
           }
@@ -425,7 +437,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       if (_this.isHadUserProjectDepartment && _this.beChangeUserRoleId === 3) {//权限被改变为3并且已经有对应专业时直接删除t_user_project_department中的数据
         _this.deleteUserProjectDepartment();
       }
-      if (_this.beChangeUserRoleId) {//改变权限
+      if (_this.beChangeUserRoleId) {//单改变权限
         uni.showLoading({
           title: "提交中",
           success: function success() {
@@ -456,45 +468,137 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
           icon: "none" });
 
       }
+    },
 
+    //输入标识字母
+    inputTaskOrderName: function inputTaskOrderName(e) {
+      _this = this;
+      var departmentNum = e.detail.value;
+      var reg = /^[A-Z]$/g;
+      if (reg.test(departmentNum) && departmentNum.length === 1) {
+        _this.departmentNum = departmentNum;
+      } else {
+        _this.departmentNum = "";
+        uni.showToast({
+          title: "输入有误",
+          duration: 500,
+          icon: "none" });
+
+      }
+    },
+
+    //查询是否已存在该专业
+    queryDepartment: function queryDepartment(callback) {
+      _this = this;
+      var departmentName = _this.newDepartment;
+      uni.request({
+        url: _api.departmentQuery,
+        method: "POST",
+        data: {
+          departmentName: departmentName },
+
+        dataType: 'json' }).
+
+      then(function (data) {
+        if (data[1].data.data.records.length && data[1].data.code === 200) {
+          uni.showToast({
+            title: "已有该专业",
+            duration: 500,
+            icon: "none" });
+
+        } else {
+          callback(true);
+        }
+      }).
+      catch(function (Error) {
+        console.log(Error);
+        uni.showToast({
+          title: '网络错误',
+          duration: 500,
+          icon: "loading" });
+
+      });
+    },
+
+    //查找是否已有该标识号
+    queryDepartmentNum: function queryDepartmentNum(callback) {
+      _this = this;
+      uni.request({
+        url: _api.departmentQuery,
+        method: "POST",
+        data: {
+          departmentNum: _this.departmentNum },
+
+        dataType: 'json' }).
+
+      then(function (data) {
+        console.log("查询的标识号", data);
+        if (data[1].data.data.records.length && data[1].data.code === 200) {
+          uni.showToast({
+            title: "已有该标识号",
+            duration: 500,
+            icon: "none" });
+
+        } else {
+          callback(true);
+        }
+      }).
+      catch(function (Error) {
+        console.log(Error);
+        uni.showToast({
+          title: '网络错误',
+          duration: 500,
+          icon: "loading" });
+
+      });
     },
 
     //确认新增专业   ---
-    addDepartment: function addDepartment() {
+    addDepartment: function addDepartment(e) {
       _this = this;
+      console.log(e);
       (0, _utils.addFormId)(_this.userInfo.openId, e.detail.formId);
-      if (_this.newDepartment && _this.newDepartment.length <= 4) {
+      if (_this.departmentNum && _this.newDepartment && _this.newDepartment.length <= 4) {
+        _this.queryDepartment(function (jude) {//查询是否有该专业
+          if (jude) {
+            _this.queryDepartmentNum(function (jude2) {//查询是否有该专业标号
+              if (jude2) {
+                uni.showLoading({
+                  title: "添加中",
+                  success: function success() {
+                    uni.request({
+                      url: _api.departmentAdd,
+                      method: "POST",
+                      data: {
+                        departmentName: _this.newDepartment,
+                        departmentNum: _this.departmentNum },
 
-        //这里添加请求新增专业
-        uni.showLoading({
-          title: "添加中",
-          success: function success() {
-            uni.request({
-              url: _api.departmentAdd,
-              method: "POST",
-              data: {
-                name: _this.newDepartment },
+                      dataType: 'josn' }).
 
-              dataType: 'josn' }).
+                    then(function (data) {//新增专业成功，在此调用获取所有专业的函数
+                      uni.hideLoading();
+                      console.log(data);
+                      _this.getAllDepartment();
+                      uni.showToast({
+                        title: "新增成功",
+                        icon: "../../static/img/Icon/success.png",
+                        duration: 500 });
 
-            then(function (data) {//新增专业成功，在此调用获取所有专业的函数
-              uni.hideLoading();
-              _this.getAllDepartment();
-              uni.showToast({
-                title: "新增成功",
-                icon: "../../static/img/Icon/success.png",
-                duration: 500 });
+                    }).
+                    catch(function (Error) {
+                      console.log(Error);
+                      uni.showToast({
+                        title: "添加失败",
+                        icon: "loading",
+                        duration: 1000 });
 
-            }).
-            catch(function (error) {
-              uni.showToast({
-                title: "添加失败",
-                icon: "loading",
-                duration: 1000 });
+                    });
+                  } });
 
+              }
             });
-          } });
-
+          }
+        });
       } else {
         uni.showToast({
           title: "请按照要求填入专业",
@@ -520,18 +624,18 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
 
           then(function (data) {
             console.log("删除成功");
-            uni.showToast({
-              title: "提交成功",
-              icon: "../../static/img/Icon/success.png",
-              duration: 500 });
-
           }).
           catch(function (Error) {
             console.log(Error);
             uni.showToast({
               title: "网络错误",
               duration: 500,
-              icon: "loading" });
+              icon: "loading",
+              success: function success() {
+                uni.navigateBack({
+                  delta: 1 });
+
+              } });
 
           });
         } });
@@ -551,7 +655,7 @@ var login = __webpack_require__(/*! ../../static/utils/utils */ "../../../../../
       console.log("选中的department名字", this.departmentArry[index]);
       this.hadDepartment = this.departmentArry[index];
       for (var i in this.allDepartmentArry) {
-        if (this.departmentArry[index] === this.allDepartmentArry[i].name) {
+        if (this.departmentArry[index] === this.allDepartmentArry[i].departmentName) {
           this.hadDepartmentId = this.allDepartmentArry[i].id;
         }
       }

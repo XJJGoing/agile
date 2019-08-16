@@ -159,9 +159,12 @@ var _this;var _default =
     };
   },
 
-  onShow: function onShow() {
-    this.getSystem();
+  onLoad: function onLoad(e) {
     _this = this;
+    console.log("评论区", e);
+    _this.getSystem();
+    _this.sprintId = parseInt(e.sprintId);
+    console.log(e.sprintId);
     wx.getStorage({
       key: "userInfo",
       success: function success(res) {
@@ -176,13 +179,7 @@ var _this;var _default =
             key: "nowInProject",
             success: function success(res) {
               _this.projectId = res.data.projectId;
-              uni.getStorage({
-                key: 'sprintId',
-                success: function success(res) {
-                  _this.sprintId = res.data;
-                  _this.queryComment();
-                } });
-
+              _this.queryComment();
             } });
 
         }).

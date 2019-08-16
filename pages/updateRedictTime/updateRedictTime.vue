@@ -45,7 +45,7 @@
 				taskPredictTime:"",         //预估工时
 				taskId:"",                  //传过来的任务的id
 				taskPriority:"",             //目前的优先级
-				priorityArry:[1,2,3,4],    //优先级
+				priorityArry:[1,2,3,4],      //优先级
 				
 				canChangeTaskPredictTime:false,
 				restChangeTimes:"",             //剩余的修改预估工时次数
@@ -56,8 +56,9 @@
 		},
 		onLoad(e){ //传送过来的对象,1为改变预估工时，2为改变优先级
 			_this = this;
-			_this.enterId = 1;
-			_this.taskId = 2;
+			console.log(e)
+			_this.enterId = parseInt(e.enter);
+			_this.taskId = parseInt(e.taskId);
 		   _this.queryTaskInfo();        //查询任务的信息
 		},
 		onShow(){
@@ -192,43 +193,51 @@
 					}else{
 						_this.lastChangeStr = _this.task.lastChangeStr;
 					}
-					console.log("提交的数据",_this.taskId,_this.lastChangeStr,_this.taskPredictTime)
-					uni.showLoading({
-						 title:'更新中',
-						 success:()=>{ 
-							 uni.request({
-								url:taskUpdateBatch,
-								method:"POST",
-								data:[{
-									id:_this.taskId,
-									taskPredictTime:_this.taskPredictTime,
-									lastChangeStr:_this.lastChangeStr
-								}],
-								dataType:'json',
-							 })
-							 .then(data=>{
-								 console.log('更新成功',data); 
-								 uni.showToast({
-									title:'提交成功',
-									icon:"../../static/img/Icon/success.png",
-									duration:500,
-									success:()=>{
-										uni.navigateBack({
-											delta:1
-										})
-									}
+					console.log("提交的数据",_this.taskId,_this.lastChangeStr,_this.taskPredictTime);
+					if(_this.taskPredictTime>=_this.task.actualWorkingHours){
+							uni.showLoading({
+							 title:'更新中',
+							 success:()=>{ 
+								 uni.request({
+									url:taskUpdateBatch,
+									method:"POST",
+									data:[{
+										id:_this.taskId,
+										taskPredictTime:_this.taskPredictTime,
+										lastChangeStr:_this.lastChangeStr
+									}],
+									dataType:'json',
+								 })  
+								 .then(data=>{
+									 console.log('更新成功',data); 
+									 uni.showToast({
+										title:'提交成功',
+										icon:"../../static/img/Icon/success.png",
+										duration:500,
+										success:()=>{
+											uni.navigateBack({
+												delta:1
+											})
+										}
+									 })
 								 })
-							 })
-							 .catch(Error=>{
-								 console.log(Error)
-								 uni.showToast({
-									title:"网络错误",
-									icon:"loading",
-									duration:500
+								 .catch(Error=>{
+									 console.log(Error)
+									 uni.showToast({
+										title:"网络错误",
+										icon:"loading",
+										duration:500
+									 })
 								 })
-							 })
-						 }
-					})
+							 }
+						  })	
+					}else{
+						uni.showToast({
+							title:"修改的预估工时不能够少于实际工时",
+							duration:1000,
+							icon:"none"
+						})
+					}
 			   }else{
 				   uni.showToast({
 				   	 title:'输入有误',
